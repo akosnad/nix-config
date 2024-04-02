@@ -32,6 +32,11 @@ in
       hosts;
   };
 
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+  };
+
   # Passwordless sudo when SSH'ing with keys
   security.pam.enableSSHAgentAuth = true;
 }

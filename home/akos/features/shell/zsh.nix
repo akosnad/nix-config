@@ -13,7 +13,7 @@ in
 
   programs.powerline-go = {
     enable = true;
-    modules = [ "ssh" "nix-shell" "cwd" "root" ];
+    modules = [ "ssh" "venv" "nix-shell" "cwd" "vi-mode" ];
     modulesRight = [ "exit" "perms" "git" "jobs" ];
   };
 

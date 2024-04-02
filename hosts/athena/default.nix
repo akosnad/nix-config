@@ -30,14 +30,6 @@
     lidSwitchExternalPower = "suspend";
   };
 
-  services.openssh = {
-    enable = true;
-    settings = {
-      PermitRootLogin = "no";
-      PasswordAuthentication = false;
-    };
-  };
-
   hardware.opengl.enable = true;
 
   powerManagement.powertop.enable = true;
@@ -47,17 +39,11 @@
     touchpad.tapping = true;
   };
 
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-  };
-
   environment.systemPackages = with pkgs; [
     neovim
     wget
     git
     neofetch
-    firefox
   ];
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
