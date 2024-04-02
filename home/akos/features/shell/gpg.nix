@@ -3,6 +3,8 @@
   services.gpg-agent = {
     enable = true;
     enableExtraSocket = true;
+    enableSshSupport = true;
+    sshKeys = [ "8982A3F1FF72EEA336D3A94556B248201ED48A49" ];
     # pinentryPackage = if config.gtk.enable then pkgs.pinentry-gnome3 else pkgs.pinentry-curses;
     pinentryFlavor = if config.gtk.enable then "gnome3" else "curses";
   };
@@ -52,4 +54,3 @@
     };
   };
 }
-# vim: filetype=nix
