@@ -4,6 +4,8 @@
     ./fonts.nix
     ./gtk.nix
     ./firefox.nix
+    ./alacritty
+    ./gammastep.nix
   ];
 
   dconf.settings."org/gnome/desktop/interface".color-scheme =

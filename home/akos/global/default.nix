@@ -32,7 +32,7 @@ in
     git.enable = true;
   };
 
-  colorscheme = lib.mkOverride 1499 colorSchemes.windows-95;
+  colorscheme = lib.mkOverride 1499 colorSchemes.horizon-dark;
   specialisation = {
     dark.configuration.colorscheme = lib.mkOverride 1498 config.colorscheme;
     light.configuration.colorscheme = lib.mkOverride 1498 config.colorscheme;

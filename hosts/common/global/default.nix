@@ -23,6 +23,13 @@
 
   hardware.enableRedistributableFirmware = true;
 
+  programs.light.enable = true;
+
+  # TODO: separate into modules
+  services.geoclue2.enable = true;
+  services.avahi.enable = true;
+  programs.dconf.enable = true;
+
   # Increase open file limit for sudoers
   security.pam.loginLimits = [
     {

@@ -1,6 +1,6 @@
 { pkgs, config, ... }:
 let
-  color = pkgs.writeText "color.vim" (import ./theme.nix config.colorscheme);
+  color = pkgs.writeText "color.vim" (import ./theme.nix config.colorScheme);
 in
 {
   imports = [

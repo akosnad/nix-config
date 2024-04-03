@@ -15,9 +15,11 @@
     ../common/global
     ../common/optional/use-builders.nix
     ../common/optional/quietboot.nix
-    ../common/optional/gnome.nix
 
     ../common/users/akos
+
+    # TODO: disable GNOME, and fully transition to Hyprland
+    #../common/optional/gnome.nix
   ];
 
   networking.hostName = "athena";

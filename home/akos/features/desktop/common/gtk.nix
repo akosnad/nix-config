@@ -9,13 +9,20 @@ rec {
       name = config.fontProfiles.regular.family;
       size = 12;
     };
+    # theme = {
+    #   name = "${config.colorscheme.slug}";
+    #   package = gtkThemeFromScheme { scheme = config.colorScheme; };
+    # };
     theme = {
-      name = "${config.colorscheme.slug}";
-      package = gtkThemeFromScheme { scheme = config.colorScheme; };
+      name = "Adwaita";
     };
     iconTheme = {
       name = "Papirus";
       package = pkgs.papirus-icon-theme;
+    };
+    cursorTheme = {
+      name = "Quintom_Ink";
+      package = pkgs.quintom-cursor-theme;
     };
   };
 
