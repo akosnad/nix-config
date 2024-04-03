@@ -16,6 +16,8 @@ in
       "wireshark"
       "docker"
     ];
+
+    openssh.authorizedKeys.keys = [ (builtins.readFile ../../../../home/akos/ssh.pub) ];
     hashedPasswordFile = config.sops.secrets.akos-password.path;
     packages = [ pkgs.home-manager ];
   };
