@@ -1,15 +1,20 @@
 { inputs, ... }: {
-  # This one brings our custom packages from the 'pkgs' directory
+  # Alias 'pkgs.inputs.${flake}' to
+  # 'inputs.${flake}.packages.${pkgs.system}' or
+  # 'inputs.${flake}.legacyPackages.${pkgs.system}'
+  flake-inputs = final: _: {
+    inputs = builtins.mapAttrs
+      (_: flake:
+        let
+          legacyPackages = ((flake.legacyPackages or { }).${final.system} or { });
+          packages = (flake.packages or { }).${final.system} or { };
+        in
+        if legacyPackages != { } then legacyPackages else packages
+      )
+      inputs;
+  };
+
   additions = final: _prev: import ../pkgs { pkgs = final; };
 
   modifications = final: prev: { };
-
-  # When applied, the unstable nixpkgs set (defined in the flake inputs) will
-  # be accessible through 'pkgs.unstable'
-  unstable-packages = final: _prev: {
-    unstable = import inputs.nixpkgs-unstable {
-      system = final.system;
-      config.allowUnfree = true;
-    };
-  };
 }

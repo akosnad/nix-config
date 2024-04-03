@@ -13,6 +13,7 @@
     ./hardware-configuration.nix
 
     ../common/global
+    ../common/optional/use-builders.nix
     ../common/optional/quietboot.nix
     ../common/optional/gnome.nix
 

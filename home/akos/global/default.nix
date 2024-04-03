@@ -1,4 +1,5 @@
-{ inputs, outputs, pkgs, lib, config, ... }: let
+{ inputs, outputs, pkgs, lib, config, ... }:
+let
   inherit (inputs.nix-colors) colorSchemes;
 in
 {
@@ -31,7 +32,7 @@ in
     git.enable = true;
   };
 
-  colorscheme = lib.mkOverride 1499 colorSchemes.horizon-dark;
+  colorscheme = lib.mkOverride 1499 colorSchemes.windows-95;
   specialisation = {
     dark.configuration.colorscheme = lib.mkOverride 1498 config.colorscheme;
     light.configuration.colorscheme = lib.mkOverride 1498 config.colorscheme;

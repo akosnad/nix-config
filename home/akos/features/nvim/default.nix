@@ -1,6 +1,6 @@
 { pkgs, config, ... }:
 let
-  color = pkgs.writeText "color.vim" ( import ./theme.nix config.colorscheme );
+  color = pkgs.writeText "color.vim" (import ./theme.nix config.colorscheme);
 in
 {
   imports = [
@@ -93,6 +93,7 @@ in
 
       	-- Telescope
       	vim.api.nvim_set_keymap('n', '<leader>f', ':Telescope find_files<CR>', { noremap = true, silent = true })
+      	vim.api.nvim_set_keymap('n', '<leader>g', ':Telescope live_grep<CR>', { noremap = true, silent = true })
 
       	-- Copilot
       	vim.g.copilot_no_tab_map = true
@@ -117,4 +118,8 @@ in
       nvim --server $server --remote-send '<Esc>:source $MYVIMRC<CR>' &
     done
   '';
+
+  home.packages = with pkgs; [
+    ripgrep
+  ];
 }
