@@ -32,11 +32,13 @@ in
     git.enable = true;
   };
 
-  colorscheme = lib.mkOverride 1499 colorSchemes.horizon-dark;
-  specialisation = {
-    dark.configuration.colorscheme = lib.mkOverride 1498 config.colorscheme;
-    light.configuration.colorscheme = lib.mkOverride 1498 config.colorscheme;
-  };
+  colorscheme = lib.mkOverride 1499 colorSchemes.darkmoss;
+
+  # TODO: dark and light mode specialisations
+  # specialisation = {
+  #   dark.configuration.colorscheme = lib.mkOverride 1498 config.colorscheme;
+  #   light.configuration.colorscheme = lib.mkOverride 1498 config.colorscheme;
+  # };
 
   home = {
     username = lib.mkDefault "akos";

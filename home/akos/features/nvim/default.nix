@@ -13,7 +13,7 @@ in
     defaultEditor = true;
     vimAlias = true;
 
-    extraConfig = ''
+    extraConfig = /* vim */ ''
       	filetype plugin indent on
       	syntax on
       	set number

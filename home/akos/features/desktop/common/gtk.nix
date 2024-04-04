@@ -9,12 +9,9 @@ rec {
       name = config.fontProfiles.regular.family;
       size = 12;
     };
-    # theme = {
-    #   name = "${config.colorscheme.slug}";
-    #   package = gtkThemeFromScheme { scheme = config.colorScheme; };
-    # };
     theme = {
-      name = "Adwaita";
+      name = "${config.colorscheme.slug}";
+      package = gtkThemeFromScheme { scheme = config.colorScheme; };
     };
     iconTheme = {
       name = "Papirus";
