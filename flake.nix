@@ -66,6 +66,12 @@
       };
 
       homeConfigurations = {
+        "akos@gepterem" = lib.homeManagerConfiguration {
+          modules = [ ./home/akos/gepterem.nix ];
+          pkgs = pkgsFor.x86_64-linux;
+          extraSpecialArgs = { inherit inputs outputs; };
+        };
+
         "akos@athena" = lib.homeManagerConfiguration {
           modules = [ ./home/akos/athena.nix ];
           pkgs = pkgsFor.x86_64-linux;
