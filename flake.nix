@@ -21,6 +21,11 @@
       url = "github:hyprwm/hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    eww-tray-wayland = {
+      url = "github:ralismark/eww?ref=tray-3";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

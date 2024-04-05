@@ -34,6 +34,7 @@
   hardware.opengl.enable = true;
 
   powerManagement.powertop.enable = true;
+  services.upower.enable = true;
 
   services.xserver.libinput = {
     enable = true;

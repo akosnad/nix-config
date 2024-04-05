@@ -3,6 +3,7 @@
   imports = [
     ./gammastep.nix
     ./wofi.nix
+    ./eww
   ];
 
   xdg.mimeApps.enable = true;

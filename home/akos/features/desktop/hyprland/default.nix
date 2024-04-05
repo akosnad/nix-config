@@ -3,6 +3,7 @@
   imports = [
     ../common
     ../common/wayland
+
     ./binds.nix
   ];
 
@@ -39,6 +40,7 @@
 
 
         # exec-once = systemctl start --user hyprland-session.service & /usr/lib/polkit-kde-authentication-agent-1 & eww daemon & eww open topbar
+        exec-once = "eww daemon & eww open topbar";
 
         input = {
           kb_layout = "us,hu";
