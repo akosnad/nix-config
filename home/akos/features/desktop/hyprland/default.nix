@@ -2,8 +2,20 @@
 {
   imports = [
     ../common
+    ../common/wayland
     ./binds.nix
   ];
+
+  # FIXME: separate packages and their configs to desktop/common/ modules
+  home.packages = with pkgs; [
+    wofi
+    swaynotificationcenter
+  ];
+
+  xdg.portal = {
+    extraPortals = [ pkgs.inputs.hyprland.xdg-desktop-portal-hyprland ];
+    configPackages = [ config.wayland.windowManager.hyprland.package ];
+  };
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -52,9 +64,8 @@
           gaps_in = 5;
           gaps_out = 0;
           border_size = 0;
-          # col.active_border = rgba(33ccffee) rgba(00ff99ee) 45deg
-          "col.active_border" = "rgba(ffffffaa)";
-          "col.inactive_border" = "rgba(595959aa)";
+          "col.active_border" = active;
+          "col.inactive_border" = inactive;
 
           layout = "dwindle";
 
@@ -116,10 +127,4 @@
         };
       };
   };
-
-  # FIXME: separate packages and their configs to desktop/common/ modules
-  home.packages = with pkgs; [
-    wofi
-    swaynotificationcenter
-  ];
 }

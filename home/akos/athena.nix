@@ -7,9 +7,5 @@ in
     ./features/desktop/hyprland
   ];
 
-  programs.firefox = {
-    enable = true;
-  };
-
   colorscheme = lib.mkDefault colorSchemes.horizon-dark;
 }

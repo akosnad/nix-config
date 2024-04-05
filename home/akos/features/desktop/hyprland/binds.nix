@@ -10,7 +10,7 @@ let
   wofi-launch = writeShellScript "wofi-launch.sh" ''
     # if wofi is running, close it
     if [ $(pgrep wofi) ]; then
-        killall wofi
+        kill $(pidof wofi)
     # if not running, launch it
     else
         exec wofi --show drun,run
