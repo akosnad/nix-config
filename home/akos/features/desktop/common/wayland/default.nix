@@ -4,6 +4,7 @@
     ./gammastep.nix
     ./wofi.nix
     ./eww
+    ./swaylock.nix
   ];
 
   xdg.mimeApps.enable = true;

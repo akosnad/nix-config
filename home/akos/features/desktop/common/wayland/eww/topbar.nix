@@ -61,79 +61,80 @@ let
     ${pkgs.socat}/bin/socat -u UNIX-CONNECT:/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock - | ${pkgs.coreutils}/bin/stdbuf -o0 grep '^activelayout>>' | ${pkgs.coreutils}/bin/stdbuf -o0 ${pkgs.gawk}/bin/awk -F '>>|,' '{print $3}' | ${pkgs.coreutils}/bin/stdbuf -o0 grep -Eo '^..' | ${pkgs.coreutils}/bin/stdbuf -o0 tr '[:upper:]' '[:lower:]'
   '';
 
-in pkgs.writeText "topbar.yuck" /* yuck */ ''
-(defwidget bar []
-  (centerbox :orientation "h"
-    :class "bar"
-    (workspaces)
-    (centerstuff)
-    (sidestuff)
+in
+pkgs.writeText "topbar.yuck" /* yuck */ ''
+  (defwidget bar []
+    (centerbox :orientation "h"
+      :class "bar"
+      (workspaces)
+      (centerstuff)
+      (sidestuff)
+      )
     )
-  )
 
-(defwidget workspaces []
-  (box :space-evenly false
-    (for workspace in workspaces
-      (eventbox :onclick "hyprctl dispatch workspace ''${workspace.id}"
-                :onscroll "scripts/switch-workspace {}"
-        (box :class "warning workspace-entry ''${workspace.windows > 0 ? "occupied" : "empty"} ''${active_workspace == workspace.id ? "current" : "inactive"}"
-          (label :text "''${workspace.id}")
+  (defwidget workspaces []
+    (box :space-evenly false
+      (for workspace in workspaces
+        (eventbox :onclick "hyprctl dispatch workspace ''${workspace.id}"
+                  :onscroll "scripts/switch-workspace {}"
+          (box :class "warning workspace-entry ''${workspace.windows > 0 ? "occupied" : "empty"} ''${active_workspace == workspace.id ? "current" : "inactive"}"
+            (label :text "''${workspace.id}")
+            )
+          )
+        )
+      (workspace_fix)
+      )
+    )
+
+  (defwidget centerstuff []
+    (box :class "centerstuff"
+      (box
+        (label :text "''${window}"
+               :limit-width 50
+               :tooltip "''${window}"
           )
         )
       )
-    (workspace_fix)
     )
-  )
 
-(defwidget centerstuff []
-  (box :class "centerstuff"
-    (box
-      (label :text "''${window}"
-             :limit-width 50
-             :tooltip "''${window}"
-        )
+  (defwidget sidestuff []
+    (box :class "sidestuff" :orientation "h" :space-evenly false :halign "end"
+      (gap)
+      (volume)
+      (cpu)
+      (ram)
+      (disk)
+      (batt)
+      (systray)
+      (label :text "''${keyboard_layout}" :class "kb-layout" )
+      (label :text "''${time}" :class "time")
       )
     )
-  )
 
-(defwidget sidestuff []
-  (box :class "sidestuff" :orientation "h" :space-evenly false :halign "end"
-    (gap)
-    (volume)
-    (cpu)
-    (ram)
-    (disk)
-    (batt)
-    (systray)
-    (label :text "''${keyboard_layout}" :class "kb-layout" )
-    (label :text "''${time}" :class "time")
-    )
-  )
+  (deflisten workspaces :initial "[]"
+    "${get-workspaces}")
 
-(deflisten workspaces :initial "[]"
-  "${get-workspaces}")
+  (deflisten active_workspace :initial "1"
+    "${get-active-workspace}")
 
-(deflisten active_workspace :initial "1"
-  "${get-active-workspace}")
+  (deflisten window :initial ""
+    "${get-window-title}")
 
-(deflisten window :initial ""
-  "${get-window-title}")
+  (deflisten keyboard_layout :initial ""
+    "${get-keyboard-layout}")
 
-(deflisten keyboard_layout :initial ""
-  "${get-keyboard-layout}")
+  (defpoll time :interval "10s"
+    "${pkgs.coreutils}/bin/date '+%b %d. %H:%M'")
 
-(defpoll time :interval "10s"
-  "${pkgs.coreutils}/bin/date '+%b %d. %H:%M'")
-
-(defwindow topbar
-  :monitor 0
-  :windowtype "dock"
-  :geometry (geometry :x "0%"
-                      :y "0%"
-                      :width "100%"
-                      :height "10px"
-                      :anchor "top center")
-  :reserve (struts :side "top" :distance "10%")
-  :exclusive true
-  (bar))
+  (defwindow topbar
+    :monitor 0
+    :windowtype "dock"
+    :geometry (geometry :x "0%"
+                        :y "0%"
+                        :width "100%"
+                        :height "10px"
+                        :anchor "top center")
+    :reserve (struts :side "top" :distance "10%")
+    :exclusive true
+    (bar))
 ''

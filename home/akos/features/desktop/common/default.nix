@@ -13,6 +13,6 @@
     else if config.colorscheme.variant == "light" then "prefer-light"
     else "default";
 
-  
+
   xdg.portal.enable = true;
 }

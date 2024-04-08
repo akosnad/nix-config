@@ -1,4 +1,5 @@
-{ lib, inputs, ... }: let
+{ lib, inputs, ... }:
+let
   inherit (inputs.nix-colors) colorSchemes;
 in
 {

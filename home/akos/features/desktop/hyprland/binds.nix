@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 let
   inherit (pkgs) writeShellScript;
 
@@ -60,6 +60,7 @@ in
       "$mainMod, Backspace, exec, ${toggle-dark-mode}"
       "$mainMod, N, exec, swaync-client -t"
       "$mainMod, G, exec, ${toggle-gammastep}"
+      "$mainMod, L, exec, ${config.programs.swaylock.package}/bin/swaylock -f"
 
       "$mainMod, Space, togglesplit, # dwindle"
 

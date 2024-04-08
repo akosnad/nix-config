@@ -1,4 +1,4 @@
-{ pkgs, ... }: 
+{ pkgs, ... }:
 let
   getvol = pkgs.writeScript "getvol" /* bash */ ''
     ${pkgs.alsa-utils}/bin/amixer sget Master | ${pkgs.gnugrep}/bin/grep 'Left:' | ${pkgs.gawk}/bin/awk -F'[][]' '{ print $2 }' | ${pkgs.coreutils}/bin/tr -d '%' | ${pkgs.coreutils}/bin/head -1
@@ -48,130 +48,131 @@ let
     ${pkgs.coreutils}/bin/printf '%.0f%%\t%dM\t%dM\t%dM' "$perc" "$used" "$available" "$cache"
   '';
 
-in pkgs.writeText "widgets.yuck" /* yuck */ ''
-(defwidget batt []
-  (eventbox :onhover "eww update batt=true"
-            :onhoverlost "eww update batt=false"
-    (box :space-evenly false
-      (metric :label "batt"
-              :active true
-              :value {EWW_BATTERY.total_avg}
-              :onchange "")
-      (revealer :transition "slideleft"
-                :reveal batt
-        (box :class "batt-info"
-          (label :text "''${battery_info}")
+in
+pkgs.writeText "widgets.yuck" /* yuck */ ''
+  (defwidget batt []
+    (eventbox :onhover "eww update batt=true"
+              :onhoverlost "eww update batt=false"
+      (box :space-evenly false
+        (metric :label "batt"
+                :active true
+                :value {EWW_BATTERY.total_avg}
+                :onchange "")
+        (revealer :transition "slideleft"
+                  :reveal batt
+          (box :class "batt-info"
+            (label :text "''${battery_info}")
+            )
           )
+        (gap)
         )
-      (gap)
       )
     )
-  )
-(defvar batt false)
-(deflisten battery_info :initial ""
-  "${get-batt-info}")
+  (defvar batt false)
+  (deflisten battery_info :initial ""
+    "${get-batt-info}")
 
 
-(defwidget music []
-  (box :class "music"
-       :orientation "h"
-       :space-evenly false
-       :halign "center"
-    {music != "" ? "🎵''${music}" : ""}))
-(deflisten music :initial ""
-  "${pkgs.playerctl}/bin/playerctl --follow metadata --format '{{ artist }} - {{ title }}' || true")
+  (defwidget music []
+    (box :class "music"
+         :orientation "h"
+         :space-evenly false
+         :halign "center"
+      {music != "" ? "🎵''${music}" : ""}))
+  (deflisten music :initial ""
+    "${pkgs.playerctl}/bin/playerctl --follow metadata --format '{{ artist }} - {{ title }}' || true")
 
 
-(defwidget disk []
-  (eventbox :onhover "eww update disk_info_visible=true"
-            :onhoverlost "eww update disk_info_visible=false"
-    (box :space-evenly false
-      (metric :label "disk"
-              :active true
-              :value {round((1 - (EWW_DISK["/"].free / EWW_DISK["/"].total)) * 100, 0)}
-              :onchange "")
-      (revealer :transition "slideleft"
-                :reveal disk_info_visible
-        (box :class "disk-info"
-          (label :text "''${disk_info}")
+  (defwidget disk []
+    (eventbox :onhover "eww update disk_info_visible=true"
+              :onhoverlost "eww update disk_info_visible=false"
+      (box :space-evenly false
+        (metric :label "disk"
+                :active true
+                :value {round((1 - (EWW_DISK["/"].free / EWW_DISK["/"].total)) * 100, 0)}
+                :onchange "")
+        (revealer :transition "slideleft"
+                  :reveal disk_info_visible
+          (box :class "disk-info"
+            (label :text "''${disk_info}")
+            )
           )
+        (gap)
         )
-      (gap)
       )
     )
-  )
-(defvar disk_info_visible false)
-(defpoll disk_info :initial "" :interval "2s" :run-while disk_info_visible
-  "${get-disk-info}")
+  (defvar disk_info_visible false)
+  (defpoll disk_info :initial "" :interval "2s" :run-while disk_info_visible
+    "${get-disk-info}")
 
-(defwidget cpu []
-  (eventbox :onhover "eww update cpu_info_visible=true"
-            :onhoverlost "eww update cpu_info_visible=false"
-    (box :space-evenly false
-      (metric :label "cpu"
-              :active true
-              :value {EWW_CPU.avg}
-              :onchange "")
-      (revealer :transition "slideleft"
-                :reveal cpu_info_visible
-        (box :class "cpu-info"
-          (label :text "''${round(EWW_CPU.avg, 0)}%''${EWW_TEMPS.CORETEMP_PACKAGE_ID_0 != "" ? "  ''${EWW_TEMPS.CORETEMP_PACKAGE_ID_0}°C" : ""}")
+  (defwidget cpu []
+    (eventbox :onhover "eww update cpu_info_visible=true"
+              :onhoverlost "eww update cpu_info_visible=false"
+      (box :space-evenly false
+        (metric :label "cpu"
+                :active true
+                :value {EWW_CPU.avg}
+                :onchange "")
+        (revealer :transition "slideleft"
+                  :reveal cpu_info_visible
+          (box :class "cpu-info"
+            (label :text "''${round(EWW_CPU.avg, 0)}%''${EWW_TEMPS.CORETEMP_PACKAGE_ID_0 != "" ? "  ''${EWW_TEMPS.CORETEMP_PACKAGE_ID_0}°C" : ""}")
+            )
           )
+        (gap)
         )
-      (gap)
       )
     )
-  )
-(defvar cpu_info_visible false)
+  (defvar cpu_info_visible false)
 
 
-(defwidget ram []
-  (eventbox :onhover "eww update ram_info_visible=true"
-            :onhoverlost "eww update ram_info_visible=false"
-    (box :space-evenly false
-      (metric :label "ram"
-              :active true
-              :value {EWW_RAM.used_mem_perc}
-              :onchange "")
-      (revealer :transition "slideleft"
-                :reveal ram_info_visible
-        (box :class "ram-info"
-          (label :text "''${ram_info}")
+  (defwidget ram []
+    (eventbox :onhover "eww update ram_info_visible=true"
+              :onhoverlost "eww update ram_info_visible=false"
+      (box :space-evenly false
+        (metric :label "ram"
+                :active true
+                :value {EWW_RAM.used_mem_perc}
+                :onchange "")
+        (revealer :transition "slideleft"
+                  :reveal ram_info_visible
+          (box :class "ram-info"
+            (label :text "''${ram_info}")
+            )
           )
+        (gap)
         )
-      (gap)
       )
     )
-  )
-(defvar ram_info_visible false)
-(defpoll ram_info :initial "" :interval "1s" :run-while ram_info_visible
-  "${get-ram-info}")
+  (defvar ram_info_visible false)
+  (defpoll ram_info :initial "" :interval "1s" :run-while ram_info_visible
+    "${get-ram-info}")
 
 
-(defwidget volume []
-  (eventbox :onhover "eww update volume_info_visible=true"
-            :onhoverlost "eww update volume_info_visible=false"
-    (box :space-evenly false
-      (metric :label "vol"
-              :value volume
-              :active true
-              :onchange "${pkgs.alsa-utils}/bin/amixer sset Master {}% && eww update volume={}")
-      (revealer :transition "slideleft"
-                :reveal volume_info_visible
-        (eventbox :onclick "${pkgs.playerctl}/bin/playerctl play-pause"
-          :class "volume-info"
-           (label :text "''${volume}%''${player_status == 'Playing' ? ' >' : player_status == 'Paused' ? ' ||' : '''}''${now_playing != ''' ? ' ' + now_playing : '''}")
+  (defwidget volume []
+    (eventbox :onhover "eww update volume_info_visible=true"
+              :onhoverlost "eww update volume_info_visible=false"
+      (box :space-evenly false
+        (metric :label "vol"
+                :value volume
+                :active true
+                :onchange "${pkgs.alsa-utils}/bin/amixer sset Master {}% && eww update volume={}")
+        (revealer :transition "slideleft"
+                  :reveal volume_info_visible
+          (eventbox :onclick "${pkgs.playerctl}/bin/playerctl play-pause"
+            :class "volume-info"
+             (label :text "''${volume}%''${player_status == 'Playing' ? ' >' : player_status == 'Paused' ? ' ||' : '''}''${now_playing != ''' ? ' ' + now_playing : '''}")
+            )
           )
+        (gap)
         )
-      (gap)
       )
     )
-  )
-(defvar volume_info_visible false)
-(defpoll volume :interval "1s"
-  "${getvol}")
-(deflisten now_playing :initial ""
-  "${pkgs.playerctl}/bin/playerctl -F metadata --format '{{ artist }} - {{ title }} {{playing}}' || true")
-(deflisten player_status :initial ""
-  "${pkgs.playerctl}/bin/playerctl -F metadata --format '{{status}}' || true")
+  (defvar volume_info_visible false)
+  (defpoll volume :interval "1s"
+    "${getvol}")
+  (deflisten now_playing :initial ""
+    "${pkgs.playerctl}/bin/playerctl -F metadata --format '{{ artist }} - {{ title }} {{playing}}' || true")
+  (deflisten player_status :initial ""
+    "${pkgs.playerctl}/bin/playerctl -F metadata --format '{{status}}' || true")
 ''
