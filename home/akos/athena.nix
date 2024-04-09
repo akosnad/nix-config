@@ -6,6 +6,7 @@ in
   imports = [
     ./global
     ./features/desktop/hyprland
+    ./features/vscode.nix
   ];
 
   colorscheme = lib.mkDefault colorSchemes.horizon-dark;
