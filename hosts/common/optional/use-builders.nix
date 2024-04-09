@@ -31,12 +31,6 @@ in
     kratos.sshConfig
   ];
 
-  # TODO: map builder hostnames automatically
-  # with eg. vpn
-  networking.hosts = {
-    "10.0.0.3" = [ "kratos" ];
-  };
-
   sops.secrets.builder-common-key = {
     sopsFile = ../secrets.yaml;
     neededForUsers = true;
