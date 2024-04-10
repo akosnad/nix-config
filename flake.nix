@@ -68,6 +68,11 @@
           modules = [ ./hosts/athena ];
           specialArgs = { inherit inputs outputs; };
         };
+
+        kratos = lib.nixosSystem {
+          modules = [ ./hosts/kratos ];
+          specialArgs = { inherit inputs outputs; };
+        };
       };
 
       homeConfigurations = {
@@ -79,6 +84,12 @@
 
         "akos@athena" = lib.homeManagerConfiguration {
           modules = [ ./home/akos/athena.nix ];
+          pkgs = pkgsFor.x86_64-linux;
+          extraSpecialArgs = { inherit inputs outputs; };
+        };
+
+        "akos@kratos" = lib.homeManagerConfiguration {
+          modules = [ ./home/akos/kratos.nix ];
           pkgs = pkgsFor.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
         };
