@@ -56,6 +56,7 @@
           lib.filter (m: m.enabled && m.workspace != null) config.monitors
         );
 
+        xwayland.force_zero_scaling = true;
 
         # exec-once = systemctl start --user hyprland-session.service & /usr/lib/polkit-kde-authentication-agent-1 & eww daemon & eww open topbar
         exec-once = "eww daemon & eww open topbar";
