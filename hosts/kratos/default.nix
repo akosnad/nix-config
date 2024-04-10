@@ -18,6 +18,7 @@
     ../common/optional/pipewire.nix
     ../common/optional/greetd.nix
     ../common/optional/docker.nix
+    ../common/optional/envfs.nix
 
     ../common/users/akos
   ];
