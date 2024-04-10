@@ -17,6 +17,7 @@
     ../common/optional/quietboot.nix
     ../common/optional/pipewire.nix
     ../common/optional/greetd.nix
+    ../common/optional/docker.nix
 
     ../common/users/akos
   ];
