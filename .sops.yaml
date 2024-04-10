@@ -3,7 +3,7 @@ keys:
     - &akos DC6C238558CF0FC39400BA2EE2256EAE7390AF2C
   - &hosts:
     - &athena age1nmfkvqnclhdr4j4ev7yug8ehrsl8hh09tuffmks0dfl8w4dkqv5sqhf3u4
-    - &kratos age1n8mcwnl4pwdkdlxntndgqnc6p6cuqltv97tpvy2xwlsv2x5y0qeqlk4ych
+    - &kratos age1vlxveywlyww4zymyxmd8y4mjg2dxeev6a3vdw4v7qvekcpgnc3asu2xvcu
 
 creation_rules:
   - path_regex: hosts/common/secrets.ya?ml$
