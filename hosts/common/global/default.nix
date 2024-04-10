@@ -9,6 +9,7 @@
     ./openssh.nix
     ./sops.nix
     ./tailscale.nix
+    ./udev.nix
   ] ++ (builtins.attrValues outputs.nixosModules);
 
   home-manager.extraSpecialArgs = {
