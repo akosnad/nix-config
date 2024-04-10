@@ -43,6 +43,13 @@
     touchpad.tapping = true;
   };
 
+
+  systemd.services.docker = {
+    enable = true;
+    # Only start docker when the socket is first accessed
+    wantedBy = lib.mkForce [ ];
+  };
+
   environment.systemPackages = with pkgs; [
     neovim
     wget
