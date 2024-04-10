@@ -36,7 +36,25 @@
         inactive = "0xaa${config.colorscheme.palette.base02}";
       in
       {
-        monitor = [ ",preferred,auto,1" ];
+        monitor = map
+          (
+            m:
+            let
+              resolution = "${toString m.width}x${toString m.height}@${toString m.refreshRate}";
+              position = "${toString m.x}x${toString m.y}";
+              scale = "${toString m.scale}";
+            in
+            "${m.name},${
+          if m.enabled
+          then "${resolution},${position},${scale}"
+          else "disable"
+        }"
+          )
+          (config.monitors);
+
+        workspace = map (m: "${m.name},${m.workspace}") (
+          lib.filter (m: m.enabled && m.workspace != null) config.monitors
+        );
 
 
         # exec-once = systemctl start --user hyprland-session.service & /usr/lib/polkit-kde-authentication-agent-1 & eww daemon & eww open topbar

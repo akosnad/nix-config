@@ -13,6 +13,7 @@
     ./hardware-configuration.nix
 
     ../common/global
+    ../common/optional/nvidia.nix
     ../common/optional/quietboot.nix
     ../common/optional/pipewire.nix
     ../common/optional/greetd.nix
