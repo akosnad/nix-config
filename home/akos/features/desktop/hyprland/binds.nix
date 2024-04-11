@@ -61,6 +61,7 @@ in
       "$mainMod, N, exec, swaync-client -t"
       "$mainMod, G, exec, ${toggle-gammastep}"
       "$mainMod, L, exec, ${config.programs.swaylock.package}/bin/swaylock -f"
+      "SUPERALT, L, exec, systemctl suspend"
 
       "$mainMod, Space, togglesplit, # dwindle"
 
