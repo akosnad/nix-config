@@ -19,6 +19,7 @@
     ../common/optional/greetd.nix
     ../common/optional/docker.nix
     ../common/optional/envfs.nix
+    ../common/optional/builder
 
     ../common/users/akos
   ];

@@ -2,7 +2,7 @@
 let
   builderKey = config.sops.secrets.builder-common-key.path;
 
-  useBuilder = { hostname, user, port ? "22" }: {
+  useBuilder = { hostname, user ? "root", port ? "22" }: {
     machineConfig = {
       hostName = "${hostname}-builder";
       system = "x86_64-linux";
@@ -21,7 +21,7 @@ let
     '';
   };
 
-  kratos = useBuilder { hostname = "kratos"; user = "root"; port = "2022"; };
+  kratos = useBuilder { hostname = "kratos"; };
 in
 {
   nix.distributedBuilds = true;
