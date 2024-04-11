@@ -11,4 +11,16 @@ in
   ];
 
   colorscheme = lib.mkDefault colorSchemes.horizon-dark;
+
+  monitors = [
+    {
+      name = "eDP-1";
+      width = 1536;
+      height = 1024;
+      scale = 1.0;
+      x = 0;
+      workspace = "1";
+      primary = true;
+    }
+  ];
 }
