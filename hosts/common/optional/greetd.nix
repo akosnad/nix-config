@@ -2,7 +2,7 @@
 let
   homeCfgs = config.home-manager.users;
   homeSharePaths = lib.mapAttrsToList (_: v: "${v.home.path}/share") homeCfgs;
-  vars = ''XDG_DATA_DIRS="$XDG_DATA_DIRS:${lib.concatStringsSep ":" homeSharePaths}" GTK_USE_PORTAL=0'';
+  vars = ''XDG_DATA_DIRS="$XDG_DATA_DIRS:${lib.concatStringsSep ":" homeSharePaths}" GTK_USE_PORTAL=0 GTK_THEME=${gtkTheme.name}'';
 
 
   akosConfig = homeCfgs.akos;
@@ -12,6 +12,9 @@ let
 
   sway-kiosk = command: "${lib.getExe pkgs.sway} --unsupported-gpu --config ${pkgs.writeText "kiosk.config" ''
     output * bg #000000 solid_color
+    border none
+    default_border none
+    default_floating_border none
     xwayland disable
     input "type:touchpad" {
       tap enabled
@@ -29,21 +32,8 @@ in
     createHome = true;
   };
 
-  programs.regreet = {
-    enable = true;
-    settings = {
-      GTK = {
-        icon_theme_name = "Papirus";
-        theme_name = gtkTheme.name;
-      };
-      # background = {
-      #   path = wallpaper;
-      #   fit = "Cover";
-      # };
-    };
-  };
   services.greetd = {
     enable = true;
-    settings.default_session_command = sway-kiosk (lib.getExe config.programs.regreet.package);
+    settings.default_session.command = sway-kiosk (lib.getExe pkgs.greetd.gtkgreet);
   };
 }
