@@ -16,6 +16,7 @@
   home.sessionVariables = {
     # LIBSEAT_BACKEND = "seatd";
     QT_QPA_PLATFORM = "wayland";
+    NIXOS_OZONE_WL = "1";
   };
 
   xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-wlr ];
