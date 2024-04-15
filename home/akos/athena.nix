@@ -10,9 +10,9 @@ in
     ./features/chromium.nix
   ];
 
-  colorscheme = lib.mkDefault colorSchemes.horizon-dark;
+  colorscheme = lib.mkDefault colorSchemes.atelier-forest;
   specialisation = {
-    light.configuration.colorscheme = colorSchemes.horizon-light;
+    light.configuration.colorscheme = colorSchemes.atelier-forest-light;
   };
 
   monitors = [
