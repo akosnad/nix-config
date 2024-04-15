@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, config, lib, ... }:
 let
   color = pkgs.writeText "color.vim" (import ./theme.nix config.colorScheme);
 in
@@ -115,7 +115,7 @@ in
   xdg.configFile."nvim/init.lua".onChange = ''
     XDG_RUNTIME_DIR=''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}
     for server in $XDG_RUNTIME_DIR/nvim.*; do
-      nvim --server $server --remote-send '<Esc>:source $MYVIMRC<CR>' &
+      ${lib.getExe config.programs.neovim.package} --server $server --remote-send '<Esc>:source $MYVIMRC<CR>' &
     done
   '';
 

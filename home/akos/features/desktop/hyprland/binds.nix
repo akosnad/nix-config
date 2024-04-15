@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, config, lib, ... }:
 let
   inherit (pkgs) writeShellScript;
 
@@ -17,12 +17,7 @@ let
     fi
   '';
 
-  toggle-dark-mode = writeShellScript "toggle-dark-mode.sh" ''
-    notify-send -e "TODO: dark mode toggle"
-    # if ! bash $HOME/dotfiles/flavours/toggle.sh; then
-    #     notify-send -e "Failed to toggle light/dark mode" "Current colorcheme does not have an opposite light/dark variant :("
-    # fi
-  '';
+  toggle-dark-mode = "toggle-theme"; # defined in global/default.nix
 
   toggle-gammastep = writeShellScript "toggle-gammastep.sh" ''
     state="$(systemctl is-active --user gammastep)"

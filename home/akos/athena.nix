@@ -11,6 +11,9 @@ in
   ];
 
   colorscheme = lib.mkDefault colorSchemes.horizon-dark;
+  specialisation = {
+    light.configuration.colorscheme = colorSchemes.horizon-light;
+  };
 
   monitors = [
     {
