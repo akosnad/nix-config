@@ -32,10 +32,10 @@ in
     git.enable = true;
   };
 
-  colorscheme = lib.mkOverride 1499 colorSchemes.darkmoss;
+  colorscheme = lib.mkOverride 1499 colorSchemes.classic-dark;
   specialisation = {
-    dark.configuration.colorscheme = lib.mkOverride 1498 config.colorscheme;
-    light.configuration.colorscheme = lib.mkOverride 1498 config.colorscheme;
+    dark.configuration.colorscheme = lib.mkOverride 1498 colorSchemes.classic-dark;
+    light.configuration.colorscheme = lib.mkOverride 1498 colorSchemes.classic-light;
   };
 
   home = {
