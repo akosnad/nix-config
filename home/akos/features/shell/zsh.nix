@@ -9,6 +9,9 @@ in
       enable = true;
       plugins = [ "git" "sudo" "fzf" "last-working-dir" ];
     };
+    envExtra = ''
+      [ -f /run/secrets/cachix-auth-token ] && export CACHIX_AUTH_TOKEN="$(cat /run/secrets/cachix-auth-token)"
+    '';
   };
 
   programs.powerline-go = {

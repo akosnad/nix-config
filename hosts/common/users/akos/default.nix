@@ -22,9 +22,15 @@ in
     packages = [ pkgs.home-manager ];
   };
 
-  sops.secrets.akos-password = {
-    sopsFile = ../../secrets.yaml;
-    neededForUsers = true;
+  sops.secrets = {
+    akos-password = {
+      sopsFile = ../../secrets.yaml;
+      neededForUsers = true;
+    };
+    cachix-auth-token = {
+      sopsFile = ../../secrets.yaml;
+      owner = "akos";
+    };
   };
 
   home-manager.users.akos = import ../../../../home/akos/${config.networking.hostName}.nix;

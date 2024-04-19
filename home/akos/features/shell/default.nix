@@ -11,5 +11,6 @@
     ncdu
     jq
     htop
+    cachix
   ];
 }

@@ -19,5 +19,7 @@
     experimental-features = "nix-command flakes";
     auto-optimise-store = true;
     trusted-users = [ "root" "@wheel" ];
+    substituters = [ "https://akosnad.cachix.org/" ];
+    trusted-public-keys = [ "akosnad.cachix.org-1:mohKqHWc/aZqkAOWmPfvqRiHmhQ3wQ6R7g9ULwNaRfw=" ];
   };
 }
