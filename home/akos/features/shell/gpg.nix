@@ -34,6 +34,11 @@
         #   trust = 5;
         # }];
       };
+
+      git.signing = {
+        signByDefault = true;
+        key = "DC6C238558CF0FC39400BA2EE2256EAE7390AF2C";
+      };
     };
 
   systemd.user.services = {
