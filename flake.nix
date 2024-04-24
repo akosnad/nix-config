@@ -26,12 +26,15 @@
       url = "github:ralismark/eww?ref=tray-3";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    vscode-server.url = "github:nix-community/nixos-vscode-server";
   };
 
   outputs =
     { self
     , nixpkgs
     , home-manager
+    , vscode-server
     , ...
     } @ inputs:
     let
@@ -53,7 +56,7 @@
     {
       inherit lib;
 
-      nixosModules = import ./modules/nixos;
+      nixosModules = import ./modules/nixos { inherit inputs; };
       homeManagerModules = import ./modules/home-manager;
 
       overlays = import ./overlays { inherit inputs outputs; };

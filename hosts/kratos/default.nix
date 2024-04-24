@@ -20,6 +20,7 @@
     ../common/optional/docker.nix
     ../common/optional/envfs.nix
     ../common/optional/builder
+    ../common/optional/vscode-server.nix
 
     ../common/users/akos
   ];
