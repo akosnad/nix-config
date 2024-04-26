@@ -25,8 +25,7 @@
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
-  hardware.opengl.enable = true;
+  boot.kernelParams = [ "nomodeset" ];
 
   services.upower.enable = true;
 
