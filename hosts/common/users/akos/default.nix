@@ -15,6 +15,7 @@ in
       "network"
       "wireshark"
       "docker"
+      "libvirtd"
     ];
 
     openssh.authorizedKeys.keys = [ (builtins.readFile ../../../../home/akos/ssh.pub) ];
