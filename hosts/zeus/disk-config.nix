@@ -1,4 +1,7 @@
+{ inputs, ... }:
 {
+  imports = [ inputs.nixosModules.disko ];
+
   disko.devices = {
     disk = {
       vdb = {
