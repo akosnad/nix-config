@@ -10,6 +10,10 @@
     nix-colors.url = "github:misterio77/nix-colors";
 
     hardware.url = "github:nixos/nixos-hardware";
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -76,6 +80,10 @@
           modules = [ ./hosts/kratos ];
           specialArgs = { inherit inputs outputs; };
         };
+        zeus = lib.nixosSystem {
+          modules = [ ./hosts/zeus ];
+          specialArgs = { inherit inputs outputs; };
+        };
       };
 
       homeConfigurations = {
@@ -93,6 +101,11 @@
 
         "akos@kratos" = lib.homeManagerConfiguration {
           modules = [ ./home/akos/kratos.nix ];
+          pkgs = pkgsFor.x86_64-linux;
+          extraSpecialArgs = { inherit inputs outputs; };
+        };
+        "akos@zeus" = lib.homeManagerConfiguration {
+          modules = [ ./home/akos/zeus.nix ];
           pkgs = pkgsFor.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
         };

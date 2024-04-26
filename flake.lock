@@ -16,6 +16,26 @@
         "type": "github"
       }
     },
+    "disko": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1714103775,
+        "narHash": "sha256-kcBiIrmqzt3bNTr2GMBfAyA+on8BEKO1iKzzDFQZkjI=",
+        "owner": "nix-community",
+        "repo": "disko",
+        "rev": "285e26465a0bae510897ca04da26ce6307c652b4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "disko",
+        "type": "github"
+      }
+    },
     "eww-tray-wayland": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -323,6 +343,7 @@
     },
     "root": {
       "inputs": {
+        "disko": "disko",
         "eww-tray-wayland": "eww-tray-wayland",
         "hardware": "hardware",
         "home-manager": "home-manager",
