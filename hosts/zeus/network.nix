@@ -31,9 +31,9 @@
         matchConfig."Name" = "br0";
         networkConfig = {
           "DHCP" = "ipv6";
-          "IPv6AcceptRA" = "True";
-          "IPv6SendRA" = "no";
-          "DHCPPrefixDelegation" = "False";
+          "IPv6AcceptRA" = true;
+          "IPv6SendRA" = false;
+          "DHCPPrefixDelegation" = false;
           "Address" = "10.20.0.4/24";
           "Gateway" = "10.20.0.2";
           "DNS" = [ "10.20.0.2" "fc18:7681::1" ];
