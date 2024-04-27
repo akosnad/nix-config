@@ -2,7 +2,7 @@
 let
   builderKey = config.sops.secrets.builder-common-key.path;
 
-  useBuilder = { hostname, user ? "root", port ? "22", speedFactor ? 1 }: {
+  useBuilder = { hostname, user ? "root", port ? "22", speedFactor ? 1, supportedFeatures? [] }: {
     machineConfig = {
       hostName = "${hostname}-builder";
       system = "x86_64-linux";
@@ -11,6 +11,7 @@ let
       sshUser = user;
       sshKey = builderKey;
       speedFactor = speedFactor;
+      supportedFeatures = supportedFeatures;
     };
     sshConfig = ''
       Host ${hostname}-builder
@@ -22,8 +23,8 @@ let
     '';
   };
 
-  kratos = useBuilder { hostname = "kratos"; speedFactor = 3; };
-  zeus = useBuilder { hostname = "zeus"; };
+  kratos = useBuilder { hostname = "kratos"; speedFactor = 3; supportedFeatures = [ "big-parallel" "kvm" ]; };
+  zeus = useBuilder { hostname = "zeus"; supportedFeatures = [ "big-parallel" "kvm" ]; };
 in
 {
   nix.distributedBuilds = true;
