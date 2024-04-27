@@ -2,6 +2,7 @@
   networking = {
     hostName = "zeus";
     networkmanager.enable = false;
+    useNetworkd = true;
     firewall = {
       allowedTCPPorts = [
         80 443 # webserver
@@ -13,7 +14,6 @@
     };
   };
   systemd.network = {
-    enable = true;
     netdevs = {
       br0 = {
         netdevConfig = {
