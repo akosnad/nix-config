@@ -12,6 +12,7 @@
 
     ./hardware-configuration.nix
     ./disk-config.nix
+    ./network.nix
 
     ../common/global
     ../common/optional/docker.nix
@@ -20,18 +21,6 @@
 
     ../common/users/akos
   ];
-
-  networking.hostName = "zeus";
-  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
-  networking.firewall = {
-    allowedTCPPorts = [
-      80 443 # webserver
-      32400 8324 32469 # plex
-    ];
-    allowedUDPPorts = [
-      1900 5353 32410 32412 32413 32414 # plex
-    ];
-  };
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
