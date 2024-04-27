@@ -22,6 +22,8 @@ in
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
       warn-dirty = false;
+      substituters = [ "https://akosnad.cachix.org/" ];
+      trusted-public-keys = [ "akosnad.cachix.org-1:mohKqHWc/aZqkAOWmPfvqRiHmhQ3wQ6R7g9ULwNaRfw=" ];
     };
   };
 
