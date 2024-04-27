@@ -2,6 +2,7 @@
   networking = {
     hostName = "zeus";
     networkmanager.enable = false;
+    useDHCP = false;
     useNetworkd = true;
     firewall = {
       allowedTCPPorts = [
