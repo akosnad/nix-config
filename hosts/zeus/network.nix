@@ -13,6 +13,7 @@
     };
   };
   systemd.network = {
+    enable = true;
     netdevs = {
       br0 = {
         netdevConfig = {
