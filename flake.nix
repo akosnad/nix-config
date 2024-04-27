@@ -32,6 +32,11 @@
     };
 
     vscode-server.url = "github:nix-community/nixos-vscode-server";
+
+    nixvirt = {
+      url = "https://flakehub.com/f/AshleyYakeley/NixVirt/0.5.0.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -39,6 +44,7 @@
     , nixpkgs
     , home-manager
     , vscode-server
+    , nixvirt
     , ...
     } @ inputs:
     let

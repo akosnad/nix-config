@@ -20,6 +20,8 @@
     ../common/optional/builder
 
     ../common/users/akos
+
+    ./libvirt
   ];
 
   boot.loader.systemd-boot.enable = true;
