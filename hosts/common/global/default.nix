@@ -10,7 +10,6 @@
     ./sops.nix
     ./tailscale.nix
     ./udev.nix
-    ./use-builders.nix
   ] ++ (builtins.attrValues outputs.nixosModules);
 
   home-manager.extraSpecialArgs = {
