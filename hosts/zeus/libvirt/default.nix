@@ -1,4 +1,5 @@
-{ pkgs, ... }: let
+{ pkgs, ... }:
+let
   ovmf = (pkgs.OVMF.override {
     secureBoot = true;
     tpmSupport = true;

@@ -3,7 +3,7 @@ let
   builderKey = config.sops.secrets.builder-common-key.path;
   inherit (config.networking) hostName;
 
-  useBuilder = { hostname, user ? "root", port ? "22", speedFactor ? 1, supportedFeatures? [] }: {
+  useBuilder = { hostname, user ? "root", port ? "22", speedFactor ? 1, supportedFeatures ? [ ] }: {
     machineConfig = {
       hostName = "${hostname}-builder";
       system = "x86_64-linux";

@@ -6,11 +6,19 @@
     useNetworkd = true;
     firewall = {
       allowedTCPPorts = [
-        80 443 # webserver
-        32400 8324 32469 # plex
+        80
+        443 # webserver
+        32400
+        8324
+        32469 # plex
       ];
       allowedUDPPorts = [
-        1900 5353 32410 32412 32413 32414 # plex
+        1900
+        5353
+        32410
+        32412
+        32413
+        32414 # plex
       ];
     };
   };
