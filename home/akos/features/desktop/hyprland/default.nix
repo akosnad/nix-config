@@ -21,9 +21,6 @@
   wayland.windowManager.hyprland = {
     enable = true;
     package = pkgs.inputs.hyprland.hyprland.override { wrapRuntimeDeps = false; };
-    plugins = [
-      pkgs.inputs.hyprland-plugins.hyprexpo
-    ];
     systemd = {
       enable = true;
       # Same as default, but stop graphical-session too
@@ -148,19 +145,6 @@
           # See https://wiki.hyprland.org/Configuring/Variables/ for more
           workspace_swipe = true;
           workspace_swipe_fingers = 4;
-        };
-
-        plugin = {
-          hyprexpo = {
-            columns = 3;
-            gap_size = 5;
-            bg_col = "0xaa000000";
-            workspace_method = "center current";
-
-            enable_gesture = true;
-            gesture_distance = 300;
-            gestture_positive = true;
-          };
         };
       };
   };
