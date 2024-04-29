@@ -1,6 +1,11 @@
 {
   description = "akosnad's NixOS configuration";
 
+  nixConfig = {
+    extra-substituters = [ "https://akosnad.cachix.org" ];
+    extra-trusted-public-keys = [ "akosnad.cachix.org-1:mohKqHWc/aZqkAOWmPfvqRiHmhQ3wQ6R7g9ULwNaRfw=" ];
+  };
+
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
