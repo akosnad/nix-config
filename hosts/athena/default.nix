@@ -36,6 +36,8 @@
 
   hardware.opengl.enable = true;
 
+  time.hardwareClockInLocalTime = true;
+
   powerManagement.powertop.enable = true;
   services.upower.enable = true;
 
