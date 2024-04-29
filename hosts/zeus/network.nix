@@ -4,29 +4,7 @@
     networkmanager.enable = false;
     useDHCP = false;
     useNetworkd = true;
-    firewall = {
-      allowedTCPPorts = [
-        # webserver
-        80
-        443
-        # plex
-        32400
-        8324
-        32469
-        # servarr
-        8989
-        7878
-      ];
-      allowedUDPPorts = [
-        # plex
-        1900
-        5353
-        32410
-        32412
-        32413
-        32414
-      ];
-    };
+    firewall.enable = false;
   };
   systemd.network = {
     netdevs = {
