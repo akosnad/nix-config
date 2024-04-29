@@ -44,7 +44,7 @@
     extraPackages = with pkgs; [ libvdpau-va-gl intel-media-driver ];
   };
   environment.variables = {
-    VDPAU_DRIVER= "va_gl";
+    VDPAU_DRIVER = "va_gl";
   };
 
   time.hardwareClockInLocalTime = true;
