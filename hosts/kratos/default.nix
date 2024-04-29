@@ -7,7 +7,7 @@
 }: {
   imports = [
     inputs.hardware.nixosModules.common-cpu-intel
-    inputs.hardware.nixosModules.common-gpu-intel
+    inputs.hardware.nixosModules.common-gpu-nvidia
     inputs.hardware.nixosModules.common-pc-ssd
 
     ./hardware-configuration.nix
@@ -26,12 +26,13 @@
   ];
 
   networking.hostName = "kratos";
-  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
+  networking.networkmanager.enable = true;
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
   hardware.opengl.enable = true;
+  hardware.nvidia.prime.offload.enable = false;
 
   services.upower.enable = true;
 

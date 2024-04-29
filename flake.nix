@@ -14,7 +14,7 @@
 
     nix-colors.url = "github:misterio77/nix-colors";
 
-    hardware.url = "github:nixos/nixos-hardware?rev=797f8d8082c7cc3259cba7275c699d4991b09ecc"; # pinned until intel GPU options are fixed
+    hardware.url = "github:nixos/nixos-hardware";
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -36,11 +36,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    vscode-server.url = "github:nix-community/nixos-vscode-server";
+    vscode-server = {
+      url = "github:nix-community/nixos-vscode-server";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     nixvirt = {
       url = "https://flakehub.com/f/AshleyYakeley/NixVirt/0.5.0.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs-ovmf.follows = "nixpkgs";
     };
   };
 

@@ -7,7 +7,8 @@
 }: {
   imports = [
     inputs.hardware.nixosModules.common-cpu-intel
-    inputs.hardware.nixosModules.common-gpu-intel
+    # TODO: removed until it's fixed
+    # inputs.hardware.nixosModules.common-gpu-intel
     inputs.hardware.nixosModules.common-pc-ssd
 
     ./hardware-configuration.nix
@@ -34,14 +35,24 @@
     lidSwitchExternalPower = "suspend";
   };
 
-  hardware.opengl.enable = true;
+  # TODO: Imported options from hardware/common/common-gpu-intel
+  # until it's fixed
+  hardware.opengl = {
+    enable = true;
+    driSupport = true;
+    driSupport32Bit = true;
+    extraPackages = with pkgs; [ libvdpau-va-gl intel-media-driver ];
+  };
+  environment.variables = {
+    VDPAU_DRIVER= "va_gl";
+  };
 
   time.hardwareClockInLocalTime = true;
 
   powerManagement.powertop.enable = true;
   services.upower.enable = true;
 
-  services.xserver.libinput = {
+  services.libinput = {
     enable = true;
     touchpad.tapping = true;
   };
