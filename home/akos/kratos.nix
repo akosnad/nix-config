@@ -29,6 +29,10 @@ in
       x = -1920;
       workspace = "2";
     }
+    {
+      name = "Unknown-1";
+      enabled = false;
+    }
   ];
 
   wayland.windowManager.hyprland.settings = {
