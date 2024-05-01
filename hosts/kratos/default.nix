@@ -34,6 +34,9 @@
   hardware.opengl.enable = true;
   hardware.nvidia.prime.offload.enable = false;
 
+  # needed for Windows dual boot
+  time.hardwareClockInLocalTime = true;
+
   services.upower.enable = true;
 
   virtualisation.docker.storageDriver = "btrfs";

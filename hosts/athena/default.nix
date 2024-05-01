@@ -47,6 +47,7 @@
     VDPAU_DRIVER = "va_gl";
   };
 
+  # needed for Windows dual boot
   time.hardwareClockInLocalTime = true;
 
   powerManagement.powertop.enable = true;
