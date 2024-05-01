@@ -23,6 +23,8 @@
     ../common/optional/vscode-server.nix
 
     ../common/users/akos
+
+    ./steam.nix
   ];
 
   networking.hostName = "kratos";
