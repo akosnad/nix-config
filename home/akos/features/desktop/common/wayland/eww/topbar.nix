@@ -1,5 +1,7 @@
 { pkgs, ... }:
 let
+  hypr-socket = "$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock";
+
   get-workspaces = pkgs.writeScript "get-workspaces" /* bash */ ''
     spaces (){
         WORKSPACE_WINDOWS=$(hyprctl workspaces -j | ${pkgs.jq}/bin/jq 'map({key: .id | tostring, value: .windows}) | from_entries')
@@ -7,14 +9,14 @@ let
     }
 
     spaces
-    ${pkgs.socat}/bin/socat -u UNIX-CONNECT:/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock - | while read -r line; do
+    ${pkgs.socat}/bin/socat -u UNIX-CONNECT:${hypr-socket} - | while read -r line; do
         spaces
     done
   '';
 
   get-active-workspace = pkgs.writeScript "get-active-workspace" /* bash */ ''
     hyprctl monitors -j | jq --raw-output .[0].activeWorkspace.id
-    ${pkgs.socat}/bin/socat -u UNIX-CONNECT:/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock - | ${pkgs.coreutils}/bin/stdbuf -o0 grep '^workspace>>' | ${pkgs.coreutils}/bin/stdbuf -o0 ${pkgs.gawk}/bin/awk -F '>>|,' '{print $2}'
+    ${pkgs.socat}/bin/socat -u UNIX-CONNECT:${hypr-socket} - | ${pkgs.coreutils}/bin/stdbuf -o0 grep '^workspace>>' | ${pkgs.coreutils}/bin/stdbuf -o0 ${pkgs.gawk}/bin/awk -F '>>|,' '{print $2}'
   '';
 
   get-window-title = pkgs.writeScript "get-window-title" /* bash */ ''
@@ -23,9 +25,9 @@ let
         echo "$initial"
     fi
 
-    exec 4< <(${pkgs.socat}/bin/socat -u UNIX-CONNECT:/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock - | ${pkgs.coreutils}/bin/stdbuf -o0 grep '^activewindow>>' | ${pkgs.coreutils}/bin/stdbuf -o0 ${pkgs.gawk}/bin/awk -F '>>|,' '{print $3}')
-    exec 5< <(${pkgs.socat}/bin/socat -u UNIX-CONNECT:/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock - | ${pkgs.coreutils}/bin/stdbuf -o0 grep '^activewindow2>>' | ${pkgs.coreutils}/bin/stdbuf -o0 ${pkgs.gawk}/bin/awk -F '>>|,' '{print $3}')
-    exec 6< <(${pkgs.socat}/bin/socat -u UNIX-CONNECT:/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock - | ${pkgs.coreutils}/bin/stdbuf -o0 grep '^closewindow>>' | ${pkgs.coreutils}/bin/stdbuf -o0 ${pkgs.gawk}/bin/awk -F '>>|,' '{print $3}')
+    exec 4< <(${pkgs.socat}/bin/socat -u UNIX-CONNECT:${hypr-socket} - | ${pkgs.coreutils}/bin/stdbuf -o0 grep '^activewindow>>' | ${pkgs.coreutils}/bin/stdbuf -o0 ${pkgs.gawk}/bin/awk -F '>>|,' '{print $3}')
+    exec 5< <(${pkgs.socat}/bin/socat -u UNIX-CONNECT:${hypr-socket} - | ${pkgs.coreutils}/bin/stdbuf -o0 grep '^activewindow2>>' | ${pkgs.coreutils}/bin/stdbuf -o0 ${pkgs.gawk}/bin/awk -F '>>|,' '{print $3}')
+    exec 6< <(${pkgs.socat}/bin/socat -u UNIX-CONNECT:${hypr-socket} - | ${pkgs.coreutils}/bin/stdbuf -o0 grep '^closewindow>>' | ${pkgs.coreutils}/bin/stdbuf -o0 ${pkgs.gawk}/bin/awk -F '>>|,' '{print $3}')
 
     # print window title
     while read -r line; do
@@ -58,7 +60,7 @@ let
     done
     echo $initial
 
-    ${pkgs.socat}/bin/socat -u UNIX-CONNECT:/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock - | ${pkgs.coreutils}/bin/stdbuf -o0 grep '^activelayout>>' | ${pkgs.coreutils}/bin/stdbuf -o0 ${pkgs.gawk}/bin/awk -F '>>|,' '{print $3}' | ${pkgs.coreutils}/bin/stdbuf -o0 grep -Eo '^..' | ${pkgs.coreutils}/bin/stdbuf -o0 tr '[:upper:]' '[:lower:]'
+    ${pkgs.socat}/bin/socat -u UNIX-CONNECT:${hypr-socket} - | ${pkgs.coreutils}/bin/stdbuf -o0 grep '^activelayout>>' | ${pkgs.coreutils}/bin/stdbuf -o0 ${pkgs.gawk}/bin/awk -F '>>|,' '{print $3}' | ${pkgs.coreutils}/bin/stdbuf -o0 grep -Eo '^..' | ${pkgs.coreutils}/bin/stdbuf -o0 tr '[:upper:]' '[:lower:]'
   '';
 
 in
