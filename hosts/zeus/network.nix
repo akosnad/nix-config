@@ -1,6 +1,10 @@
 {
   networking = {
     hostName = "zeus";
+    hosts = {
+      # this is to fix hostname in servarr docker containers
+      "10.20.0.4" = [ "zeus" "zeus.local" ];
+    };
     networkmanager.enable = false;
     useDHCP = false;
     useNetworkd = true;
