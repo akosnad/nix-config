@@ -9,7 +9,7 @@ pkgs.writeText "disk.yuck" /* yuck */ ''
   (eventbox :onhover "eww update disk_info_visible=true"
             :onhoverlost "eww update disk_info_visible=false"
     (box :space-evenly false
-      (metric :label "disk"
+      (metric :label ""
               :active true
               :value {round((1 - (EWW_DISK["/"].free / EWW_DISK["/"].total)) * 100, 0)}
               :onchange "")

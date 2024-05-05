@@ -3,7 +3,7 @@
   (eventbox :onhover "eww update cpu_info_visible=true"
             :onhoverlost "eww update cpu_info_visible=false"
     (box :space-evenly false
-      (metric :label "cpu"
+      (metric :label ""
               :active true
               :value {EWW_CPU.avg}
               :onchange "")

@@ -18,7 +18,7 @@ pkgs.writeText "ram.yuck" /* yuck */ ''
   (eventbox :onhover "eww update ram_info_visible=true"
             :onhoverlost "eww update ram_info_visible=false"
     (box :space-evenly false
-      (metric :label "ram"
+      (metric :label ""
               :active true
               :value {EWW_RAM.used_mem_perc}
               :onchange "")
