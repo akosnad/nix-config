@@ -31,6 +31,71 @@ let
     done
   '';
 
+  battery_icon = pkgs.writeScript "battery_icon" /* bash */ ''
+    function get_info() {
+      battery="$1"
+
+        state="$(${pkgs.upower}/bin/upower -i $battery | ${pkgs.gnugrep}/bin/grep state | ${pkgs.gawk}/bin/awk '{print $2}')"
+        percentage="$(${pkgs.upower}/bin/upower -i $battery | ${pkgs.gnugrep}/bin/grep percentage | ${pkgs.gawk}/bin/awk '{print $2}' | ${pkgs.gawk}/bin/awk -F% '{print $1}')"
+
+        if [[ "$state" == "discharging" ]]; then
+          if (( "$percentage" > 95 )) then
+            echo "󰁹"
+          elif (( "$percentage" > 90 )) then
+            echo "󰂂"
+          elif (( "$percentage" > 80 )); then
+            echo "󰂁"
+          elif (( "$percentage" > 70 )); then
+            echo "󰂀"
+          elif (( "$percentage" > 60 )); then
+            echo "󰁿"
+          elif (( "$percentage" > 50 )); then
+            echo "󰁾"
+          elif (( "$percentage" > 40 )); then
+            echo "󰁽"
+          elif (( "$percentage" > 30 )); then
+            echo "󰁼"
+          elif (( "$percentage" > 20 )); then
+            echo "󰁻"
+          elif (( "$percentage" > 10 )); then
+            echo "󰁺"
+          else
+            echo "󰂎"
+          fi
+        elif [[ "$state" == "charging" ]]; then
+          if (( "$percentage" > 95 )); then
+            echo "󰂅"
+          elif (( "$percentage" > 90 )); then
+            echo "󰂋"
+          elif (( "$percentage" > 80 )); then
+            echo "󰂊"
+          elif (( "$percentage" > 70 )); then
+            echo "󰢞"
+          elif (( "$percentage" > 60 )); then
+            echo "󰂉"
+          elif (( "$percentage" > 50 )); then
+            echo "󰢝"
+          elif (( "$percentage" > 40 )); then
+            echo "󰂈"
+          elif (( "$percentage" > 30 )); then
+            echo "󰂇"
+          elif (( "$percentage" > 20 )); then
+            echo "󰂆"
+          elif (( "$percentage" > 10 )); then
+            echo "󰢜"
+          else
+            echo "󰢟"
+          fi
+        else
+            echo "󱃍"
+        fi
+    }
+
+    ${pkgs.upower}/bin/upower -m | ${pkgs.coreutils}/bin/stdbuf -o0 ${pkgs.gnugrep}/bin/grep -E "battery|BAT" | ${pkgs.coreutils}/bin/stdbuf -o0 ${pkgs.gnugrep}/bin/grep -oE "(/\w+)+/battery_BAT[0-9]+$" | while read -r battery; do
+        get_info $battery
+    done
+  '';
+
   get-disk-info = pkgs.writeScript "get-disk-info" /* bash */ ''
     ${pkgs.coreutils}/bin/df -h --output=pcent,used,avail /
   '';
@@ -54,7 +119,7 @@ pkgs.writeText "widgets.yuck" /* yuck */ ''
     (eventbox :onhover "eww update batt=true"
               :onhoverlost "eww update batt=false"
       (box :space-evenly false
-        (metric :label "batt"
+        (label :text "''${battery_icon}"
                 :active true
                 :value {EWW_BATTERY.total_avg}
                 :onchange "")
@@ -71,6 +136,8 @@ pkgs.writeText "widgets.yuck" /* yuck */ ''
   (defvar batt false)
   (deflisten battery_info :initial ""
     "${get-batt-info}")
+  (deflisten battery_icon :initial ""
+    "${battery_icon}")
 
 
   (defwidget music []
