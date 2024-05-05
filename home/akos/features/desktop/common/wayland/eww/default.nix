@@ -6,7 +6,7 @@
       let
 
         helpers = import ./helpers.nix { inherit pkgs; };
-        widgets = import ./widgets.nix { inherit pkgs; };
+        widgets = import ./widgets { inherit pkgs; };
         topbar = import ./topbar.nix { inherit pkgs; };
 
         style = import ./style.nix { inherit pkgs; scheme = config.colorscheme; };

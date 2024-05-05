@@ -3,12 +3,6 @@
     (box :class "gap")
   )
 
-  (defwidget workspace_fix []
-    (box :class "fix ''${active_workspace}"
-         :visible false
-    )
-  )
-
   (defwidget metric [label value onchange active]
     (box :orientation "h"
          :class "metric"
