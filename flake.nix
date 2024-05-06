@@ -41,8 +41,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    eww-tray-wayland = {
-      url = "github:ralismark/eww?ref=tray-3";
+    eww = {
+      url = "github:elkowar/eww";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

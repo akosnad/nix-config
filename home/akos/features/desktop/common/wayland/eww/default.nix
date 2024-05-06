@@ -27,6 +27,6 @@
         '';
       };
 
-    package = pkgs.inputs.eww-tray-wayland.eww-wayland;
+    package = pkgs.inputs.eww.eww;
   };
 }

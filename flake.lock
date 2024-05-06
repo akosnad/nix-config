@@ -36,7 +36,7 @@
         "type": "github"
       }
     },
-    "eww-tray-wayland": {
+    "eww": {
       "inputs": {
         "flake-compat": "flake-compat",
         "nixpkgs": [
@@ -45,16 +45,15 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1711163206,
-        "narHash": "sha256-x1znVS8iqL95FKR2g44wewFPJuVoxpv6XUYDNW1Z96Y=",
-        "owner": "ralismark",
+        "lastModified": 1714904084,
+        "narHash": "sha256-12ywI/J3YCvZz6BlcW7OEMVwFT5qwLW5VLYPzKyA7s0=",
+        "owner": "elkowar",
         "repo": "eww",
-        "rev": "708a11da2c8f998c03512fa0dda6d9f2005345a2",
+        "rev": "a4da192d629cc43ef3da984b6f9197579a22afe1",
         "type": "github"
       },
       "original": {
-        "owner": "ralismark",
-        "ref": "tray-3",
+        "owner": "elkowar",
         "repo": "eww",
         "type": "github"
       }
@@ -352,7 +351,7 @@
     "root": {
       "inputs": {
         "disko": "disko",
-        "eww-tray-wayland": "eww-tray-wayland",
+        "eww": "eww",
         "hardware": "hardware",
         "home-manager": "home-manager",
         "hyprland": "hyprland",
@@ -367,16 +366,16 @@
       "inputs": {
         "flake-utils": "flake-utils",
         "nixpkgs": [
-          "eww-tray-wayland",
+          "eww",
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1708395022,
-        "narHash": "sha256-pxHZbfDsLAAcyWz+snbudxhQPlAnK2nWGAqRx11veac=",
+        "lastModified": 1708999822,
+        "narHash": "sha256-X55GxqI3oDEfqy38Pt7xyypYNly4bkd/RajFE+FGn+A=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "b4ae18c03af976549a0b6e396b2b5be56d275f8b",
+        "rev": "1a618c62479a6896ac497aaa0d969c6bd8e24911",
         "type": "github"
       },
       "original": {
