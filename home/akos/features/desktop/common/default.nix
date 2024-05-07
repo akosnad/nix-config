@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 {
   imports = [
     ./fonts.nix
@@ -15,4 +15,8 @@
 
 
   xdg.portal.enable = true;
+
+  home.packages = with pkgs; [
+    vlc
+  ];
 }
