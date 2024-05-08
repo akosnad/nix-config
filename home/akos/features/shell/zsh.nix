@@ -16,8 +16,11 @@ in
 
   programs.powerline-go = {
     enable = true;
-    modules = [ "ssh" "venv" "nix-shell" "cwd" "vi-mode" ];
+    modules = [ "ssh" "host" "venv" "nix-shell" "cwd" ];
     modulesRight = [ "exit" "perms" "git" "jobs" ];
+    settings = {
+      hostname-only-if-ssh = true;
+    };
   };
 
   programs.fzf = {
