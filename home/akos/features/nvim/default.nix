@@ -87,7 +87,7 @@ in
       	nnoremap <S-Down> <C-W>+
     '';
 
-    extraLuaConfig = ''
+    extraLuaConfig = /* lua */ ''
       	-- Ranger
       	vim.api.nvim_set_keymap('n', '<leader>ff', ':RangerEdit<CR>', { noremap = true, silent = true })
 
@@ -102,6 +102,9 @@ in
 
       	vim.keymap.set('i', '<leader><tab>', 'copilot#Accept("<CR>")',
       	    { expr = true, noremap = true, silent = true, script = true, replace_keycodes = false })
+
+        -- Quickfix window
+        vim.api.nvim_set_keymap('n', '<leader><space>', ':lua vim.diagnostic.setloclist()<CR>', { noremap = true, silent = true })
     '';
 
     plugins = with pkgs.vimPlugins; [
@@ -112,7 +115,7 @@ in
     ];
   };
 
-  xdg.configFile."nvim/init.lua".onChange = ''
+  xdg.configFile."nvim/init.lua".onChange = /* bash */ ''
     XDG_RUNTIME_DIR=''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}
     for server in $XDG_RUNTIME_DIR/nvim.*; do
       ${lib.getExe config.programs.neovim.package} --server $server --remote-send '<Esc>:source $MYVIMRC<CR>' &
