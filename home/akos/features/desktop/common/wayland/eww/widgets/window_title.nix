@@ -33,15 +33,15 @@ let
   '';
 in
 pkgs.writeText "window_title.yuck" /* yuck */ ''
-(defwidget window_title []
-  (box
-    (label :text "''${window}"
-           :limit-width 50
-           :tooltip "''${window}"
+  (defwidget window_title []
+    (box
+      (label :text "''${window}"
+             :limit-width 50
+             :tooltip "''${window}"
+      )
     )
   )
-)
 
-(deflisten window :initial ""
-  "${get-window-title}")
+  (deflisten window :initial ""
+    "${get-window-title}")
 ''

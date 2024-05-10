@@ -20,28 +20,28 @@ let
   '';
 in
 pkgs.writeText "workspaces.yuck" /* yuck */ ''
-(defwidget workspaces []
-  (box :space-evenly false
-    (for workspace in workspaces
-      (eventbox :onclick "hyprctl dispatch workspace ''${workspace.id}"
-                :onscroll "scripts/switch-workspace {}"
-        (box :class "warning workspace-entry ''${workspace.windows > 0 ? "occupied" : "empty"} ''${active_workspace == workspace.id ? "current" : "inactive"}"
-          (label :text "''${workspace.id}")
+  (defwidget workspaces []
+    (box :space-evenly false
+      (for workspace in workspaces
+        (eventbox :onclick "hyprctl dispatch workspace ''${workspace.id}"
+                  :onscroll "scripts/switch-workspace {}"
+          (box :class "warning workspace-entry ''${workspace.windows > 0 ? "occupied" : "empty"} ''${active_workspace == workspace.id ? "current" : "inactive"}"
+            (label :text "''${workspace.id}")
+            )
           )
         )
+      (workspace_fix)
       )
-    (workspace_fix)
     )
-  )
 
-  (deflisten workspaces :initial "[]"
-    "${get-workspaces}")
-  (deflisten active_workspace :initial "1"
-    "${get-active-workspace}")
+    (deflisten workspaces :initial "[]"
+      "${get-workspaces}")
+    (deflisten active_workspace :initial "1"
+      "${get-active-workspace}")
 
-  (defwidget workspace_fix []
-    (box :class "fix ''${active_workspace}"
-         :visible false
+    (defwidget workspace_fix []
+      (box :class "fix ''${active_workspace}"
+           :visible false
+      )
     )
-  )
 ''

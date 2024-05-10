@@ -14,25 +14,25 @@ let
   '';
 in
 pkgs.writeText "ram.yuck" /* yuck */ ''
-(defwidget ram []
-  (eventbox :onhover "eww update ram_info_visible=true"
-            :onhoverlost "eww update ram_info_visible=false"
-    (box :space-evenly false
-      (metric :label ""
-              :active true
-              :value {EWW_RAM.used_mem_perc}
-              :onchange "")
-      (revealer :transition "slideleft"
-                :reveal ram_info_visible
-        (box :class "ram-info"
-          (label :text "''${ram_info}")
+  (defwidget ram []
+    (eventbox :onhover "eww update ram_info_visible=true"
+              :onhoverlost "eww update ram_info_visible=false"
+      (box :space-evenly false
+        (metric :label ""
+                :active true
+                :value {EWW_RAM.used_mem_perc}
+                :onchange "")
+        (revealer :transition "slideleft"
+                  :reveal ram_info_visible
+          (box :class "ram-info"
+            (label :text "''${ram_info}")
+            )
           )
+        (gap)
         )
-      (gap)
       )
     )
-  )
-(defvar ram_info_visible false)
-(defpoll ram_info :initial "" :interval "1s" :run-while ram_info_visible
-  "${get-ram-info}")
+  (defvar ram_info_visible false)
+  (defpoll ram_info :initial "" :interval "1s" :run-while ram_info_visible
+    "${get-ram-info}")
 ''

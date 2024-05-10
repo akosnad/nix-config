@@ -55,32 +55,32 @@ let
   '';
 in
 pkgs.writeText "volume.yuck" /* yuck */ ''
-(defwidget volume []
-  (eventbox :onhover "eww update volume_info_visible=true"
-            :onhoverlost "eww update volume_info_visible=false"
-    (box :space-evenly false
-      (metric :label "''${volume_icon}"
-              :value volume
-              :active true
-              :onchange "${pkgs.alsa-utils}/bin/amixer sset Master {}% && eww update volume={}")
-      (revealer :transition "slideleft"
-                :reveal volume_info_visible
-        (eventbox :onclick "${pkgs.playerctl}/bin/playerctl play-pause"
-          :class "volume-info"
-           (label :text "''${volume}%''${player_status == 'Playing' ? ' >' : player_status == 'Paused' ? ' ||' : '''}''${now_playing != ''' ? ' ' + now_playing : '''}")
+  (defwidget volume []
+    (eventbox :onhover "eww update volume_info_visible=true"
+              :onhoverlost "eww update volume_info_visible=false"
+      (box :space-evenly false
+        (metric :label "''${volume_icon}"
+                :value volume
+                :active true
+                :onchange "${pkgs.alsa-utils}/bin/amixer sset Master {}% && eww update volume={}")
+        (revealer :transition "slideleft"
+                  :reveal volume_info_visible
+          (eventbox :onclick "${pkgs.playerctl}/bin/playerctl play-pause"
+            :class "volume-info"
+             (label :text "''${volume}%''${player_status == 'Playing' ? ' >' : player_status == 'Paused' ? ' ||' : '''}''${now_playing != ''' ? ' ' + now_playing : '''}")
+            )
           )
+        (gap)
         )
-      (gap)
       )
     )
-  )
-(defvar volume_info_visible false)
-(deflisten volume_icon
-  "${volume_icon}")
-(deflisten volume
-  "${getvol}")
-(deflisten now_playing :initial ""
-  "${pkgs.playerctl}/bin/playerctl -F metadata --format '{{ artist }} - {{ title }} {{playing}}' || true")
-(deflisten player_status :initial ""
-  "${pkgs.playerctl}/bin/playerctl -F metadata --format '{{status}}' || true")
+  (defvar volume_info_visible false)
+  (deflisten volume_icon
+    "${volume_icon}")
+  (deflisten volume
+    "${getvol}")
+  (deflisten now_playing :initial ""
+    "${pkgs.playerctl}/bin/playerctl -F metadata --format '{{ artist }} - {{ title }} {{playing}}' || true")
+  (deflisten player_status :initial ""
+    "${pkgs.playerctl}/bin/playerctl -F metadata --format '{{status}}' || true")
 ''

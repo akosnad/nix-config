@@ -18,10 +18,10 @@ let
 
 in
 pkgs.writeText "keyboard_layout.yuck" /* yuck */ ''
-(defwidget keyboard_layout []
-  (label :text "''${keyboard_layout}" :class "kb-layout" )
-)
+  (defwidget keyboard_layout []
+    (label :text "''${keyboard_layout}" :class "kb-layout" )
+  )
 
-(deflisten keyboard_layout :initial ""
-  "${get-keyboard-layout}")
+  (deflisten keyboard_layout :initial ""
+    "${get-keyboard-layout}")
 ''
