@@ -1,6 +1,7 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, inputs, ... }:
 {
   imports = [
+    inputs.hyprland.homeManagerModules.default
     ../common
     ../common/wayland
 
@@ -20,7 +21,6 @@
 
   wayland.windowManager.hyprland = {
     enable = true;
-    package = pkgs.inputs.hyprland.hyprland.override { wrapRuntimeDeps = false; };
     systemd = {
       enable = true;
       # Same as default, but stop graphical-session too
@@ -89,8 +89,10 @@
           "col.inactive_border" = inactive;
 
           layout = "dwindle";
+        };
 
-          cursor_inactive_timeout = 1;
+        cursor = {
+          inactive_timeout = 1;
         };
 
         misc = {
