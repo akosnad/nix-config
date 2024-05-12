@@ -7,6 +7,7 @@ in
     ./lsp.nix
     ./ft.nix
     ./ui.nix
+    ./dbg.nix
   ];
   programs.neovim = {
     enable = true;
