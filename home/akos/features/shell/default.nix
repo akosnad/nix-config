@@ -13,5 +13,6 @@
     jq
     htop
     cachix
+    nix-output-monitor
   ];
 }
