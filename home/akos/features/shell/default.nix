@@ -5,6 +5,7 @@
     ./tmux.nix
     ./gpg.nix
     ./zsh.nix
+    ./comma.nix
   ];
 
   home.packages = with pkgs; [
