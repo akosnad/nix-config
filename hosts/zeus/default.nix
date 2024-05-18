@@ -29,7 +29,14 @@
 
   services.upower.enable = true;
 
-  virtualisation.docker.storageDriver = "btrfs";
+  virtualisation.docker = {
+    storageDriver = "btrfs";
+
+    # this fixes rebooting hangs
+    # and broken networking after a nixos-rebuild switch
+    # because containers are restarted
+    liveRestore = false;
+  };
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "23.11";
