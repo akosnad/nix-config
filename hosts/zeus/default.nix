@@ -38,6 +38,15 @@
     liveRestore = false;
   };
 
+  system.autoUpgrade = {
+    allowReboot = true;
+    operation = "boot";
+    rebootWindow = {
+      lower = "02:00";
+      upper = "06:00";
+    };
+  };
+
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "23.11";
 }
