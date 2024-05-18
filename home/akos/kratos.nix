@@ -7,7 +7,6 @@ in
     ./global
     ./features/desktop/hyprland
     ./features/vscode.nix
-    ./features/idea.nix
     ./features/chromium.nix
   ];
 
