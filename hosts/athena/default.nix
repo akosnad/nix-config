@@ -16,6 +16,7 @@
     ../common/global
     ../common/optional/use-builders.nix
     ../common/optional/quietboot.nix
+    ../common/optional/secureboot.nix
     ../common/optional/pipewire.nix
     ../common/optional/greetd.nix
     ../common/optional/docker.nix
