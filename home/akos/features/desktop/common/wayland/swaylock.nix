@@ -7,18 +7,23 @@ in
     enable = true;
     package = pkgs.swaylock-effects;
     settings = {
+      screenshots = true;
+      clock = true;
+
       effect-blur = "20x3";
-      fade-in = 0.1;
+      grace = 5;
+      fade-in = 4.0;
 
       font = config.fontProfiles.regular.family;
       font-size = 15;
 
       line-uses-inside = true;
       disable-caps-lock-text = true;
+
+      indicator-thickness = 7;
       indicator-caps-lock = true;
-      indicator-radius = 40;
+      indicator-radius = 60;
       indicator-idle-visible = true;
-      indicator-y-position = 1000;
 
       ring-color = "#${colors.base02}";
       inside-wrong-color = "#${colors.base08}";

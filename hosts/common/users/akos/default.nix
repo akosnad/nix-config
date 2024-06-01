@@ -35,4 +35,11 @@ in
   };
 
   home-manager.users.akos = import ../../../../home/akos/${config.networking.hostName}.nix;
+
+  # this fixes swaylock not accepting any password
+  security.pam.services.swaylock = {
+    text = ''
+      auth include login
+    '';
+  };
 }
