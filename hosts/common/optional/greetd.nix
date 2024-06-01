@@ -21,6 +21,8 @@ let
     }
     exec '${vars} ${command}; ${pkgs.sway}/bin/swaymsg exit'
   ''}";
+
+  hyprlandConfig = akosConfig.wayland.windowManager.hyprland;
 in
 {
   users.extraUsers.greeter = {
@@ -36,4 +38,8 @@ in
     enable = true;
     settings.default_session.command = sway-kiosk (lib.getExe pkgs.greetd.gtkgreet);
   };
+
+  environment.etc."greetd/environments".text = ''
+    ${if hyprlandConfig.enable then "Hyprland" else ""}
+  '';
 }
