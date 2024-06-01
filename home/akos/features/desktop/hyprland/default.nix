@@ -6,6 +6,7 @@
     ../common/wayland
 
     ./binds.nix
+    ./wallpaper.nix
   ];
 
   # FIXME: separate packages and their configs to desktop/common/ modules

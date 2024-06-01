@@ -14,10 +14,10 @@ let
           "\${unusedLocalPort}"
         ];
         configuration = {
-          args = [];
-          cargo = {};
+          args = [ ];
+          cargo = { };
           cwd = "\${workspaceRoot}";
-          env = {};
+          env = { };
           name = "lldb";
           terminal = "integrated";
           type = "lldb";

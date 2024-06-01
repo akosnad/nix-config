@@ -26,4 +26,6 @@ in
       primary = true;
     }
   ];
+
+  wallpaper = "${./features/desktop/wallpapers/bliss_graded_16_9.jpg}";
 }
