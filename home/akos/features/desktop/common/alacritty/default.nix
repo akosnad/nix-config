@@ -19,9 +19,12 @@ in
         bold_italic.family = fontFamily;
         bold_italic.style = "Bold Italic";
       };
-      window.padding = {
-        x = 8;
-        y = 8;
+      window = {
+        opacity = 0.9;
+        padding = {
+          x = 8;
+          y = 8;
+        };
       };
     };
   };

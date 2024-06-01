@@ -3,6 +3,8 @@
   programs.neovim.plugins = with pkgs.vimPlugins; [
     vim-illuminate
 
+    vim-transparent
+
     {
       plugin = vim-fugitive;
       type = "viml";

@@ -22,6 +22,9 @@
 
   wayland.windowManager.hyprland = {
     enable = true;
+    plugins = with pkgs.inputs.hyprland-plugins; [
+      hyprexpo
+    ];
     systemd = {
       enable = true;
       # Same as default, but stop graphical-session too
@@ -149,6 +152,15 @@
           workspace_swipe = true;
           workspace_swipe_fingers = 4;
         };
+
+        plugin.hyprexpo = {
+          columns = 3;
+          gap_size = 15;
+        };
+
+        windowrulev2 = [
+          "opacity, 0.9, class:(Alacritty)"
+        ];
       };
   };
 }

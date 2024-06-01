@@ -128,5 +128,9 @@ in
       "$mainMod, mouse:272, movewindow"
       "$mainMod, mouse:273, resizewindow"
     ];
+
+    bindr = [
+      "SUPER, SUPER_L, hyprexpo:expo, toggle"
+    ];
   };
 }
