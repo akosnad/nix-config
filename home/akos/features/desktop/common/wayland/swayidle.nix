@@ -3,7 +3,7 @@ let
   swaylock = "${config.programs.swaylock.package}/bin/swaylock";
   pgrep = "${pkgs.procps}/bin/pgrep";
   hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
-  pactl = "${pkgs.pulseaudio}/bin/pactl";
+  wpctl = "${pkgs.wireplumber}/bin/wpctl";
 
   isLocked = "${pgrep} -x ${swaylock}";
 
@@ -40,8 +40,8 @@ in
       # mute mic
       (afterLockTimeout {
         timeout = 10;
-        command = "${pactl} set-source-mute @DEFAULT_SOURCE@ yes";
-        resumeCommand = "${pactl} set-source-mute @DEFAULT_SOURCE@ no";
+        command = "${wpctl} set-mute @DEFAULT_SOURCE@ 1";
+        resumeCommand = "${wpctl} set-mute @DEFAULT_SOURCE@ 0";
       })
       ++
       # turn off displays (hyprland)
