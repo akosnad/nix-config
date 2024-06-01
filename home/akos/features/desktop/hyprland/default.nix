@@ -87,7 +87,7 @@
           # See https://wiki.hyprland.org/Configuring/Variables/ for more
 
           gaps_in = 5;
-          gaps_out = 0;
+          gaps_out = 10;
           border_size = 0;
           "col.active_border" = active;
           "col.inactive_border" = inactive;
@@ -140,6 +140,8 @@
           # See https://wiki.hyprland.org/Configuring/Dwindle-Layout/ for more
           pseudotile = "no"; # master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
           preserve_split = "yes"; # you probably want this
+
+          no_gaps_when_only = 1;
         };
 
         master = {
@@ -156,6 +158,12 @@
         plugin.hyprexpo = {
           columns = 3;
           gap_size = 15;
+          workspace_method = "center current";
+
+          enable_gesture = true;
+          gesture_fingers = 4;
+          gesture_distance = 300;
+          gesture_positive = true;
         };
 
         windowrulev2 = [
