@@ -14,6 +14,7 @@
     ./hardware-configuration.nix
 
     ../common/global
+    ../common/optional/powersave.nix
     ../common/optional/use-builders.nix
     ../common/optional/quietboot.nix
     ../common/optional/secureboot.nix
