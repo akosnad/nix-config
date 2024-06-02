@@ -1,9 +1,10 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 let
   hypr-socket = "$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock";
+  hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
 
   get-window-title = pkgs.writeScript "get-window-title" /* bash */ ''
-    initial="$(hyprctl activewindow -j | jq --raw-output .title)"
+    initial="$(${hyprctl} activewindow -j | jq --raw-output .title)"
     if ! [ "$initial" = "null" ]; then
         echo "$initial"
     fi

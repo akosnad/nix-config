@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config }:
 let
   widgets = [
     ./battery.nix
@@ -13,6 +13,6 @@ let
     ./time.nix
   ];
 
-  widget_imports = pkgs.lib.concatMapStrings (widget: /* yuck */ "(include \"${import widget { inherit pkgs; }}\")\n") widgets;
+  widget_imports = pkgs.lib.concatMapStrings (widget: /* yuck */ "(include \"${import widget {inherit pkgs config;}}\")\n") widgets;
 in
 pkgs.writeText "widgets.yuck" widget_imports

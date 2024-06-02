@@ -1,5 +1,7 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 let
+  eww = "${config.programs.eww.package}/bin/eww";
+
   # taken from: https://unix.stackexchange.com/a/719258
   getvol = pkgs.writeScript "getvol" /* bash */ ''
     get_vol() {
@@ -56,13 +58,13 @@ let
 in
 pkgs.writeText "volume.yuck" /* yuck */ ''
   (defwidget volume []
-    (eventbox :onhover "eww update volume_info_visible=true"
-              :onhoverlost "eww update volume_info_visible=false"
+    (eventbox :onhover "${eww} update volume_info_visible=true"
+              :onhoverlost "${eww} update volume_info_visible=false"
       (box :space-evenly false
         (metric :label "''${volume_icon}"
                 :value volume
                 :active true
-                :onchange "${pkgs.alsa-utils}/bin/amixer sset Master {}% && eww update volume={}")
+                :onchange "${pkgs.alsa-utils}/bin/amixer sset Master {}% && ${eww} update volume={}")
         (revealer :transition "slideleft"
                   :reveal volume_info_visible
           (eventbox :onclick "${pkgs.playerctl}/bin/playerctl play-pause"

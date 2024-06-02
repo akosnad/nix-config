@@ -1,13 +1,15 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 let
+  eww = "${config.programs.eww.package}/bin/eww";
+
   get-disk-info = pkgs.writeScript "get-disk-info" /* bash */ ''
     ${pkgs.coreutils}/bin/df -h --output=pcent,used,avail /
   '';
 in
 pkgs.writeText "disk.yuck" /* yuck */ ''
   (defwidget disk []
-    (eventbox :onhover "eww update disk_info_visible=true"
-              :onhoverlost "eww update disk_info_visible=false"
+    (eventbox :onhover "${eww} update disk_info_visible=true"
+              :onhoverlost "${eww} update disk_info_visible=false"
       (box :space-evenly false
         (metric :label ""
                 :active true

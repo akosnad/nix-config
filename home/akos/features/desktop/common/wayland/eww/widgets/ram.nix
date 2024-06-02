@@ -1,5 +1,7 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 let
+  eww = "${config.programs.eww.package}/bin/eww";
+
   get-ram-info = pkgs.writeScript "get-ram-info" /* bash */ ''
     out="$(${pkgs.procps}/bin/free -m | ${pkgs.gnugrep}/bin/grep -E '^Mem:')"
     used="$(echo $out | ${pkgs.gawk}/bin/awk '{print $3}')"
@@ -15,8 +17,8 @@ let
 in
 pkgs.writeText "ram.yuck" /* yuck */ ''
   (defwidget ram []
-    (eventbox :onhover "eww update ram_info_visible=true"
-              :onhoverlost "eww update ram_info_visible=false"
+    (eventbox :onhover "${eww} update ram_info_visible=true"
+              :onhoverlost "${eww} update ram_info_visible=false"
       (box :space-evenly false
         (metric :label ""
                 :active true

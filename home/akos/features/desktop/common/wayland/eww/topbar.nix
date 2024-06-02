@@ -2,15 +2,23 @@
   (defwidget bar []
     (centerbox :orientation "h"
       :class "bar"
-      (workspaces)
+      (leftstuff)
       (centerstuff)
       (sidestuff)
       )
     )
 
+  (defwidget leftstuff []
+    (box :class "leftstuff" :orientation "h" :space-evenly false :halign "start"
+      (workspaces)
+      (gap)
+      (window_title)
+    )
+  )
+
   (defwidget centerstuff []
     (box :class "centerstuff"
-      (window_title)
+      (gap)
       )
     )
 
@@ -38,5 +46,6 @@
                         :anchor "top center")
     :reserve (struts :side "top" :distance "10%")
     :exclusive true
-    (bar))
+    (bar)
+  )
 ''

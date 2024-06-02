@@ -1,7 +1,11 @@
-{ pkgs, ... }: pkgs.writeText "cpu.yuck" /* yuck */ ''
+{ pkgs, config, ... }:
+let
+  eww = "${config.programs.eww.package}/bin/eww";
+in
+pkgs.writeText "cpu.yuck" /* yuck */ ''
   (defwidget cpu []
-    (eventbox :onhover "eww update cpu_info_visible=true"
-              :onhoverlost "eww update cpu_info_visible=false"
+    (eventbox :onhover "${eww} update cpu_info_visible=true"
+              :onhoverlost "${eww} update cpu_info_visible=false"
       (box :space-evenly false
         (metric :label ""
                 :active true

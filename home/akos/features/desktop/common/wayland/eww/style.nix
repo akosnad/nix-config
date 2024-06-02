@@ -1,11 +1,19 @@
 { pkgs, scheme, ... }:
 let c = scheme.palette;
-in pkgs.writeText "eww.css" /* css */ ''
+in pkgs.writeText "eww.scss" /* css */ ''
   /*
    * {
    all: unset; //Unsets everything so you can style everything from scratch
    }
    */
+
+  window {
+    background-color: rgba(0, 0, 0, 0);
+  }
+
+  .bar {
+    background-color: rgba(#${c.base00}, 0.9);
+  }
 
   .sidestuff {
     margin-right: 1em;

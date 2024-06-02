@@ -1,10 +1,11 @@
 { pkgs, config, ... }:
 let
   inherit (pkgs) writeShellScript;
+  hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
 
   exit = writeShellScript "exit.sh" ''
     systemctl --user stop hyprland-session.service
-    hyprctl dispatch exit
+    ${hyprctl} dispatch exit
   '';
 
   wofi-launch = writeShellScript "wofi-launch.sh" ''

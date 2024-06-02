@@ -1,5 +1,7 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 let
+  eww = "${config.programs.eww.package}/bin/eww";
+
   battery_icon = pkgs.writeScript "battery_icon" /* bash */ ''
     function get_info() {
       battery="$1"
@@ -101,8 +103,8 @@ let
 in
 pkgs.writeText "battery.yuck" /* yuck */ ''
   (defwidget battery []
-    (eventbox :onhover "eww update battery=true"
-              :onhoverlost "eww update battery=false"
+    (eventbox :onhover "${eww} update battery=true"
+              :onhoverlost "${eww} update battery=false"
       (box :space-evenly false
         (label :text "''${battery_icon}"
                 :active true

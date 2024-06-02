@@ -1,9 +1,10 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 let
   hypr-socket = "$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock";
+  hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
 
   get-keyboard-layout = pkgs.writeScript "get-keyboard-layout" /* bash */ ''
-    list="$(hyprctl devices | ${pkgs.gnugrep}/bin/grep 'active keymap:' | ${pkgs.gawk}/bin/awk '{print $3}')"
+    list="$(${hyprctl} devices | ${pkgs.gnugrep}/bin/grep 'active keymap:' | ${pkgs.gawk}/bin/awk '{print $3}')"
     initial="en"
     for m in $list; do
         if [ "$m" != "English" ]; then
