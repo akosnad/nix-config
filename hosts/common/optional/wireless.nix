@@ -9,15 +9,7 @@ let
     buildInputs = with pkgs; [ pcre.bin ];
     unpackPhase = ''
       mkdir -p $out
-      cp $src $out/eduroam-cat.py
-    '';
-    buildPhase = ''
-      mkdir -p $out
-      cat $out/eduroam-cat.py | pcregrep -oM '\-\-\-\-\-BEGIN CERTIFICATE-----\n(.*\n)+?-----END CERTIFICATE-----' > $out/eduroam-ca-cert.pem
-    '';
-    installPhase = ''
-      mkdir -p $out
-      cp $out/eduroam-ca-cert.pem $out/eduroam-ca-cert.pem
+      cat $src | pcregrep -oM '\-\-\-\-\-BEGIN CERTIFICATE-----\n(.*\n)+?-----END CERTIFICATE-----' > $out/eduroam-ca-cert.pem
     '';
   };
 
