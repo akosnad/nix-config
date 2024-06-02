@@ -30,12 +30,19 @@
   services.upower.enable = true;
 
   virtualisation.docker = {
+    enableOnBoot = true;
     storageDriver = "btrfs";
 
     # this fixes rebooting hangs
     # and broken networking after a nixos-rebuild switch
     # because containers are restarted
     liveRestore = false;
+
+    autoPrune = {
+      enable = true;
+      dates = "weekly";
+      flags = [ "--all" ];
+    };
   };
 
   system.autoUpgrade = {
