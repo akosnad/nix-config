@@ -32,6 +32,10 @@ in
       sopsFile = ../../secrets.yaml;
       owner = "akos";
     };
+    gh-auth-token = {
+      sopsFile = ../../secrets.yaml;
+      owner = "akos";
+    };
   };
 
   home-manager.users.akos = import ../../../../home/akos/${config.networking.hostName}.nix;

@@ -6,6 +6,7 @@
     ./gpg.nix
     ./zsh.nix
     ./comma.nix
+    ./gh.nix
   ];
 
   home.packages = with pkgs; [
