@@ -61,10 +61,16 @@ let
             echo "󱃍"
         fi
     }
-    
+
     # get initial state
     battery_initial="$(${pkgs.upower}/bin/upower -e | ${pkgs.gnugrep}/bin/grep -E "battery|BAT" | ${pkgs.gnugrep}/bin/grep -oE "(/\w+)+/battery_BAT[0-9]+$")"
-    get_info $battery_initial
+    if [[ -n "$battery_initial" ]]; then
+        ${eww} update has_battery=true
+        get_info $battery_initial
+    else
+        # host doesn't have a battery
+        exit 0
+    fi
 
     # listen to events
     ${pkgs.upower}/bin/upower -m | ${pkgs.coreutils}/bin/stdbuf -o0 ${pkgs.gnugrep}/bin/grep -E "battery|BAT" | ${pkgs.coreutils}/bin/stdbuf -o0 ${pkgs.gnugrep}/bin/grep -oE "(/\w+)+/battery_BAT[0-9]+$" | while read -r battery; do
@@ -89,6 +95,13 @@ let
         fi
     }
 
+    # find out if host has a battery
+    battery_initial="$(${pkgs.upower}/bin/upower -e | ${pkgs.gnugrep}/bin/grep -E "battery|BAT" | ${pkgs.gnugrep}/bin/grep -oE "(/\w+)+/battery_BAT[0-9]+$")"
+    if [[ -z "$battery_initial" ]]; then
+        # host doesn't have a battery
+        exit 0
+    fi
+
     ${pkgs.upower}/bin/upower -e | ${pkgs.gnugrep}/bin/grep -E "battery|BAT" | while read -r battery; do
         get_info $battery
     done
@@ -105,6 +118,7 @@ pkgs.writeText "battery.yuck" /* yuck */ ''
   (defwidget battery []
     (eventbox :onhover "${eww} update battery=true"
               :onhoverlost "${eww} update battery=false"
+              :visible has_battery
       (box :space-evenly false
         (label :text "''${battery_icon}"
                 :active true
@@ -121,6 +135,7 @@ pkgs.writeText "battery.yuck" /* yuck */ ''
       )
     )
   (defvar battery false)
+  (defvar has_battery false)
   (deflisten battery_info :initial ""
     "${get-batt-info}")
   (deflisten battery_icon :initial ""
