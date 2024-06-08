@@ -16,5 +16,6 @@
     htop
     cachix
     nix-output-monitor
+    file
   ];
 }
