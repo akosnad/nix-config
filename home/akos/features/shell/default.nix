@@ -7,6 +7,7 @@
     ./zsh.nix
     ./comma.nix
     ./gh.nix
+    ./azure.nix
   ];
 
   home.packages = with pkgs; [
