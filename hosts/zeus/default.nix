@@ -25,7 +25,14 @@
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.kernelParams = [ "nomodeset" ];
+  boot.kernelParams = [
+    # disable graphics
+    "nomodeset"
+
+    # try fixing rebooting hangs by disabling hardware watchdog
+    "nowatchdog"
+    "modprobe.blacklist=iTCO_wdt"
+  ];
 
   services.upower.enable = true;
 
@@ -33,8 +40,7 @@
     enableOnBoot = true;
     storageDriver = "btrfs";
 
-    # this fixes rebooting hangs
-    # and broken networking after a nixos-rebuild switch
+    # fixes broken networking after a nixos-rebuild switch
     # because containers are restarted
     liveRestore = false;
 
