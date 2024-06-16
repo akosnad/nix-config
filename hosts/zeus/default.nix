@@ -31,7 +31,7 @@
 
     # try fixing rebooting hangs by disabling hardware watchdog
     "nowatchdog"
-    "modprobe.blacklist=iTCO_wdt"
+    "modprobe.blacklist=mei_wdt"
   ];
 
   services.upower.enable = true;
