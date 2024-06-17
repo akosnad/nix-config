@@ -27,10 +27,18 @@ in
   programs.fzf = {
     enable = true;
     colors = {
-      fg = "#${palette.base05}";
+      fg = "-1";
       "fg+" = "#${palette.base06}";
-      bg = "#${palette.base00}";
-      "bg+" = "#${palette.base01}";
+      bg = "-1";
+      "bg+" = "-1";
+      hl = "#${palette.base04}";
+      "hl+" = "#${palette.base06}";
+      info = "#${palette.base07}";
+      marker = "#${palette.base0B}";
+      prompt = "#${palette.base0C}";
+      spinner = "#${palette.base0B}";
+      pointer = "#${palette.base0B}";
+      header = "#${palette.base0E}";
     };
   };
 }
