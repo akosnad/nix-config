@@ -10,7 +10,7 @@ let
     }
 
     spaces() {
-      ${hyprctl} workspaces -j | jq -Mc 'map({id: .id, windows: .windows})'
+      ${hyprctl} workspaces -j | jq -Mc 'map({id: .id, windows: .windows}) | sort_by(.id)'
     }
 
     spaces
