@@ -18,6 +18,7 @@ in
   monitors = [
     {
       name = "eDP-1";
+      model = "0x0555";
       width = 1536;
       height = 1024;
       scale = 1.0;
