@@ -23,7 +23,7 @@ in
     }
     {
       # Asus
-      name = "HDMI-A-1";
+      name = "DVI-I-1";
       width = 1920;
       height = 1080;
       x = -1920;
