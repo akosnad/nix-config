@@ -2,7 +2,9 @@
   services.gammastep = {
     enable = true;
     enableVerboseLogging = true;
-    provider = "geoclue2";
+    provider = "manual";
+    latitude = 47.4;
+    longitude = 19.2;
     temperature = {
       day = 6000;
       night = 3000;
