@@ -1,4 +1,7 @@
-{ pkgs, ... }: pkgs.writeText "topbar.yuck" /* yuck */ ''
+{ pkgs, lib, config, ... }:
+let
+  primary_monitor = lib.head (lib.filter (m: m.primary) config.monitors);
+in pkgs.writeText "topbar.yuck" /* yuck */ ''
   (defwidget bar []
     (centerbox :orientation "h"
       :class "bar"
@@ -37,7 +40,7 @@
     )
 
   (defwindow topbar
-    :monitor 0
+    :monitor "${primary_monitor.model}"
     :windowtype "dock"
     :geometry (geometry :x "0%"
                         :y "0%"

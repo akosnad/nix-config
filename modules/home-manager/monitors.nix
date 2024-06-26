@@ -15,6 +15,10 @@ in
             type = types.str;
             example = "DP-1";
           };
+          model = mkOption {
+            type = types.str;
+            example = "Dell U2414H";
+          };
           primary = mkOption {
             type = types.bool;
             default = false;

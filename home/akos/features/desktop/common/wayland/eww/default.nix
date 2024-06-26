@@ -1,9 +1,9 @@
-{ pkgs, config, ... }:
+{ pkgs, config, lib, ... }:
 let
 
   helpers = import ./helpers.nix { inherit pkgs; };
   widgets = import ./widgets { inherit pkgs config; };
-  topbar = import ./topbar.nix { inherit pkgs; };
+  topbar = import ./topbar.nix { inherit pkgs lib config; };
 
   style = import ./style.nix { inherit pkgs; scheme = config.colorscheme; };
 

@@ -14,6 +14,7 @@ in
     {
       # Samsung
       name = "DP-2";
+      model = "U28E850";
       width = 3840;
       height = 2160;
       scale = 1.5;
@@ -24,6 +25,7 @@ in
     {
       # Asus
       name = "DVI-I-1";
+      model = "ASUS VN247";
       width = 1920;
       height = 1080;
       x = -1920;
