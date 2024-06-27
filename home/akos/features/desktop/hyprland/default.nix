@@ -168,6 +168,10 @@
 
         windowrulev2 = [
           "opacity, 0.9, class:(Alacritty)"
+
+          # this fixes bitwig studio
+          # reference: https://github.com/hyprwm/Hyprland/issues/2034#issuecomment-1650278502
+          "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
         ];
       };
   };
