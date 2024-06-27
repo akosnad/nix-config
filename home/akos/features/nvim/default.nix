@@ -110,6 +110,12 @@ in
 
         -- Prettier
         vim.api.nvim_set_keymap('n', '<leader><CR>', ':Prettier<CR>', { noremap = true, silent = true })
+
+        -- LSP
+        vim.api.nvim_set_keymap('n', 'gd', '<cmd>Telescope lsp_definitions<CR>', { noremap = true, silent = true })
+        vim.api.nvim_set_keymap('n', 'gr', '<cmd>Telescope lsp_references<CR>', { noremap = true, silent = true })
+        vim.api.nvim_set_keymap('n', 'gs', '<cmd>Telescope lsp_workspace_symbols<CR>', { noremap = true, silent = true })
+        vim.api.nvim_set_keymap('n', '<leader>a', '<cmd>lua vim.lsp.buf.code_action()<CR>', { noremap = true, silent = true })
     '';
 
     plugins = with pkgs.vimPlugins; [
