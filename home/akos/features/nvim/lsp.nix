@@ -1,4 +1,7 @@
 { pkgs, ... }:
+let
+  bicep = pkgs.vscode-extensions.ms-azuretools.vscode-bicep;
+in
 {
   programs.neovim.plugins = with pkgs.vimPlugins; [
     {
@@ -13,6 +16,8 @@
       type = "lua";
       config = /* lua */ ''
         local lspconfig = require('lspconfig')
+        local configs = require('lspconfig.configs')
+
         function add_lsp(server, options)
           if not options["cmd"] then
             options["cmd"] = server["document_config"]["default_config"]["cmd"]
@@ -50,6 +55,17 @@
             }
           }
         })
+
+        if not configs.bicep then
+          configs.bicep = {
+            default_config = {
+              cmd = { '${pkgs.dotnet-runtime_8}/bin/dotnet', '${bicep}/share/vscode/extensions/${bicep.vscodeExtUniqueId}/bicepLanguageServer/Bicep.LangServer.dll' },
+              filetypes = { 'bicep' },
+              root_dir = lspconfig.util.root_pattern('.bicepconfig.json', 'bicepconfig.json', 'main.bicep', '.git'),
+            }
+          }
+        end
+        add_lsp(lspconfig.bicep, {})
       '';
     }
     # LSP support for embedded code blocks

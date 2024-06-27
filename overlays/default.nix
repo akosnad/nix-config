@@ -17,6 +17,7 @@
   additions = final: prev: import ../pkgs { pkgs = final; }
     // {
     vimPlugins = (prev.vimPlugins or { }) // import ../pkgs/vim-plugins { pkgs = final; };
+    vscode-extensions = (prev.vscode-extensions or { }) // inputs.vscode-extensions.extensions.${final.system}.vscode-marketplace;
   };
 
   modifications = final: prev: { };

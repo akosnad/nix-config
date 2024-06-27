@@ -59,6 +59,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+
     nixvirt = {
       url = "https://flakehub.com/f/AshleyYakeley/NixVirt/0.5.0.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
