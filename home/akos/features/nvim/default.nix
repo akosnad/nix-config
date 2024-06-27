@@ -8,6 +8,7 @@ in
     ./ft.nix
     ./ui.nix
     ./dbg.nix
+    ./fmt.nix
   ];
   programs.neovim = {
     enable = true;
@@ -106,6 +107,9 @@ in
 
         -- Quickfix window
         vim.api.nvim_set_keymap('n', '<leader><space>', ':lua vim.diagnostic.setloclist()<CR>', { noremap = true, silent = true })
+
+        -- Prettier
+        vim.api.nvim_set_keymap('n', '<leader><CR>', ':Prettier<CR>', { noremap = true, silent = true })
     '';
 
     plugins = with pkgs.vimPlugins; [
