@@ -24,7 +24,7 @@ in
     }
     {
       # Asus
-      name = "DVI-I-1";
+      name = "HDMI-A-1";
       model = "ASUS VN247";
       width = 1920;
       height = 1080;
