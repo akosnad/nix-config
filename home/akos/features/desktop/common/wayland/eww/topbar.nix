@@ -1,7 +1,8 @@
 { pkgs, lib, config, ... }:
 let
   primary_monitor = lib.head (lib.filter (m: m.primary) config.monitors);
-in pkgs.writeText "topbar.yuck" /* yuck */ ''
+in
+pkgs.writeText "topbar.yuck" /* yuck */ ''
   (defwidget bar []
     (centerbox :orientation "h"
       :class "bar"

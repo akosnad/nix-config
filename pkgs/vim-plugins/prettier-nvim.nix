@@ -1,4 +1,4 @@
-{ vimUtils, fetchFromGitHub}: vimUtils.buildVimPlugin {
+{ vimUtils, fetchFromGitHub }: vimUtils.buildVimPlugin {
   pname = "prettier-nvim";
   version = "2024-06-28";
   src = fetchFromGitHub {

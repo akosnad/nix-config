@@ -100,7 +100,9 @@
     {
       inherit lib;
 
-      nixosModules = import ./modules/nixos { inherit inputs; };
+      nixosModules = import ./modules/nixos {
+        inherit inputs;
+      };
       homeManagerModules = import ./modules/home-manager;
 
       overlays = import ./overlays { inherit inputs outputs; };
