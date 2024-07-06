@@ -62,6 +62,7 @@ in
 
     persistence = {
       "/persist/${config.home.homeDirectory}" = {
+        defaultDirectoryMethod = "symlink";
         directories = [
           "Documents"
           "Downloads"
