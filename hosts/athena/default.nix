@@ -66,6 +66,7 @@
     # Only start docker when the socket is first accessed
     wantedBy = lib.mkForce [ ];
   };
+  virtualisation.docker.storageDriver = "btrfs";
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "23.11";
