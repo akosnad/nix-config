@@ -8,6 +8,6 @@
     owner = "tribela";
     repo = "vim-transparent";
     rev = "master";
-    sha256 = "sha256-TGP8/NnMfwtpyaCtrRyxmeHTL029YjxRKHED5aY7NO4=";
+    sha256 = "sha256-zEH5A9CKaoN5DXJjmC0+j74kBZsfJm+Ztk1qFHeIzts=";
   };
 }
