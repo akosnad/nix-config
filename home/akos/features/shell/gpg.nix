@@ -57,4 +57,6 @@
       Install.WantedBy = [ "default.target" ];
     };
   };
+
+  home.persistence."/persist/${config.home.homeDirectory}".directories = [ ".gnupg" ];
 }
