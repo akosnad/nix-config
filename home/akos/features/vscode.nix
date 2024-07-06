@@ -9,5 +9,9 @@
     fira-code
   ];
 
-  home.persistence."/persist/${config.home.homeDirectory}".directories = [ ".vscode" ".config/Code" ];
+  home.persistence."/persist/${config.home.homeDirectory}".directories = [{
+    directory = ".vscode";
+    method = "bindfs";
+  }
+    ".config/Code"];
 }
