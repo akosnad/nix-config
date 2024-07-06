@@ -12,8 +12,10 @@
     inputs.hardware.nixosModules.common-pc-ssd
 
     ./hardware-configuration.nix
+    ./disk-config.nix
 
     ../common/global
+    ../common/optional/ephemeral-btrfs.nix
     ../common/optional/wireless.nix
     ../common/optional/powersave.nix
     ../common/optional/use-builders.nix
