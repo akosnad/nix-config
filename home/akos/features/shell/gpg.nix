@@ -58,5 +58,8 @@
     };
   };
 
-  home.persistence."/persist/${config.home.homeDirectory}".directories = [ ".gnupg" ];
+  home.persistence."/persist/${config.home.homeDirectory}".directories = [{
+    directory = ".gnupg";
+    method = "bindfs";
+  }];
 }

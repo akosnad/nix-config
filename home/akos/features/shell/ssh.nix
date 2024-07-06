@@ -1,4 +1,4 @@
-{ config, outputs, lib, ...}:
+{ config, outputs, lib, ... }:
 let
   nixosConfigs = builtins.attrNames outputs.nixosConfigurations;
   homeConfigs = map (n: lib.last (lib.splitString "@" n)) (builtins.attrNames outputs.homeConfigurations);
