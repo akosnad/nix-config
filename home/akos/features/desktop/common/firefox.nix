@@ -1,3 +1,4 @@
+{ config, ... }:
 {
   programs.firefox = {
     enable = true;
@@ -14,4 +15,6 @@
     "application/x-extension-xhtml" = "firefox.desktop";
     "application/x-extension-xht" = "firefox.desktop";
   };
+
+  home.persistence."/persist/${config.home.homeDirectory}".directories = [ ".mozilla/firefox" ];
 }

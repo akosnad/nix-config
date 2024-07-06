@@ -41,4 +41,6 @@ in
       header = "#${palette.base0E}";
     };
   };
+
+  home.persistence."/persist/${config.home.homeDirectory}".files = [ ".zsh_history" ];
 }

@@ -5,6 +5,7 @@ in
 {
   imports = [
     inputs.nix-colors.homeManagerModule
+    inputs.impermanence.nixosModules.home-manager.impermanence
     ../features/shell
     ../features/nvim
   ] ++ (builtins.attrValues outputs.homeManagerModules);
@@ -58,6 +59,21 @@ in
     username = lib.mkDefault "akos";
     homeDirectory = lib.mkDefault "/home/${config.home.username}";
     stateVersion = lib.mkDefault "23.11";
+
+    persistence = {
+      "/persist/${config.home.homeDirectory}" = {
+        directories = [
+          "Documents"
+          "Downloads"
+          "Pictures"
+          "Videos"
+          "src"
+          ".local/bin"
+          ".local/share/nix" # trusted settings and repl history
+        ];
+        allowOther = true;
+      };
+    };
   };
 
   home.packages =

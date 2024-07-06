@@ -3,6 +3,8 @@ let
   inherit (config.networking) hostName;
   hosts = outputs.nixosConfigurations;
   pubKey = host: ../../${host}/ssh_host_ed25519_key.pub;
+
+  hasOptinPersistence = config.environment.persistence ? "/persist";
 in
 {
   services.openssh = {
@@ -17,7 +19,7 @@ in
     };
 
     hostKeys = [{
-      path = "/etc/ssh/ssh_host_ed25519_key";
+      path = "${lib.optionalString hasOptinPersistence "/persist"}/etc/ssh/ssh_host_ed25519_key";
       type = "ed25519";
     }];
   };
@@ -42,4 +44,9 @@ in
     enable = true;
     authorizedKeysFiles = [ "/etc/ssh/authorized_keys.d/%u" ];
   };
+
+  # Keep SSH_AUTH_SOCK when using sudo
+  security.sudo.extraConfig = ''
+    Defaults env_keep+=SSH_AUTH_SOCK
+  '';
 }

@@ -23,8 +23,6 @@
     ./libvirt
   ];
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelParams = [
     # disable graphics
     "nomodeset"
@@ -33,8 +31,6 @@
     "nowatchdog"
     "modprobe.blacklist=mei_wdt,iTCO_wdt"
   ];
-
-  services.upower.enable = true;
 
   virtualisation.docker = {
     enableOnBoot = true;

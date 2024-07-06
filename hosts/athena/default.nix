@@ -28,15 +28,18 @@
   ];
 
   networking.hostName = "athena";
-  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
-
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  networking.networkmanager.enable = true;
 
   services.logind = {
     lidSwitch = "suspend";
     lidSwitchExternalPower = "suspend";
   };
+
+  services.libinput = {
+    enable = true;
+    touchpad.tapping = true;
+  };
+
 
   # TODO: Imported options from hardware/common/common-gpu-intel
   # until it's fixed
@@ -54,26 +57,12 @@
   time.hardwareClockInLocalTime = true;
 
   powerManagement.powertop.enable = true;
-  services.upower.enable = true;
-
-  services.libinput = {
-    enable = true;
-    touchpad.tapping = true;
-  };
-
 
   systemd.services.docker = {
     enable = true;
     # Only start docker when the socket is first accessed
     wantedBy = lib.mkForce [ ];
   };
-
-  environment.systemPackages = with pkgs; [
-    neovim
-    wget
-    git
-    neofetch
-  ];
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "23.11";

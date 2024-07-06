@@ -2,6 +2,7 @@
 {
   imports = [
     inputs.home-manager.nixosModules.home-manager
+    ./optin-persistence.nix
     ./locale.nix
     ./zsh.nix
     ./nix.nix
@@ -24,6 +25,8 @@
     };
   };
 
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
   hardware.enableRedistributableFirmware = true;
 
   programs.light.enable = true;
@@ -32,6 +35,8 @@
   services.geoclue2.enable = true;
   services.avahi.enable = true;
   programs.dconf.enable = true;
+
+  services.upower.enable = true;
 
   # Increase open file limit for sudoers
   security.pam.loginLimits = [

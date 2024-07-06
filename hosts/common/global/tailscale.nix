@@ -12,4 +12,8 @@
   };
 
   networking.firewall.allowedUDPPorts = [ 41641 ];
+
+  environment.persistence = {
+    "/persist".directories = ["/var/lib/tailscale"];
+  };
 }

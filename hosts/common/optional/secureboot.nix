@@ -14,4 +14,6 @@
     enable = true;
     pkiBundle = "/etc/secureboot";
   };
+
+  environment.persistence."/persist".directories = [ "/etc/secureboot" ];
 }

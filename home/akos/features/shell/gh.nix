@@ -1,3 +1,4 @@
+{ config, ... }:
 {
   programs.gh = {
     enable = true;
@@ -5,4 +6,6 @@
       git_protocol = "ssh";
     };
   };
+
+  home.persistence."/persist/${config.home.homeDirectory}".files = [ ".config/gh/hosts.yml" ];
 }

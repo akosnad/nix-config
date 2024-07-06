@@ -8,6 +8,7 @@
     ./comma.nix
     ./gh.nix
     ./azure.nix
+    ./ssh.nix
   ];
 
   home.packages = with pkgs; [
