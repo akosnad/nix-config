@@ -45,7 +45,7 @@ pkgs.writeText "topbar.yuck" /* yuck */ ''
     :windowtype "dock"
     :geometry (geometry :x "0%"
                         :y "0%"
-                        :width "100%"
+                        :width "${builtins.toString (primary_monitor.width / primary_monitor.scale)}px"
                         :height "10px"
                         :anchor "top center")
     :reserve (struts :side "top" :distance "10%")
