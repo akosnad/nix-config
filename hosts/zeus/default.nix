@@ -14,6 +14,8 @@
     ./network.nix
 
     ../common/global
+    # TODO: make the machine compatible with opti in persistence
+    ../common/optional/optin-persistence-opt-out.nix
     ../common/optional/docker.nix
     ../common/optional/libvirt.nix
     ../common/optional/builder
