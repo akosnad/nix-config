@@ -6,4 +6,7 @@ in
   imports = [
     ./global
   ];
+
+  # disable impermanence for now
+  home.persistence = lib.mkForce { };
 }
