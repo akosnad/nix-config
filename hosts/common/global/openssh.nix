@@ -4,7 +4,7 @@ let
   hosts = outputs.nixosConfigurations;
   pubKey = host: ../../${host}/ssh_host_ed25519_key.pub;
 
-  hasOptinPersistence = config.environment.persistence ? "/persist";
+  hasOptinPersistence = config.environment.persistence."/persist".enable ? "/persist";
 in
 {
   services.openssh = {
