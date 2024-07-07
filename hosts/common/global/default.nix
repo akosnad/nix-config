@@ -2,7 +2,6 @@
 {
   imports = [
     inputs.home-manager.nixosModules.home-manager
-    ./optin-persistence.nix
     ./locale.nix
     ./zsh.nix
     ./nix.nix
