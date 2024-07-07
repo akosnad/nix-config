@@ -10,6 +10,10 @@
         "/var/log"
         "/srv"
       ];
+
+      files = [
+        "/etc/machine-id"
+      ];
     };
   };
 
