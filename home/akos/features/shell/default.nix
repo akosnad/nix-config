@@ -7,7 +7,6 @@
     ./zsh.nix
     ./comma.nix
     ./gh.nix
-    ./azure.nix
     ./ssh.nix
   ];
 

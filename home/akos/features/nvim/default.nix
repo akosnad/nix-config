@@ -4,11 +4,7 @@ let
 in
 {
   imports = [
-    ./lsp.nix
-    ./ft.nix
     ./ui.nix
-    ./dbg.nix
-    ./fmt.nix
   ];
   programs.neovim = {
     enable = true;

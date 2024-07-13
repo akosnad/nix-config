@@ -1,4 +1,4 @@
-{ inputs, outputs, ... }:
+{ inputs, outputs, lib, config, ... }:
 {
   imports = [
     inputs.home-manager.nixosModules.home-manager
@@ -25,8 +25,10 @@
     };
   };
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot = lib.mkIf (config.nixpkgs.hostPlatform == "x86_64-linux") {
+    loader.systemd-boot.enable = true;
+    loader.efi.canTouchEfiVariables = true;
+  };
   hardware.enableRedistributableFirmware = true;
 
   programs.light.enable = true;

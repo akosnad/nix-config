@@ -130,6 +130,10 @@
           modules = [ ./hosts/zeus ];
           specialArgs = { inherit inputs outputs; };
         };
+        gaia = lib.nixosSystem {
+          modules = [ ./hosts/gaia ];
+          specialArgs = { inherit inputs outputs; };
+        };
       };
 
       homeConfigurations = {
@@ -153,6 +157,11 @@
         "akos@zeus" = lib.homeManagerConfiguration {
           modules = [ ./home/akos/zeus.nix ];
           pkgs = pkgsFor.x86_64-linux;
+          extraSpecialArgs = { inherit inputs outputs; };
+        };
+        "akos@gaia" = lib.homeManagerConfiguration {
+          modules = [ ./home/akos/gaia.nix ];
+          pkgs = pkgsFor.aarch64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
         };
       };

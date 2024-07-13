@@ -24,6 +24,7 @@
     ../common/optional/envfs.nix
     ../common/optional/builder
     ../common/optional/vscode-server.nix
+    ../common/optional/aarch64.nix
 
     ../common/users/akos
 

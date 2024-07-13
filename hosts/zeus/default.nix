@@ -14,6 +14,7 @@
     ./network.nix
 
     ../common/global
+    ../common/optional/high-availability.nix
     ../common/optional/ephemeral-btrfs.nix
     ../common/optional/docker.nix
     ../common/optional/libvirt.nix
@@ -34,27 +35,7 @@
   ];
 
   virtualisation.docker = {
-    enableOnBoot = true;
     storageDriver = "btrfs";
-
-    # fixes broken networking after a nixos-rebuild switch
-    # because containers are restarted
-    liveRestore = false;
-
-    autoPrune = {
-      enable = true;
-      dates = "weekly";
-      flags = [ "--all" ];
-    };
-  };
-
-  system.autoUpgrade = {
-    allowReboot = true;
-    operation = "boot";
-    rebootWindow = {
-      lower = "02:00";
-      upper = "06:00";
-    };
   };
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion

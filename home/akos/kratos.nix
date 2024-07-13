@@ -5,9 +5,11 @@ in
 {
   imports = [
     ./global
+    ./features/nvim/full.nix
     ./features/desktop/hyprland
     ./features/vscode.nix
     ./features/chromium.nix
+    ./features/shell/azure.nix
   ];
 
   monitors = [

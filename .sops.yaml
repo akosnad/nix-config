@@ -5,6 +5,7 @@ keys:
     - &athena age1nmfkvqnclhdr4j4ev7yug8ehrsl8hh09tuffmks0dfl8w4dkqv5sqhf3u4
     - &kratos age1vlxveywlyww4zymyxmd8y4mjg2dxeev6a3vdw4v7qvekcpgnc3asu2xvcu
     - &zeus age16kd99x3lsmq9tfxn42zr9npdtjtw8y68stykm6apjkt9gexwsdssmd3sjz
+    - &gaia age1gqdrkenwc3dwk384285gtz0zzgfl2c55xklx2hvhr8c6h4duggyqwmy2w7
 
 creation_rules:
   - path_regex: hosts/common/secrets.ya?ml$
@@ -13,5 +14,6 @@ creation_rules:
         - *athena
         - *kratos
         - *zeus
+        - *gaia
         pgp:
         - *akos
