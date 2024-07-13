@@ -16,7 +16,6 @@
 
     ../common/global
     ../common/optional/ephemeral-btrfs.nix
-    ../common/optional/optin-persistence.nix
     ../common/optional/wireless.nix
     ../common/optional/powersave.nix
     ../common/optional/use-builders.nix

@@ -11,6 +11,7 @@
     ./tailscale.nix
     ./udev.nix
     ./nh.nix
+    ./optin-persistence.nix
   ] ++ (builtins.attrValues outputs.nixosModules);
 
   home-manager.extraSpecialArgs = {

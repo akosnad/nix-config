@@ -1,4 +1,4 @@
-{ lib, inputs, ... }:
+{ lib, inputs, config, ... }:
 let
   inherit (inputs.nix-colors) colorSchemes;
 in
@@ -7,6 +7,8 @@ in
     ./global
   ];
 
-  # disable impermanence for now
-  home.persistence = lib.mkForce { };
+  home.persistence."/persist/${config.home.homeDirectory}".directories = [
+    "docker"
+    "libvirt"
+  ];
 }

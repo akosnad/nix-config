@@ -26,9 +26,13 @@
               size = "100%";
               content = {
                 type = "btrfs";
-                # extraArgs = [ "-f" ]; # Override existing partition
-                mountpoint = "/";
                 mountOptions = [ "compress=zstd" "noatime" "discard" ];
+                subvolumes = {
+                  "@root" = { mountpoint = "/"; };
+                  "@nix" = { mountpoint = "/nix"; };
+                  "@persist" = { mountpoint = "/persist"; };
+                  "@swap" = { mountpoint = "/swap"; };
+                };
               };
             };
           };
@@ -36,5 +40,7 @@
       };
     };
   };
+
+  fileSystems."/persist".neededForBoot = true;
 }
 

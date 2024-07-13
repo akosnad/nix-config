@@ -15,7 +15,6 @@
 
     ../common/global
     ../common/optional/ephemeral-btrfs.nix
-    ../common/optional/optin-persistence.nix
     ../common/optional/secureboot.nix
     ../common/optional/nvidia.nix
     ../common/optional/quietboot.nix
