@@ -20,7 +20,7 @@
   };
 
   swapDevices = [{
-    device = "/var/lib/swapfile";
+    device = "/swap/swapfile";
     size = 32 * 1024;
   }];
 
