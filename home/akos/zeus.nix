@@ -10,5 +10,6 @@ in
   home.persistence."/persist/${config.home.homeDirectory}".directories = [
     "docker"
     "libvirt"
+    "ca"
   ];
 }
