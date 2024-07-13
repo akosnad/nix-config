@@ -25,7 +25,7 @@
     };
   };
 
-  boot = lib.mkIf (config.nixpkgs.hostPlatform == "x86_64-linux") {
+  boot = lib.mkIf (config.nixpkgs.hostPlatform.system == "x86_64-linux") {
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
   };
