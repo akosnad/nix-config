@@ -29,6 +29,7 @@
                 mountOptions = [ "compress=zstd" "noatime" "discard" ];
                 subvolumes = {
                   "@root" = { mountpoint = "/"; };
+                  "@old_roots" = { };
                   "@nix" = { mountpoint = "/nix"; };
                   "@persist" = { mountpoint = "/persist"; };
                   "@swap" = { mountpoint = "/swap"; };
