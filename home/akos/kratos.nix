@@ -48,6 +48,4 @@ in
       "WLR_NO_HARDWARE_CURSORS,1"
     ];
   };
-
-  wallpaper = "${./features/desktop/wallpapers/bliss_graded_16_9.jpg}";
 }

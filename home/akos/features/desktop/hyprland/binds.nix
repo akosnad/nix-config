@@ -18,6 +18,11 @@ let
     fi
   '';
 
+  # unit defined in ./wallpaper.nix
+  cycle-wallpaper = writeShellScript "cycle-wallpaper" ''
+    systemctl --user --wait start wallpaper-changer.service
+  '';
+
   toggle-dark-mode = "toggle-theme"; # defined in global/default.nix
 
   toggle-gammastep = writeShellScript "toggle-gammastep.sh" ''
@@ -57,6 +62,7 @@ in
       "$mainMod, N, exec, swaync-client -t"
       "$mainMod, G, exec, ${toggle-gammastep}"
       "$mainMod, L, exec, ${config.programs.swaylock.package}/bin/swaylock -f --grace 0 --fade-in 1"
+      "$mainMod, W, exec, ${cycle-wallpaper}"
       "SUPERALT, L, exec, systemctl suspend"
 
       "$mainMod, Space, togglesplit, # dwindle"
