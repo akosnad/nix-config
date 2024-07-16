@@ -1,4 +1,7 @@
+{ inputs, ... }:
 {
+  imports = [ inputs.disko.nixosModules.disko ];
+
   disko.devices = {
     disk.vdb = {
       device = "/dev/disk/by-id/mmc-SC32G_0x52ddc32f";
@@ -31,6 +34,7 @@
                 "@nix" = { mountpoint = "/nix"; };
                 "@persist" = { mountpoint = "/persist"; };
                 "@swap" = { mountpoint = "/swap"; };
+                "@boot" = { mountpoint = "/boot"; };
               };
             };
           };
@@ -46,4 +50,6 @@
       ];
     };
   };
+
+  fileSystems."/persist".neededForBoot = true;
 }
