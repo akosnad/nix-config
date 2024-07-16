@@ -19,6 +19,7 @@
     ../common/optional/docker.nix
     ../common/optional/libvirt.nix
     ../common/optional/builder
+    ../common/optional/aarch64.nix
 
     ../common/users/akos
 
