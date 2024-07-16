@@ -4,7 +4,7 @@
     inputs.hardware.nixosModules.raspberry-pi-4
 
     ./hardware-configuration.nix
-    # ./disk-config.nix
+    ./disk-config.nix
     ./network.nix
     ./home-assistant
 
