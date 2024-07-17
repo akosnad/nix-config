@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, lib, ... }:
 {
   imports = [
     inputs.hardware.nixosModules.raspberry-pi-4
@@ -14,6 +14,8 @@
 
     ../common/users/akos
   ];
+
+  environment.persistence."/persist".enable = lib.mkForce false;
 
   system.stateVersion = "24.05";
 }
