@@ -17,7 +17,7 @@
     };
     networks = {
       "br-lan-bind" = {
-        matchConfig."Name" = "eth0";
+        matchConfig."Name" = "end0";
         networkConfig."Bridge" = "br-lan";
       };
       "br-lan" = {
@@ -30,6 +30,7 @@
         };
       };
       wan = {
+        # TODO: use actual interface name
         matchConfig."Name" = "eth1";
         networkConfig = {
           "DHCP" = true;
