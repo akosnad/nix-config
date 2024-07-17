@@ -4,11 +4,11 @@
     inputs.hardware.nixosModules.raspberry-pi-4
 
     ./hardware-configuration.nix
-    ./disk-config.nix
     ./network.nix
     ./home-assistant
 
     ../common/global
+    ../common/optional/ephemeral-btrfs.nix
     ../common/optional/use-builders.nix
     ../common/optional/docker.nix
     ../common/optional/high-availability.nix
