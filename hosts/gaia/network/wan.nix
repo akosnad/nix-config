@@ -20,28 +20,25 @@
         networkConfig = {
           Bond = "bond-wan";
           PrimarySlave = true;
-          Address="10.10.0.3/16";
         };
       };
 
       "31-bond-wan-slaves-bind" = {
         matchConfig.Name = "wan*";
+        networkConfig.Bond = "bond-wan";
+      };
+
+      "50-bond-wan" = {
+        matchConfig.Name = "bond-wan";
         networkConfig = {
-          Bond = "bond-wan";
           DHCP = true;
           IPv6AcceptRA = true;
         };
-      };
-
-      # taken from:
-      # https://raspberrypi.stackexchange.com/a/104267
-      "50-bond-wan" = {
-        matchConfig.Name = "bond-wan";
         routingPolicyRules = [{
           routingPolicyRuleConfig = {
+            OutgoingInterface = "bond-wan";
             Table = 200;
             Priority = 16384;
-            From="10.10.0.3";
           };
         }];
         routes = [{
@@ -49,8 +46,7 @@
             Table = 200;
             Destination = "0.0.0.0/0";
             Protocol = "static";
-            Gateway = "10.10.0.1";
-            PreferredSource = "10.10.0.3";
+            Gateway = "_dhcp4";
           };
         }];
       };
