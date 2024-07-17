@@ -55,7 +55,7 @@ in
 
       Timer = {
         # every 5 minutes
-        OnCalendar="*:0/5";
+        OnCalendar = "*:0/5";
       };
       Install.WantedBy = [ "graphical-session.target" ];
     };
