@@ -1,4 +1,4 @@
-{ lib, modulesPath, ... }:
+{ lib, modulesPath, pkgs, ... }:
 let
   btrfsCommonMountOptions = [ "noatime" "compress=zstd" "space_cache=v2" "discard" ];
   mkBtrfsSubvolumeMount = name: {
@@ -19,7 +19,10 @@ in
     supportedFilesystems = [ "btrfs" ];
   };
   boot.kernelModules = [ ];
+  boot.kernelPackages = pkgs.linuxPackages_rpi4;
   boot.extraModulePackages = [ ];
+  boot.loader.grub.enable = false;
+  boot.loader.generic-extlinux-compatible.enable = true;
 
   fileSystems = {
     "/boot" = {
