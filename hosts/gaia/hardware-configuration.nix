@@ -1,12 +1,4 @@
 { lib, modulesPath, pkgs, ... }:
-let
-  btrfsCommonMountOptions = [ "noatime" "compress=zstd" "space_cache=v2" "discard" ];
-  mkBtrfsSubvolumeMount = name: {
-    device = "/dev/disk/by-label/gaia";
-    fsType = "btrfs";
-    options = btrfsCommonMountOptions ++ [ "subvol=@${name}" ];
-  };
-in
 {
   imports =
     [
@@ -25,25 +17,14 @@ in
   boot.loader.generic-extlinux-compatible.enable = true;
 
   fileSystems = {
-    "/boot" = {
-      device = "/dev/disk/by-label/BOOT";
+    "/" = {
+      device = "/dev/disk/by-label/NIXOS_SD";
       fsType = "ext4";
-      neededForBoot = true;
     };
-
-    "/firmware" = {
-      device = "/dev/disk/by-label/FIRMWARE";
-      fsType = "vfat";
-    };
-
-    "/nix" = mkBtrfsSubvolumeMount "nix";
-    "/swap" = mkBtrfsSubvolumeMount "swap";
-    "/" = mkBtrfsSubvolumeMount "root";
-    "/persist" = mkBtrfsSubvolumeMount "persist" // { neededForBoot = true; };
   };
 
   swapDevices = [{
-    device = "/swap/swapfile";
+    device = "/swapfile";
     size = 8 * 1024;
   }];
 

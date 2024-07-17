@@ -8,7 +8,6 @@
     ./home-assistant
 
     ../common/global
-    ../common/optional/ephemeral-btrfs.nix
     ../common/optional/use-builders.nix
     ../common/optional/docker.nix
     ../common/optional/high-availability.nix
