@@ -12,6 +12,13 @@
   };
   boot.kernelModules = [ ];
   boot.kernelPackages = pkgs.linuxPackages_rpi4;
+  boot.kernelParams = [
+    "console=ttyS0,115200n8"
+    "console=ttyAMA0,115200n8"
+    "console=tty0"
+    "nohibernate"
+  ];
+  boot.consoleLogLevel = 7;
   boot.extraModulePackages = [ ];
   boot.loader.grub.enable = false;
   boot.loader.generic-extlinux-compatible.enable = true;
