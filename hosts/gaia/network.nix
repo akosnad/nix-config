@@ -23,10 +23,13 @@
       "br-lan" = {
         matchConfig."Name" = "br-lan";
         networkConfig = {
-          "IPv6SendRA" = true;
-          "Address" = "10.20.0.2/24";
-          "Gateway" = "10.10.0.1";
-          "DNS" = [ "127.0.0.1" "::1" ];
+          # TODO: change after deployment
+          #"IPv6SendRA" = true;
+          #"Address" = "10.20.0.2/24";
+          #"Gateway" = "10.10.0.1";
+          #"DNS" = [ "127.0.0.1" "::1" ];
+          "DHCP" = true;
+          "IPv6AcceptRA" = true;
         };
       };
       wan = {
