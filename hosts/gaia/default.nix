@@ -4,7 +4,7 @@
     inputs.hardware.nixosModules.raspberry-pi-4
 
     ./hardware-configuration.nix
-    ./network.nix
+    ./network
     ./home-assistant
 
     ../common/global
