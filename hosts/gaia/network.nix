@@ -4,7 +4,10 @@
     networkmanager.enable = false;
     useDHCP = false;
     useNetworkd = true;
-    firewall.enable = true;
+    firewall = {
+      enable = true;
+      trustedInterfaces = [ "br-lan" ];
+    };
   };
   systemd.network = {
     netdevs = {
