@@ -15,6 +15,7 @@
   services.hostapd = {
     enable = true;
     radios."wifi0" = {
+      wifi4.capabilities = [ ];
       networks."wifi0" = {
         ssid = "Gaia2";
         authentication = {
