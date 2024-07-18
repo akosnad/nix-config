@@ -22,13 +22,10 @@
       "50-br-lan" = {
         matchConfig.Name = "br-lan";
         networkConfig = {
-          # TODO: change after deployment
+          Address = "10.20.0.1/24";
+          DNS = [ "127.0.0.1" "::1" ];
+          IPv6AcceptRA = false;
           #"IPv6SendRA" = true;
-          #"Address" = "10.20.0.2/24";
-          #"Gateway" = "10.10.0.1";
-          #"DNS" = [ "127.0.0.1" "::1" ];
-          DHCP = true;
-          IPv6AcceptRA = true;
         };
       };
     };

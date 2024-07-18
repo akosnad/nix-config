@@ -2,6 +2,7 @@
   imports = [
     ./lan.nix
     ./wan.nix
+    ./wifi-ap.nix
   ];
 
   networking = {
