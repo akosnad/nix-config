@@ -20,10 +20,14 @@
     enable = true;
     radios."wifi0" = {
       band = "5g";
-      channel = 136;
+      channel = 0;
       networks."wifi0" = {
         ssid = "Gaia2";
-        authentication.saePasswordsFile = "/run/secrets-for-users/gaia-ap-password";
+        authentication = {
+          mode = "wpa3-sae-transition";
+          saePasswordsFile = "/run/secrets-for-users/gaia-ap-password";
+          wpaPasswordFile = "/run/secrets-for-users/gaia-ap-password";
+        };
       };
     };
   };
