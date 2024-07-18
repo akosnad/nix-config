@@ -20,7 +20,7 @@
     enable = true;
     radios."wifi0" = {
       band = "5g";
-      channel = 0;
+      channel = 40;
       networks."wifi0" = {
         ssid = "Gaia2";
         authentication = {
