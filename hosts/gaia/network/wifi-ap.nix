@@ -15,13 +15,10 @@
   services.hostapd = {
     enable = true;
     radios."wifi0" = {
-      band = "5g";
-      channel = 40;
       networks."wifi0" = {
         ssid = "Gaia2";
         authentication = {
-          mode = "wpa3-sae-transition";
-          saePasswordsFile = "/run/secrets-for-users/gaia-ap-password";
+          mode = "wpa2-sha256";
           wpaPasswordFile = "/run/secrets-for-users/gaia-ap-password";
         };
         settings.bridge = "br-lan";
