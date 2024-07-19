@@ -21,12 +21,12 @@ chain input {
 
 chain output {
     type filter hook output priority -100;
-    accept
+    oifname bond-wan accept
 }
 
 chain forward {
     type filter hook forward priority 0;
-    accept
+    iifname bond-wan accept
 }
 
 chain prerouting {

@@ -1,0 +1,11 @@
+chain input {
+    type filter hook input priority 100;
+}
+
+chain output {
+    type filter hook output priority -100;
+}
+
+chain prerouting {
+    type nat hook prerouting priority -100;
+}

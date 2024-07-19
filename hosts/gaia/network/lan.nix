@@ -30,4 +30,9 @@
       };
     };
   };
+
+  networking.nftables.tables.lan = {
+    family = "inet";
+    content = builtins.readFile ./lan.nft;
+  };
 }
