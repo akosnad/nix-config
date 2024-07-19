@@ -12,7 +12,7 @@ in
 {
   system.autoUpgrade = {
     enable = isClean;
-    dates = "hourly";
+    dates = lib.mkDefault "hourly";
     flags = [ "--refresh" ];
     flake = "github:akosnad/nix-config";
   };
