@@ -1,7 +1,0 @@
-table inet wan {
-    include "./wan.nft"
-}
-
-table inet lan {
-    include "./lan.nft"
-}

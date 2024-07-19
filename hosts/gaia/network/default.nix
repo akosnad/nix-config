@@ -3,6 +3,7 @@
     ./lan.nix
     ./wan.nix
     ./wifi-ap.nix
+    ./nat.nix
   ];
 
   networking = {
