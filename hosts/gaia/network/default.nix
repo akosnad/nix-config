@@ -4,6 +4,7 @@
     ./wan.nix
     ./wifi-ap.nix
     ./nat.nix
+    ./dhcp.nix
     ./adguard.nix
   ];
 
@@ -20,7 +21,10 @@
     nameservers = [
       "1.1.1.1"
       "1.0.0.1"
+      "8.8.8.8"
+      "8.8.4.4"
     ];
+    domain = "home.arpa";
   };
   boot.kernel.sysctl = {
     "net.ipv4.ip_forward" = "1";
