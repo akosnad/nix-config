@@ -26,10 +26,7 @@ chain output {
 
 chain forward {
     type filter hook forward priority 0;
-
-    iifname "br-lan" accept
-
-    counter drop
+    accept
 }
 
 chain prerouting {
