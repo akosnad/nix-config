@@ -1,8 +1,8 @@
 chain input {
     type filter hook input priority 100;
 
-    # accept any localhost traffic
-    iifname lo accept
+    # only filter fraffic from bond-wan
+    iifname != bond-wan return
 
     # accept traffic originated from us
     ct state {established, related} accept
@@ -26,14 +26,14 @@ chain output {
 
 chain forward {
     type filter hook forward priority 0;
-
-    iifname "br-lan" accept
-
-    counter drop
+    accept
 }
 
 chain prerouting {
     type nat hook prerouting priority -100;
+
+    # only apply on bond-wan
+    iifname != bond-wan return
 
     tcp dport 15577 counter dnat ip to 10.20.0.4:15577 comment "qbittorrent"
     udp dport 15577 counter dnat ip to 10.20.0.4:15577 comment "qbittorrent"
