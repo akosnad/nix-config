@@ -56,4 +56,9 @@
       mwan = 200;
     };
   };
+
+  networking.nftables.tables.wan = {
+    family = "inet";
+    content = builtins.readFile ./wan.nft;
+  };
 }
