@@ -20,7 +20,7 @@ in
 
   system.autoUpgrade = lib.mkIf autoUpgradeEnabled {
     allowReboot = true;
-    operation = "boot";
+    operation = "switch";
     rebootWindow = {
       lower = "02:00";
       upper = "06:00";
