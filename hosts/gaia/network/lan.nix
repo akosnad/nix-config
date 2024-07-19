@@ -25,7 +25,8 @@
           Address = "10.20.0.1/24";
           DNS = [ "127.0.0.1" "::1" ];
           IPv6AcceptRA = false;
-          #"IPv6SendRA" = true;
+          IPv6SendRA = true;
+          DHCPPrefixDelegation = true;
         };
       };
     };
