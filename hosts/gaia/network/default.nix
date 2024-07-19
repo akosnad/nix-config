@@ -7,9 +7,10 @@
 
   networking = {
     hostName = "gaia";
-    networkmanager.enable = false;
     useDHCP = false;
+    networkmanager.enable = false;
     useNetworkd = true;
+    nftables.enable = true;
     firewall = {
       enable = true;
       trustedInterfaces = [ "br-lan" ];

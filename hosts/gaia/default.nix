@@ -5,11 +5,9 @@
 
     ./hardware-configuration.nix
     ./network
-    ./home-assistant
 
     ../common/global
     ../common/optional/use-builders.nix
-    ../common/optional/docker.nix
     ../common/optional/high-availability.nix
 
     ../common/users/akos
