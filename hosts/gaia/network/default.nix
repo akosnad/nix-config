@@ -4,6 +4,7 @@
     ./wan.nix
     ./wifi-ap.nix
     ./nat.nix
+    ./adguard.nix
   ];
 
   networking = {
@@ -16,6 +17,10 @@
       enable = true;
       trustedInterfaces = [ "br-lan" ];
     };
+    nameservers = [
+      "1.1.1.1"
+      "1.0.0.1"
+    ];
   };
   boot.kernel.sysctl = {
     "net.ipv4.ip_forward" = "1";

@@ -1,0 +1,106 @@
+{ lib, ... }:
+{
+  services.adguardhome = {
+    enable = true;
+    mutableSettings = false;
+    settings = {
+      http.session_ttl = 720;
+      dhcp.enabled = false;
+      dns = {
+        bind_hosts = [ "10.20.0.1" ];
+        protection_enabled = true;
+        upstream_dns = [
+          "# https://cloudflare-dns.com/dns-query"
+          "# https://dns10.quad9.net/dns-query"
+          "# https://dns.google/dns-query"
+          "1.1.1.1"
+          "1.0.0.1"
+          "84.2.46.1"
+          "84.2.44.1"
+          "8.8.8.8"
+          "8.8.4.4"
+        ];
+        bootstrap_dns = [
+          "1.1.1.1"
+          "1.0.0.1"
+          "8.8.8.8"
+          "8.8.4.4"
+        ];
+        blocked_hosts = [
+          "version.bind"
+          "id.server"
+          "hostname.bind"
+          "wpad.local"
+        ];
+      };
+      filters = [
+        {
+          enabled = true;
+          url = "https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt";
+          name = "AdGuard DNS filter";
+          id = 1;
+        }
+        {
+          enabled = true;
+          url = "https://adaway.org/hosts.txt";
+          name = "AdAway Default Blocklist";
+          id = 2;
+        }
+        {
+          enabled = true;
+          url = "https://someonewhocares.org/hosts/zero/hosts";
+          name = "Dan Pollock's List";
+          id = 1656881098;
+        }
+        {
+          enabled = true;
+          url = "https://malware-filter.gitlab.io/malware-filter/urlhaus-filter-agh-online.txt";
+          name = "Online Malicious URL Blocklist";
+          id = 1656881099;
+        }
+        {
+          enabled = true;
+          url = "https://raw.githubusercontent.com/mitchellkrogza/The-Big-List-of-Hacked-Malware-Web-Sites/master/hosts";
+          name = "The Big List of Hacked Malware Web Sites";
+          id = 1656881100;
+        }
+        {
+          enabled = true;
+          url = "https://raw.githubusercontent.com/hoshsadiq/adblock-nocoin-list/master/hosts.txt";
+          name = "NoCoin Filter List";
+          id = 1656881101;
+        }
+        {
+          enabled = false;
+          url = "https://abp.oisd.nl/basic/";
+          name = "OISD Blocklist Basic";
+          id = 1656881102;
+        }
+        {
+          enabled = false;
+          url = "https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Alternate%20versions%20Anti-Malware%20List/AntiMalwareAdGuardHome.txt";
+          name = "Dandelion Sprout's Anti-Malware List";
+          id = 1656881103;
+        }
+        {
+          enabled = true;
+          url = "https://raw.githubusercontent.com/durablenapkin/scamblocklist/master/adguard.txt";
+          name = "Scam Blocklist by DurableNapkin";
+          id = 1656881104;
+        }
+        {
+          enabled = true;
+          url = "https://pgl.yoyo.org/adservers/serverlist.php?hostformat=adblockplus&showintro=1&mimetype=plaintext";
+          name = "Peter Lowe's List";
+          id = 1656881105;
+        }
+        {
+          enabled = false;
+          url = "https://raw.githubusercontent.com/kboghdady/youTube_ads_4_pi-hole/master/youtubelist.txt";
+          name = "Youtube Ads";
+          id = 1679948977;
+        }
+      ];
+    };
+  };
+}
