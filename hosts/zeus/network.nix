@@ -3,7 +3,7 @@
     hostName = "zeus";
     hosts = {
       # this is to fix hostname in servarr docker containers
-      "10.20.0.4" = [ "zeus" "zeus.local" ];
+      "10.20.0.4" = [ "zeus" "zeus.local" "zeus.home.arpa" ];
     };
     networkmanager.enable = false;
     useDHCP = false;
@@ -27,13 +27,13 @@
       br0 = {
         matchConfig."Name" = "br0";
         networkConfig = {
-          "DHCP" = "ipv6";
-          "IPv6AcceptRA" = true;
-          "IPv6SendRA" = false;
-          "DHCPPrefixDelegation" = false;
-          "Address" = "10.20.0.4/24";
-          "Gateway" = "10.20.0.2";
-          "DNS" = [ "10.20.0.2" "fc18:7681::1" ];
+          DHCP = "ipv6";
+          IPv6AcceptRA = true;
+          IPv6SendRA = false;
+          DHCPPrefixDelegation = false;
+          Address = "10.20.0.4/24";
+          Gateway = "10.20.0.1";
+          DNS = [ "10.20.0.1" ];
         };
       };
     };
