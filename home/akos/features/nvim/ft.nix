@@ -2,6 +2,7 @@
 {
   programs.neovim.plugins = with pkgs.vimPlugins; [
     vim-nix
+    vim-nftables
     {
       plugin = nvim-treesitter.withAllGrammars;
       type = "lua";
