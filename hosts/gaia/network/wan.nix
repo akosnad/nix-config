@@ -21,6 +21,12 @@
           Bond = "bond-wan";
           PrimarySlave = true;
         };
+        cakeConfig = {
+          Bandwidth = "500M";
+          FlowIsolationMode = "src-host";
+          NAT = true;
+          PriorityQueueingPreset = "diffserv4";
+        };
       };
 
       "31-bond-wan-slaves-bind" = {
