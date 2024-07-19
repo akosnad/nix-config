@@ -2,7 +2,6 @@
   imports = [
     ./lan.nix
     ./wan.nix
-    ./wifi-ap.nix
     ./nat.nix
     ./dhcp.nix
     ./adguard.nix
