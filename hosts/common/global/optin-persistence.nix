@@ -13,6 +13,9 @@
 
       files = [
         "/etc/machine-id"
+
+        # for system auto upgrading to remember trusted settings in flake
+        "/root/.local/share/nix/trusted-settings.json"
       ];
     };
   };
