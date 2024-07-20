@@ -1,7 +1,7 @@
 { pkgs, ... }:
 let
   debugpy = pkgs.python311.withPackages (ps: [ ps.debugpy ]);
-  codelldb = pkgs.vscode-extensions.vadimcn.vscode-lldb.overrideAttrs (final: prev: {
+  codelldb = pkgs.vscode-extensions.vadimcn.vscode-lldb.overrideAttrs (_final: _prev: {
     lldb = pkgs.lldb_16;
   });
 

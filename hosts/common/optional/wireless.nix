@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, ... }:
 let
   profileWithDefaults = { id, psk, ssid ? id }: {
     connection = {

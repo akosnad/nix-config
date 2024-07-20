@@ -1,7 +1,4 @@
-{ lib, inputs, config, ... }:
-let
-  inherit (inputs.nix-colors) colorSchemes;
-in
+{ config, ... }:
 {
   imports = [
     ./global

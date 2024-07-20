@@ -20,5 +20,5 @@
     vscode-extensions = (prev.vscode-extensions or { }) // inputs.vscode-extensions.extensions.${final.system}.vscode-marketplace;
   };
 
-  modifications = final: prev: { };
+  modifications = _final: _prev: { };
 }

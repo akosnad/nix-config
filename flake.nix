@@ -81,8 +81,6 @@
     { self
     , nixpkgs
     , home-manager
-    , vscode-server
-    , nixvirt
     , ...
     } @ inputs:
     let
