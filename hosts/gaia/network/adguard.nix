@@ -30,6 +30,7 @@
           "id.server"
           "hostname.bind"
           "wpad.local"
+          "wpad.home.arpa"
         ];
       };
       filters = [
