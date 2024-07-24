@@ -6,7 +6,7 @@ let
   wpctl = "${pkgs.wireplumber}/bin/wpctl";
   notify-send = "${pkgs.libnotify}/bin/notify-send";
 
-  isLocked = "${pgrep} -x ${swaylock}";
+  isLocked = "${pgrep} -x swaylock";
 
   # TODO: make this configurable
   lockTime = 60 * 5;
