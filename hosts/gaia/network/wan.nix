@@ -2,7 +2,7 @@
   systemd.network = {
     # USB Ethernet adatper
     links."10-wan0" = {
-      matchConfig.PermanentMACAddress = "00:e0:4c:68:00:5a";
+      matchConfig.PermanentMACAddress = "7c:c2:c6:1d:ed:72";
       linkConfig.Name = "wan0";
     };
 
