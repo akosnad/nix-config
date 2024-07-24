@@ -1,5 +1,6 @@
 { pkgs, lib, ... }:
 let
+  swww = lib.getExe pkgs.swww;
   wallpapersDir = pkgs.stdenvNoCC.mkDerivation {
     name = "wallpapers";
     src = ../wallpapers;
@@ -14,9 +15,15 @@ let
   wallpaper-changer = pkgs.writeShellApplication {
     name = "wallpaper-changer";
     text = ''
-      # select random file
-      find "${wallpapersDir}" -type f | ${pkgs.coreutils}/bin/sort -R | ${pkgs.coreutils}/bin/tail -n1 | while read -r file; do
-        ${pkgs.swww}/bin/swww img "''$file"
+      # get currently displayed file
+      curr="$(${swww} query | ${pkgs.coreutils}/bin/cut -d' ' -f8)"
+
+      # select random file other than current
+      find "${wallpapersDir}" -type f ! -path "$curr" | \
+        ${pkgs.coreutils}/bin/sort -R | \
+        ${pkgs.coreutils}/bin/tail -n1 | \
+      while read -r file; do
+        ${swww} img "''$file"
       done
     '';
   };
