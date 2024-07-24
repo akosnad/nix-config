@@ -11,7 +11,10 @@ in
       clock = true;
 
       effect-blur = "20x3";
-      grace = 5;
+
+      # TODO: grace period crashes swaylock-effects for some reason
+      #grace = 5;
+
       fade-in = 4.0;
 
       font = config.fontProfiles.regular.family;

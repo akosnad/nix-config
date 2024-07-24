@@ -8,7 +8,7 @@ let
   isLocked = "${pgrep} -x ${swaylock}";
 
   # TODO: make this configurable
-  lockTime = 60 * 5;
+  lockTime = 60 * 15;
 
   afterLockTimeout =
     { timeout
