@@ -9,7 +9,7 @@ let
   isLocked = "${pgrep} -x ${swaylock}";
 
   # TODO: make this configurable
-  lockTime = 60 * 15;
+  lockTime = 60 * 5;
   gracePeriod = 5;
   graceTime = lockTime - gracePeriod;
 
