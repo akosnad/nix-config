@@ -4,11 +4,14 @@ let
   pgrep = "${pkgs.procps}/bin/pgrep";
   hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
   wpctl = "${pkgs.wireplumber}/bin/wpctl";
+  notify-send = "${pkgs.libnotify}/bin/notify-send";
 
   isLocked = "${pgrep} -x ${swaylock}";
 
   # TODO: make this configurable
   lockTime = 60 * 15;
+  gracePeriod = 5;
+  graceTime = lockTime - gracePeriod;
 
   afterLockTimeout =
     { timeout
@@ -35,6 +38,12 @@ in
       [{
         timeout = lockTime;
         command = "${swaylock} --daemonize";
+      }]
+      # notify before locking
+      ++
+      [{
+        timeout = graceTime;
+        command = "${notify-send} -e -t ${builtins.toString (gracePeriod * 1000)} \"Session\" \"Screen will lock soon due to inactivity...\"";
       }]
       ++
       # mute mic
