@@ -2,7 +2,7 @@
   systemd.network = {
     # Raspberry Pi's internal ethernet port
     links."10-lan0" = {
-      matchConfig.PermanentMACAddress = "dc:a6:32:aa:3c:d1";
+      matchConfig.PermanentMACAddress = "dc:a6:32:19:bc:79";
       linkConfig.Name = "lan0";
     };
 
