@@ -33,6 +33,34 @@
           "wpad.home.arpa"
         ];
       };
+      user_rules = [
+        # unblock some used sites
+        "@@||plex.tv^"
+        "@@||youtube.com^"
+        "@@||www.dreamaquarium.com^$important"
+
+        ## unblock needed services
+        # Geotastic online game
+        "@@||geotastic.net^$important"
+        # Xiaomi phones don't work without this one
+        "@@||api.io.mi.com^$important"
+        # mail list/newsletter service
+        "@@||mlsend.com^$important"
+
+        # block Mi routers from calling home :P
+        "||api.miwifi.com^$client='10.20.0.5'"
+        "||api.miwifi.com^$client='10.20.0.6'"
+
+        # block rekordbox from trying to validate license :P
+        "||cloud.kuvo.com^"
+        "||rb-share.kuvo.com^"
+        "||accounts.us1.gigya.com^"
+        "||us1.gigya.com^"
+
+        # block synplant plugin from trying to validate license :P
+        "||nuedge.net^"
+        "||soniccharge.com^"
+      ];
       filters = [
         {
           enabled = true;
