@@ -27,6 +27,8 @@
           IPv6AcceptRA = false;
           IPv6SendRA = true;
           DHCPPrefixDelegation = true;
+          IPForward = "ipv6";
+          LLDP = true;
         };
       };
     };

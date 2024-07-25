@@ -39,6 +39,8 @@
         networkConfig = {
           DHCP = true;
           IPv6AcceptRA = true;
+          IPForward = "ipv6";
+          LLDP = true;
         };
         routingPolicyRules = [{
           routingPolicyRuleConfig = {
