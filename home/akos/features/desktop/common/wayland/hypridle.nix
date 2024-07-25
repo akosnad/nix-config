@@ -1,17 +1,17 @@
 { config, lib, pkgs, ... }:
 let
-  swaylock = "${config.programs.swaylock.package}/bin/swaylock";
+  hyprlock = "${config.programs.hyprlock.package}/bin/hyprlock";
   pgrep = "${pkgs.procps}/bin/pgrep";
   hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
   wpctl = "${pkgs.wireplumber}/bin/wpctl";
-  notify-send = "${pkgs.libnotify}/bin/notify-send";
   pkill = "${pkgs.procps}/bin/pkill";
 
-  isLocked = "${pgrep} -x swaylock";
+  isLocked = "${pgrep} -x hyprlock";
 
   # TODO: make this configurable
   lockTime = 60 * 5;
-  gracePeriod = 5;
+
+  gracePeriod = config.programs.hyprlock.settings.general.grace;
   graceTime = lockTime - gracePeriod;
 
   afterLockTimeout =
@@ -35,21 +35,15 @@ in
     enable = true;
     settings = {
       general = {
-        lock_cmd = "${swaylock} --daemonize";
-        unlock_cmd = "${pkill} --signal SIGUSR1 swaylock";
+        lock_cmd = hyprlock;
+        unlock_cmd = "${pkill} --signal SIGUSR1 hyprlock";
         ignore_dbus_inhibit = false;
       };
       listener =
         # lock screen
         [{
-          timeout = lockTime;
-          on-timeout = "${swaylock} --daemonize";
-        }]
-        # notify before locking
-        ++
-        [{
           timeout = graceTime;
-          on-timeout = "${notify-send} -e -t ${builtins.toString (gracePeriod * 1000)} \"Session\" \"Screen will lock soon due to inactivity...\"";
+          on-timeout = hyprlock;
         }]
         # mute mic
         ++

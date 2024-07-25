@@ -46,4 +46,9 @@ in
       auth include login
     '';
   };
+  security.pam.services.hyprlock = {
+    text = ''
+      auth include login
+    '';
+  };
 }

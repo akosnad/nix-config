@@ -61,7 +61,7 @@ in
       "$mainMod, Backspace, exec, ${toggle-dark-mode}"
       "$mainMod, N, exec, swaync-client -t"
       "$mainMod, G, exec, ${toggle-gammastep}"
-      "$mainMod, L, exec, ${config.programs.swaylock.package}/bin/swaylock -f --grace 0 --fade-in 1"
+      "$mainMod, L, exec, ${config.programs.hyprlock.package}/bin/hyprlock --immediate"
       "$mainMod, W, exec, ${cycle-wallpaper}"
       "SUPERALT, L, exec, systemctl suspend"
 

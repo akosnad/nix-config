@@ -4,7 +4,7 @@
     ./gammastep.nix
     ./wofi.nix
     ./eww
-    ./swaylock.nix
+    ./hyprlock.nix
     ./hypridle.nix
   ];
 
