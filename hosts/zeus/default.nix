@@ -12,7 +12,7 @@
     ../common/global
     ../common/optional/high-availability.nix
     ../common/optional/ephemeral-btrfs.nix
-    ../common/optional/docker.nix
+    ../common/optional/docker
     ../common/optional/libvirt.nix
     ../common/optional/builder
     ../common/optional/aarch64.nix
