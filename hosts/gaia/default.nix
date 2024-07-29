@@ -5,6 +5,7 @@
 
     ./hardware-configuration.nix
     ./network
+    ./home-assistant
 
     ../common/global
     ../common/optional/use-builders.nix
