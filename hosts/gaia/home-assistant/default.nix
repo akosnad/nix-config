@@ -15,7 +15,13 @@
       };
       volumes = [
         "/var/lib/hass:/config"
+        "/run/secrets/home-assistant-secrets:/config/secrets.yaml:ro"
       ];
     };
+  };
+
+  sops.secrets.home-assistant-secrets = {
+    owner = "root";
+    sopsFile = ./secrets.yaml;
   };
 }
