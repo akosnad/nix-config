@@ -1,14 +1,11 @@
 {
-  imports = [
-    ../../common/optional/docker.nix
-  ];
-
   virtualisation.oci-containers.containers = {
     homeassistant = {
       image = "ghcr.io/home-assistant/home-assistant:stable";
       extraOptions = [
         "--privileged"
         "--network=host"
+        "--restart=always"
       ];
       environment = {
         TZ = "Europe/Budapest";

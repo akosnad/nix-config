@@ -16,7 +16,7 @@
     ../common/optional/quietboot.nix
     ../common/optional/pipewire.nix
     ../common/optional/greetd.nix
-    ../common/optional/docker.nix
+    ../common/optional/docker
     ../common/optional/envfs.nix
     ../common/optional/builder
     ../common/optional/vscode-server.nix

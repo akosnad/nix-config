@@ -21,7 +21,7 @@
     ../common/optional/secureboot.nix
     ../common/optional/pipewire.nix
     ../common/optional/greetd.nix
-    ../common/optional/docker.nix
+    ../common/optional/docker
     ../common/optional/wireshark.nix
 
     ../common/users/akos
