@@ -35,7 +35,10 @@
 
   services.libinput = {
     enable = true;
-    touchpad.tapping = true;
+    touchpad = {
+      tapping = true;
+      accelSpeed = 0.3;
+    };
   };
 
   # needed for Windows dual boot

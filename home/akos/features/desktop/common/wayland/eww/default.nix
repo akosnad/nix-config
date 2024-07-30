@@ -22,7 +22,7 @@ let
     '';
   };
 
-  eww_pkg = pkgs.inputs.eww.eww;
+  eww_pkg = pkgs.eww;
 in
 
 {
