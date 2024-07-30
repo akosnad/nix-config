@@ -32,6 +32,6 @@
     owner = config.systemd.services.home-assistant.serviceConfig.User;
     sopsFile = ./secrets.yaml;
     path = "/var/lib/hass/secrets.yaml";
-    restartUnits = [ "docker-home-assistant.service" ];
+    restartUnits = [ "home-assistant.service" ];
   };
 }
