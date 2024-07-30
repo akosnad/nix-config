@@ -1,7 +1,6 @@
-{ pkgs, lib, config, inputs, ... }:
+{ pkgs, lib, config, ... }:
 {
   imports = [
-    inputs.hyprland.homeManagerModules.default
     ../common
     ../common/wayland
 
@@ -16,13 +15,13 @@
   ];
 
   xdg.portal = {
-    extraPortals = [ pkgs.inputs.hyprland.xdg-desktop-portal-hyprland ];
+    extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
     configPackages = [ config.wayland.windowManager.hyprland.package ];
   };
 
   wayland.windowManager.hyprland = {
     enable = true;
-    plugins = with pkgs.inputs.hyprland-plugins; [
+    plugins = with pkgs.hyprlandPlugins; [
       hyprexpo
     ];
     systemd = {

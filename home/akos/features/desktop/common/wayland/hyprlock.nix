@@ -1,4 +1,4 @@
-{ config, pkgs, ...}:
+{ config, ...}:
 let
   inherit (config.colorscheme) colors;
   primaryMonitor = builtins.head (builtins.filter (m: m.primary) config.monitors);
@@ -6,7 +6,6 @@ in
 {
   programs.hyprlock = {
     enable = true;
-    package = pkgs.inputs.hyprlock.default;
     settings = {
       general = {
         grace = 5;
