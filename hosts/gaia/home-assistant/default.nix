@@ -3,6 +3,14 @@
   services.home-assistant = {
     enable = true;
     openFirewall = false;
+    extraComponents = [
+      "default_config"
+      "met"
+      "esphome"
+      "google_translate"
+      "shopping_list"
+      "radio_browser"
+    ];
     config = {
       default_config = {};
       homeassistant = {
