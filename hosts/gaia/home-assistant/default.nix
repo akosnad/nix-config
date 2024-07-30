@@ -1,3 +1,4 @@
+{ config, ... }:
 {
   services.home-assistant = {
     enable = true;
@@ -20,7 +21,7 @@
   };
 
   sops.secrets.home-assistant-secrets = {
-    owner = "root";
+    owner = config.systemd.services.home-assistant.serviceConfig.User;
     sopsFile = ./secrets.yaml;
     path = "/var/lib/hass/secrets.yaml";
     restartUnits = [ "docker-home-assistant.service" ];
