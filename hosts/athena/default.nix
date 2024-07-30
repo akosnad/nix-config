@@ -1,12 +1,10 @@
 { inputs
 , lib
-, pkgs
 , ...
 }: {
   imports = [
     inputs.hardware.nixosModules.common-cpu-intel
-    # TODO: removed until it's fixed
-    # inputs.hardware.nixosModules.common-gpu-intel
+    inputs.hardware.nixosModules.common-gpu-intel
     inputs.hardware.nixosModules.common-pc-ssd
 
     ./hardware-configuration.nix
@@ -38,19 +36,6 @@
   services.libinput = {
     enable = true;
     touchpad.tapping = true;
-  };
-
-
-  # TODO: Imported options from hardware/common/common-gpu-intel
-  # until it's fixed
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
-    extraPackages = with pkgs; [ libvdpau-va-gl intel-media-driver ];
-  };
-  environment.variables = {
-    VDPAU_DRIVER = "va_gl";
   };
 
   # needed for Windows dual boot
