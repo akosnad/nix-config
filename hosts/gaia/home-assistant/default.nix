@@ -1,24 +1,28 @@
 {
-  virtualisation.oci-containers.containers = {
-    homeassistant = {
-      image = "ghcr.io/home-assistant/home-assistant:stable";
-      extraOptions = [
-        "--privileged"
-        "--network=host"
-        "--restart=always"
-      ];
-      environment = {
-        TZ = "Europe/Budapest";
+  services.home-assistant = {
+    enable = true;
+    openFirewall = false;
+    config = {
+      default_config = {};
+      homeassistant = {
+        name = "Gaia";
+        latitude = "!secret latitude";
+        longitude = "!secret longitude";
+        elevation = "!secret elevation";
+        unit_system = "metric";
+        time_zone = "Europe/Budapest";
       };
-      volumes = [
-        "/var/lib/hass:/config"
-        "/run/secrets/home-assistant-secrets:/config/secrets.yaml:ro"
-      ];
+      frontend = {
+        themes = "!include_dir_merge_named themes";
+      };
+      http = {};
     };
   };
 
   sops.secrets.home-assistant-secrets = {
     owner = "root";
     sopsFile = ./secrets.yaml;
+    path = "/var/lib/hass/secrets.yaml";
+    restartUnits = [ "docker-home-assistant.service" ];
   };
 }
