@@ -12,7 +12,6 @@
       "radio_browser"
     ];
     config = {
-      default_config = {};
       homeassistant = {
         name = "Gaia";
         latitude = "!secret latitude";
@@ -24,7 +23,16 @@
       frontend = {
         themes = "!include_dir_merge_named themes";
       };
-      http = {};
+      http = { };
+
+      map = {};
+      shopping_list = { };
+      backup = { };
+      mobile_app = { };
+      cofig = { };
+      default_config = { };
+      system_health = { };
+      system_log = { };
     };
   };
 
