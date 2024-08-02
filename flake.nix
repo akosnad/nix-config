@@ -59,6 +59,8 @@
       url = "github:nix-community/lanzaboote/v0.3.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    buildbot-nix.url = "github:nix-community/buildbot-nix";
   };
 
   outputs =

@@ -23,3 +23,9 @@ creation_rules:
         - *gaia
         pgp:
         - *akos
+  - path_regex: hosts/zeus/secrets.ya?ml$
+    key_groups:
+      - age:
+        - *zeus
+        pgp:
+        - *akos

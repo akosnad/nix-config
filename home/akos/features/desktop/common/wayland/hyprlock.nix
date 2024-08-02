@@ -1,4 +1,4 @@
-{ config, ...}:
+{ config, ... }:
 let
   inherit (config.colorscheme) colors;
   primaryMonitor = builtins.head (builtins.filter (m: m.primary) config.monitors);

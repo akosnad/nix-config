@@ -20,6 +20,7 @@
     ../common/optional/envfs.nix
     ../common/optional/builder
     ../common/optional/aarch64.nix
+    ../common/optional/buildbot-worker.nix
 
     ../common/users/akos
 
