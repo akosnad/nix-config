@@ -21,10 +21,16 @@
     };
   };
 
-  services.buildbot-master.extraConfig = ''
-    c["protocols"] = {"pb": {"port": "tcp:9989:interface=\\:\\:"}}
-  '';
   networking.firewall.allowedTCPPorts = [ 9989 ];
+  services.buildbot-master = {
+    extraConfig = ''
+      c["protocols"] = {"pb": {"port": "tcp:9989:interface=\\:\\:"}}
+    '';
+    pythonPackages = ps: [
+      ps.bcrypt
+      ps.cryptography
+    ];
+  };
 
   sops.secrets =
     let
