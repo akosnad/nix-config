@@ -60,7 +60,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    buildbot-nix.url = "github:nix-community/buildbot-nix/0.1.1";
+    buildbot-nix.url = "github:MagicRB/buildbot-nix/combined-build-reports-github";
   };
 
   outputs =
