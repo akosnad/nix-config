@@ -1,4 +1,4 @@
-{ inputs, config, lib, ... }:
+{ inputs, config, lib, pkgs, ... }:
 {
   imports = [
     inputs.buildbot-nix.nixosModules.buildbot-master
@@ -26,7 +26,10 @@
     extraConfig = ''
       c["protocols"] = {"pb": {"port": "tcp:9989:interface=\\:\\:"}}
     '';
-    pythonPackages = p: [
+    pythonPackages = _: let
+      buildbotPkgs = import inputs.buildbot-nix.inputs.nixpkgs { system = pkgs.system; };
+      p = buildbotPkgs.python312Packages;
+    in [
       p.bcrypt
       p.cryptography
     ];
