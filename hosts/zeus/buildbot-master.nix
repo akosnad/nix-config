@@ -1,4 +1,7 @@
 { inputs, config, lib, pkgs, ... }:
+let
+  buildbotPkgs = import inputs.buildbot-nix.inputs.nixpkgs { system = pkgs.system; };
+in
 {
   imports = [
     inputs.buildbot-nix.nixosModules.buildbot-master
@@ -26,13 +29,15 @@
     extraConfig = ''
       c["protocols"] = {"pb": {"port": "tcp:9989:interface=\\:\\:"}}
     '';
-    pythonPackages = _: let
-      buildbotPkgs = import inputs.buildbot-nix.inputs.nixpkgs { system = pkgs.system; };
-      p = buildbotPkgs.python312Packages;
-    in [
+    pythonPackages = _: let p = buildbotPkgs.python312Packages; in [
       p.bcrypt
       p.cryptography
     ];
+  };
+
+  # FIXME: this is a hack to make buildbot-master not crash
+  systemd.services.buildbot-master.serviceConfig = {
+    ExecStart = lib.mkForce "${buildbotPkgs.python312Packages.twisted} -o --nodaemon --pidfile= --logfile - --python /var/lib/buildbot/master/buildbot.tac";
   };
 
   sops.secrets =
