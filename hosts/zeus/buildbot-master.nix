@@ -26,9 +26,9 @@
     extraConfig = ''
       c["protocols"] = {"pb": {"port": "tcp:9989:interface=\\:\\:"}}
     '';
-    pythonPackages = ps: [
-      ps.bcrypt
-      ps.cryptography
+    pythonPackages = p: [
+      p.bcrypt
+      p.cryptography
     ];
   };
 
