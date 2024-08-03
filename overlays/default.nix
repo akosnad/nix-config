@@ -20,11 +20,5 @@
     vscode-extensions = (prev.vscode-extensions or { }) // inputs.vscode-extensions.extensions.${final.system}.vscode-marketplace;
   };
 
-  modifications = final: prev: let 
-    buildbotPkgs = import inputs.buildbot-nix.inputs.nixpkgs { system = final.system; };
-  in
-  {
-    buildbot-full = buildbotPkgs.buildbot-full;
-    buildbot = buildbotPkgs.buildbot;
-  };
+  modifications = _final: _prev: { };
 }
