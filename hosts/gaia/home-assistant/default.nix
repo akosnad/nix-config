@@ -45,6 +45,10 @@
       plotly-graph-card
       wallpanel
     ];
+    customThemes = with pkgs.home-assistant-custom-themes; [
+      google
+      soft
+    ];
     config = {
       homeassistant = {
         name = "Gaia";
@@ -53,9 +57,6 @@
         elevation = "!secret elevation";
         unit_system = "metric";
         time_zone = "Europe/Budapest";
-      };
-      frontend = {
-        themes = "!include_dir_merge_named themes";
       };
       http = { };
 
