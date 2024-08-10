@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 let
   bicep = pkgs.vscode-extensions.ms-azuretools.vscode-bicep;
 in
@@ -160,6 +160,9 @@ in
       '';
     }
   ];
+
+
+  home.persistence."/persist/${config.home.homeDirectory}".files = [ ".config/github-copilot/hosts.json" ];
 
   home.packages = with pkgs; [
     # LSP servers
