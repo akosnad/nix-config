@@ -1,5 +1,10 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 {
+  imports = [
+    ./postgres.nix
+    ./lovelace
+  ];
+
   services.home-assistant = {
     enable = true;
     openFirewall = false;
@@ -10,6 +15,33 @@
       "google_translate"
       "shopping_list"
       "radio_browser"
+      "recorder"
+      "yeelight"
+      "co2signal"
+      "adguard"
+      "tuya"
+      "androidtv_remote"
+      "plex"
+      "openai_conversation"
+      "spotify"
+      "google"
+      "cast"
+      "dlna_dmr"
+      "history"
+      "logbook"
+    ];
+    extraPackages = python3Packages: with python3Packages; [
+      # recorder postgresql support
+      psycopg2
+    ];
+    customComponents = with pkgs.home-assistant-custom-components; [
+      xiaomi_miot
+      localtuya
+    ];
+    customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
+      mushroom
+      mini-media-player
+      plotly-graph-card
     ];
     config = {
       homeassistant = {
@@ -25,14 +57,13 @@
       };
       http = { };
 
-      map = {};
-      shopping_list = { };
       backup = { };
       mobile_app = { };
-      cofig = { };
-      default_config = { };
+      config = { };
       system_health = { };
       system_log = { };
+      history = { };
+      logbook = { };
     };
   };
 

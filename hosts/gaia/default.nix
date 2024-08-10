@@ -6,6 +6,7 @@
     ./hardware-configuration.nix
     ./network
     ./home-assistant
+    ./postgresql.nix
 
     ../common/global
     ../common/optional/use-builders.nix

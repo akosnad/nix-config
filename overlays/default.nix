@@ -18,6 +18,7 @@
     // {
     vimPlugins = (prev.vimPlugins or { }) // import ../pkgs/vim-plugins { pkgs = final; };
     vscode-extensions = (prev.vscode-extensions or { }) // inputs.vscode-extensions.extensions.${final.system}.vscode-marketplace;
+    home-assistant-custom-lovelace-modules = (prev.home-assistant-custom-lovelace-modules or { }) // import ../pkgs/home-assistant-custom-lovelace-modules { pkgs = final; };
   };
 
   modifications = _final: _prev: { };

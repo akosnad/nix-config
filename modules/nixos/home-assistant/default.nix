@@ -1,0 +1,5 @@
+{
+  imports = [
+    ./additional-dashboards.nix
+  ];
+}
