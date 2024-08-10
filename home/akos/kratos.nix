@@ -6,6 +6,7 @@
     ./features/vscode.nix
     ./features/chromium.nix
     ./features/shell/azure.nix
+    ./features/discord.nix
   ];
 
   monitors = [
