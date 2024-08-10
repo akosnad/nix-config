@@ -42,6 +42,7 @@
       mushroom
       mini-media-player
       plotly-graph-card
+      wallpanel
     ];
     config = {
       homeassistant = {
