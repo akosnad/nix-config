@@ -3,6 +3,7 @@
   imports = [
     ./postgres.nix
     ./lovelace
+    ./zones.nix
   ];
 
   services.home-assistant = {
