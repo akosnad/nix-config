@@ -23,6 +23,7 @@
     openFirewall = false;
     extraComponents = [
       "default_config"
+      "cloud"
       "met"
       "esphome"
       "google_translate"
@@ -85,6 +86,7 @@
       system_log = { };
       history = { };
       logbook = { };
+      cloud = { };
     };
   };
 
