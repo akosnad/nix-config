@@ -6,13 +6,14 @@
     ./hardware-configuration.nix
     ./network
     ./home-assistant
+    ./postgresql.nix
+    ./mqtt.nix
+    ./backup.nix
+    ./node-red.nix
 
     ../common/global
     ../common/optional/use-builders.nix
     ../common/optional/high-availability.nix
-
-    ../common/optional/docker
-    ../common/optional/docker/watchtower.nix
 
     ../common/users/akos
   ];

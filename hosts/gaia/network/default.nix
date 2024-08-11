@@ -5,6 +5,7 @@
     ./nat.nix
     ./dhcp.nix
     ./adguard.nix
+    ./dyndns.nix
   ];
 
   networking = {
@@ -15,7 +16,7 @@
     nftables.enable = true;
     firewall = {
       enable = true;
-      trustedInterfaces = [ "br-lan" ];
+      trustedInterfaces = [ "br-lan" "tailscale0" ];
     };
     nameservers = [
       "1.1.1.1"
@@ -29,4 +30,5 @@
     "net.ipv4.ip_forward" = "1";
     "net.ipv6.conf.all.forwarding" = "1";
   };
+  services.openssh.openFirewall = false;
 }

@@ -6,6 +6,7 @@
     ./firefox.nix
     ./alacritty
     ./audio.nix
+    ./mqtt-notify.nix
   ];
 
   dconf.settings."org/gnome/desktop/interface".color-scheme =

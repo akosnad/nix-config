@@ -17,6 +17,12 @@ creation_rules:
         - *gaia
         pgp:
         - *akos
+  - path_regex: hosts/gaia/secrets.ya?ml$
+    key_groups:
+      - age:
+        - *gaia
+        pgp:
+        - *akos
   - path_regex: hosts/gaia/home-assistant/secrets.ya?ml$
     key_groups:
       - age:
