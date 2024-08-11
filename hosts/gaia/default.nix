@@ -7,6 +7,7 @@
     ./network
     ./home-assistant
     ./postgresql.nix
+    ./mqtt.nix
 
     ../common/global
     ../common/optional/use-builders.nix

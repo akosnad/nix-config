@@ -15,7 +15,7 @@
     nftables.enable = true;
     firewall = {
       enable = true;
-      trustedInterfaces = [ "br-lan" ];
+      trustedInterfaces = [ "br-lan" "tailscale0" ];
     };
     nameservers = [
       "1.1.1.1"

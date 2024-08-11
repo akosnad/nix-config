@@ -9,8 +9,8 @@
       };
       action = {
         service = "backup.create";
-        data = {};
-        metadata  = {};
+        data = { };
+        metadata = { };
       };
     }];
     "automation ui" = "!include automations.yaml";
