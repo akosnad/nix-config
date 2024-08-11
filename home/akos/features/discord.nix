@@ -44,7 +44,7 @@ in
   };
 
   home.persistence."/persist/${config.home.homeDirectory}" = {
-    directories = map withArmcordConfigDir [ "plugins" "themes" "Local Storage" "Session Storage"];
+    directories = map withArmcordConfigDir [ "plugins" "themes" "Local Storage" "Session Storage" ];
     files = map withArmcordConfigDir [ "Cookies" "Preferences" ];
   };
 }

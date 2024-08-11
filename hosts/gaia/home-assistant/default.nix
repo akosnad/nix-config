@@ -8,6 +8,10 @@
     ./scripts
     ./scenes
     ./hvac.nix
+    ./heating.nix
+    ./template-entities
+    ./notify.nix
+    ./bkk-stop.nix
   ];
 
   environment.systemPackages = with pkgs; [
@@ -38,6 +42,8 @@
       "dlna_dmr"
       "history"
       "logbook"
+      "rest"
+      "rest_command"
     ];
     extraPackages = python3Packages: with python3Packages; [
       # recorder postgresql support
@@ -47,12 +53,6 @@
       xiaomi_miot
       localtuya
       hass-node-red
-    ];
-    customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
-      mushroom
-      mini-media-player
-      plotly-graph-card
-      wallpanel
     ];
     customThemes = with pkgs.home-assistant-custom-themes; [
       google

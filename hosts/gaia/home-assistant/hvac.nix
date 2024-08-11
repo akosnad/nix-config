@@ -8,9 +8,9 @@ let
     text = ''
       node ${bridge} \
         --hvac-host="10.20.0.30" \
-		--mqtt-broker-url="mqtt://localhost" \
-		--mqtt-topic-prefix="${topicPrefix}" \
-		--mqtt-retain="true" \
+        --mqtt-broker-url="mqtt://localhost" \
+        --mqtt-topic-prefix="${topicPrefix}" \
+        --mqtt-retain="true" \
         --mqtt-username="" \
         --mqtt-password=""
     '';
@@ -31,7 +31,7 @@ in
   services.home-assistant.config = {
     mqtt.climate = {
       name = "helios";
-          
+
       current_temperature_topic = "${topicPrefix}/temperature/get";
       temperature_command_topic = "${topicPrefix}/temperature/set";
       temperature_state_topic = "${topicPrefix}/temperature/get";
@@ -43,7 +43,7 @@ in
       swing_mode_command_topic = "${topicPrefix}/swingvert/set";
       #power_state_topic = "${topicPrefix}/power/get";
       power_command_topic = "${topicPrefix}/power/set";
-  
+
       payload_off = 0;
       payload_on = 1;
       modes = [

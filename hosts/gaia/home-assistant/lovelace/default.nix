@@ -1,9 +1,17 @@
+{ pkgs, ... }:
 {
   imports = [
     ./akos.nix
   ];
 
   services.home-assistant = {
+    customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
+      mushroom
+      mini-media-player
+      plotly-graph-card
+      wallpanel
+    ];
+
     # sets the mode for default dashboard
     config.lovelace.mode = "yaml";
 

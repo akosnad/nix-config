@@ -1,6 +1,6 @@
 {
   services.home-assistant.config = {
-    "script declarative" = [];
+    "script declarative" = [ ];
     "script ui" = "!include scripts.yaml";
   };
 }
