@@ -14,9 +14,6 @@
     ../common/optional/use-builders.nix
     ../common/optional/high-availability.nix
 
-    ../common/optional/docker
-    ../common/optional/docker/watchtower.nix
-
     ../common/users/akos
   ];
 
