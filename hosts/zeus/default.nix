@@ -8,6 +8,7 @@
     ./hardware-configuration.nix
     ./disk-config.nix
     ./network.nix
+    ./esphome.nix
 
     ../common/global
     ../common/optional/high-availability.nix
