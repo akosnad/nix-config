@@ -5,6 +5,7 @@
     ./nat.nix
     ./dhcp.nix
     ./adguard.nix
+    ./dyndns.nix
   ];
 
   networking = {
