@@ -20,10 +20,19 @@ in
   systemd.services.gree-hvac-mqtt-bridge = {
     description = "Gree HVAC MQTT Bridge";
     wantedBy = [ "multi-user.target" ];
-    after = [ "network.target" ];
+    wants = [ "home-assistant.service" ];
+    after = [ "network.target" "home-assistant.service" ];
+    partOf = [ "home-assistant.service" ];
     serviceConfig = {
       Restart = "always";
       RestartSec = 3;
+
+      # this is a hack to wait for home assistant to load, only then publish the state.
+      # otherwise the entity will be shown as unavailable initally.
+      #
+      # TODO: shouldn't the app solve this by retaining messages?
+      ExecStartPre = "${pkgs.coreutils}/bin/sleep 60";
+
       ExecStart = "${lib.getExe bridgeScript}";
     };
   };

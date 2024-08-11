@@ -1,9 +1,5 @@
 { pkgs, ... }:
 {
-  imports = [
-    ./akos.nix
-  ];
-
   services.home-assistant = {
     customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
       mushroom
