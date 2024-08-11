@@ -1,0 +1,62 @@
+diff --git a/package-lock.json b/package-lock.json
+index 696944c..cf06181 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -1,12 +1,12 @@
+ {
+   "name": "plotly-graph-card",
+-  "version": "2.1.0",
++  "version": "to-be-set-on-release",
+   "lockfileVersion": 2,
+   "requires": true,
+   "packages": {
+     "": {
+       "name": "plotly-graph-card",
+-      "version": "2.1.0",
++      "version": "to-be-set-on-release",
+       "license": "ISC",
+       "dependencies": {
+         "binary-search-bounds": "^2.0.5",
+@@ -18,7 +18,7 @@
+         "lodash": "^4.17.21",
+         "ml-fft": "^1.3.5",
+         "ml-regression-exponential": "^2.1.0",
+-        "ml-regression-logarithmic": "github:DoubleCorner/regression-logarithmic",
++        "ml-regression-logarithmic": "github:akosnad/regression-logarithmic",
+         "ml-regression-polynomial": "^2.2.0",
+         "ml-regression-power": "^2.0.0",
+         "ml-regression-robust-polynomial": "^3.0.0",
+@@ -4858,8 +4858,7 @@
+     },
+     "node_modules/ml-regression-logarithmic": {
+       "version": "1.0.0",
+-      "resolved": "git+ssh://git@github.com/DoubleCorner/regression-logarithmic.git#07e2a5a839d5c14391e71573c62dcd4d5e038b22",
+-      "license": "MIT",
++      "resolved": "git+ssh://git@github.com/akosnad/regression-logarithmic.git#5198a6a26a9f27e1d7fe3f1f7b266c716f3f94e4",
+       "dependencies": {
+         "ml-regression-base": "^2.1.6"
+       }
+@@ -10954,8 +10953,8 @@
+       }
+     },
+     "ml-regression-logarithmic": {
+-      "version": "git+ssh://git@github.com/DoubleCorner/regression-logarithmic.git#07e2a5a839d5c14391e71573c62dcd4d5e038b22",
+-      "from": "ml-regression-logarithmic@github:DoubleCorner/regression-logarithmic",
++      "version": "git+ssh://git@github.com/akosnad/regression-logarithmic.git#5198a6a26a9f27e1d7fe3f1f7b266c716f3f94e4",
++      "from": "ml-regression-logarithmic@github:akosnad/regression-logarithmic",
+       "requires": {
+         "ml-regression-base": "^2.1.6"
+       }
+diff --git a/package.json b/package.json
+index 1748461..c9e4c46 100644
+--- a/package.json
++++ b/package.json
+@@ -34,7 +34,7 @@
+     "lodash": "^4.17.21",
+     "ml-fft": "^1.3.5",
+     "ml-regression-exponential": "^2.1.0",
+-    "ml-regression-logarithmic": "github:DoubleCorner/regression-logarithmic",
++    "ml-regression-logarithmic": "github:akosnad/regression-logarithmic",
+     "ml-regression-polynomial": "^2.2.0",
+     "ml-regression-power": "^2.0.0",
+     "ml-regression-robust-polynomial": "^3.0.0",
