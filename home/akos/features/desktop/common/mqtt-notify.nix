@@ -1,6 +1,6 @@
 { pkgs, lib, hostName, ... }:
 let
-  endpoint = "mqtt://zeus";
+  endpoint = "mqtt://gaia";
   availability_topic = "${hostName}_availability";
   command_topic = "${hostName}_notify";
   object_id = "${hostName}_nixos_notify";
