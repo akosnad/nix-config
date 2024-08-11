@@ -5,6 +5,8 @@
     ./lovelace
     ./zones.nix
     ./automations
+    ./scripts
+    ./scenes
   ];
 
   environment.systemPackages = with pkgs; [
