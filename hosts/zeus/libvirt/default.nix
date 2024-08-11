@@ -13,7 +13,7 @@ in
       domains = [
         {
           definition = import ./hassos-vm.nix { inherit ovmf pkgs; };
-          active = true;
+          active = false;
         }
       ];
       pools = [
