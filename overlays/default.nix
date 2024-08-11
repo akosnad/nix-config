@@ -20,6 +20,7 @@
     vscode-extensions = (prev.vscode-extensions or { }) // inputs.vscode-extensions.extensions.${final.system}.vscode-marketplace;
     home-assistant-custom-lovelace-modules = (prev.home-assistant-custom-lovelace-modules or { }) // import ../pkgs/home-assistant-custom-lovelace-modules { pkgs = final; };
     home-assistant-custom-themes = import ../pkgs/home-assistant-custom-themes { pkgs = final; };
+    nodePackages = import ../pkgs/nodePackages { pkgs = final; };
   };
 
   modifications = _final: _prev: { };

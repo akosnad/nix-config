@@ -7,6 +7,7 @@
     ./automations
     ./scripts
     ./scenes
+    ./hvac.nix
   ];
 
   environment.systemPackages = with pkgs; [
