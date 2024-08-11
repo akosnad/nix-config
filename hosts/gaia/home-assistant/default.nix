@@ -4,6 +4,7 @@
     ./postgres.nix
     ./lovelace
     ./zones.nix
+    ./automations
   ];
 
   services.home-assistant = {
@@ -59,7 +60,6 @@
         time_zone = "Europe/Budapest";
       };
       http = { };
-
       backup = { };
       mobile_app = { };
       config = { };
