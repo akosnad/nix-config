@@ -46,6 +46,7 @@
     customComponents = with pkgs.home-assistant-custom-components; [
       xiaomi_miot
       localtuya
+      hass-node-red
     ];
     customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
       mushroom
