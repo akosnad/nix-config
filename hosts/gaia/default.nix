@@ -8,6 +8,7 @@
     ./home-assistant
     ./postgresql.nix
     ./mqtt.nix
+    ./backup.nix
 
     ../common/global
     ../common/optional/use-builders.nix

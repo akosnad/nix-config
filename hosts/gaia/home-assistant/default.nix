@@ -7,6 +7,10 @@
     ./automations
   ];
 
+  environment.systemPackages = with pkgs; [
+    home-assistant-cli
+  ];
+
   services.home-assistant = {
     enable = true;
     openFirewall = false;
@@ -58,6 +62,16 @@
         elevation = "!secret elevation";
         unit_system = "metric";
         time_zone = "Europe/Budapest";
+        auth_providers = [
+          { type = "homeassistant"; }
+          {
+            type = "trusted_networks";
+            trusted_networks = [
+              "127.0.0.0/8"
+              "10.20.0.0/16"
+            ];
+          }
+        ];
       };
       http = { };
       backup = { };
