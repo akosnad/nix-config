@@ -21,6 +21,7 @@
     ../common/optional/builder
     ../common/optional/aarch64.nix
     ../common/optional/buildbot-worker.nix
+    ../common/optional/hercules-ci-agent.nix
 
     ../common/users/akos
 
