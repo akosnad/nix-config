@@ -23,11 +23,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1723482977,
-        "narHash": "sha256-nKQjmX83S9CwvXEg0K/hZV7U+iISeOYCJ8Ppf4V/4Ws=",
+        "lastModified": 1723486750,
+        "narHash": "sha256-OZ5cdLHagD19iDuol/fpqvKvvTQRbR7uVe5mr6W5Ofo=",
         "owner": "akosnad",
         "repo": "buildbot-nix",
-        "rev": "d4082783ad44a5ffed09741428b4de01137b254b",
+        "rev": "ee31c65186dc9698bda1925c00fc1573e1f14137",
         "type": "github"
       },
       "original": {
