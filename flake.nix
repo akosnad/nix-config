@@ -101,6 +101,12 @@
 
       devShells = forEachSystem (pkgs: import ./shell.nix { inherit pkgs; });
 
+      checks =
+        let
+          machines = lib.mapAttrs' (name: config: lib.nameValuePair "nixos-${name}" config.config.system.build.toplevel) self.nixosConfigurations;
+        in
+        machines;
+
       nixosConfigurations = {
         athena = lib.nixosSystem {
           modules = [ ./hosts/athena ];
