@@ -17,13 +17,13 @@
     ../common/optional/libvirt.nix
     ../common/optional/builder
     ../common/optional/aarch64.nix
-    ../common/optional/buildbot-worker.nix
+    # ../common/optional/buildbot-worker.nix
     ../common/optional/hercules-ci-agent.nix
 
     ../common/users/akos
 
     ./libvirt
-    ./buildbot-master.nix
+    # ./buildbot-master.nix
   ];
 
   boot.kernelParams = [
