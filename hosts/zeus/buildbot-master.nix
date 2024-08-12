@@ -36,6 +36,11 @@ in
           oauthId = "Ov23liqrF61WKdRZCwr7";
           oauthSecretFile = "${secretsCfg.buildbot-github-oauth-secret.path}";
         };
+        cachix = {
+          enable = true;
+          name = "akosnad";
+          auth.authToken.file = "${secretsCfg.buildbot-cachix-token.path}";
+        };
       };
 
       services.buildbot-master = {
@@ -59,9 +64,13 @@ in
   };
 
   sops.secrets =
-    (masterSecrets // { buildbot-workers = { sopsFile = ../common/secrets.yaml; neededForUsers = true; }; });
+    (masterSecrets
+    // { buildbot-workers = { sopsFile = ../common/secrets.yaml; neededForUsers = true; };
+      buildbot-cachix-token = { sopsFile = ./secrets.yaml; neededForUsers = true; };
+      });
 
     containers.buildbot-master.bindMounts = (builtins.listToAttrs (map (name: { name = secretsCfg.${name}.path; value = { isReadOnly = true; }; }) masterSecretNames)) // {
       "${config.sops.secrets.buildbot-workers.path}".isReadOnly = true;
+      "${config.sops.secrets.buildbot-cachix-token.path}".isReadOnly = true;
     };
 }

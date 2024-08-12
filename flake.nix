@@ -61,7 +61,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    buildbot-nix.url = "github:nix-community/buildbot-nix";
+    buildbot-nix.url = "github:nix-community/buildbot-nix/fix-fix-fix-cachix";
   };
 
   outputs =
