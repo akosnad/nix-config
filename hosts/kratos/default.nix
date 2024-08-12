@@ -37,6 +37,8 @@
   # needed for Windows dual boot
   time.hardwareClockInLocalTime = true;
 
+  services.hercules-ci-agent.settings.concurrentTasks = 12;
+
   virtualisation.docker.storageDriver = "btrfs";
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion

@@ -77,10 +77,7 @@
       lib = nixpkgs.lib // home-manager.lib;
       systems = [
         "aarch64-linux"
-        "i686-linux"
         "x86_64-linux"
-        "aarch64-darwin"
-        "x86_64-darwin"
       ];
       forEachSystem = f: lib.genAttrs systems (system: f pkgsFor.${system});
       pkgsFor = lib.genAttrs systems (system: import nixpkgs {
@@ -102,12 +99,6 @@
       formatter = forEachSystem (pkgs: pkgs.nixpkgs-fmt);
 
       devShells = forEachSystem (pkgs: import ./shell.nix { inherit pkgs; });
-
-      checks =
-        let
-          machines = lib.mapAttrs' (name: config: lib.nameValuePair "nixos-${name}" config.config.system.build.toplevel) self.nixosConfigurations;
-        in
-        machines;
 
       nixosConfigurations = {
         athena = lib.nixosSystem {

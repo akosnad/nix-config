@@ -18,6 +18,7 @@
     ../common/optional/builder
     ../common/optional/aarch64.nix
     ../common/optional/buildbot-worker.nix
+    ../common/optional/hercules-ci-agent.nix
 
     ../common/users/akos
 
@@ -37,6 +38,8 @@
   virtualisation.docker = {
     storageDriver = "btrfs";
   };
+
+  services.hercules-ci-agent.settings.concurrentTasks = 8;
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "23.11";
