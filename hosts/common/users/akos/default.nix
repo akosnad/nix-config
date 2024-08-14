@@ -54,4 +54,25 @@ in
       auth include login
     '';
   };
+
+  security.pam.u2f = {
+    enable = true;
+    debug = false;
+    origin = "pam://akosnad-nixos-common";
+    appId = "pam://akosnad-nixos-common";
+    control = "sufficient";
+    authFile = config.sops.secrets.u2f-mappings.path;
+  };
+  sops.secrets.u2f-mappings = {
+    sopsFile = ../../secrets.yaml;
+    mode = "444";
+  };
+
+  # security.pam.yubico = {
+  #   enable = true;
+  #   debug = false;
+  #   id = "102521";
+  #   mode = "client";
+  #   control = "sufficient";
+  # };
 }

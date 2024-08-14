@@ -55,6 +55,7 @@ in
     file = {
       ".colorscheme".text = config.colorscheme.slug;
       ".colorscheme.json".text = builtins.toJSON config.colorscheme;
+      ".yubico/authorized_yubikeys".text = "${config.home.username}:cccccbkcfrgn";
     };
     username = lib.mkDefault "akos";
     homeDirectory = lib.mkDefault "/home/${config.home.username}";
