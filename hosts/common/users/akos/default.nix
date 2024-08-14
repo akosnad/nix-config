@@ -43,16 +43,10 @@ in
     inherit (config.networking) hostName;
   };
 
-  # this fixes swaylock not accepting any password
-  security.pam.services.swaylock = {
-    text = ''
-      auth include login
-    '';
-  };
   security.pam.services.hyprlock = {
-    text = ''
-      auth include login
-    '';
+    name = "hyprlock";
+    u2fAuth = true;
+    unixAuth = false;
   };
 
   security.pam.u2f = {

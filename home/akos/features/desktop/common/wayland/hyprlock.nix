@@ -23,33 +23,24 @@ in
         }
       ];
 
-      input-field = [
-        {
-          size = "250, 50";
-          position = "0, 0";
-          halign = "center";
-          valign = "center";
-          monitor = primaryMonitor.name;
-          dots_center = true;
-          fade_on_empty = false;
-          font_color = "rgb(${colors.base07})";
-          inner_color = "rgb(${colors.base01})";
-          outer_color = "rgb(${colors.base02})";
-          outline_thickness = 5;
-          placeholder_text = "Password...";
-          shadow_passes = 2;
-        }
-      ];
-
       label = [
         {
           monitor = primaryMonitor.name;
           font_size = 32;
           font_family = "Terminus";
-          position = "0, 80";
+          position = "0, 0";
           valign = "center";
           halign = "center";
           text = "cmd[update:500] date +%H:%M:%S";
+        }
+        {
+          monitor = primaryMonitor.name;
+          font_size = 16;
+          font_family = "Terminus";
+          position = "0, -36";
+          valign = "center";
+          halign = "center";
+          text = "cmd[update:500] date +'%b %d. %A'";
         }
       ];
     };
