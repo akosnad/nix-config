@@ -1,6 +1,4 @@
-{ inputs
-, ...
-}: {
+{ inputs, ... }: {
   imports = [
     inputs.hardware.nixosModules.common-cpu-intel
     inputs.hardware.nixosModules.common-gpu-nvidia
@@ -22,6 +20,7 @@
     ../common/optional/aarch64.nix
     # ../common/optional/buildbot-worker.nix
     ../common/optional/hercules-ci-agent.nix
+    ../common/optional/yubikey.nix
 
     ../common/users/akos
 
@@ -39,6 +38,7 @@
 
   services.hercules-ci-agent.settings.concurrentTasks = 12;
 
+  # TODO: make yubikey related stuff generic
   virtualisation.docker.storageDriver = "btrfs";
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion

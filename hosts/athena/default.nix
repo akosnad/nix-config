@@ -21,6 +21,7 @@
     ../common/optional/greetd.nix
     ../common/optional/docker
     ../common/optional/wireshark.nix
+    ../common/optional/yubikey.nix
 
     ../common/users/akos
   ];
