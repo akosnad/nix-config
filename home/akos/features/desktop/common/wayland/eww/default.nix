@@ -1,11 +1,10 @@
-{ pkgs, config, lib, ... }:
+{ pkgs, config, ... } @ args:
 let
 
-  helpers = import ./helpers.nix { inherit pkgs; };
-  widgets = import ./widgets { inherit pkgs config; };
-  topbar = import ./topbar.nix { inherit pkgs lib config; };
-
-  style = import ./style.nix { inherit pkgs; scheme = config.colorscheme; };
+  helpers = import ./helpers.nix args;
+  widgets = import ./widgets args;
+  topbar = import ./topbar.nix args;
+  style = import ./style.nix (args // { scheme = config.colorscheme; });
 
   eww_config = pkgs.writeText "eww.yuck" /* yuck */ ''
     (include "${helpers}")

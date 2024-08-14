@@ -7,6 +7,7 @@
     ./alacritty
     ./audio.nix
     ./mqtt-notify.nix
+    ./yubikey-touch-detector.nix
   ];
 
   dconf.settings."org/gnome/desktop/interface".color-scheme =

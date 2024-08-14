@@ -29,6 +29,7 @@ pkgs.writeText "topbar.yuck" /* yuck */ ''
   (defwidget sidestuff []
     (box :class "sidestuff" :orientation "h" :space-evenly false :halign "end"
       (gap)
+      (securitykey)
       (volume)
       (cpu)
       (ram)

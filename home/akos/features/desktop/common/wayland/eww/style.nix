@@ -60,4 +60,17 @@ in pkgs.writeText "eww.scss" /* css */ ''
   .gap {
     padding-left: 1em;
   }
+
+  .securitykey {
+    background-color: #${c.base0A};
+    color: #${c.base00};
+    padding-left: 0.5em;
+    padding-right: 1em;
+    margin: 0;
+  };
+
+  .securitykey > label {
+    padding: 0;
+    margin: 0;
+  };
 ''
