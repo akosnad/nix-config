@@ -25,7 +25,11 @@
           Address = "10.20.0.1/24";
           DNS = [ "127.0.0.1" "::1" ];
           IPv6AcceptRA = false;
-          IPv6SendRA = true;
+
+          # TODO: fix ipv6 forwarding, instead of just disabling it
+          IPv6SendRA = false;
+          LinkLocalAddressing = false;
+
           DHCPPrefixDelegation = true;
           IPForward = "ipv6";
           LLDP = true;
