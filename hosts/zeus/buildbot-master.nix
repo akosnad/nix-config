@@ -6,7 +6,7 @@ let
     "buildbot-webhook-secret"
     "buildbot-github-oauth-secret"
   ];
-  masterSecrets = lib.genAttrs masterSecretNames (n: { sopsFile = ./secrets.yaml; neededForUsers = true; });
+  masterSecrets = lib.genAttrs masterSecretNames (_n: { sopsFile = ./secrets.yaml; neededForUsers = true; });
 
   secretsCfg = config.sops.secrets;
 in
@@ -16,7 +16,7 @@ in
     hostBridge = "br0";
     nixpkgs = inputs.buildbot-nix.inputs.nixpkgs.legacyPackages.${config.nixpkgs.hostPlatform.system}.path;
     specialArgs = { buildbot-nix = inputs.buildbot-nix.nixosModules; };
-    config = { config, pkgs, lib, inputs, buildbot-nix, ... }: {
+    config = { lib, buildbot-nix, ... }: {
       imports = [
         buildbot-nix.buildbot-master
       ];
@@ -51,7 +51,7 @@ in
       };
 
       services.nginx.virtualHosts."${domain}" = {
-        listen = [ { addr = "0.0.0.0"; port = 8080; ssl = false; } ];
+        listen = [{ addr = "0.0.0.0"; port = 8080; ssl = false; }];
       };
 
       system.stateVersion = "23.11";
@@ -65,12 +65,13 @@ in
 
   sops.secrets =
     (masterSecrets
-    // { buildbot-workers = { sopsFile = ../common/secrets.yaml; neededForUsers = true; };
+      // {
+      buildbot-workers = { sopsFile = ../common/secrets.yaml; neededForUsers = true; };
       buildbot-cachix-token = { sopsFile = ./secrets.yaml; neededForUsers = true; };
-      });
+    });
 
-    containers.buildbot-master.bindMounts = (builtins.listToAttrs (map (name: { name = secretsCfg.${name}.path; value = { isReadOnly = true; }; }) masterSecretNames)) // {
-      "${config.sops.secrets.buildbot-workers.path}".isReadOnly = true;
-      "${config.sops.secrets.buildbot-cachix-token.path}".isReadOnly = true;
-    };
+  containers.buildbot-master.bindMounts = (builtins.listToAttrs (map (name: { name = secretsCfg.${name}.path; value = { isReadOnly = true; }; }) masterSecretNames)) // {
+    "${config.sops.secrets.buildbot-workers.path}".isReadOnly = true;
+    "${config.sops.secrets.buildbot-cachix-token.path}".isReadOnly = true;
+  };
 }

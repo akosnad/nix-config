@@ -38,7 +38,6 @@
 
   services.hercules-ci-agent.settings.concurrentTasks = 12;
 
-  # TODO: make yubikey related stuff generic
   virtualisation.docker.storageDriver = "btrfs";
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
