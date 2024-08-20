@@ -23,16 +23,15 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1723486750,
-        "narHash": "sha256-OZ5cdLHagD19iDuol/fpqvKvvTQRbR7uVe5mr6W5Ofo=",
-        "owner": "akosnad",
+        "lastModified": 1724150417,
+        "narHash": "sha256-BF7UsEHmXvaVZc4m/pHEKxR122N34NgIpK0CPAXd01M=",
+        "owner": "nix-community",
         "repo": "buildbot-nix",
-        "rev": "ee31c65186dc9698bda1925c00fc1573e1f14137",
+        "rev": "2d1bd50430303caf22bca06069e9f9bf3ff83f82",
         "type": "github"
       },
       "original": {
-        "owner": "akosnad",
-        "ref": "fix-fix-fix-cachix",
+        "owner": "nix-community",
         "repo": "buildbot-nix",
         "type": "github"
       }

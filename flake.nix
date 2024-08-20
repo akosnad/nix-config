@@ -63,7 +63,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    buildbot-nix.url = "github:akosnad/buildbot-nix/fix-fix-fix-cachix";
+    buildbot-nix.url = "github:nix-community/buildbot-nix";
   };
 
   outputs =
@@ -99,6 +99,12 @@
       formatter = forEachSystem (pkgs: pkgs.nixpkgs-fmt);
 
       devShells = forEachSystem (pkgs: import ./shell.nix { inherit pkgs; });
+
+      checks =
+        let
+          machines = lib.mapAttrs' (name: config: lib.nameValuePair "nixos-${name}" config.config.system.build.toplevel) self.nixosConfigurations;
+        in
+        machines;
 
       nixosConfigurations = {
         athena = lib.nixosSystem {
