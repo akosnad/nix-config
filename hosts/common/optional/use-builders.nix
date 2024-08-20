@@ -34,7 +34,7 @@ let
     systems = [ "x86_64-linux" "aarch64-linux" ];
   };
 
-  machines = 
+  machines =
     builtins.filter (m: config.networking.hostName != m.hostname) [ kratos zeus ];
 in
 {
