@@ -21,6 +21,7 @@
     ../common/optional/buildbot-worker.nix
     ../common/optional/hercules-ci-agent.nix
     ../common/optional/yubikey.nix
+    ../common/optional/use-builders.nix
 
     ../common/users/akos
 

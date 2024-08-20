@@ -19,6 +19,7 @@ let
         IdentityFile ${builderKey}
         IdentitiesOnly yes
     '';
+    inherit hostname;
   };
 
   kratos = useBuilder {
@@ -33,11 +34,15 @@ let
     systems = [ "x86_64-linux" "aarch64-linux" ];
   };
 
-  machines = [ kratos zeus ];
+  machines = 
+    builtins.filter (m: config.networking.hostName != m.hostname) [ kratos zeus ];
 in
 {
-  nix.distributedBuilds = true;
-  nix.buildMachines = map (machine: machine.machineConfig) machines;
+  nix = {
+    distributedBuilds = true;
+    buildMachines = map (machine: machine.machineConfig) machines;
+    settings.substituters = map (machine: "ssh-ng://root@${machine.hostname}-builder") machines;
+  };
 
   programs.ssh.extraConfig = builtins.concatStringsSep "\n" (map (machine: machine.sshConfig) machines);
 
