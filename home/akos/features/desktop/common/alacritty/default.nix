@@ -1,6 +1,6 @@
 { pkgs, config, ... }:
 let
-  fontFamily = "Terminus";
+  fontFamily = config.fontProfiles.monospace.family;
   colors = pkgs.writeText "alacritty-colors.toml" (import ./colors.nix config.colorScheme);
 in
 {

@@ -1,6 +1,7 @@
 { config, ... }:
 let
   primaryMonitor = builtins.head (builtins.filter (m: m.primary) config.monitors);
+  fontFamily = config.fontProfiles.regular.family;
 in
 {
   programs.hyprlock = {
@@ -26,7 +27,7 @@ in
         {
           monitor = primaryMonitor.name;
           font_size = 32;
-          font_family = "Terminus";
+          font_family = fontFamily;
           position = "0, 0";
           valign = "center";
           halign = "center";
@@ -35,7 +36,7 @@ in
         {
           monitor = primaryMonitor.name;
           font_size = 16;
-          font_family = "Terminus";
+          font_family = fontFamily;
           position = "0, -36";
           valign = "center";
           halign = "center";

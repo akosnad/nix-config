@@ -2,12 +2,12 @@
   fontProfiles = {
     enable = true;
     monospace = {
-      family = "Terminess Nerd Font";
-      package = pkgs.nerdfonts.override { fonts = [ "Terminus" ]; };
+      family = "RecMono Linear Nerd Font";
+      package = pkgs.nerdfonts.override { fonts = [ "Recursive" ]; };
     };
     regular = {
-      family = "Terminus";
-      package = pkgs.terminus_font;
+      family = "Recursive Sans Linear Static";
+      package = pkgs.recursive;
     };
   };
 }
