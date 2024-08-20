@@ -67,15 +67,30 @@ pkgs.writeText "volume.yuck" /* yuck */ ''
                 :onchange "${pkgs.alsa-utils}/bin/amixer sset Master {}% && ${eww} update volume={}")
         (revealer :transition "slideleft"
                   :reveal volume_info_visible
-          (eventbox :onclick "${pkgs.playerctl}/bin/playerctl play-pause"
-            :class "volume-info"
-             (label :text "''${volume}%''${player_status == 'Playing' ? ' >' : player_status == 'Paused' ? ' ||' : '''}''${now_playing != ''' ? ' ' + now_playing : '''}")
+          (box :space-evenly false
+            (label :text "''${volume}%")
+            (revealer :transition "slideleft"
+                      :reveal {now_playing != ""}
+              (box :space-evenly false
+                (gap)
+                (eventbox :onclick "${pkgs.playerctl}/bin/playerctl play-pause"
+                  :class "volume-info"
+                   (label :text "''${player_status == 'Playing' ? '  ' : player_status == 'Paused' ? '  ' : '''}''${now_playing != ''' ? ' ' + now_playing : '''}")
+                )
+                (eventbox :onclick "${pkgs.playerctl}/bin/playerctl previous"
+                  (label :text " 󰒮 ")
+                )
+                (eventbox :onclick "${pkgs.playerctl}/bin/playerctl next"
+                  (label :text " 󰒭 ")
+                )
+              )
             )
           )
-        (gap)
         )
+        (gap)
       )
     )
+  )
   (defvar volume_info_visible false)
   (deflisten volume_icon
     "${volume_icon}")

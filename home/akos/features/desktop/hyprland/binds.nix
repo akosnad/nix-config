@@ -67,6 +67,10 @@ in
 
       "$mainMod, Space, togglesplit, # dwindle"
 
+      "$mainMod, code:83, exec, ${pkgs.playerctl}/bin/playerctl previous"
+      "$mainMod, code:84, exec, ${pkgs.playerctl}/bin/playerctl play-pause"
+      "$mainMod, code:85, exec, ${pkgs.playerctl}/bin/playerctl next"
+
       # Move focus with mainMod + arrow keys
       "$mainMod, left, movefocus, l"
       "$mainMod, right, movefocus, r"
