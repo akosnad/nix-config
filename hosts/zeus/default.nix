@@ -24,6 +24,7 @@
 
     ./libvirt
     ./buildbot-master.nix
+    ./harmonia.nix
   ];
 
   boot.kernelParams = [
