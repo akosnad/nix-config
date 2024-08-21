@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, nurpkgs, ... }:
 let
   ifGroupExists = groups: builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
 in
@@ -41,6 +41,7 @@ in
   home-manager.users.akos = import ../../../../home/akos/${config.networking.hostName}.nix;
   home-manager.extraSpecialArgs = {
     inherit (config.networking) hostName;
+    inherit nurpkgs;
   };
 
   security.pam.services.hyprlock = {

@@ -25,4 +25,6 @@
   };
 
   modifications = _final: _prev: { };
+
+  nur = inputs.nur.overlay;
 }
