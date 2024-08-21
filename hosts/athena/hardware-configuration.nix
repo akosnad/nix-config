@@ -14,11 +14,28 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
+  boot.supportedFilesystems = [ "ntfs3" ];
 
   swapDevices = [{
     device = "/swap/swapfile";
     size = 32 * 1024;
   }];
+
+  fileSystems."/win" = {
+    device = "/dev/disk/by-partlabel/Win11";
+    fsType = "ntfs3";
+    options =
+      let
+        uid = if config.users.users.akos.uid == null then "1000" else toString config.users.users.akos.uid;
+        gid = if config.users.groups.users.gid == null then "100" else toString config.users.groups.users.gid;
+      in
+      [
+        "rw"
+        "uid=${uid}"
+        "gid=${gid}"
+        "umask=077"
+      ];
+  };
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
