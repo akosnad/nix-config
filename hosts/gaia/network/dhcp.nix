@@ -32,11 +32,6 @@ let
       name = "ap3";
     }
     {
-      mac = "52:54:00:64:11:7B";
-      ip = "10.20.0.36";
-      name = "homeassistant";
-    }
-    {
       mac = "F4:91:1E:F6:E3:A3";
       ip = "10.20.0.30";
       name = "helios";
@@ -50,6 +45,11 @@ let
       mac = "2C:27:D7:1F:98:BD";
       ip = "10.20.0.4";
       name = "zeus";
+    }
+    {
+      mac = "4C:50:DD:9E:A3:F5";
+      ip = "10.20.0.45";
+      name = "arges";
     }
   ];
 
