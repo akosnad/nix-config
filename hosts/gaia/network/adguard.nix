@@ -69,7 +69,7 @@ in
         # the following 2 rules prevent us from answering
         # 127.0.0.1 for own hostname read from hosts file
         {
-          domain= hostnameWithDomain;
+          domain = hostnameWithDomain;
           answer = "10.20.0.1";
         }
         {
