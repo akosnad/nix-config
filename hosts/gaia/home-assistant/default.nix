@@ -45,6 +45,10 @@
       "logbook"
       "rest"
       "rest_command"
+      "camera"
+      "stream"
+      "generic"
+      "onvif"
     ];
     extraPackages = python3Packages: with python3Packages; [
       # recorder postgresql support
@@ -87,6 +91,7 @@
       history = { };
       logbook = { };
       cloud = { };
+      stream = { };
     };
   };
 
