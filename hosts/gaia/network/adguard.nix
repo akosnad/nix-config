@@ -1,3 +1,7 @@
+{ config, ... }:
+let
+  hostnameWithDomain = "${config.networking.hostName}.${config.networking.domain}";
+in
 {
   services.adguardhome = {
     enable = true;
@@ -60,6 +64,18 @@
         # block synplant plugin from trying to validate license :P
         "||nuedge.net^"
         "||soniccharge.com^"
+      ];
+      filtering.rewrites = [
+        # the following 2 rules prevent us from answering
+        # 127.0.0.1 for own hostname read from hosts file
+        {
+          domain= hostnameWithDomain;
+          answer = "10.20.0.1";
+        }
+        {
+          domain = config.networking.hostName;
+          answer = "10.20.0.1";
+        }
       ];
       filters = [
         {
