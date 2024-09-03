@@ -41,7 +41,7 @@
 
     hardware.url = "github:nixos/nixos-hardware";
     disko = {
-      url = "github:nix-community/disko";
+      url = "github:nix-community/disko/v1.7.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -80,7 +80,8 @@
         "aarch64-linux"
         "x86_64-linux"
       ];
-      forEachSystem = f: lib.genAttrs systems (system: f pkgsFor.${system});
+      forEachSystem = lib.genAttrs systems;
+      pkgsForEachSystem = f: lib.genAttrs systems (system: f pkgsFor.${system});
       pkgsFor = lib.genAttrs systems (system: import nixpkgs {
         inherit system;
         config.allowUnfree = true;
@@ -96,16 +97,18 @@
 
       overlays = import ./overlays { inherit inputs outputs; };
 
-      packages = forEachSystem (pkgs: import ./pkgs { inherit pkgs; });
-      formatter = forEachSystem (pkgs: pkgs.nixpkgs-fmt);
+      packages = pkgsForEachSystem (pkgs: import ./pkgs { inherit pkgs; });
+      formatter = pkgsForEachSystem (pkgs: pkgs.nixpkgs-fmt);
 
-      devShells = forEachSystem (pkgs: import ./shell.nix { inherit pkgs; });
+      devShells = pkgsForEachSystem (pkgs: import ./shell.nix { inherit pkgs; });
 
       checks =
         let
           machines = lib.mapAttrs' (name: config: lib.nameValuePair "nixos-${name}" config.config.system.build.toplevel) self.nixosConfigurations;
+          packages = forEachSystem (system: lib.mapAttrs' (name: lib.nameValuePair "pkgs-${name}") self.packages.${system});
+          checkSystem = "x86_64-linux";
         in
-        machines;
+        machines // packages.${checkSystem};
 
       nixosConfigurations = {
         athena = lib.nixosSystem {

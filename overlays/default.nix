@@ -16,12 +16,7 @@
 
   additions = final: prev: import ../pkgs { pkgs = final; }
     // {
-    vimPlugins = (prev.vimPlugins or { }) // import ../pkgs/vim-plugins { pkgs = final; };
     vscode-extensions = (prev.vscode-extensions or { }) // inputs.vscode-extensions.extensions.${final.system}.vscode-marketplace;
-    home-assistant-custom-components = (prev.home-assistant-custom-components or { }) // import ../pkgs/home-assistant-custom-components { pkgs = final; };
-    home-assistant-custom-lovelace-modules = (prev.home-assistant-custom-lovelace-modules or { }) // import ../pkgs/home-assistant-custom-lovelace-modules { pkgs = final; };
-    home-assistant-custom-themes = import ../pkgs/home-assistant-custom-themes { pkgs = final; };
-    nodePackages = (prev.nodePackages or { }) // import ../pkgs/nodePackages { pkgs = final; };
   };
 
   modifications = _final: _prev: { };
