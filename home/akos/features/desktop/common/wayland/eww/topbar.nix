@@ -1,11 +1,47 @@
 { pkgs, lib, config, ... }:
 let
+  hypr-socket = "\"$XDG_RUNTIME_DIR\"/hypr/\"$HYPRLAND_INSTANCE_SIGNATURE\"/.socket2.sock";
   primary_monitor = lib.head (lib.filter (m: m.primary) config.monitors);
+
+  hasFullscreen = pkgs.writeShellApplication {
+    name = "hasFullscreen";
+    runtimeInputs = [
+      config.wayland.windowManager.hyprland.package
+      config.programs.eww.package
+    ] ++ (with pkgs; [
+      coreutils
+      jq
+      socat
+    ]);
+    text = ''
+      get_state() {
+        active_workspace="$(hyprctl monitors -j | jq -r '.[] | select(.name == "${primary_monitor.name}") | .activeWorkspace.id')"
+        window_count="$(hyprctl clients -j | jq ".[] | select(.workspace.id == $active_workspace)" | jq -es 'length')"
+        # if there is only one window, we can assume it's fullscreen
+        # also, if there are no windows, we act as if there are multiple windows present
+        if [[ "$window_count" -eq 1 ]]; then
+          echo 1
+        else
+          echo 0
+        fi
+      }
+
+      # set initially
+      get_state
+
+      # listen for window state changes
+      socat -u UNIX-CONNECT:${hypr-socket} - | while read -r line; do
+        if [[ "$line" == activewindow* ]]; then
+          get_state
+        fi
+      done
+    '';
+  };
 in
 pkgs.writeText "topbar.yuck" /* yuck */ ''
   (defwidget bar []
     (centerbox :orientation "h"
-      :class "bar"
+      :class "bar''${hasFullscreen == "1" ? "" : " bar-gapped"}"
       (leftstuff)
       (centerstuff)
       (sidestuff)
@@ -35,7 +71,7 @@ pkgs.writeText "topbar.yuck" /* yuck */ ''
       (ram)
       (disk)
       (battery)
-      (systray)
+      (systray :spacing 2)
       (keyboard_layout)
       (time)
       )
@@ -53,4 +89,7 @@ pkgs.writeText "topbar.yuck" /* yuck */ ''
     :exclusive true
     (bar)
   )
+
+  (deflisten hasFullscreen :initial "0"
+    "${lib.getExe hasFullscreen}")
 ''

@@ -13,6 +13,13 @@ in pkgs.writeText "eww.scss" /* css */ ''
 
   .bar {
     background-color: rgba(#${c.base00}, 0.9);
+    margin: unset;
+    border-radius: unset;
+  }
+
+  .bar-gapped {
+    margin: 0.5em 0.5em 0 0.5em;
+    border-radius: 12px;
   }
 
   .sidestuff {

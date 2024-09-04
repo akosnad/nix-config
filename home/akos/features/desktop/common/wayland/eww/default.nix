@@ -12,23 +12,30 @@ let
     (include "${topbar}")
   '';
 
-  eww-config-dir = pkgs.stdenv.mkDerivation {
+  eww-config-dir = pkgs.stdenvNoCC.mkDerivation {
     name = "eww-config";
-    builder = pkgs.writeScript "eww-config-builder.sh" /* bash */ ''
-      ${pkgs.coreutils}/bin/mkdir -p $out
-      ${pkgs.coreutils}/bin/cp ${eww_config} $out/eww.yuck
-      ${pkgs.coreutils}/bin/cp ${style} $out/eww.scss
+    srcs = [ eww_config style ];
+    sourceRoot = ".";
+    buildInputs = [ pkgs.coreutils ];
+    dontUnpack = true;
+    dontBuild = true;
+    installPhase = ''
+      mkdir -p $out
+      for file in $srcs; do
+        # remove preceding store hash from file names
+        name=$(basename $file | sed 's/^[a-z0-9]\{32\}-//')
+        ln -s $file $out/$name
+      done
     '';
   };
 
-  eww_pkg = pkgs.eww;
+  eww_pkg = config.programs.eww.package;
 in
 
 {
   programs.eww = {
     enable = true;
     configDir = eww-config-dir;
-    package = eww_pkg;
   };
 
   xdg.configFile."eww" = {
