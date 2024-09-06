@@ -125,6 +125,13 @@
               deadnix -f ${./.}
               touch $out
             '';
+            fmt = checkPkgs.runCommand "fmt"
+              {
+                nativeBuildInputs = [ checkPkgs.nixpkgs-fmt ];
+              } ''
+              nixpkgs-fmt --check ${./.}
+              touch $out
+            '';
           };
         in
         machines // packages.${checkSystem} // codeChecks;
