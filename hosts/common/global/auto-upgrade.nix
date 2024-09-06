@@ -20,12 +20,21 @@ in
   # Only run if current config (self) is older than the new one.
   systemd.services.nixos-upgrade = lib.mkIf config.system.autoUpgrade.enable {
     serviceConfig.ExecCondition = lib.getExe (
-      pkgs.writeShellScriptBin "check-date" ''
-        lastModified() {
-          nix flake metadata "$1" --refresh --json | ${lib.getExe pkgs.jq} '.lastModified'
-        }
-        test "$(lastModified "${config.system.autoUpgrade.flake}")"  -gt "$(lastModified "self")"
-      ''
-    );
+      pkgs.writeShellApplication {
+        name = "check-nixos-upgrade";
+        runtimeInputs = with pkgs; [ jq ];
+        text = ''
+          lastModified() {
+            nix flake metadata "$1" --refresh --json | jq '.lastModified'
+          }
+
+          # check if latest upstream config is newer than current
+          test "$(lastModified "${config.system.autoUpgrade.flake}")"  -gt "$(lastModified "self")"
+
+          # check if system derivation is built upstream (i.e. by CI/CD)
+          uri="${config.system.autoUpgrade.flake}#nixosConfigurations.${config.networking.hostName}.config.system.build.toplevel"
+          test "$(nix path-info --refresh --json "$uri" | jq '.[0].valid')" -eq "true"
+        '';
+      });
   };
 }
