@@ -118,6 +118,13 @@
               statix check ${./.}
               touch $out
             '';
+            deadnix = checkPkgs.runCommand "deadnix"
+              {
+                nativeBuildInputs = [ checkPkgs.deadnix ];
+              } ''
+              deadnix -f ${./.}
+              touch $out
+            '';
           };
         in
         machines // packages.${checkSystem} // codeChecks;
