@@ -7,7 +7,7 @@ let
 
   akosConfig = homeCfgs.akos;
   gtkTheme = akosConfig.gtk.theme;
-  iconTheme = akosConfig.gtk.iconTheme;
+  inherit (akosConfig.gtk) iconTheme;
 
   sway-kiosk = command: "${lib.getExe pkgs.sway} --unsupported-gpu --config ${pkgs.writeText "kiosk.config" ''
     output * bg #000000 solid_color

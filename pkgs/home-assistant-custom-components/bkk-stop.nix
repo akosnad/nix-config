@@ -4,7 +4,7 @@
   version = "2.9.10";
 
   src = pkgs.fetchFromGitHub {
-    owner = owner;
+    inherit owner;
     repo = "bkk_stop";
     rev = "${version}";
     hash = "sha256-R8DFohLWHEM0mhYGaLwPC/vMLLpnQ5VQwLMS0ORgGUk=";

@@ -107,8 +107,20 @@
           machines = lib.mapAttrs' (name: config: lib.nameValuePair "nixos-${name}" config.config.system.build.toplevel) self.nixosConfigurations;
           packages = forEachSystem (system: lib.mapAttrs' (name: lib.nameValuePair "pkgs-${name}") self.packages.${system});
           checkSystem = "x86_64-linux";
+          checkPkgs = pkgsFor.${checkSystem};
+
+          codeChecks = {
+            statix = checkPkgs.runCommand "statix"
+              {
+                nativeBuildInputs = [ checkPkgs.statix ];
+              } ''
+              cp ${./.}/statix.toml .
+              statix check ${./.}
+              touch $out
+            '';
+          };
         in
-        machines // packages.${checkSystem};
+        machines // packages.${checkSystem} // codeChecks;
 
       nixosConfigurations = {
         athena = lib.nixosSystem {

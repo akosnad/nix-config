@@ -1,6 +1,6 @@
 { config, ... }:
 let
-  palette = config.colorscheme.palette;
+  inherit (config.colorscheme) palette;
 in
 {
   programs.zsh = {

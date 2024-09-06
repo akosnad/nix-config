@@ -64,11 +64,11 @@ in
   };
 
   sops.secrets =
-    (masterSecrets
-      // {
+    masterSecrets
+    // {
       buildbot-workers = { sopsFile = ../common/secrets.yaml; neededForUsers = true; };
       buildbot-cachix-token = { sopsFile = ./secrets.yaml; neededForUsers = true; };
-    });
+    };
 
   containers.buildbot-master.bindMounts = (builtins.listToAttrs (map (name: { name = secretsCfg.${name}.path; value = { isReadOnly = true; }; }) masterSecretNames)) // {
     "${config.sops.secrets.buildbot-workers.path}".isReadOnly = true;
