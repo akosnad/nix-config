@@ -12,11 +12,9 @@ in
 
   nixpkgs = {
     overlays = builtins.attrValues outputs.overlays;
-    config = {
-      allowUnfree = true;
-      allowUnfreePredicate = (_: true);
-    };
+    config = import ./nixpkgs-config.nix;
   };
+  xdg.configFile."nixpkgs/config.nix".source = ./nixpkgs-config.nix;
 
   nix = {
     package = lib.mkDefault pkgs.nix;

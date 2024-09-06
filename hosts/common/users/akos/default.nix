@@ -36,6 +36,14 @@ in
       sopsFile = ../../secrets.yaml;
       owner = "akos";
     };
+    spotify-username = {
+      sopsFile = ../../secrets.yaml;
+      owner = "akos";
+    };
+    spotify-password = {
+      sopsFile = ../../secrets.yaml;
+      owner = "akos";
+    };
   };
 
   home-manager.users.akos = import ../../../../home/akos/${config.networking.hostName}.nix;
