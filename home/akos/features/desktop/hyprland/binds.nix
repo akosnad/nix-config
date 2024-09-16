@@ -14,6 +14,8 @@ let
         kill $(pidof wofi)
     # if not running, launch it
     else
+        export QT_QPA_PLATFORM="wayland"
+        export NIXOS_OZONE_WL="1"
         exec wofi --show drun,run
     fi
   '';
