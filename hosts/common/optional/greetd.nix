@@ -9,16 +9,35 @@ let
   gtkTheme = akosConfig.gtk.theme;
   inherit (akosConfig.gtk) iconTheme;
 
+  swaymsg = "${pkgs.sway}/bin/swaymsg";
+
+  monitor-timeout = pkgs.writeShellApplication {
+    name = "greetd-monitor-timeout";
+    runtimeInputs = with pkgs; [ sway swayidle jq ];
+    text = ''
+      monitors="$(swaymsg -t get_outputs | jq -r '.[] | .name')"
+
+      while read -r monitor; do
+        echo "starting swayidle for monitor $monitor"
+        swayidle -w \
+          timeout 30 "${swaymsg} output ""$monitor"" dpms off" \
+          resume "${swaymsg} output ""$monitor"" dpms on" &
+      done <<< "$monitors"
+
+      wait
+    '';
+  };
+
   sway-kiosk = command: "${lib.getExe pkgs.sway} --unsupported-gpu --config ${pkgs.writeText "kiosk.config" ''
     output * bg #000000 solid_color
-    border none
     default_border none
     default_floating_border none
     xwayland disable
     input "type:touchpad" {
       tap enabled
     }
-    exec '${vars} ${command}; ${pkgs.sway}/bin/swaymsg exit'
+    exec '${lib.getExe monitor-timeout}'
+    exec '${vars} ${command}; ${swaymsg} exit'
   ''}";
 
   hyprlandConfig = akosConfig.wayland.windowManager.hyprland;
