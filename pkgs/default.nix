@@ -6,4 +6,6 @@ args: {
   vim-plugins = import ./vim-plugins args;
 
   librespot-auth = import ./librespot-auth args;
+  dynisland = import ./dynisland args;
+  dynisland-modules = import ./dynisland-modules args;
 }
