@@ -21,7 +21,7 @@
 
     ../common/users/akos
 
-    ./libvirt
+    # ./libvirt
     ./buildbot-master.nix
   ];
 
