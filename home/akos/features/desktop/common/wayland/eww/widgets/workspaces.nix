@@ -1,28 +1,28 @@
-{ pkgs, config, ... }:
+{ pkgs, config, lib, ... }:
 let
-  hypr-socket = "$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock";
+  hypr-socket = "\"$XDG_RUNTIME_DIR\"/hypr/\"$HYPRLAND_INSTANCE_SIGNATURE\"/.socket2.sock";
   hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
 
-  get-workspaces = pkgs.writeScript "get-workspaces" /* bash */ ''
-    spaces_fix (){
-        WORKSPACE_WINDOWS=$(${hyprctl} workspaces -j | ${pkgs.jq}/bin/jq 'map({key: .id | tostring, value: .windows}) | from_entries')
-        seq 1 10 | ${pkgs.jq}/bin/jq --argjson windows "''${WORKSPACE_WINDOWS}" --slurp -Mc 'map(tostring) | map({id: ., windows: ($windows[.]//0)})'
-    }
+  get-workspaces = pkgs.writeShellApplication {
+    name = "get-workspaces";
+    runtimeInputs = with pkgs; [ jq socat ]
+      ++ [ config.wayland.windowManager.hyprland.package ];
+    text = /* bash */ ''
+      spaces() {
+        workspaces="$(hyprctl workspaces -j | jq -Mc 'map({id: .id, windows: .windows}) | sort_by(.id)')"
+        active_workspaces="$(hyprctl monitors -j | jq -Mc 'map(.activeWorkspace.id)')"
+        current_workspace="$(hyprctl monitors -j | jq -Mc '.[] | select(.focused) | .activeWorkspace.id')"
+        jq -Mc --argjson active_workspaces "''${active_workspaces}" \
+          --argjson current_workspace "''${current_workspace}" \
+          'map(. | .active = (any($active_workspaces[] == .id; .)) | .current = (.id == $current_workspace))' <<< "$workspaces"
+      }
 
-    spaces() {
-      ${hyprctl} workspaces -j | jq -Mc 'map({id: .id, windows: .windows}) | sort_by(.id)'
-    }
-
-    spaces
-    ${pkgs.socat}/bin/socat -u UNIX-CONNECT:${hypr-socket} - | while read -r line; do
-        spaces
-    done
-  '';
-
-  get-active-workspace = pkgs.writeScript "get-active-workspace" /* bash */ ''
-    ${hyprctl} monitors -j | jq --raw-output .[0].activeWorkspace.id
-    ${pkgs.socat}/bin/socat -u UNIX-CONNECT:${hypr-socket} - | ${pkgs.coreutils}/bin/stdbuf -o0 grep '^workspace>>' | ${pkgs.coreutils}/bin/stdbuf -o0 ${pkgs.gawk}/bin/awk -F '>>|,' '{print $2}'
-  '';
+      spaces
+      socat -u UNIX-CONNECT:${hypr-socket} - | while read -r; do
+          spaces
+      done
+    '';
+  };
 in
 pkgs.writeText "workspaces.yuck" /* yuck */ ''
   (defwidget workspaces []
@@ -30,23 +30,14 @@ pkgs.writeText "workspaces.yuck" /* yuck */ ''
       (for workspace in workspaces
         (eventbox :onclick "${hyprctl} dispatch workspace ''${workspace.id}"
                   :onscroll "scripts/switch-workspace {}"
-          (box :class "warning workspace-entry ''${workspace.windows > 0 ? "occupied" : "empty"} ''${active_workspace == workspace.id ? "current" : "inactive"}"
+          (box :class "warning workspace-entry ''${workspace.windows > 0 ? "occupied" : "empty"} ''${workspace.active ? workspace.current ? "current" : "active" : "inactive"}"
             (label :text "''${workspace.id}")
             )
           )
         )
-      (workspace_fix)
       )
     )
 
     (deflisten workspaces :initial "[]"
-      "${get-workspaces}")
-    (deflisten active_workspace :initial "1"
-      "${get-active-workspace}")
-
-    (defwidget workspace_fix []
-      (box :class "fix ''${active_workspace}"
-           :visible false
-      )
-    )
+      "${lib.getExe get-workspaces}")
 ''

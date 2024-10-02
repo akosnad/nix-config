@@ -45,8 +45,12 @@ in pkgs.writeText "eww.scss" /* css */ ''
   .workspace-entry.empty {
     color: #${c.base03};
   }
+  .workspace-entry.active {
+    background-color: #${c.base02};
+  }
   .workspace-entry.current {
     background-color: #${c.base02};
+    color: #${c.base0D};
   }
 
   .sidestuff .kb-layout {
