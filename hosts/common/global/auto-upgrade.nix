@@ -36,7 +36,7 @@ in
             build="$(curl -fs "${buildbotApi}/builders/$builder/builds" | jq -Mcr '.builds | sort_by(.number) | reverse | first')"
             
             # check if build start date is not older than last revision
-            test "$upstreamModified" -gt "$(jq -r '.started_at' <<< "$build")"
+            test "$(jq -r '.started_at' <<< "$build")" -gt "$upstreamModified"
 
             # check if build has completed and is successful
             jq -e '.complete and .results == 0' <<< "$build" > /dev/null
