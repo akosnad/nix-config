@@ -30,8 +30,11 @@
     "nomodeset"
 
     # try fixing rebooting hangs by disabling hardware watchdog
-    "nowatchdog"
-    "modprobe.blacklist=mei_wdt,iTCO_wdt"
+    #
+    # since we disabled libvirt, try to re-enable watchdog for now
+    # TODO: find out if this is still needed
+    # "nowatchdog"
+    # "modprobe.blacklist=mei_wdt,iTCO_wdt"
   ];
 
   virtualisation.docker = {
