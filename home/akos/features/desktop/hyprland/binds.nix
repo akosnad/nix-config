@@ -65,7 +65,6 @@ in
       "$mainMod, G, exec, ${toggle-gammastep}"
       "$mainMod, L, exec, ${config.programs.hyprlock.package}/bin/hyprlock --immediate"
       "$mainMod, W, exec, ${cycle-wallpaper}"
-      "SUPERALT, L, exec, systemctl suspend"
 
       "$mainMod, Space, togglesplit, # dwindle"
 
@@ -144,6 +143,10 @@ in
 
     bindr = [
       "SUPER, SUPER_L, hyprexpo:expo, toggle"
+    ];
+
+    bindl = [
+      "SUPERALT, L, exec, systemctl suspend"
     ];
   };
 }
