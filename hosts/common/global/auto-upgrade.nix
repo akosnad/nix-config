@@ -31,8 +31,7 @@ in
           }
 
           checkBuilt() {
-            _q=".builders[] | select(.name == ""$1"") | .builderid"
-            builder="$(curl -fs "${buildbotApi}/builders" | jq -r """$_q""")"
+            builder="$(curl -fs "${buildbotApi}/builders" | jq -r ".builders[] | select(.name == \"""$1""\") | .builderid")"
             # TODO: querying build from revision instead of latest possible?
             build="$(curl -fs "${buildbotApi}/builders/$builder/builds" | jq -Mcr '.builds | sort_by(.number) | reverse | first')"
             
