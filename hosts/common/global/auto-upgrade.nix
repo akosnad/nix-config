@@ -8,6 +8,8 @@ let
   # Only enable auto upgrade if current config came from a clean tree
   # This avoids accidental auto-upgrades when working locally.
   isClean = inputs.self ? rev;
+
+  buildbotApi = "https://buildbot.fzt.one/api/v2";
 in
 {
   system.autoUpgrade = {
@@ -22,18 +24,31 @@ in
     serviceConfig.ExecCondition = lib.getExe (
       pkgs.writeShellApplication {
         name = "check-nixos-upgrade";
-        runtimeInputs = with pkgs; [ jq ];
+        runtimeInputs = with pkgs; [ curl jq ];
         text = ''
           lastModified() {
             nix flake metadata "$1" --refresh --json | jq '.lastModified'
           }
 
+          checkBuilt() {
+            _q=".builders[] | select(.name == ""$1"") | .builderid"
+            builder="$(curl -fs "${buildbotApi}/builders" | jq -r """$_q""")"
+            # TODO: querying build from revision instead of latest possible?
+            build="$(curl -fs "${buildbotApi}/builders/$builder/builds" | jq -Mcr '.builds | sort_by(.number) | reverse | first')"
+            
+            # check if build start date is not older than last revision
+            test "$upstreamModified" -gt "$(jq -r '.started_at' <<< "$build")"
+
+            # check if build has completed and is successful
+            jq -e '.complete and .results == 0' <<< "$build" > /dev/null
+          }
+
           # check if latest upstream config is newer than current
-          test "$(lastModified "${config.system.autoUpgrade.flake}")"  -gt "$(lastModified "self")"
+          upstreamModified="$(lastModified "${config.system.autoUpgrade.flake}")"
+          test "$upstreamModified" -gt "$(lastModified "self")"
 
           # check if system derivation is built upstream (i.e. by CI/CD or available from substituters)
-          uri="${config.system.autoUpgrade.flake}#nixosConfigurations.${config.networking.hostName}.config.system.build.toplevel"
-          test "$(nix path-info --refresh --json "$uri" | jq '.[0].valid')" == "true"
+          checkBuilt "${config.system.autoUpgrade.flake}#checks.nixos-${config.networking.hostName}"
         '';
       });
   };
