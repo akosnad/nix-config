@@ -31,9 +31,9 @@ in
           # check if latest upstream config is newer than current
           test "$(lastModified "${config.system.autoUpgrade.flake}")"  -gt "$(lastModified "self")"
 
-          # check if system derivation is built upstream (i.e. by CI/CD)
+          # check if system derivation is built upstream (i.e. by CI/CD or available from substituters)
           uri="${config.system.autoUpgrade.flake}#nixosConfigurations.${config.networking.hostName}.config.system.build.toplevel"
-          test "$(nix path-info --refresh --json "$uri" | jq '.[0].valid')" -eq "true"
+          test "$(nix path-info --refresh --json "$uri" | jq '.[0].valid')" == "true"
         '';
       });
   };
