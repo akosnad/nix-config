@@ -1,6 +1,4 @@
-{ inputs
-, ...
-}: {
+{ inputs, lib, ... }: {
   imports = [
     inputs.hardware.nixosModules.common-cpu-intel
     inputs.hardware.nixosModules.common-pc-ssd
@@ -41,6 +39,9 @@
   };
 
   services.hercules-ci-agent.settings.concurrentTasks = 8;
+
+  nix.distributedBuilds = lib.mkForce false;
+  nix.buildMachines = lib.mkForce [ ];
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "23.11";
