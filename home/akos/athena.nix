@@ -12,9 +12,9 @@ in
     ./features/shell/azure.nix
   ];
 
-  colorscheme = lib.mkDefault colorSchemes.atelier-forest;
+  colorscheme = lib.mkDefault colorSchemes.harmonic16-dark;
   specialisation = {
-    light.configuration.colorscheme = colorSchemes.atelier-forest-light;
+    light.configuration.colorscheme = colorSchemes.harmonic16-light;
   };
 
   monitors = [
