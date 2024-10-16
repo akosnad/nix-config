@@ -33,16 +33,6 @@ in
         psk = "\${Gaia}";
       };
 
-      "FBI Surveillance Van" = profileWithDefaults {
-        id = "FBI Surveillance Van";
-        psk = "\${FBI_Surveillance_Van}";
-      };
-
-      "PPKE-kollegium" = profileWithDefaults {
-        id = "PPKE-kollegium";
-        psk = "\${PPKE_kollegium}";
-      };
-
       "hermes" = profileWithDefaults {
         id = "hermes";
         ssid = ".";
