@@ -12,7 +12,6 @@
     ../common/optional/high-availability.nix
     ../common/optional/ephemeral-btrfs.nix
     ../common/optional/docker
-    ../common/optional/libvirt.nix
     ../common/optional/builder
     ../common/optional/aarch64.nix
     ../common/optional/buildbot-worker.nix
@@ -21,7 +20,6 @@
 
     ../common/users/akos
 
-    # ./libvirt
     ./buildbot-master.nix
   ];
 
