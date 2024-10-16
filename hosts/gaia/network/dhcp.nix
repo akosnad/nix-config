@@ -56,6 +56,11 @@ let
       ip = "10.20.0.231";
       name = "ranarp";
     }
+    {
+      mac = "6C:3C:7C:35:3E:2B";
+      ip = "10.20.0.88";
+      name = "kalliope";
+    }
   ];
 
 in

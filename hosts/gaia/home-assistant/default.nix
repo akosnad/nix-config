@@ -49,6 +49,7 @@
       "stream"
       "generic"
       "onvif"
+      "ipp"
     ];
     extraPackages = python3Packages: with python3Packages; [
       # recorder postgresql support
