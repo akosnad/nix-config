@@ -6,6 +6,7 @@
     ./eww
     ./hyprlock.nix
     ./hypridle.nix
+    ./waypipe.nix
   ];
 
   xdg.mimeApps.enable = true;
