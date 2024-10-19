@@ -20,7 +20,7 @@ let
 
   script = pkgs.writeShellApplication {
     name = "mqtt-notification-daemon";
-
+    bashOptions = [ "errexit" "nounset" "pipefail" "xtrace" ];
     runtimeInputs = with pkgs; [ mosquitto nettools libnotify jq ];
 
     text = /* bash */ ''
