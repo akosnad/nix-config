@@ -3,7 +3,7 @@
     autoStart = true;
     image = "containrrr/watchtower";
     extraOptions = [
-      "--restart=always"
+      "--label=com.centurylinklabs.watchtower.enable=true"
     ];
     volumes = [
       "/var/run/docker.sock:/var/run/docker.sock"
@@ -12,6 +12,7 @@
     environment = {
       WATCHTOWER_SCHEDULE = "0 30 4 * * *";
       WATCHTOWER_CLEANUP = "1";
+      WATCHTOWER_LABEL_ENABLE = "1";
     };
   };
 }

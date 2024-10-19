@@ -6,12 +6,13 @@
     ./hardware-configuration.nix
     ./disk-config.nix
     ./network.nix
-    ./esphome.nix
 
     ../common/global
     ../common/optional/high-availability.nix
     ../common/optional/ephemeral-btrfs.nix
     ../common/optional/docker
+    ../common/optional/docker/watchtower.nix
+    ../common/optional/docker/arion.nix
     ../common/optional/builder
     ../common/optional/aarch64.nix
     ../common/optional/buildbot-worker.nix
@@ -21,6 +22,8 @@
     ../common/users/akos
 
     ./buildbot-master.nix
+    ./esphome.nix
+    ./containers
   ];
 
   boot.kernelParams = [

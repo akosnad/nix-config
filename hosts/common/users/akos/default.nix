@@ -15,6 +15,7 @@ in
       "network"
       "wireshark"
       "docker"
+      "podman"
       "libvirtd"
     ];
 

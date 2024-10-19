@@ -1,7 +1,14 @@
 { config, lib, ... }:
 let
   dockerEnabled = config.virtualisation.docker.enable;
+  podmanEnabled = config.virtualisation.podman.enable;
   autoUpgradeEnabled = config.system.autoUpgrade.enable;
+
+  autoPrune = {
+    enable = true;
+    dates = "weekly";
+    flags = [ "--all" ];
+  };
 in
 {
   virtualisation.docker = lib.mkIf dockerEnabled {
@@ -11,11 +18,11 @@ in
     # because containers are restarted
     liveRestore = false;
 
-    autoPrune = {
-      enable = true;
-      dates = "weekly";
-      flags = [ "--all" ];
-    };
+    inherit autoPrune;
+  };
+
+  virtualisation.podman = lib.mkIf podmanEnabled {
+    inherit autoPrune;
   };
 
   system.autoUpgrade = lib.mkIf autoUpgradeEnabled {

@@ -1,5 +1,28 @@
 {
   "nodes": {
+    "arion": {
+      "inputs": {
+        "flake-parts": "flake-parts",
+        "haskell-flake": "haskell-flake",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1690375813,
+        "narHash": "sha256-IJiajoljCMUGlp1bwT/loXs1B3RH2FXpLepnqvcPNEY=",
+        "owner": "hercules-ci",
+        "repo": "arion",
+        "rev": "8868689d3fd8a2ec45f1f6ab9dcf74728c6d853f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hercules-ci",
+        "ref": "v0.2.1.0",
+        "repo": "arion",
+        "type": "github"
+      }
+    },
     "base16-schemes": {
       "flake": false,
       "locked": {
@@ -18,7 +41,7 @@
     },
     "buildbot-nix": {
       "inputs": {
-        "flake-parts": "flake-parts",
+        "flake-parts": "flake-parts_2",
         "nixpkgs": "nixpkgs",
         "treefmt-nix": "treefmt-nix"
       },
@@ -125,6 +148,27 @@
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": [
+          "arion",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1675933616,
+        "narHash": "sha256-/rczJkJHtx16IFxMmAWu5nNYcSXNg1YYXTHoGjLrLUA=",
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "rev": "47478a4a003e745402acf63be7f9a092d51b83d7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "type": "github"
+      }
+    },
+    "flake-parts_2": {
+      "inputs": {
+        "nixpkgs-lib": [
           "buildbot-nix",
           "nixpkgs"
         ]
@@ -143,7 +187,7 @@
         "type": "github"
       }
     },
-    "flake-parts_2": {
+    "flake-parts_3": {
       "inputs": {
         "nixpkgs-lib": [
           "lanzaboote",
@@ -237,6 +281,22 @@
         "type": "github"
       }
     },
+    "haskell-flake": {
+      "locked": {
+        "lastModified": 1675296942,
+        "narHash": "sha256-u1X1sblozi5qYEcLp1hxcyo8FfDHnRUVX3dJ/tW19jY=",
+        "owner": "srid",
+        "repo": "haskell-flake",
+        "rev": "c2cafce9d57bfca41794dc3b99c593155006c71e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "srid",
+        "ref": "0.1.0",
+        "repo": "haskell-flake",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -277,7 +337,7 @@
       "inputs": {
         "crane": "crane",
         "flake-compat": "flake-compat",
-        "flake-parts": "flake-parts_2",
+        "flake-parts": "flake-parts_3",
         "flake-utils": "flake-utils",
         "nixpkgs": [
           "nixpkgs"
@@ -489,6 +549,7 @@
     },
     "root": {
       "inputs": {
+        "arion": "arion",
         "buildbot-nix": "buildbot-nix",
         "disko": "disko",
         "hardware": "hardware",
@@ -539,15 +600,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1728345710,
-        "narHash": "sha256-lpunY1+bf90ts+sA2/FgxVNIegPDKCpEoWwOPu4ITTQ=",
-        "owner": "Mic92",
+        "lastModified": 1729035011,
+        "narHash": "sha256-8sBpG9CFaqruTEZRQyggVhFHBB8z+t263UvrpFLDRRw=",
+        "owner": "munnik",
         "repo": "sops-nix",
-        "rev": "06535d0e3d0201e6a8080dd32dbfde339b94f01b",
+        "rev": "c916d48f9546e0b42bf7604f77efc60fb9357a96",
         "type": "github"
       },
       "original": {
-        "owner": "Mic92",
+        "owner": "munnik",
         "repo": "sops-nix",
         "type": "github"
       }

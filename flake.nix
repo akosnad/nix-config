@@ -46,7 +46,10 @@
     };
 
     sops-nix = {
-      url = "github:Mic92/sops-nix";
+      # we use munnik's fork until https://github.com/Mic92/sops-nix/pull/637 is merged
+      # this allows for setting explicit uid and gid for secret files
+      # url = "github:Mic92/sops-nix";
+      url = "github:munnik/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.nixpkgs-stable.follows = "nixpkgs";
     };
@@ -57,6 +60,11 @@
       url = "https://flakehub.com/f/AshleyYakeley/NixVirt/0.5.0.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.nixpkgs-ovmf.follows = "nixpkgs";
+    };
+
+    arion = {
+      url = "github:hercules-ci/arion/v0.2.1.0";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     lanzaboote = {
