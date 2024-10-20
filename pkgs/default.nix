@@ -6,5 +6,4 @@ args: {
   vim-plugins = import ./vim-plugins args;
 
   librespot-auth = import ./librespot-auth args;
-  qb-web = import ./qb-web.nix args;
 }
