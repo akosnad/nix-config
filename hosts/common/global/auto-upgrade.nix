@@ -15,7 +15,7 @@ in
   system.autoUpgrade = {
     enable = isClean;
     dates = lib.mkDefault "hourly";
-    flags = [ "--refresh" ];
+    flags = [ "--refresh" "--accept-flake-config" ];
     flake = "github:akosnad/nix-config";
   };
 
