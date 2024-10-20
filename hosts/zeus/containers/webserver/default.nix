@@ -45,14 +45,14 @@ in
         ports = [ "80:80" "443:443" ];
         networks = [ "internal" "torrent_internal" "media-server_internal" ];
         volumes =
-        [
-          "${./lan.conf}:/etc/nginx/conf.d/default.conf:ro"
-          "/raid/pxe/:/srv/http/ipxe:ro"
-          "/raid/Public/:/srv/http/public:ro"
-          "/raid/Torrents/:/srv/http/Torrents:ro"
-          "/raid/Radarr/:/srv/http/Radarr:ro"
-          "/raid/Sonarr/:/srv/http/Sonarr:ro"
-        ] ++ publicVolumes ++ (mkSecretVolumes lanMountSecrets);
+          [
+            "${./lan.conf}:/etc/nginx/conf.d/default.conf:ro"
+            "/raid/pxe/:/srv/http/ipxe:ro"
+            "/raid/Public/:/srv/http/public:ro"
+            "/raid/Torrents/:/srv/http/Torrents:ro"
+            "/raid/Radarr/:/srv/http/Radarr:ro"
+            "/raid/Sonarr/:/srv/http/Sonarr:ro"
+          ] ++ publicVolumes ++ (mkSecretVolumes lanMountSecrets);
       };
 
       lan-php.service = lib.recursiveUpdate commonServiceOptions {
@@ -64,10 +64,10 @@ in
         image = "nginx";
         networks = lib.mkForce [ "cloudflare_tunnel" ];
         volumes =
-        [
-          "${./public.conf}:/etc/nginx/conf.d/default.conf:ro"
-          "${repo-robots}:/serve/robots.txt:ro"
-        ] ++ publicVolumes ++ (mkSecretVolumes publicMountSecrets);
+          [
+            "${./public.conf}:/etc/nginx/conf.d/default.conf:ro"
+            "${repo-robots}:/serve/robots.txt:ro"
+          ] ++ publicVolumes ++ (mkSecretVolumes publicMountSecrets);
         blkio_config.weight = 900;
       };
     };
@@ -90,13 +90,15 @@ in
       requires = deps';
     };
 
-  sops.secrets = lib.mapAttrs (name: _: {
-    sopsFile = ../../secrets.yaml;
-    owner = "";
-    group = "";
+  sops.secrets = lib.mapAttrs
+    (_: _: {
+      sopsFile = ../../secrets.yaml;
+      owner = "";
+      group = "";
 
-    # nginx is run as 101:101 inside the containers
-    uid = 101;
-    gid = 101;
-  }) (lanMountSecrets // publicMountSecrets);
+      # nginx is run as 101:101 inside the containers
+      uid = 101;
+      gid = 101;
+    })
+    (lanMountSecrets // publicMountSecrets);
 }
