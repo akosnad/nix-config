@@ -5,6 +5,8 @@ let
     labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
     environment = {
       TZ = "Europe/Budapest";
+      PUID = "1000";
+      PGID = "1000";
     };
   };
 in
@@ -54,8 +56,6 @@ in
         networks = lib.mkForce [ ];
         network_mode = "host";
         environment = {
-          PUID = "1000";
-          PGID = "1000";
           VERSION = "docker";
         };
         env_file = [ config.sops.secrets.plex-env.path ];
