@@ -10,7 +10,6 @@ let
 in
 {
 
-  # TODO: pass blkio_config.weight values somehow
   # TODO: ratio manager, start-stop scripts
 
   virtualisation.arion.projects.torrent.settings = {
@@ -31,7 +30,7 @@ in
           "15577:15577"
           "15577:15577/udp"
         ];
-        #blkio_config.weight = 1000;
+        blkio_config.weight = 1000;
       };
 
       jackett.service = lib.recursiveUpdate commonServiceOptions {

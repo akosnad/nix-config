@@ -9,9 +9,6 @@ let
   };
 in
 {
-
-  # TODO: pass blkio_config.weight values somehow
-
   virtualisation.arion.projects.media-server.settings = {
     services = {
       overseerr.service = lib.recursiveUpdate commonServiceOptions {
@@ -35,7 +32,7 @@ in
           "/raid/Radarr/:/raid/Radarr"
           "/raid/Torrents/Radarr/:/raid/Torrents/Radarr"
         ];
-        # blkio_config.weight = 800;
+        blkio_config.weight = 800;
         ports = [ "7878:7878" ];
       };
 
@@ -47,7 +44,7 @@ in
           "/raid/Sonarr/:/raid/Sonarr"
           "/raid/Torrents/Sonarr/:/raid/Torrents/Sonarr"
         ];
-        # blkio_config.weight = 800;
+        blkio_config.weight = 800;
         ports = [ "8989:8989" ];
       };
 
@@ -73,7 +70,7 @@ in
           "/raid/Torrents/nCoreFilmek/:/raid/Torrents/nCoreFilmek"
           "/raid/Torrents/nCoreSorozatok/:/raid/Torrents/nCoreSorozatok"
         ];
-        # blkio_config.weight = 30;
+        blkio_config.weight = 30;
       };
     };
 

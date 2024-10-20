@@ -68,7 +68,7 @@ in
           "${./public.conf}:/etc/nginx/conf.d/default.conf:ro"
           "${repo-robots}:/serve/robots.txt:ro"
         ] ++ publicVolumes ++ (mkSecretVolumes publicMountSecrets);
-        # blkio_config.weight = 900;
+        blkio_config.weight = 900;
       };
     };
 
