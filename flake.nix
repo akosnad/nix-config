@@ -63,10 +63,7 @@
     };
 
     arion = {
-      # we use our fork until https://github.com/hercules-ci/arion/pull/263 is merged
-      # this allows for setting blkio_config for containers
-      # url = "github:hercules-ci/arion/v0.2.1.0";
-      url = "github:akosnad/arion";
+      url = "github:hercules-ci/arion";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
