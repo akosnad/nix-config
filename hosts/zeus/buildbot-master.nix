@@ -73,5 +73,14 @@ in
   containers.buildbot-master.bindMounts = (builtins.listToAttrs (map (name: { name = secretsCfg.${name}.path; value = { isReadOnly = true; }; }) masterSecretNames)) // {
     "${config.sops.secrets.buildbot-workers.path}".isReadOnly = true;
     "${config.sops.secrets.buildbot-cachix-token.path}".isReadOnly = true;
+    buildbot-data =
+      let
+        path = "/var/lib/buildbot";
+      in
+      {
+        isReadOnly = false;
+        mountPoint = path;
+        hostPath = "/persist/${path}";
+      };
   };
 }
