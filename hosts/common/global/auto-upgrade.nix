@@ -47,7 +47,7 @@ in
           test "$upstreamModified" -gt "$(lastModified "self")"
 
           # check if system derivation is built upstream (i.e. by CI/CD or available from substituters)
-          checkBuilt "${config.system.autoUpgrade.flake}#checks.nixos-${config.networking.hostName}"
+          checkBuilt "${config.system.autoUpgrade.flake}#checks.${config.nixpkgs.hostPlatform.system}.nixos-${config.networking.hostName}"
         '';
       });
   };
