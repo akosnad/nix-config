@@ -25,6 +25,10 @@ in
         enable = true;
         inherit domain;
         workersFile = "${secretsCfg.buildbot-workers.path}";
+        buildSystems = [
+          "x86_64-linux"
+          "aarch64-linux"
+        ];
         admins = [ "akosnad" ];
         github = {
           topic = "buildbot-akosnad";
