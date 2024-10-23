@@ -46,10 +46,7 @@
     };
 
     sops-nix = {
-      # we use munnik's fork until https://github.com/Mic92/sops-nix/pull/637 is merged
-      # this allows for setting explicit uid and gid for secret files
-      # url = "github:Mic92/sops-nix";
-      url = "github:munnik/sops-nix";
+      url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.nixpkgs-stable.follows = "nixpkgs";
     };
