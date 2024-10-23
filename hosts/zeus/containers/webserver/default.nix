@@ -93,10 +93,9 @@ in
   sops.secrets = lib.mapAttrs
     (_: _: {
       sopsFile = ../../secrets.yaml;
-      owner = "";
-      group = "";
 
       # nginx is run as 101:101 inside the containers
+      # reference: https://github.com/docker-library/docs/tree/master/nginx#user-and-group-id
       uid = 101;
       gid = 101;
     })
