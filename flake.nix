@@ -111,10 +111,10 @@
         let
           checkSystem = "x86_64-linux";
           checkPkgs = pkgsFor.${checkSystem};
+
           machinesForSystem = machines: system: lib.filterAttrs (_: config: config.config.nixpkgs.hostPlatform.system == system) machines;
           mapMachines = machines: lib.mapAttrs' (name: config: lib.nameValuePair "nixos-${name}" config.config.system.build.toplevel) machines;
           machines = forEachSystem (system: mapMachines (machinesForSystem self.nixosConfigurations system));
-          packages = forEachSystem (system: lib.mapAttrs' (name: lib.nameValuePair "pkgs-${name}") self.packages.${system});
 
           codeChecks = {
             statix = checkPkgs.runCommand "statix"
@@ -143,7 +143,6 @@
         in
         builtins.foldl' (acc: elem: lib.recursiveUpdate acc elem) { } [
           machines
-          packages
           { "${checkSystem}" = codeChecks; }
         ];
 
