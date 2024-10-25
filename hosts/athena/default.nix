@@ -22,6 +22,7 @@
     ../common/optional/docker
     ../common/optional/wireshark.nix
     ../common/optional/yubikey.nix
+    ../common/optional/xwayland-fix.nix
 
     ../common/users/akos
   ];

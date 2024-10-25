@@ -22,6 +22,7 @@
     ../common/optional/hercules-ci-agent.nix
     ../common/optional/yubikey.nix
     ../common/optional/use-builders.nix
+    ../common/optional/xwayland-fix.nix
 
     ../common/users/akos
 
