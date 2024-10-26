@@ -1,7 +1,10 @@
-{ pkgs, config, ... }:
+{ pkgs, config, lib, ... }:
 let
   inherit (pkgs) writeShellScript;
   hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
+
+  secondaryMonitors = builtins.filter (m: !m.primary) config.monitors;
+  hasMultipleMonitors = builtins.length config.monitors > 1;
 
   exit = writeShellScript "exit.sh" ''
     systemctl --user stop hyprland-session.service
@@ -44,6 +47,23 @@ let
         systemctl --user start gammastep
         notify-send -t 3000 -e 'Gammastep' 'Gammastep is now enabled'
     fi
+  '';
+
+  toggle-secondary-monitors = writeShellScript "toggle-secondary-monitors.sh" ''
+    function toggle_monitor() {
+      state="$(${hyprctl} monitors -j | jq -r """.[] | select(.name == \"$1\") | .dpmsStatus""")"
+      if [[ "$state" == "false" ]]; then
+        action="on"
+      else
+        action="off"
+      fi
+
+      ${hyprctl} dispatch dpms "$action" "$1"
+    }
+
+    for monitor in ${builtins.concatStringsSep " " (builtins.map (m: m.name) secondaryMonitors)}; do
+      toggle_monitor "$monitor"
+    done
   '';
 in
 {
@@ -122,7 +142,8 @@ in
       ",Print, exec, ${pkgs.grimblast}/bin/grimblast --notify copy"
       "ALT, Print, exec, ${pkgs.grimblast}/bin/grimblast --notify copy active"
       "$mainMod, Print, exec, ${pkgs.grimblast}/bin/grimblast --notify copy area"
-    ];
+
+    ] ++ (lib.optional hasMultipleMonitors "$mainMod, X, exec, ${toggle-secondary-monitors}");
 
     bindle = [
       ",XF86MonBrightnessUp, exec, ${pkgs.light}/bin/light -A 5"
