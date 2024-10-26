@@ -10,19 +10,19 @@ let
     state_class = "measurement";
   };
 
-  internetDownSpeedConfig = (commonConfigOptions // {
+  internetDownSpeedConfig = commonConfigOptions // {
     name = "Internet Download Speed";
     state_topic = "gaia-router/internet_rx";
     unit_of_measurement = "Mbit/s";
     unique_id = "internet_down_speed";
-  });
+  };
 
-  internetUpSpeedConfig = (commonConfigOptions // {
+  internetUpSpeedConfig = commonConfigOptions // {
     name = "Internet Upload Speed";
     state_topic = "gaia-router/internet_tx";
     unit_of_measurement = "Mbit/s";
     unique_id = "internet_up_speed";
-  });
+  };
 
   entities = [ internetDownSpeedConfig internetUpSpeedConfig ];
 
