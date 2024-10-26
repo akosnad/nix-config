@@ -55,6 +55,7 @@ in
             }
           }
         })
+        add_lsp(lspconfig.vhdl_ls, {})
 
         if not configs.bicep then
           configs.bicep = {
@@ -174,5 +175,6 @@ in
     rust-analyzer
     nil
     lua54Packages.jsregexp
+    vhdl-ls
   ];
 }

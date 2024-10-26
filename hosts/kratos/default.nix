@@ -27,6 +27,7 @@
     ../common/users/akos
 
     ./steam.nix
+    ./vivado.nix
   ];
 
   networking.hostName = "kratos";
