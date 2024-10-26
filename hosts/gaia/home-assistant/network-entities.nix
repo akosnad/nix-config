@@ -1,0 +1,90 @@
+{ lib, pkgs, ... }:
+let
+  commonConfigOptions = {
+    device = {
+      name = "gaia-router";
+      identifiers = [ "gaia-router" ];
+    };
+    availability_topic = "gaia-router/availability";
+    device_class = "speed";
+    state_class = "measurement";
+  };
+
+  internetDownSpeedConfig = (commonConfigOptions // {
+    name = "Internet Download Speed";
+    state_topic = "gaia-router/internet_rx";
+    unit_of_measurement = "Mbit/s";
+    unique_id = "internet_down_speed";
+  });
+
+  internetUpSpeedConfig = (commonConfigOptions // {
+    name = "Internet Upload Speed";
+    state_topic = "gaia-router/internet_tx";
+    unit_of_measurement = "Mbit/s";
+    unique_id = "internet_up_speed";
+  });
+
+  entities = [ internetDownSpeedConfig internetUpSpeedConfig ];
+
+  script = pkgs.writeShellApplication {
+    name = "ha-network-monitor";
+    bashOptions = [ "errexit" "nounset" "pipefail" "xtrace" ];
+    runtimeInputs = with pkgs; [ mosquitto python3 iproute2 jq ];
+    text = /* bash */ ''
+      mqttEndpoint="mqtt://127.0.0.1"
+
+      # send entity configs
+      ${builtins.concatStringsSep "\n" (map (entity: /* bash */ ''
+        mosquitto_pub \
+          -L "$mqttEndpoint/homeassistant/sensor/${entity.unique_id}/config" \
+          -m '${builtins.toJSON entity}' \
+          -r -q 1
+      '') entities)}
+
+      # setup availability topic
+      function on_exit() {
+        mosquitto_pub -L "$mqttEndpoint/${commonConfigOptions.availability_topic}" -m "offline" -r -q 1
+      }
+      trap on_exit EXIT
+      mosquitto_pub -L "$mqttEndpoint/${commonConfigOptions.availability_topic}" -m "online" -r -q 1
+
+      # start monitoring
+      last_rx="0"
+      last_tx="0"
+      window_size=3
+      while true; do
+        raw="$(ifstat -a -j)"
+        rx_bytes="$(echo "$raw" | jq -r '.kernel."bond-wan".rx_bytes')"
+        tx_bytes="$(echo "$raw" | jq -r '.kernel."bond-wan".tx_bytes')"
+
+        if [[ "$last_rx" == "0" ]]; then
+          last_rx="$rx_bytes"
+          last_tx="$tx_bytes"
+        else
+          last_rx_diff="$(python3 -c "print('{:0.3f}'.format(($rx_bytes - $last_rx) / 1024 / 1024 * 8 / $window_size))")"
+          last_tx_diff="$(python3 -c "print('{:0.3f}'.format(($tx_bytes - $last_tx) / 1024 / 1024 * 8 / $window_size))")"
+          mosquitto_pub -L "$mqttEndpoint/${internetDownSpeedConfig.state_topic}" -m "$last_rx_diff" -q 1
+          mosquitto_pub -L "$mqttEndpoint/${internetUpSpeedConfig.state_topic}" -m "$last_tx_diff" -q 1
+          last_rx="$rx_bytes"
+          last_tx="$tx_bytes"
+        fi
+
+        sleep $window_size
+      done
+    '';
+  };
+in
+{
+  systemd.services.ha-network-monitor = {
+    description = "Home Assistant network monitoring";
+    wantedBy = [ "multi-user.target" ];
+    wants = [ "network.target" ];
+    after = [ "network.target" ];
+    serviceConfig = {
+      Restart = "always";
+      RestartSec = 3;
+
+      ExecStart = lib.getExe script;
+    };
+  };
+}
