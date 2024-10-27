@@ -51,22 +51,28 @@ let
       # start monitoring
       last_rx="0"
       last_tx="0"
+      last_sample="0"
       window_size=3
       while true; do
         raw="$(ifstat -a -j)"
         rx_bytes="$(echo "$raw" | jq -r '.kernel."bond-wan".rx_bytes')"
         tx_bytes="$(echo "$raw" | jq -r '.kernel."bond-wan".tx_bytes')"
+        # milliseconds since epoch
+        sample_time="$(date +%s%3N)"
 
-        if [[ "$last_rx" == "0" ]]; then
+        if [[ "$last_sample" == "0" ]]; then
           last_rx="$rx_bytes"
           last_tx="$tx_bytes"
+          last_sample="$sample_time"
         else
-          last_rx_diff="$(python3 -c "print('{:0.3f}'.format(($rx_bytes - $last_rx) / 1024 / 1024 * 8 / $window_size))")"
-          last_tx_diff="$(python3 -c "print('{:0.3f}'.format(($tx_bytes - $last_tx) / 1024 / 1024 * 8 / $window_size))")"
+          actual_window_size="$(python3 -c "print(($sample_time - $last_sample) / 1000)")"
+          last_rx_diff="$(python3 -c "print('{:0.3f}'.format(($rx_bytes - $last_rx) / 1024 / 1024 * 8 / $actual_window_size))")"
+          last_tx_diff="$(python3 -c "print('{:0.3f}'.format(($tx_bytes - $last_tx) / 1024 / 1024 * 8 / $actual_window_size))")"
           mosquitto_pub -L "$mqttEndpoint/${internetDownSpeedConfig.state_topic}" -m "$last_rx_diff" -q 1
           mosquitto_pub -L "$mqttEndpoint/${internetUpSpeedConfig.state_topic}" -m "$last_tx_diff" -q 1
           last_rx="$rx_bytes"
           last_tx="$tx_bytes"
+          last_sample="$sample_time"
         fi
 
         sleep $window_size
