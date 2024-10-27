@@ -9,7 +9,6 @@
     ./postgresql.nix
     ./mqtt.nix
     ./backup.nix
-    ./node-red.nix
 
     ../common/global
     ../common/optional/use-builders.nix
