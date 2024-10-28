@@ -11,6 +11,7 @@ in
       "wheel"
       "video"
       "audio"
+      "dialout"
     ] ++ ifGroupExists [
       "network"
       "wireshark"
