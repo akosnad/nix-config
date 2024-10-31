@@ -52,6 +52,7 @@
       "onvif"
       "ipp"
       "tplink"
+      "bluetooth"
     ];
     extraPackages = python3Packages: with python3Packages; [
       # recorder postgresql support

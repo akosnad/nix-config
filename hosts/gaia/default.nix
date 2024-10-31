@@ -19,5 +19,11 @@
 
   environment.persistence."/persist".enable = lib.mkForce false;
 
+  hardware.raspberry-pi."4".bluetooth.enable = true;
+  hardware.bluetooth.enable = true;
+  # required by home assistant bluetooth integration
+  # reference: https://www.home-assistant.io/integrations/bluetooth/#requirements-for-linux-systems
+  services.dbus.implementation = "broker";
+
   system.stateVersion = "24.05";
 }
