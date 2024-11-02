@@ -68,8 +68,11 @@ let
           actual_window_size="$(python3 -c "print(($sample_time - $last_sample) / 1000)")"
           last_rx_diff="$(python3 -c "print('{:0.3f}'.format(($rx_bytes - $last_rx) / 1024 / 1024 * 8 / $actual_window_size))")"
           last_tx_diff="$(python3 -c "print('{:0.3f}'.format(($tx_bytes - $last_tx) / 1024 / 1024 * 8 / $actual_window_size))")"
-          mosquitto_pub -L "$mqttEndpoint/${internetDownSpeedConfig.state_topic}" -m "$last_rx_diff" -q 1
-          mosquitto_pub -L "$mqttEndpoint/${internetUpSpeedConfig.state_topic}" -m "$last_tx_diff" -q 1
+          # FIXME: this is a hack to avoid sending negative values
+          if [[ $(( last_rx_diff > 0 )) == 1 && $(( last_tx_diff > 0 )) == 1 ]]; then
+            mosquitto_pub -L "$mqttEndpoint/${internetDownSpeedConfig.state_topic}" -m "$last_rx_diff" -q 1
+            mosquitto_pub -L "$mqttEndpoint/${internetUpSpeedConfig.state_topic}" -m "$last_tx_diff" -q 1
+          fi
           last_rx="$rx_bytes"
           last_tx="$tx_bytes"
           last_sample="$sample_time"
