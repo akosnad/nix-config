@@ -1,7 +1,7 @@
 {
   imports = [
     ./media-server.nix
-    ./torrent.nix
+    ./torrent
     ./cloudflare.nix
     ./webserver
   ];
