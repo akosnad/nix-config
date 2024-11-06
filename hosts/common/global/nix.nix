@@ -18,7 +18,13 @@
   nix.settings = {
     experimental-features = "nix-command flakes";
     auto-optimise-store = true;
+    warn-dirty = false;
     trusted-users = [ "root" "@wheel" ];
+
+    # allow offline binary caches to be skipped
+    connect-timeout = 5;
+    fallback = lib.mkDefault true;
+
     substituters = [
       "https://akosnad.cachix.org/"
       "https://cache.nixos.org/"
