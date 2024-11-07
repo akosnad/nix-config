@@ -28,7 +28,7 @@ let
 
   script = pkgs.writeShellApplication {
     name = "ha-network-monitor";
-    bashOptions = [ "errexit" "nounset" "pipefail" "xtrace" ];
+    bashOptions = [ "errexit" "nounset" "pipefail" /* "xtrace" */ ];
     runtimeInputs = with pkgs; [ mosquitto python3 iproute2 jq ];
     text = /* bash */ ''
       mqttEndpoint="mqtt://127.0.0.1"
@@ -55,8 +55,17 @@ let
       window_size=3
       while true; do
         raw="$(ifstat -a -j)"
-        rx_bytes="$(echo "$raw" | jq -r '.kernel."bond-wan".rx_bytes')"
-        tx_bytes="$(echo "$raw" | jq -r '.kernel."bond-wan".tx_bytes')"
+        # dev="$(ip --json route show table mwan | jq -r 'sort_by(.metric) | .[0].dev')"
+        devs="$(ip --json route show table mwan | jq -r '.[] | .dev')"
+        while read -r d; do
+          up="$(ip --json link show "$d" | jq '.[].flags | index("UP") != null')"
+          if [[ "$up" == "true" ]]; then
+            dev="$d"
+            break
+          fi
+        done <<< "$devs"
+        rx_bytes="$(echo "$raw" | jq -r ".kernel.$dev.rx_bytes")"
+        tx_bytes="$(echo "$raw" | jq -r ".kernel.$dev.tx_bytes")"
         # milliseconds since epoch
         sample_time="$(date +%s%3N)"
 

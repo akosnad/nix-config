@@ -1,3 +1,40 @@
+let
+  networkConfig = {
+    DHCP = true;
+    IPv6AcceptRA = true;
+    IPForward = "ipv6";
+    LLDP = true;
+  };
+
+  mkDefaultRoutes = { metric }: [
+    {
+      routeConfig = {
+        Table = "mwan";
+        Destination = "0.0.0.0/0";
+        Protocol = "static";
+        Gateway = "_dhcp4";
+        Metric = metric;
+      };
+    }
+    {
+      routeConfig = {
+        Table = "mwan";
+        Destination = "::/0";
+        Protocol = "static";
+        Gateway = "_ipv6ra";
+        Metric = metric;
+      };
+    }
+  ];
+
+  mkDefaultRoutingPolicyRules = { ifname, priority }: [{
+    routingPolicyRuleConfig = {
+      OutgoingInterface = ifname;
+      Table = "mwan";
+      Priority = priority;
+    };
+  }];
+in
 {
   systemd.network = {
     # USB Ethernet adatper
@@ -11,21 +48,12 @@
       linkConfig.Name = "wan-rndis";
     };
 
-    netdevs."20-bond-wan" = {
-      netdevConfig = {
-        Kind = "bond";
-        Name = "bond-wan";
-      };
-      bondConfig.Mode = "active-backup";
-    };
-
     networks = {
-      "30-bond-wan0-bind" = {
+      "50-wan0" = {
         matchConfig.Name = "wan0";
-        networkConfig = {
-          Bond = "bond-wan";
-          PrimarySlave = true;
-        };
+        inherit networkConfig;
+        routes = mkDefaultRoutes { metric = 500; };
+        routingPolicyRules = mkDefaultRoutingPolicyRules { ifname = "wan0"; priority = 500; };
         cakeConfig = {
           Bandwidth = "500M";
           FlowIsolationMode = "src-host";
@@ -34,34 +62,17 @@
         };
       };
 
-      "31-bond-wan-slaves-bind" = {
-        matchConfig.Name = "wan*";
-        networkConfig.Bond = "bond-wan";
-      };
-
-      "50-bond-wan" = {
-        matchConfig.Name = "bond-wan";
-        networkConfig = {
-          DHCP = true;
-          IPv6AcceptRA = true;
-          IPForward = "ipv6";
-          LLDP = true;
+      "51-wan-rndis" = {
+        matchConfig.Name = "wan-rndis";
+        inherit networkConfig;
+        routes = mkDefaultRoutes { metric = 1000; };
+        routingPolicyRules = mkDefaultRoutingPolicyRules { ifname = "wan-rndis"; priority = 1000; };
+        cakeConfig = {
+          Bandwidth = "30M";
+          AutoRateIngress = true;
+          FlowIsolationMode = "src-host";
+          PriorityQueueingPreset = "diffserv4";
         };
-        routingPolicyRules = [{
-          routingPolicyRuleConfig = {
-            OutgoingInterface = "bond-wan";
-            Table = 200;
-            Priority = 16384;
-          };
-        }];
-        routes = [{
-          routeConfig = {
-            Table = 200;
-            Destination = "0.0.0.0/0";
-            Protocol = "static";
-            Gateway = "_dhcp4";
-          };
-        }];
       };
     };
 
