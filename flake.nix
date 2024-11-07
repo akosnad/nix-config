@@ -114,8 +114,8 @@
           };
         };
 
-        flake = { config, ... } @args: {
-          inherit lib args;
+        flake = {
+          inherit lib;
 
           nixosModules = import ./modules/nixos {
             inherit inputs;
