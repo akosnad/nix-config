@@ -6,6 +6,11 @@
       linkConfig.Name = "wan0";
     };
 
+    links."11-wan-rndis" = {
+      matchConfig.Driver = "rndis_host";
+      linkConfig.Name = "wan-rndis";
+    };
+
     netdevs."20-bond-wan" = {
       netdevConfig = {
         Kind = "bond";
