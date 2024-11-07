@@ -16,6 +16,8 @@
     nftables.enable = true;
     firewall = {
       enable = true;
+      allowPing = false;
+      rejectPackets = false; # drop packets instead of rejecting them
       trustedInterfaces = [ "br-lan" "tailscale0" ];
     };
     nameservers = [
