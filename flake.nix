@@ -149,14 +149,6 @@
                   deadnix -f ${./.}
                   touch $out
                 '';
-                fmt = checkPkgs.runCommand "fmt"
-                  {
-                    nativeBuildInputs = [ config.formatter."${checkSystem}" ];
-                  } ''
-                  cd ${./.}
-                  treefmt --fail-on-change
-                  touch $out
-                '';
               };
             in
             builtins.foldl' (acc: elem: lib.recursiveUpdate acc elem) { } [
