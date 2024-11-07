@@ -1,4 +1,10 @@
-use qbit_rs::{Qbit, model::{Credential, GetTorrentListArg, SetTorrentSharedLimitArg, Hashes, RatioLimit, SeedingTimeLimit}};
+use qbit_rs::{
+    model::{
+        Credential, GetTorrentListArg, Hashes, RatioLimit, SeedingTimeLimit,
+        SetTorrentSharedLimitArg,
+    },
+    Qbit,
+};
 use serde::Deserialize;
 use tokio_schedule::Job;
 
@@ -6,15 +12,13 @@ use tokio_schedule::Job;
 struct CategoryLimit {
     pub name: String,
     pub seeding_time_limit: isize,
-    pub ratio_limit: f64
+    pub ratio_limit: f64,
 }
-
 
 #[derive(Debug, Deserialize)]
 struct Config {
     pub category_limits: Vec<CategoryLimit>,
 }
-
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -54,14 +58,16 @@ async fn main() -> anyhow::Result<()> {
 
 async fn set_category_limits<'a, I>(category_limits: I, api: &Qbit) -> anyhow::Result<()>
 where
-    I: IntoIterator<Item = &'a CategoryLimit>
+    I: IntoIterator<Item = &'a CategoryLimit>,
 {
     for category in category_limits.into_iter() {
         let category_name = &category.name;
-        let torrents = api.get_torrent_list(GetTorrentListArg {
-            category: Some(category_name.clone()),
-            ..Default::default()
-        }).await?;
+        let torrents = api
+            .get_torrent_list(GetTorrentListArg {
+                category: Some(category_name.clone()),
+                ..Default::default()
+            })
+            .await?;
         let len = torrents.len();
 
         log::info!("Setting share limits on category {category_name} for {len} torrents...");
@@ -71,11 +77,7 @@ where
         }
 
         let hashes: Hashes = {
-            let vec: Vec<String> = torrents
-                .iter()
-                .map(|t| t.hash.clone())
-                .flatten()
-                .collect();
+            let vec: Vec<String> = torrents.iter().map(|t| t.hash.clone()).flatten().collect();
             Hashes::Hashes(vec.into())
         };
         let ratio_limit_int = category.ratio_limit as isize;
@@ -91,12 +93,14 @@ where
         log::trace!("\thashes: {:?}", hashes);
         log::info!("\tratio_limit: {ratio_limit:?}, seeding_time_limit: {seeding_time_limit:?}");
 
-        let res = api.set_torrent_shared_limit(SetTorrentSharedLimitArg {
-            hashes, 
-            ratio_limit: Some(ratio_limit),
-            seeding_time_limit: Some(seeding_time_limit),
-            inactive_seeding_time_limit: Some(SeedingTimeLimit::NoLimit),
-        }).await;
+        let res = api
+            .set_torrent_shared_limit(SetTorrentSharedLimitArg {
+                hashes,
+                ratio_limit: Some(ratio_limit),
+                seeding_time_limit: Some(seeding_time_limit),
+                inactive_seeding_time_limit: Some(SeedingTimeLimit::NoLimit),
+            })
+            .await;
         log::trace!("\tresult: {:?}", res);
         if let Err(e) = res {
             anyhow::bail!(e);

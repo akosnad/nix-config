@@ -16,10 +16,10 @@ let
     version = "0.1.0";
     src = ./qbt-manager;
     cargoLock = {
-        lockFile = ./qbt-manager/Cargo.lock;
-        outputHashes = {
-            "qbit-rs-0.4.6" = "sha256-vPMoWnT8CwK/4DAi5gCCkvqCtBYn95vf193/kqZY8Hw=";
-        };
+      lockFile = ./qbt-manager/Cargo.lock;
+      outputHashes = {
+        "qbit-rs-0.4.6" = "sha256-vPMoWnT8CwK/4DAi5gCCkvqCtBYn95vf193/kqZY8Hw=";
+      };
     };
     doCheck = false;
 
