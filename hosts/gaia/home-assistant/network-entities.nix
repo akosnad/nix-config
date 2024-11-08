@@ -24,6 +24,13 @@ let
     unique_id = "internet_up_speed";
   };
 
+  linkCommonConfig = {
+    inherit (commonConfigOptions) device availability_topic;
+    device_class = "connectivity";
+    payload_on = "true";
+    payload_off = "false";
+  };
+
   entities = [ internetDownSpeedConfig internetUpSpeedConfig ];
 
   script = pkgs.writeShellApplication {
@@ -52,20 +59,26 @@ let
       last_rx="0"
       last_tx="0"
       last_sample="0"
-      window_size=3
+      window_size=10
       while true; do
         raw="$(ifstat -a -j)"
-        # dev="$(ip --json route show table mwan | jq -r 'sort_by(.metric) | .[0].dev')"
         devs="$(ip --json route show table mwan | jq -r '.[] | .dev')"
         while read -r d; do
+          # send link entity config
+          mosquitto_pub -L "$mqttEndpoint/homeassistant/binary_sensor/$d/config" \
+            -m "$(jq -n --arg d "$d" --arg state_topic "gaia-router/link/$d" --argjson linkCommonConfig '${builtins.toJSON linkCommonConfig}' '$linkCommonConfig + {name: $d, unique_id: $d, state_topic: $state_topic}')" \
+            -r -q 1
+
+          # send link state
           up="$(ip --json link show "$d" | jq '.[].flags | index("UP") != null')"
+          mosquitto_pub -L "$mqttEndpoint/gaia-router/link/$d" -m "$up" -q 1
+
           if [[ "$up" == "true" ]]; then
-            dev="$d"
-            break
+            active_dev="$d"
           fi
         done <<< "$devs"
-        rx_bytes="$(echo "$raw" | jq -r ".kernel.$dev.rx_bytes")"
-        tx_bytes="$(echo "$raw" | jq -r ".kernel.$dev.tx_bytes")"
+        rx_bytes="$(echo "$raw" | jq -r ".kernel.$active_dev.rx_bytes")"
+        tx_bytes="$(echo "$raw" | jq -r ".kernel.$active_dev.tx_bytes")"
         # milliseconds since epoch
         sample_time="$(date +%s%3N)"
 
