@@ -18,7 +18,7 @@ let
     cargoLock = {
       lockFile = ./qbt-manager/Cargo.lock;
       outputHashes = {
-        "qbit-rs-0.4.6" = "sha256-vPMoWnT8CwK/4DAi5gCCkvqCtBYn95vf193/kqZY8Hw=";
+        "qbit-rs-0.4.6" = "sha256-CbB+Sf5/9b1M5eJx5ffJZyWF3NHwfNWoErfIcGT6nnA=";
       };
     };
     doCheck = false;
@@ -83,6 +83,8 @@ in
       after = [ "network.target" parentService ];
       partOf = [ parentService ];
       serviceConfig = {
+        Restart = "always";
+        RestartSec = "5";
         ExecStart = lib.getExe qbt-manager;
         EnvironmentFile = config.sops.secrets.qbittorrent-password.path;
       };
@@ -91,6 +93,7 @@ in
         QBITTORRENT_USERNAME = "admin";
         QBITTORRENT_URL = "http://127.0.0.1/torrents/";
         QBT_MANAGER_CONFIG = "${./config.yml}";
+        MQTT_HOST = "gaia.home.arpa";
       };
     };
 
