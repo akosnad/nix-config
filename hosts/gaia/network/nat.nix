@@ -13,7 +13,7 @@
 
   networking.nftables.tables.nat-rndis = {
     family = "ip";
-    content = ''
+    content = /* nftables */ ''
       chain pre {
         type nat hook prerouting priority dstnat; policy accept;
       }

@@ -2,7 +2,6 @@
 let
   gatewayIp = builtins.head (builtins.split "/" config.systemd.network.networks."50-br-lan".networkConfig.Address);
   dhcpRange = {
-    subnet = "255.255.0.0";
     ipPrefix = "10.20.0";
     lower = "10";
     upper = "254";
@@ -74,24 +73,8 @@ in
     enable = true;
     settings = {
       port = "";
-      inherit domain;
-      local = "/${domain}/";
-      interface = "br-lan";
-      addn-hosts = "/etc/hosts";
-      stop-dns-rebind = true;
-      rebind-localhost-ok = true;
-      rebind-domain-ok = [ "fzt.one" ];
-      dhcp-broadcast = "tag:needs-broadcast";
 
-      # Bogus hostname
-      dhcp-ignore-names = "tag:dhcp_bogus_hostname";
-      dhcp-name-match = [
-        "set:dhcp_bogus_hostname,localhost"
-        "set:dhcp_bogus_hostname,wpad"
-      ];
-      bogus-priv = true;
-
-      dhcp-range = with dhcpRange; [ "set:lan,${ipPrefix}.${lower},${ipPrefix}.${upper},${subnet},${leaseTime}" ];
+      dhcp-range = with dhcpRange; [ "set:lan,${ipPrefix}.${lower},${ipPrefix}.${upper},${leaseTime}" ];
       dhcp-option = [
         # Gateway
         "lan,3,${gatewayIp}"
@@ -100,7 +83,7 @@ in
       ];
 
       # Static leases
-      dhcp-host = builtins.map (host: "${host.mac},${host.ip},${host.name}") staticLeases;
+      dhcp-host = builtins.map (host: "${host.mac},lan,${host.ip},${host.name}") staticLeases;
     };
   };
 

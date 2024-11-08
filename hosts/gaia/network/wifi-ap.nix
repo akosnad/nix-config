@@ -1,14 +1,19 @@
+{ config, ... }:
 {
-  sops.secrets.gaia-ap-password = {
-    sopsFile = ../../common/secrets.yaml;
-    neededForUsers = true;
-  };
+  imports = [
+    ./guest.nix
+  ];
 
   systemd.network = {
     # Raspberry Pi internal WiFi adatper
     links."10-wifi0" = {
-      matchConfig.PermanentMACAddress = "dc:a6:32:aa:3c:d2";
+      matchConfig.PermanentMACAddress = "dc:a6:32:19:bc:7a";
       linkConfig.Name = "wifi0";
+    };
+
+    networks."30-wifi0-bind" = {
+      matchConfig.Name = "wifi0";
+      networkConfig.Bridge = "br-guest";
     };
   };
 
@@ -18,13 +23,18 @@
       countryCode = "HU";
       wifi4.capabilities = [ ];
       networks."wifi0" = {
-        ssid = "Gaia2";
+        ssid = "Gaia guest";
         authentication = {
           mode = "wpa2-sha256";
-          wpaPasswordFile = "/run/secrets-for-users/gaia-ap-password";
+          wpaPasswordFile = config.sops.secrets.gaia-ap-password.path;
         };
-        settings.bridge = "br-lan";
+        settings.bridge = "br-guest";
+        apIsolate = true;
       };
     };
+  };
+
+  sops.secrets.gaia-ap-password = {
+    sopsFile = ../../common/secrets.yaml;
   };
 }
