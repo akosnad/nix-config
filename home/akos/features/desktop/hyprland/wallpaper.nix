@@ -1,6 +1,5 @@
 { pkgs, lib, ... }:
 let
-  swww = lib.getExe pkgs.swww;
   wallpapersDir = pkgs.stdenvNoCC.mkDerivation {
     name = "wallpapers";
     src = ../wallpapers;
@@ -14,25 +13,26 @@ let
 
   wallpaper-changer = pkgs.writeShellApplication {
     name = "wallpaper-changer";
+    runtimeInputs = with pkgs; [ swww coreutils ];
     text = ''
       # get currently displayed file
-      curr="$(${swww} query | ${pkgs.coreutils}/bin/cut -d' ' -f8)"
+      curr="$(swww query | cut -d' ' -f8 | tail -n1)"
 
       # select random file other than current
-      find "${wallpapersDir}" -type f ! -path "$curr" | \
-        ${pkgs.coreutils}/bin/sort -R | \
-        ${pkgs.coreutils}/bin/tail -n1 | \
-      while read -r file; do
-        ${swww} img "''$file"
-      done
+      next_img="$(find "${wallpapersDir}" -type f ! -path "$curr" | sort -R | tail -n1)"
+      swww img "$next_img"
     '';
   };
 in
 {
   systemd.user = {
     services = {
-      "wallpaper-changer" = {
-        Unit.Description = "Wallpaper changer";
+      wallpaper = {
+        Unit = {
+          Description = "Wallpaper changer";
+          Wants = [ "swww.service" ];
+          After = [ "swww.service" ];
+        };
 
         Service = {
           ExecStart = "${lib.getExe wallpaper-changer}";
@@ -53,7 +53,7 @@ in
       };
     };
 
-    timers."wallpaper-changer" = {
+    timers.wallpaper = {
       Unit = {
         Description = "Wallpaper changer interval";
         After = [ "graphical-session-pre.target" ];
@@ -63,6 +63,8 @@ in
       Timer = {
         # every 5 minutes
         OnCalendar = "*:0/5";
+        # after login
+        OnActiveSec = "2";
       };
       Install.WantedBy = [ "graphical-session.target" ];
     };
