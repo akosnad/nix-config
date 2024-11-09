@@ -1,5 +1,7 @@
 { lib, pkgs, ... }:
 let
+  watchedInterfaces = [ "wan0" "wan-rndis" ];
+
   commonConfigOptions = {
     device = {
       name = "gaia-router";
@@ -62,23 +64,28 @@ let
       window_size=10
       while true; do
         raw="$(ifstat -a -j)"
-        devs="$(ip --json route show table mwan | jq -r '.[] | .dev')"
-        while read -r d; do
+        for d in ${builtins.concatStringsSep " " watchedInterfaces }; do
           # send link entity config
           mosquitto_pub -L "$mqttEndpoint/homeassistant/binary_sensor/$d/config" \
             -m "$(jq -n --arg d "$d" --arg state_topic "gaia-router/link/$d" --argjson linkCommonConfig '${builtins.toJSON linkCommonConfig}' '$linkCommonConfig + {name: $d, unique_id: $d, state_topic: $state_topic}')" \
             -r -q 1
 
           # send link state
-          up="$(ip --json link show "$d" | jq '.[].flags | index("UP") != null')"
-          mosquitto_pub -L "$mqttEndpoint/gaia-router/link/$d" -m "$up" -q 1
-
-          if [[ "$up" == "true" ]]; then
-            active_dev="$d"
+          if [[ "$(ip --json link show "$d" 2>/dev/null || true)" == "" ]]; then
+            up="false"
+          else
+            up="$(ip --json link show "$d" | jq '.[].flags | index("UP") != null')"
+            if [[ "$up" == "true" ]]; then
+              up="true"
+            else
+              up="false"
+            fi
           fi
-        done <<< "$devs"
-        rx_bytes="$(echo "$raw" | jq -r ".kernel.$active_dev.rx_bytes")"
-        tx_bytes="$(echo "$raw" | jq -r ".kernel.$active_dev.tx_bytes")"
+          mosquitto_pub -L "$mqttEndpoint/gaia-router/link/$d" -m "$up" -q 1
+        done
+        active_dev="$(ip --json route show table mwan | jq -r 'sort_by(.metric) | .[0].dev')"
+        rx_bytes="$(echo "$raw" | jq -r ".kernel.\"$active_dev\".rx_bytes")"
+        tx_bytes="$(echo "$raw" | jq -r ".kernel.\"$active_dev\".tx_bytes")"
         # milliseconds since epoch
         sample_time="$(date +%s%3N)"
 
