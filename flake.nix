@@ -55,6 +55,7 @@
     };
 
     vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+    vscode-server.url = "github:nix-community/nixos-vscode-server";
 
     nixvirt = {
       url = "https://flakehub.com/f/AshleyYakeley/NixVirt/0.5.0.tar.gz";

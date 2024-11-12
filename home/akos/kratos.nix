@@ -4,6 +4,7 @@
     ./features/nvim/full.nix
     ./features/desktop/hyprland
     ./features/vscode.nix
+    ./features/vscode-server.nix
     ./features/chromium.nix
     ./features/shell/azure.nix
     ./features/discord.nix
