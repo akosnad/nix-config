@@ -30,7 +30,7 @@ in
     operation = "switch";
     dates = "*:0/15"; # every 15 mins
     rebootWindow = {
-      lower = "02:00";
+      lower = "03:00";
       upper = "06:00";
     };
   };

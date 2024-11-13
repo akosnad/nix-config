@@ -19,6 +19,17 @@
 
   environment.persistence."/persist".enable = lib.mkForce false;
 
+  # auto upgrade can only run during nighttime without interruptions during the day
+  system.autoUpgrade = lib.mkForce {
+    allowReboot = true;
+    operation = "boot";
+    dates = "*-*-* 03,04,05:00/15:00";
+    rebootWindow = {
+      lower = "03:00";
+      upper = "06:00";
+    };
+  };
+
   # if binary caches are unavailable, don't try to build sources locally
   nix.settings.fallback = false;
 
