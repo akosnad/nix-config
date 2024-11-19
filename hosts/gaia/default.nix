@@ -39,5 +39,11 @@
   # reference: https://www.home-assistant.io/integrations/bluetooth/#requirements-for-linux-systems
   services.dbus.implementation = "broker";
 
+  # minimize nix daemon resource usage
+  nix = {
+    daemonIOSchedClass = "idle";
+    daemonCPUSchedPolicy = "idle";
+  };
+
   system.stateVersion = "24.05";
 }

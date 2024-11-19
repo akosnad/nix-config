@@ -9,6 +9,14 @@ in
     settings = {
       http.session_ttl = 720;
       dhcp.enabled = false;
+      querylog = {
+        enabled = true;
+        interval = "24h";
+      };
+      statistics = {
+        enabled = true;
+        interval = "24h";
+      };
       dns = {
         bind_hosts = [ "10.20.0.1" ];
         protection_enabled = true;
