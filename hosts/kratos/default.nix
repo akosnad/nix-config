@@ -36,6 +36,9 @@
   hardware.opengl.enable = true;
   hardware.nvidia.prime.offload.enable = false;
 
+  hardware.bluetooth.enable = true;
+  services.blueman.enable = true;
+
   # needed for Windows dual boot
   time.hardwareClockInLocalTime = true;
 

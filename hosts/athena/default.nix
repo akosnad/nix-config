@@ -43,6 +43,9 @@
     };
   };
 
+  hardware.bluetooth.enable = true;
+  services.blueman.enable = true;
+
   # needed for Windows dual boot
   time.hardwareClockInLocalTime = true;
 
