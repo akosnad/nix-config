@@ -25,10 +25,25 @@
           keyfile = config.sops.secrets.mosquitto-keyfile.path;
         };
       }
+      {
+        port = 30160;
+        omitPasswordAuth = false;
+        acl = [
+          "pattern readwrite vili/#"
+          "pattern readwrite homeassistant/device_tracker/vili_tracker/config"
+        ];
+        users.vili = {
+          passwordFile = config.sops.secrets.mosquitto-vili-password.path;
+        };
+        settings = {
+          protocol = "mqtt";
+          allow_anonymous = false;
+        };
+      }
     ];
   };
 
-  networking.firewall.allowedTCPPorts = [ 8883 ];
+  networking.firewall.allowedTCPPorts = [ 8883 30160 ];
 
   sops.secrets.mosquitto-cafile = {
     sopsFile = ./secrets.yaml;
@@ -39,6 +54,10 @@
     owner = config.systemd.services.mosquitto.serviceConfig.User;
   };
   sops.secrets.mosquitto-keyfile = {
+    sopsFile = ./secrets.yaml;
+    owner = config.systemd.services.mosquitto.serviceConfig.User;
+  };
+  sops.secrets.mosquitto-vili-password = {
     sopsFile = ./secrets.yaml;
     owner = config.systemd.services.mosquitto.serviceConfig.User;
   };
