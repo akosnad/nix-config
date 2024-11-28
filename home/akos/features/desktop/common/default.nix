@@ -4,7 +4,7 @@
     ./fonts.nix
     ./gtk.nix
     ./firefox.nix
-    ./alacritty
+    ./kitty
     ./audio.nix
     ./mqtt-notify.nix
     ./yubikey-touch-detector.nix

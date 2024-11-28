@@ -72,7 +72,7 @@ in
     "$browser" = "firefox";
 
     bind = [
-      "$mainMod, Return, exec, alacritty"
+      "$mainMod, Return, exec, kitty"
       "$mainMod, Q, exec, $browser"
       "$mainMod, ESCAPE, killactive,"
       "$mainMod, M, exec, ${exit}"
