@@ -36,12 +36,17 @@ let
 
   machines =
     builtins.filter (m: config.networking.hostName != m.hostname) [ kratos zeus ];
+
+  substituters = map (machine: "ssh-ng://root@${machine.hostname}-builder") machines;
 in
 {
   nix = {
     distributedBuilds = true;
     buildMachines = map (machine: machine.machineConfig) machines;
-    settings.substituters = map (machine: "ssh-ng://root@${machine.hostname}-builder") machines;
+    settings = {
+      inherit substituters;
+      trusted-substituters = substituters;
+    };
   };
 
   programs.ssh.extraConfig = builtins.concatStringsSep "\n" (map (machine: machine.sshConfig) machines);

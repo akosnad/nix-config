@@ -30,9 +30,6 @@
     };
   };
 
-  # if binary caches are unavailable, don't try to build sources locally
-  nix.settings.fallback = false;
-
   hardware.raspberry-pi."4".bluetooth.enable = true;
   hardware.bluetooth.enable = true;
   # required by home assistant bluetooth integration
