@@ -30,7 +30,14 @@
         omitPasswordAuth = false;
         acl = [
           "pattern readwrite vili/#"
-          "pattern readwrite homeassistant/device_tracker/vili_tracker/config"
+          "pattern readwrite homeassistant/device_tracker/vili_location/config"
+          "pattern readwrite homeassistant/binary_sensor/vili_ignition/config"
+          "pattern readwrite homeassistant/binary_sensor/vili_battery_charging/config"
+          "pattern readwrite homeassistant/sensor/vili_battery_voltage/config"
+          "pattern readwrite homeassistant/sensor/vili_battery_charge_current/config"
+          "pattern readwrite homeassistant/sensor/vili_ext_voltage/config"
+          "pattern readwrite homeassistant/sensor/vili_ext_current/config"
+          "pattern readwrite homeassistant/sensor/vili_int_temperature/config"
         ];
         users.vili = {
           passwordFile = config.sops.secrets.mosquitto-vili-password.path;
