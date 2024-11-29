@@ -38,6 +38,7 @@
           "pattern readwrite homeassistant/sensor/vili_ext_voltage/config"
           "pattern readwrite homeassistant/sensor/vili_ext_current/config"
           "pattern readwrite homeassistant/sensor/vili_int_temperature/config"
+          "pattern readwrite homeassistant/sensor/vili_satellite_count/config"
         ];
         users.vili = {
           passwordFile = config.sops.secrets.mosquitto-vili-password.path;
