@@ -59,9 +59,17 @@ in
       buildbot-cachix-token = { sopsFile = ./secrets.yaml; neededForUsers = true; };
     };
 
-  environment.persistence."/persist".directories = [{
-    directory = "/var/lib/buildbot";
-    mode = "750";
-    inherit (config.services.buildbot-master) user group;
-  }];
+  environment.persistence."/persist".directories = [
+    {
+      directory = "/var/lib/buildbot";
+      mode = "750";
+      inherit (config.services.buildbot-master) user group;
+    }
+    {
+      directory = config.services.postgresql.dataDir;
+      mode = "750";
+      user = config.systemd.services.postgresql.serviceConfig.User;
+      group = config.systemd.services.postgresql.serviceConfig.Group;
+    }
+  ];
 }
