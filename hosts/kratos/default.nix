@@ -33,7 +33,6 @@
   networking.hostName = "kratos";
   networking.networkmanager.enable = true;
 
-  hardware.opengl.enable = true;
   hardware.nvidia.prime.offload.enable = false;
 
   hardware.bluetooth.enable = true;

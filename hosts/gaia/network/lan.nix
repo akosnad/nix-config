@@ -31,7 +31,6 @@
           LinkLocalAddressing = false;
 
           DHCPPrefixDelegation = true;
-          IPForward = "ipv6";
           LLDP = true;
           MulticastDNS = true;
         };

@@ -56,9 +56,15 @@
           )
           config.monitors;
 
-        workspace = map (m: "${m.name},${m.workspace}") (
+        workspace = (map (m: "${m.name},${m.workspace}") (
           lib.filter (m: m.enabled && m.workspace != null) config.monitors
-        );
+        )) ++ [
+          # helper for no gaps when only one window on workspace
+          # taken from: https://github.com/hyprwm/Hyprland/blob/3cec45d82113051d35e846e5d80719d8ea0f7002/example/hyprland.conf#L134-L145
+          "w[t1], gapsout:0, gapsin:0"
+          "w[tg1], gapsout:0, gapsin:0"
+          "f[1], gapsout:0, gapsin:0"
+        ];
 
         xwayland.force_zero_scaling = true;
 
@@ -112,11 +118,6 @@
           #blur_size = 3
           #blur_passes = 1
           #blur_new_optimizations = on
-
-          drop_shadow = "yes";
-          shadow_range = 4;
-          shadow_render_power = 3;
-          "col.shadow" = "rgba(1a1a1aee)";
         };
 
         animations = {
@@ -140,8 +141,6 @@
           # See https://wiki.hyprland.org/Configuring/Dwindle-Layout/ for more
           pseudotile = "no"; # master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
           preserve_split = "yes"; # you probably want this
-
-          no_gaps_when_only = 1;
         };
 
         gestures = {
@@ -168,6 +167,15 @@
           # this fixes bitwig studio
           # reference: https://github.com/hyprwm/Hyprland/issues/2034#issuecomment-1650278502
           "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
+
+          # no gaps when only one window on workspace
+          # taken from: https://github.com/hyprwm/Hyprland/blob/3cec45d82113051d35e846e5d80719d8ea0f7002/example/hyprland.conf#L134-L145
+          "bordersize 0, floating:0, onworkspace:w[t1]"
+          "rounding 0, floating:0, onworkspace:w[t1]"
+          "bordersize 0, floating:0, onworkspace:w[tg1]"
+          "rounding 0, floating:0, onworkspace:w[tg1]"
+          "bordersize 0, floating:0, onworkspace:f[1]"
+          "rounding 0, floating:0, onworkspace:f[1]"
         ];
       };
   };

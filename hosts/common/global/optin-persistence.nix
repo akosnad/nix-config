@@ -20,6 +20,13 @@
     };
   };
 
+  # since /etc/machine-id is mounted from /persist, not a temporary file system,
+  # we need to disable the systemd service that writes it to prevent it from failing
+  # reference: https://www.freedesktop.org/software/systemd/man/256/systemd-machine-id-commit.service.html
+  systemd.services.systemd-machine-id-commit = {
+    enable = false;
+  };
+
   programs.fuse.userAllowOther = true;
 
   system.activationScripts.persistent-dirs.text =

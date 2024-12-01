@@ -61,11 +61,13 @@ in
 
   security.pam.u2f = {
     enable = true;
-    debug = false;
-    origin = "pam://akosnad-nixos-common";
-    appId = "pam://akosnad-nixos-common";
     control = "sufficient";
-    authFile = config.sops.secrets.u2f-mappings.path;
+    settings = {
+      debug = false;
+      origin = "pam://akosnad-nixos-common";
+      appid = "pam://akosnad-nixos-common";
+      authfile = config.sops.secrets.u2f-mappings.path;
+    };
   };
   sops.secrets.u2f-mappings = {
     sopsFile = ../../secrets.yaml;

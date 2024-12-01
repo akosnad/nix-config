@@ -47,7 +47,7 @@ in
             }
           }
         })
-        add_lsp(lspconfig.tsserver, {})
+        add_lsp(lspconfig.ts_ls, {})
         add_lsp(lspconfig.nil_ls, {
           settings = {
             formatting = {

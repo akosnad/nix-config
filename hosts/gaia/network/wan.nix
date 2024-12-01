@@ -2,37 +2,30 @@ let
   networkConfig = {
     DHCP = true;
     IPv6AcceptRA = true;
-    IPForward = "ipv6";
     LLDP = true;
   };
 
   mkDefaultRoutes = { metric }: [
     {
-      routeConfig = {
-        Table = "mwan";
-        Destination = "0.0.0.0/0";
-        Protocol = "static";
-        Gateway = "_dhcp4";
-        Metric = metric;
-      };
+      Table = "mwan";
+      Destination = "0.0.0.0/0";
+      Protocol = "static";
+      Gateway = "_dhcp4";
+      Metric = metric;
     }
     {
-      routeConfig = {
-        Table = "mwan";
-        Destination = "::/0";
-        Protocol = "static";
-        Gateway = "_ipv6ra";
-        Metric = metric;
-      };
+      Table = "mwan";
+      Destination = "::/0";
+      Protocol = "static";
+      Gateway = "_ipv6ra";
+      Metric = metric;
     }
   ];
 
   mkDefaultRoutingPolicyRules = { ifname, priority }: [{
-    routingPolicyRuleConfig = {
-      OutgoingInterface = ifname;
-      Table = "mwan";
-      Priority = priority;
-    };
+    OutgoingInterface = ifname;
+    Table = "mwan";
+    Priority = priority;
   }];
 in
 {

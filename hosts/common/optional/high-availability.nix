@@ -16,7 +16,7 @@ in
 
     # fixes broken networking after a nixos-rebuild switch
     # because containers are restarted
-    liveRestore = false;
+    daemon.settings."live-restore" = false;
 
     inherit autoPrune;
   };
