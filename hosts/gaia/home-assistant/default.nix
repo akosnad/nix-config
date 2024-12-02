@@ -57,11 +57,14 @@
     extraPackages = python3Packages: with python3Packages; [
       # recorder postgresql support
       psycopg2
+
+      # also needed for xiaomi_miot
+      # TODO: upstream?
+      hap-python
     ];
     customComponents = with pkgs.home-assistant-custom-components; [
       xiaomi_miot
       localtuya
-      hass-node-red
     ];
     customThemes = with pkgs.home-assistant-custom-themes; [
       google

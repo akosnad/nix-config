@@ -40,6 +40,10 @@ let
     bashOptions = [ "errexit" "nounset" "pipefail" /* "xtrace" */ ];
     runtimeInputs = with pkgs; [ mosquitto python3 iproute2 jq ];
     text = /* bash */ ''
+      # start by clearing ifstat temp files
+      # this prevents a rare occurrence of ifstat crashing
+      rm -f "/tmp/ifstat.u$(id -u)"
+
       mqttEndpoint="mqtt://127.0.0.1"
 
       # send entity configs
