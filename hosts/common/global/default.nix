@@ -12,6 +12,7 @@
     ./udev.nix
     ./nh.nix
     ./optin-persistence.nix
+    ./certs.nix
   ] ++ (builtins.attrValues outputs.nixosModules);
 
   home-manager.extraSpecialArgs = {
@@ -54,9 +55,5 @@
       type = "hard";
       value = "1048576";
     }
-  ];
-
-  security.pki.certificateFiles = [
-    "${../gaia-roots.pem}"
   ];
 }

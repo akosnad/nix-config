@@ -29,12 +29,6 @@ let
     repo-htpasswd = "/etc/nginx/passwd";
     repo-htpasswd-torrents = "/etc/nginx/passwd-torrents";
   };
-  lanMountSecrets = {
-    zeus-crt = "/ca/zeus.crt";
-    zeus-key = "/ca/zeus.key";
-    repo-crt = "/ca/repo.crt";
-    repo-key = "/ca/repo.key";
-  };
   mkSecretVolumes = lib.mapAttrsToList (name: path: "${config.sops.secrets."${name}".path}:${path}:ro");
 in
 {
@@ -52,7 +46,11 @@ in
             "/raid/Torrents/:/srv/http/Torrents:ro"
             "/raid/Radarr/:/srv/http/Radarr:ro"
             "/raid/Sonarr/:/srv/http/Sonarr:ro"
-          ] ++ publicVolumes ++ (mkSecretVolumes lanMountSecrets);
+            "${config.security.acme.certs.zeus.directory}/cert.pem:/ca/zeus.crt:ro"
+            "${config.security.acme.certs.zeus.directory}/key.pem:/ca/zeus.key:ro"
+            "${config.security.acme.certs."repo.fzt.one".directory}/cert.pem:/ca/repo.crt:ro"
+            "${config.security.acme.certs."repo.fzt.one".directory}/key.pem:/ca/repo.key:ro"
+          ] ++ publicVolumes;
       };
 
       lan-php.service = lib.recursiveUpdate commonServiceOptions {
@@ -80,6 +78,18 @@ in
     };
   };
 
+  security.acme.certs = {
+    zeus = {
+      extraDomainNames = [ "zeus.home.arpa" ];
+      reloadServices = [ "arion-webserver.service" ];
+      listenHTTP = ":1360";
+    };
+    "repo.fzt.one" = {
+      reloadServices = [ "arion-webserver.service" ];
+      listenHTTP = ":1361";
+    };
+  };
+
   systemd.services.arion-webserver =
     let
       deps' = map (name: "arion-${name}.service") deps;
@@ -99,5 +109,5 @@ in
       uid = 101;
       gid = 101;
     })
-    (lanMountSecrets // publicMountSecrets);
+    publicMountSecrets;
 }

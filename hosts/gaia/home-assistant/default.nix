@@ -111,21 +111,21 @@
     "127.0.0.1" = [ "homeassistant" "homeassistant.${config.networking.domain}" ];
   };
   services.nginx.virtualHosts.homeassistant = {
-      forceSSL = true;
-      enableACME = true;
-      serverAliases = [ "homeassistant.home.arpa" ];
-      listenAddresses = [
-        # loopback
-        "[::1]"
-        "127.0.0.1"
-        "127.0.0.2"
+    forceSSL = true;
+    enableACME = true;
+    serverAliases = [ "homeassistant.home.arpa" ];
+    listenAddresses = [
+      # loopback
+      "[::1]"
+      "127.0.0.1"
+      "127.0.0.2"
 
-        # lan
-        "10.20.0.1"
+      # lan
+      "10.20.0.1"
 
-        # tailscale
-        "100.98.172.43"
-      ];
+      # tailscale
+      "100.98.172.43"
+    ];
     locations."/" = {
       proxyPass = "http://127.0.0.1:8123/";
       proxyWebsockets = true;

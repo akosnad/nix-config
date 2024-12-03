@@ -84,7 +84,9 @@ in
         "||nuedge.net^"
         "||soniccharge.com^"
       ];
-      filtering.rewrites = localhostHostsRewrites;
+      filtering.rewrites = localhostHostsRewrites ++ [
+        (mkHostRewrite "10.20.0.4" "repo.fzt.one")
+      ];
       filters = [
         {
           enabled = true;
