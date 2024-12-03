@@ -40,6 +40,8 @@ in
 
         "private/esphome/.platformio"
         "private/esphome/.esphome/build"
+
+        "qbittorrent/qBittorrent/logs"
       ]) ++ (withPrefix "/persist/var/lib/plex/Library/Application Support/Plex Media Server" [
         "Logs"
         "Cache"
