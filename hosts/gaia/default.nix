@@ -1,4 +1,4 @@
-{ inputs, lib, ... }:
+{ inputs, lib, config, ... }:
 {
   imports = [
     inputs.hardware.nixosModules.raspberry-pi-4
@@ -43,7 +43,14 @@
     daemonCPUSchedPolicy = "idle";
   };
 
-  services.nginx.enable = true;
+  services.nginx = {
+    enable = true;
+    virtualHosts.gaia = {
+      forceSSL = true;
+      enableACME = true;
+      serverAliases = [ "gaia.${config.networking.domain}" ];
+    };
+  };
 
   system.stateVersion = "24.05";
 }

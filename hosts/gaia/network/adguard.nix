@@ -11,7 +11,11 @@ let
   };
   lanIp = "10.20.0.1";
   mkLocalhostRewrite = mkHostRewrite lanIp;
+
   localhostHostsRewrites = builtins.map mkLocalhostRewrite localhostNetworkHosts;
+  hostRewrites = localhostHostsRewrites ++ [
+    (mkHostRewrite "10.20.0.4" "repo.fzt.one")
+  ];
 in
 {
   services.adguardhome = {
@@ -84,9 +88,7 @@ in
         "||nuedge.net^"
         "||soniccharge.com^"
       ];
-      filtering.rewrites = localhostHostsRewrites ++ [
-        (mkHostRewrite "10.20.0.4" "repo.fzt.one")
-      ];
+      filtering.rewrites = hostRewrites;
       filters = [
         {
           enabled = true;
@@ -156,5 +158,9 @@ in
         }
       ];
     };
+  };
+
+  services.nginx.virtualHosts.gaia.locations."/adguard" = {
+    proxyPass = "http://127.0.0.1:3000/";
   };
 }
