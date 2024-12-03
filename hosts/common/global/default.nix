@@ -55,4 +55,8 @@
       value = "1048576";
     }
   ];
+
+  security.pki.certificateFiles = [
+    "${../gaia-roots.pem}"
+  ];
 }

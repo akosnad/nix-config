@@ -9,6 +9,7 @@
     ./postgresql.nix
     ./mqtt.nix
     ./backup.nix
+    ./step-ca
 
     ../common/global
     ../common/optional/use-builders.nix
