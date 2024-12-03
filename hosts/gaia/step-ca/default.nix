@@ -8,6 +8,15 @@
     settings = builtins.fromJSON (builtins.readFile ./ca.json);
   };
 
+  security.acme = {
+    defaults = {
+      server = "https://gaia:4443/acme/acme/directory";
+      email = "gaia@gaia";
+      validMinDays = 3;
+    };
+    acceptTerms = true;
+  };
+
   sops.secrets.step-ca-password = {
     sopsFile = ../secrets.yaml;
   };

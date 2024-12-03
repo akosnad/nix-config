@@ -43,5 +43,7 @@
     daemonCPUSchedPolicy = "idle";
   };
 
+  services.nginx.enable = true;
+
   system.stateVersion = "24.05";
 }

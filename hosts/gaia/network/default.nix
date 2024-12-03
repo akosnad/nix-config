@@ -1,3 +1,9 @@
+let
+  domain = "home.arpa";
+  hostName = "gaia";
+
+  hostnameWithDomain = "${hostName}.${domain}";
+in
 {
   imports = [
     ./lan.nix
@@ -9,7 +15,7 @@
   ];
 
   networking = {
-    hostName = "gaia";
+    inherit hostName;
     useDHCP = false;
     networkmanager.enable = false;
     useNetworkd = true;
@@ -21,12 +27,13 @@
       trustedInterfaces = [ "br-lan" "tailscale0" ];
     };
     nameservers = [
-      "1.1.1.1"
-      "1.0.0.1"
-      "8.8.8.8"
-      "8.8.4.4"
+      "10.20.0.1"
     ];
-    domain = "home.arpa";
+    inherit domain;
+    hosts = {
+      "::1" = [ "localhost" hostName hostnameWithDomain ];
+      "127.0.0.1" = [ "localhost" hostName hostnameWithDomain ];
+    };
   };
   boot.kernel.sysctl = {
     "net.ipv4.ip_forward" = "1";

@@ -80,16 +80,12 @@
         time_zone = "Europe/Budapest";
         auth_providers = [
           { type = "homeassistant"; }
-          {
-            type = "trusted_networks";
-            trusted_networks = [
-              "127.0.0.0/8"
-              "10.20.0.0/16"
-            ];
-          }
         ];
       };
-      http = { };
+      http = {
+        use_x_forwarded_for = true;
+        trusted_proxies = [ "127.0.0.0/8" "::1" "10.20.0.0/24" ];
+      };
       backup = { };
       mobile_app = { };
       config = { };
@@ -107,5 +103,34 @@
     sopsFile = ./secrets.yaml;
     path = "/var/lib/hass/secrets.yaml";
     restartUnits = [ "home-assistant.service" ];
+  };
+
+  networking.hosts = {
+    "::1" = [ "homeassistant" "homeassistant.${config.networking.domain}" ];
+    "127.0.0.1" = [ "homeassistant" "homeassistant.${config.networking.domain}" ];
+  };
+  services.nginx.virtualHosts.homeassistant = {
+      forceSSL = true;
+      enableACME = true;
+      serverAliases = [ "homeassistant.home.arpa" ];
+      listenAddresses = [
+        # loopback
+        "[::1]"
+        "127.0.0.1"
+        "127.0.0.2"
+
+        # lan
+        "10.20.0.1"
+
+        # tailscale
+        "100.98.172.43"
+      ];
+    locations."/" = {
+      proxyPass = "http://127.0.0.1:8123/";
+      proxyWebsockets = true;
+      extraConfig = ''
+        proxy_set_header X-Forwarded-For $remote_addr;
+      '';
+    };
   };
 }

@@ -1,6 +1,17 @@
-{ config, ... }:
+{ config, lib, ... }:
 let
-  hostnameWithDomain = "${config.networking.hostName}.${config.networking.domain}";
+  localhostHostEntries = lib.filterAttrs (ip: _: ip == "::1" || ip == "127.0.0.1" || ip == "127.0.0.2") config.networking.hosts;
+  localhostHostsValues = lib.mapAttrsToList (_: hosts: hosts) localhostHostEntries;
+  localhostHosts = lib.unique (lib.flatten localhostHostsValues);
+  localhostNetworkHosts = builtins.filter (host: host != "localhost") localhostHosts;
+
+  mkHostRewrite = ip: host: {
+    domain = host;
+    answer = ip;
+  };
+  lanIp = "10.20.0.1";
+  mkLocalhostRewrite = mkHostRewrite lanIp;
+  localhostHostsRewrites = builtins.map mkLocalhostRewrite localhostNetworkHosts;
 in
 {
   services.adguardhome = {
@@ -73,18 +84,7 @@ in
         "||nuedge.net^"
         "||soniccharge.com^"
       ];
-      filtering.rewrites = [
-        # the following 2 rules prevent us from answering
-        # 127.0.0.1 for own hostname read from hosts file
-        {
-          domain = hostnameWithDomain;
-          answer = "10.20.0.1";
-        }
-        {
-          domain = config.networking.hostName;
-          answer = "10.20.0.1";
-        }
-      ];
+      filtering.rewrites = localhostHostsRewrites;
       filters = [
         {
           enabled = true;
