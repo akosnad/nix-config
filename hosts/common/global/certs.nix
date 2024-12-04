@@ -4,7 +4,7 @@
     defaults = {
       server = "https://gaia:4443/acme/acme/directory";
       email = "${config.networking.hostName}@lan";
-      validMinDays = 3;
+      validMinDays = 14;
     };
     acceptTerms = true;
   };
