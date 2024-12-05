@@ -4,7 +4,7 @@
   src = fetchFromGitHub {
     owner = "MunifTanjim";
     repo = "prettier.nvim";
-    rev = "main";
+    rev = "d98e732cb73690b07c00c839c924be1d1d9ac5c2";
     sha256 = "sha256-4xq+caprcQQotvBXnWWSsMwVB2hc5uyjrhT1dPBffXI=";
   };
 }
