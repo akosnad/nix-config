@@ -46,7 +46,7 @@ let
       name = "zeus";
     }
     {
-      mac = "4C:50:DD:9E:A3:F5";
+      mac = "C4:79:05:5E:B8:8C";
       ip = "10.20.0.45";
       name = "arges";
     }
