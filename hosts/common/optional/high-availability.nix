@@ -34,4 +34,10 @@ in
       upper = "06:00";
     };
   };
+
+  # minimize nix daemon resource usage
+  nix = {
+    daemonIOSchedClass = "idle";
+    daemonCPUSchedPolicy = "idle";
+  };
 }
