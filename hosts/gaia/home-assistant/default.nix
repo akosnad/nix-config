@@ -3,7 +3,6 @@
   imports = [
     ./postgres.nix
     ./lovelace
-    ./zones.nix
     ./automations
     ./scripts
     ./scenes
