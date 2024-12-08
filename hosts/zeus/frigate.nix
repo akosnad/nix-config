@@ -5,13 +5,23 @@
     hostname = "frigate";
     settings = {
       auth.enabled = false;
-      # enable restreaming
-      go2rtc = { };
       cameras.arges = {
         ffmpeg.inputs = [{
-          path = "rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@arges.home.arpa/media/video1";
+          path = "rtsp://127.0.0.1:8554/arges";
+          input_args = "preset-rtsp-restream";
           roles = [ "audio" "detect" "record" ];
         }];
+      };
+    };
+  };
+
+  services.go2rtc = {
+    enable = true;
+    settings = {
+      rtsp.listen = ":8554";
+      webrtc.listen = ":8555";
+      streams = {
+        arges = "rtsp://frigate:\${ARGES_RTSP_PASSWORD}@arges.home.arpa/media/video1";
       };
     };
   };
@@ -49,8 +59,11 @@
     ];
   };
 
-  systemd.services.frigate = {
-    serviceConfig.EnvironmentFile = config.sops.secrets.frigate-secrets.path;
+  systemd.services.go2rtc = {
+    serviceConfig.EnvironmentFile = config.sops.secrets.go2rtc-secrets.path;
+  };
+  sops.secrets.go2rtc-secrets = {
+    sopsFile = ./secrets.yaml;
   };
 
   environment.persistence."/persist".directories = [{
@@ -59,10 +72,4 @@
     user = "frigate";
     group = "frigate";
   }];
-
-  sops.secrets.frigate-secrets = {
-    sopsFile = ./secrets.yaml;
-    owner = "frigate";
-    group = "frigate";
-  };
 }
