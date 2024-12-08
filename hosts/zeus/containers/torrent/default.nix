@@ -44,6 +44,7 @@ in
         ports = [
           "15577:15577"
           "15577:15577/udp"
+          "8818:8080"
         ];
         blkio_config.weight = 1000;
       };
@@ -56,6 +57,7 @@ in
           PGID = "1000";
         };
         volumes = [ "${jackettConfigPath}/:/config" ];
+        ports = [ "9117:9117" ];
       };
     };
 
@@ -71,6 +73,14 @@ in
         docker volume create --driver=local --opt=type=none --opt=o=bind --opt=device=${torrentsPath} torrents
       '';
     });
+  };
+
+  services.nginx.virtualHosts.zeus.locations = {
+    "/torrents/".extraConfig = /* nginx */ ''
+      rewrite /torrents/(.*) /$1  break;
+      proxy_pass http://127.0.0.1:8818;
+    '';
+    "/jackett".proxyPass = "http://127.0.0.1:9117$request_uri";
   };
 
   systemd.services.qbt-manager =
@@ -91,7 +101,7 @@ in
       environment = {
         RUST_LOG = "info";
         QBITTORRENT_USERNAME = "admin";
-        QBITTORRENT_URL = "http://127.0.0.1/torrents/";
+        QBITTORRENT_URL = "http://127.0.0.1:8818/";
         QBT_MANAGER_CONFIG = "${./config.yml}";
         MQTT_HOST = "gaia.home.arpa";
       };

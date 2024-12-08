@@ -33,6 +33,7 @@ in
     hosts = {
       "::1" = [ "localhost" hostName hostnameWithDomain ];
       "127.0.0.1" = [ "localhost" hostName hostnameWithDomain ];
+      "10.20.0.4" = [ "frigate" "frigate.${domain}" "repo.fzt.one" ];
     };
   };
   boot.kernel.sysctl = {

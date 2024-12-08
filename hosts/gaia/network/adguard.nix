@@ -15,6 +15,8 @@ let
   localhostHostsRewrites = builtins.map mkLocalhostRewrite localhostNetworkHosts;
   hostRewrites = localhostHostsRewrites ++ [
     (mkHostRewrite "10.20.0.4" "repo.fzt.one")
+    (mkHostRewrite "10.20.0.4" "frigate")
+    (mkHostRewrite "10.20.0.4" "frigate.${config.networking.domain}")
   ];
 in
 {
@@ -57,7 +59,7 @@ in
           "id.server"
           "hostname.bind"
           "wpad.local"
-          "wpad.home.arpa"
+          "wpad.${config.networking.domain}"
         ];
       };
       user_rules = [

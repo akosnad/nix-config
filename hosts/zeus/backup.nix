@@ -42,6 +42,11 @@ in
         "private/esphome/.esphome/build"
 
         "qbittorrent/qBittorrent/logs"
+
+        "frigate/.cache"
+        "frigate/exports"
+        "frigate/recordings"
+        "frigate/clips"
       ]) ++ (withPrefix "/persist/var/lib/plex/Library/Application Support/Plex Media Server" [
         "Logs"
         "Cache"

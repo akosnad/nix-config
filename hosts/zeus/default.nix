@@ -24,7 +24,9 @@
     ./buildbot-master.nix
     ./esphome.nix
     ./containers
+    ./webserver.nix
     ./backup.nix
+    ./frigate.nix
   ];
 
   boot.kernelParams = [
