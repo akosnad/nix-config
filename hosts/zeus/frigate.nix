@@ -5,6 +5,12 @@
     hostname = "frigate";
     settings = {
       auth.enabled = false;
+      mqtt = {
+        enabled = true;
+        host = "gaia.home.arpa";
+        port = 1883;
+        stats_interval = 30;
+      };
       cameras.arges = {
         ffmpeg.inputs = [{
           path = "rtsp://127.0.0.1:8554/arges";
