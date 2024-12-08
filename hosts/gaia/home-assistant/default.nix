@@ -64,6 +64,7 @@
     customComponents = with pkgs.home-assistant-custom-components; [
       xiaomi_miot
       localtuya
+      frigate
     ];
     customThemes = with pkgs.home-assistant-custom-themes; [
       google
