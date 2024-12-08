@@ -5,9 +5,10 @@
     hostname = "frigate";
     settings = {
       auth.enabled = false;
+      # enable restreaming
+      go2rtc = {};
       cameras.arges = {
         ffmpeg.inputs = [{
-          # FIXME: use a secret
           path = "rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@arges.home.arpa/media/video1";
           roles = [ "audio" "detect" "record" ];
         }];
