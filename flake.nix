@@ -22,10 +22,13 @@
   };
 
   inputs = {
-    flake-parts.url = "github:hercules-ci/flake-parts";
-    treefmt-nix.url = "github:numtide/treefmt-nix";
-
     nixpkgs.url = "github:nixos/nixpkgs/release-24.11";
+
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     home-manager.url = "github:nix-community/home-manager/release-24.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -52,8 +55,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
-    vscode-server.url = "github:nix-community/nixos-vscode-server";
+    vscode-extensions = {
+      url = "github:nix-community/nix-vscode-extensions";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    vscode-server = {
+      url = "github:nix-community/nixos-vscode-server";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     nixvirt = {
       url = "https://flakehub.com/f/AshleyYakeley/NixVirt/0.5.0.tar.gz";
@@ -64,6 +73,7 @@
     arion = {
       url = "github:hercules-ci/arion";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
     };
 
     lanzaboote = {
@@ -71,7 +81,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    buildbot-nix.url = "github:nix-community/buildbot-nix";
+    buildbot-nix = {
+      url = "github:nix-community/buildbot-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
+    };
   };
 
   outputs =
