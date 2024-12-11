@@ -102,122 +102,80 @@
         "aarch64-linux"
         "x86_64-linux"
       ];
-      forEachSystem = lib.genAttrs systems;
       pkgsFor = lib.genAttrs systems (system: import nixpkgs {
         inherit system;
         config.allowUnfree = true;
       });
+
+      nixosHosts = [
+        { host = "athena"; }
+        { host = "kratos"; }
+        { host = "zeus"; }
+        { host = "gaia"; arch = "aarch64-linux"; }
+      ];
+      homes = nixosHosts ++ [{ host = "gepterem"; }];
     in
-    flake-parts.lib.mkFlake { inherit inputs; }
-      {
-        inherit systems;
-        imports = [
-          inputs.treefmt-nix.flakeModule
-        ];
+    flake-parts.lib.mkFlake { inherit inputs; } ({ ... }:
+    {
+      inherit systems;
+      imports = [
+        inputs.treefmt-nix.flakeModule
+      ];
 
-        perSystem = { pkgs, config, ... }: {
-          packages = import ./pkgs { inherit pkgs; };
-          devShells = import ./shell.nix { inherit pkgs; } // { treefmt = config.treefmt.build.devShell; };
-          treefmt = {
-            projectRootFile = "flake.nix";
-            programs = {
-              nixpkgs-fmt.enable = true;
-              rustfmt.enable = true;
-            };
+      perSystem = { pkgs, config, ... }: {
+        packages = import ./pkgs { inherit pkgs; };
+        devShells = import ./shell.nix { inherit pkgs; } // { treefmt = config.treefmt.build.devShell; };
+        treefmt = {
+          projectRootFile = "flake.nix";
+          programs = {
+            nixpkgs-fmt.enable = true;
+            rustfmt.enable = true;
+            statix.enable = true;
+            deadnix.enable = true;
           };
         };
 
-        flake = {
-          inherit lib;
-
-          nixosModules = import ./modules/nixos {
-            inherit inputs;
-          };
-          homeManagerModules = import ./modules/home-manager;
-
-          overlays = import ./overlays { inherit inputs outputs; };
-
-          checks =
-            let
-              checkSystem = "x86_64-linux";
-              checkPkgs = pkgsFor.${checkSystem};
-
-              machinesForSystem = machines: system: lib.filterAttrs (_: config: config.config.nixpkgs.hostPlatform.system == system) machines;
-              mapMachines = machines: lib.mapAttrs' (name: config: lib.nameValuePair "nixos-${name}" config.config.system.build.toplevel) machines;
-              machines = forEachSystem (system: mapMachines (machinesForSystem self.nixosConfigurations system));
-
-              codeChecks = {
-                statix = checkPkgs.runCommand "statix"
-                  {
-                    nativeBuildInputs = [ checkPkgs.statix ];
-                  } ''
-                  cp ${./.}/statix.toml .
-                  statix check ${./.}
-                  touch $out
-                '';
-                deadnix = checkPkgs.runCommand "deadnix"
-                  {
-                    nativeBuildInputs = [ checkPkgs.deadnix ];
-                  } ''
-                  deadnix -f ${./.}
-                  touch $out
-                '';
-              };
-            in
-            builtins.foldl' (acc: elem: lib.recursiveUpdate acc elem) { } [
-              machines
-              { "${checkSystem}" = codeChecks; }
-            ];
-
-          nixosConfigurations = {
-            athena = lib.nixosSystem {
-              modules = [ ./hosts/athena ];
-              specialArgs = { inherit inputs outputs; };
-            };
-
-            kratos = lib.nixosSystem {
-              modules = [ ./hosts/kratos ];
-              specialArgs = { inherit inputs outputs; };
-            };
-            zeus = lib.nixosSystem {
-              modules = [ ./hosts/zeus ];
-              specialArgs = { inherit inputs outputs; };
-            };
-            gaia = lib.nixosSystem {
-              modules = [ ./hosts/gaia ];
-              specialArgs = { inherit inputs outputs; };
-            };
-          };
-
-          homeConfigurations = {
-            "akos@gepterem" = lib.homeManagerConfiguration {
-              modules = [ ./home/akos/gepterem.nix ];
-              pkgs = pkgsFor.x86_64-linux;
-              extraSpecialArgs = { inherit inputs outputs; };
-            };
-
-            "akos@athena" = lib.homeManagerConfiguration {
-              modules = [ ./home/akos/athena.nix ];
-              pkgs = pkgsFor.x86_64-linux;
-              extraSpecialArgs = { inherit inputs outputs; };
-            };
-
-            "akos@kratos" = lib.homeManagerConfiguration {
-              modules = [ ./home/akos/kratos.nix ];
-              pkgs = pkgsFor.x86_64-linux;
-              extraSpecialArgs = { inherit inputs outputs; };
-            };
-            "akos@zeus" = lib.homeManagerConfiguration {
-              modules = [ ./home/akos/zeus.nix ];
-              pkgs = pkgsFor.x86_64-linux;
-              extraSpecialArgs = { inherit inputs outputs; };
-            };
-            "akos@gaia" = lib.homeManagerConfiguration {
-              modules = [ ./home/akos/gaia.nix ];
-              pkgs = pkgsFor.aarch64-linux;
-              extraSpecialArgs = { inherit inputs outputs; };
-            };
-          };
-        };
+        checks =
+          let
+            nixosMachines = lib.mapAttrs' (name: config: lib.nameValuePair "nixos-${name}" config.config.system.build.toplevel) ((lib.filterAttrs (_: config: config.pkgs.stdenv.hostPlatform.system == pkgs.system)) outputs.nixosConfigurations);
+          in
+          nixosMachines;
       };
+
+      flake = {
+        inherit lib;
+
+        nixosModules = import ./modules/nixos {
+          inherit inputs;
+        };
+        homeManagerModules = import ./modules/home-manager;
+
+        overlays = import ./overlays { inherit inputs outputs; };
+
+        nixosConfigurations =
+          let
+            mkNixosConfig = { host, ... }: {
+              name = host;
+              value = lib.nixosSystem {
+                modules = [ ./hosts/${host} ];
+                specialArgs = { inherit inputs outputs; };
+              };
+            };
+          in
+          builtins.listToAttrs (lib.map mkNixosConfig nixosHosts);
+
+        homeConfigurations =
+          let
+            mkHomeConfig = { host, arch ? "x86_64-linux", ... }: {
+              name = "akos@${host}";
+              value = lib.homeManagerConfiguration {
+                modules = [ ./home/akos/${host}.nix ];
+                pkgs = pkgsFor.${arch};
+                extraSpecialArgs = { inherit inputs outputs; };
+              };
+            };
+          in
+          builtins.listToAttrs (lib.map mkHomeConfig homes);
+      };
+    });
 }
