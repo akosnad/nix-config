@@ -25,7 +25,7 @@ let
 
   # unit defined in ./wallpaper.nix
   cycle-wallpaper = writeShellScript "cycle-wallpaper" ''
-    systemctl --user --wait start wallpaper-changer.service
+    systemctl --user --wait start wallpaper.service
   '';
 
   toggle-dark-mode = "toggle-theme"; # defined in global/default.nix
