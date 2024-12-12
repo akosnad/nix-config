@@ -22,7 +22,7 @@
     trusted-users = [ "root" "@wheel" ];
 
     # allow offline binary caches to be skipped
-    connect-timeout = 5;
+    connect-timeout = 3;
     fallback = lib.mkDefault true;
 
     substituters = [

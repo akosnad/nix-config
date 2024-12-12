@@ -16,6 +16,7 @@ let
         HostName ${hostname}
         User ${user}
         Port ${port}
+        ConnectTimeout 3
         IdentityFile ${builderKey}
         IdentitiesOnly yes
     '';
