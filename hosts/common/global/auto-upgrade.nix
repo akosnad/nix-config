@@ -34,13 +34,19 @@ in
             lastModified() {
               nix flake metadata "$1" --refresh --json | jq '.lastModified'
             }
+            revision() {
+              nix flake metadata "$1" --refresh --json | jq -r '.revision'
+            }
 
             checkBuilt() {
-              builder="$(curl -fs "${buildbotApi}/builders" | jq -r ".builders[] | select(.name == \"""$1""\") | .builderid")"
-              # TODO: querying build from revision instead of latest possible?
-              build="$(curl -fs "${buildbotApi}/builders/$builder/builds" | jq -Mcr '.builds | sort_by(.number) | reverse | first')"
+              # change for given revision
+              change="$(curl -fs "${buildbotApi}/changes?field=revision&field=changeid" | jq -r ".changes[] | select(.revision == \"""$2""\") | .changeid")"
+              # builder for given host
+              builder="$(curl -fs "${buildbotApi}/builders?field=name&field=builderid" | jq -r ".builders[] | select(.name == \"""$1""\") | .builderid")"
+              # latest build for given change and builder
+              build="$(curl -fs "${buildbotApi}/changes/$change/builds?builderid__eq=$builder" | jq -Mcr '.builds | sort_by(.number) | reverse | first')"
 
-              # check if build start date is not older than last revision
+              # check if build start date is not older than last revision (sanity check)
               test "$(jq -r '.started_at' <<< "$build")" -gt "$upstreamModified"
 
               # check if build has completed and is successful
@@ -52,7 +58,8 @@ in
             test "$upstreamModified" -gt "$(lastModified "self")"
 
             # check if system derivation is built upstream (i.e. by CI/CD or available from substituters)
-            checkBuilt "${config.system.autoUpgrade.flake}#checks.${config.nixpkgs.hostPlatform.system}.nixos-${config.networking.hostName}"
+            newRevision="$(revision "${config.system.autoUpgrade.flake}")"
+            checkBuilt "${config.system.autoUpgrade.flake}#checks.${config.nixpkgs.hostPlatform.system}.nixos-${config.networking.hostName}" "$newRevision"
           '';
         });
     };
