@@ -27,6 +27,7 @@
     ./webserver.nix
     ./backup.nix
     ./frigate.nix
+    ./asterisk.nix
   ];
 
   boot.kernelParams = [
