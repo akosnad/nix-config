@@ -1,6 +1,7 @@
 { inputs, lib, ... }: {
   imports = [
-    inputs.hardware.nixosModules.common-cpu-intel
+    inputs.hardware.nixosModules.common-cpu-amd
+    inputs.hardware.nixosModules.common-cpu-amd-pstate
     inputs.hardware.nixosModules.common-gpu-nvidia
     inputs.hardware.nixosModules.common-pc-ssd
 
