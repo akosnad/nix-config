@@ -40,7 +40,7 @@
     # tried: https://nixos.wiki/wiki/Home_Assistant#Trust_a_private_certificate_authority
     # fails to build some python packages
     forceSSL = false;
-    enableSSL = true;
+    onlySSL = true;
     listen = [
       {
         addr = "0.0.0.0";
