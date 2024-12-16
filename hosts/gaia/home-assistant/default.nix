@@ -65,6 +65,7 @@
       xiaomi_miot
       localtuya
       frigate
+      webrtc-camera
     ];
     customThemes = with pkgs.home-assistant-custom-themes; [
       google

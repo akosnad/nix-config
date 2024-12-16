@@ -6,6 +6,7 @@
       mini-media-player
       plotly-graph-card
       wallpanel
+      webrtc-camera
     ];
 
     # sets the mode for default dashboard
