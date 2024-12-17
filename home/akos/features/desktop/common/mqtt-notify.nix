@@ -55,6 +55,17 @@ let
           if [[ "$body" == "null" ]]; then
             body=""
           fi
+          image_url=$(echo "$message" | jq -r '.image')
+          if [[ "$image_url" == "null" ]]; then
+            image_url=""
+          fi
+          if [[ -n "$image_url" ]]; then
+            image_path=$(mktemp)
+            curl -s -o "$image_path" "$image_url"
+            notify-send -i "$image_path" -a MQTT "$title" "$body"
+            rm "$image_path"
+            continue
+          fi
           notify-send -a MQTT "$title" "$body"
       done
     '';
