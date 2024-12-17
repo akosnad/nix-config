@@ -8,6 +8,7 @@ let
     allow=ulaw
     auth=${ext}
     aors=${ext}
+    acl=internal-only
 
     [${ext}]
     type=auth
@@ -57,6 +58,11 @@ in
          same => n,ExecIf($["''${DIALSTATUS}"="NOANSWER"]?Playback(vm-nobodyavail))
          same => n,Hangup()
 
+      '';
+      "acl.conf" = /* asterisk */ ''
+        [internal-only]
+        deny=0.0.0.0/0.0.0.0
+        permit=10.20.0.0/255.255.255.0
       '';
       "pjsip.conf" = builtins.concatStringsSep "\n"  /* asterisk */ ([
         ''
