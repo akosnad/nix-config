@@ -11,6 +11,8 @@
     '';
   };
 
+  networking.firewall.allowedTCPPorts = [ 6052 ];
+
   environment.persistence."/persist".directories = [{
     directory = "/var/lib/private/esphome";
     mode = "750";

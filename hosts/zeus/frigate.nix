@@ -138,4 +138,25 @@
     user = "frigate";
     group = "frigate";
   }];
+
+  networking.firewall = {
+    allowedTCPPorts = [
+      # http, https
+      80
+      443
+      # frigate api http
+      5000
+      # go2rtc api, rtsp, webrtc, stun
+      1984
+      8554
+      8555
+      3478
+    ];
+    allowedUDPPorts = [
+      # go2rtc rtsp, webrtc, stun
+      8554
+      8555
+      3478
+    ];
+  };
 }

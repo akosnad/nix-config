@@ -32,6 +32,16 @@ in
     '';
     useTheseDefaultConfFiles = [ ];
     confFiles = {
+      "logger.conf" = /* asterisk */ ''
+        [general]
+        dateformat=%F %T
+
+        [logfiles]
+        messages => security,notice,warning,error
+        security => security
+        console => security,notice,warning,error
+        syslog.local0 => security,notice,warning,error
+      '';
       "extensions.conf" = /* asterisk */ ''
         [from-internal]
         exten = 100,1,Answer()
@@ -85,6 +95,11 @@ in
     reloadIfChanged = true;
   };
 
+  services.fail2ban.jails.asterisk.settings = {
+    filter = "asterisk";
+    logpath = "/var/log/asterisk/security";
+  };
+
   environment.persistence."/persist".directories = [{
     directory = "/var/lib/asterisk";
     mode = "750";
@@ -97,5 +112,21 @@ in
     owner = "asterisk";
     group = "asterisk";
     mode = "600";
+  };
+
+  networking.firewall = {
+    allowedUDPPorts = [
+      # SIP, IAX, IAX2, MGCP
+      5060
+      5061
+      4569
+      5036
+      2727
+    ];
+    allowedUDPPortRanges = [{
+      # RTP
+      from = 10000;
+      to = 20000;
+    }];
   };
 }

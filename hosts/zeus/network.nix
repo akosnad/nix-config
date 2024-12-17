@@ -8,7 +8,11 @@
     networkmanager.enable = false;
     useDHCP = false;
     useNetworkd = true;
-    firewall.enable = false;
+    firewall = {
+      enable = true;
+      allowPing = true;
+    };
+    nftables.enable = true;
   };
   systemd.network = {
     netdevs = {

@@ -52,6 +52,13 @@ in
     listen = [{ addr = "0.0.0.0"; port = 8080; ssl = false; }];
   };
 
+  networking.firewall.allowedTCPPorts = [
+    # buildbot HTTP
+    8080
+    # buildbot worker protocol
+    9989
+  ];
+
   sops.secrets =
     masterSecrets
     // {

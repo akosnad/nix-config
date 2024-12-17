@@ -118,4 +118,18 @@ in
     sopsFile = ../../secrets.yaml;
     neededForUsers = true;
   };
+
+  networking.firewall = {
+    allowedTCPPorts = [
+      # qbittorrent
+      8818
+      15577
+      # jackett
+      9117
+    ];
+    allowedUDPPorts = [
+      # qbittorrent
+      15577
+    ];
+  };
 }

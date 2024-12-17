@@ -28,6 +28,7 @@
     ./backup.nix
     ./frigate.nix
     ./asterisk.nix
+    ./fail2ban.nix
   ];
 
   boot.kernelParams = [

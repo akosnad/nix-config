@@ -133,6 +133,31 @@ in
     ];
   };
 
+  networking.firewall = {
+    allowedTCPPorts = [
+      # overseerr HTTP
+      5055
+      # radarr HTTP
+      7878
+      # sonarr HTTP
+      8989
+      # plex
+      # reference: https://support.plex.tv/articles/201543147-what-network-ports-do-i-need-to-allow-through-my-firewall/
+      32400
+      8324
+      32469
+    ];
+    allowedUDPPorts = [
+      # plex
+      32400
+      5353
+      32410
+      32412
+      32413
+      32414
+    ];
+  };
+
   sops.secrets.plex-env = {
     sopsFile = ../secrets.yaml;
     neededForUsers = true;
