@@ -47,12 +47,12 @@ in
         exten = _06XXXXXXXXX,1,Dial(PJSIP/''${EXTEN}@trunk)
         exten = _06XXXXXXXX,1,Dial(PJSIP/''${EXTEN}@trunk)
 
-        ; forward all external calls to 6001
         [from-external]
-        exten => s,1,NoOp(Incoming call from external source)
-         same => n,NoOp(Caller ID: ''${CALLERID(num)})
-         same => n,Dial(SIP/6001,20)
-         same => n,ExecIf($["''${DIALSTATUS}"="BUSY"]?Playback(vm-theperson&vm-isbusy))
+        exten => s,1,Log(NOTICE, Incoming call from external source)
+         same => n,Log(NOTICE, Caller ID: ''${CALLERID(num)})
+         same => n,Dial(PJSIP/6001&PJSIP/6002,20:4,g)
+         same => n,Log(Notice, Call from ''${CALLERID(num)} ended with status ''${DIALSTATUS})
+         same => n,ExecIf($["''${DIALSTATUS}"="BUSY"]?Playback(vm-nobodyavail))
          same => n,ExecIf($["''${DIALSTATUS}"="CHANUNAVAIL"]?Playback(vm-nobodyavail))
          same => n,ExecIf($["''${DIALSTATUS}"="NOANSWER"]?Playback(vm-nobodyavail))
          same => n,Hangup()
@@ -73,6 +73,10 @@ in
         (mkEndpoint "6003")
       ]);
     };
+  };
+
+  systemd.services.asterisk = {
+    reloadIfChanged = true;
   };
 
   environment.persistence."/persist".directories = [{
