@@ -1,3 +1,4 @@
+{ config, ... }:
 let
   mkEndpoint = ext: ''
     [${ext}]
@@ -40,6 +41,22 @@ in
         ; let the extensions dial each other
         [from-internal]
         exten = _6XXX,1,Dial(PJSIP/''${EXTEN})
+
+        ; allow dialing out
+        [from-internal]
+        exten = _06XXXXXXXXX,1,Dial(PJSIP/''${EXTEN}@trunk)
+        exten = _06XXXXXXXX,1,Dial(PJSIP/''${EXTEN}@trunk)
+
+        ; forward all external calls to 6001
+        [from-external]
+        exten => s,1,NoOp(Incoming call from external source)
+         same => n,NoOp(Caller ID: ''${CALLERID(num)})
+         same => n,Dial(SIP/6001,20)
+         same => n,ExecIf($["''${DIALSTATUS}"="BUSY"]?Playback(vm-theperson&vm-isbusy))
+         same => n,ExecIf($["''${DIALSTATUS}"="CHANUNAVAIL"]?Playback(vm-nobodyavail))
+         same => n,ExecIf($["''${DIALSTATUS}"="NOANSWER"]?Playback(vm-nobodyavail))
+         same => n,Hangup()
+
       '';
       "pjsip.conf" = builtins.concatStringsSep "\n"  /* asterisk */ ([
         ''
@@ -47,6 +64,8 @@ in
           type=transport
           protocol=udp
           bind=0.0.0.0
+
+          #include ${config.sops.secrets.asterisk-trunk-config.path}
         ''
       ] ++ [
         (mkEndpoint "6001")
@@ -62,4 +81,11 @@ in
     user = "asterisk";
     group = "asterisk";
   }];
+
+  sops.secrets.asterisk-trunk-config = {
+    sopsFile = ./secrets.yaml;
+    owner = "asterisk";
+    group = "asterisk";
+    mode = "600";
+  };
 }

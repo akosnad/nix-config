@@ -111,6 +111,17 @@
         port = 443;
         ssl = true;
       }
+      # also listen on default port 5000
+      {
+        addr = "0.0.0.0";
+        port = 5000;
+        ssl = false;
+      }
+      {
+        addr = "[::]";
+        port = 5000;
+        ssl = false;
+      }
     ];
   };
 
