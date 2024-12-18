@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, ... }:
 let
   mkEndpoint = ext: ''
     [${ext}]
@@ -105,6 +105,12 @@ in
   services.fail2ban.jails.asterisk.settings = {
     filter = "asterisk";
     logpath = "/var/log/asterisk/security";
+    ignoreIP = lib.concatStringsSep " " (
+      config.services.fail2ban.ignoreIP ++ [
+        # allow SIP trunk
+        "185.66.52.11"
+      ]
+    );
   };
 
   environment.persistence."/persist".directories = [{
