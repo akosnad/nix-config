@@ -1,4 +1,7 @@
-{ config, ... }:
+{ config, lib, ... }:
+let
+  hasCerts = lib.length (lib.attrNames config.security.acme.certs) > 0;
+in
 {
   security.acme = {
     defaults = {
@@ -12,4 +15,11 @@
   security.pki.certificateFiles = [
     "${../gaia-roots.pem}"
   ];
+
+  environment.persistence."/persist".directories = lib.mkIf hasCerts [{
+    directory = "/var/lib/acme";
+    mode = "755";
+    user = "acme";
+    group = "acme";
+  }];
 }
