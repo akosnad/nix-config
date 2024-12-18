@@ -126,7 +126,11 @@
   };
 
   systemd.services.go2rtc = {
-    serviceConfig.EnvironmentFile = config.sops.secrets.go2rtc-secrets.path;
+    serviceConfig = {
+      EnvironmentFile = config.sops.secrets.go2rtc-secrets.path;
+      Restart = "always";
+      RestartSec = "5s";
+    };
   };
   sops.secrets.go2rtc-secrets = {
     sopsFile = ./secrets.yaml;
