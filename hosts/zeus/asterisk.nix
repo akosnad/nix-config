@@ -42,6 +42,12 @@ in
         console => security,notice,warning,error
         syslog.local0 => security,notice,warning,error
       '';
+      "musiconhold.conf" = /* asterisk */ ''
+        [custom]
+        mode=files
+        directory=/var/lib/asterisk/moh_custom
+        random=yes
+      '';
       "extensions.conf" = /* asterisk */ ''
         [from-internal]
         exten = 100,1,Answer()
@@ -61,7 +67,8 @@ in
         [from-external]
         exten => s,1,Log(NOTICE, Incoming call from external source)
          same => n,Log(NOTICE, Caller ID: ''${CALLERID(num)})
-         same => n,Dial(PJSIP/6001&PJSIP/6002,20:4,g)
+         same => n,Answer()
+         same => n,Dial(PJSIP/6001&PJSIP/6002,37:4,m(custom))
          same => n,Log(Notice, Call from ''${CALLERID(num)} ended with status ''${DIALSTATUS})
          same => n,ExecIf($["''${DIALSTATUS}"="BUSY"]?Playback(vm-nobodyavail))
          same => n,ExecIf($["''${DIALSTATUS}"="CHANUNAVAIL"]?Playback(vm-nobodyavail))
