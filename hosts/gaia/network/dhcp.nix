@@ -1,6 +1,5 @@
-{ config, ... }:
 let
-  gatewayIp = builtins.head (builtins.split "/" config.systemd.network.networks."50-br-lan".networkConfig.Address);
+  gatewayIp = "10.20.0.1";
   dhcpRange = {
     ipPrefix = "10.20.0";
     lower = "10";

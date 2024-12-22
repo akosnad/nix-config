@@ -8,6 +8,7 @@ in
   imports = [
     ./lan.nix
     ./wan.nix
+    ./transient-wan.nix
     ./nat.nix
     ./dhcp.nix
     ./adguard.nix

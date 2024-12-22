@@ -88,6 +88,10 @@ let
           mosquitto_pub -L "$mqttEndpoint/gaia-router/link/$d" -m "$up" -q 1
         done
         active_dev="$(ip --json route show table mwan | jq -r 'sort_by(.metric) | .[0].dev')"
+        if [[ "$active_dev" == "null" ]]; then
+          sleep $window_size
+          continue
+        fi
         rx_bytes="$(echo "$raw" | jq -r ".kernel.\"$active_dev\".rx_bytes")"
         tx_bytes="$(echo "$raw" | jq -r ".kernel.\"$active_dev\".tx_bytes")"
         # milliseconds since epoch
