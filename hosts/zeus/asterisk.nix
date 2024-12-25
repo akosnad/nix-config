@@ -5,7 +5,7 @@ let
     type=endpoint
     context=from-internal
     disallow=all
-    allow=ulaw
+    allow=alaw
     auth=${ext}
     aors=${ext}
     acl=internal-only
@@ -43,7 +43,7 @@ in
         syslog.local0 => security,notice,warning,error
       '';
       "musiconhold.conf" = /* asterisk */ ''
-        [custom]
+        [default]
         mode=files
         directory=/var/lib/asterisk/moh_custom
         random=yes
@@ -63,12 +63,14 @@ in
         [from-internal]
         exten = _06XXXXXXXXX,1,Dial(PJSIP/''${EXTEN}@trunk)
         exten = _06XXXXXXXX,1,Dial(PJSIP/''${EXTEN}@trunk)
+        exten = _36XXXXXXXXX,1,Dial(PJSIP/''${EXTEN}@trunk)
+        exten = _36XXXXXXXX,1,Dial(PJSIP/''${EXTEN}@trunk)
 
         [from-external]
         exten => s,1,Log(NOTICE, Incoming call from external source)
          same => n,Log(NOTICE, Caller ID: ''${CALLERID(num)})
          same => n,Answer()
-         same => n,Dial(PJSIP/6001&PJSIP/6002,37:4,m(custom))
+         same => n,Dial(PJSIP/6001&PJSIP/6002,37:4,m(default))
          same => n,Log(Notice, Call from ''${CALLERID(num)} ended with status ''${DIALSTATUS})
          same => n,ExecIf($["''${DIALSTATUS}"="BUSY"]?Playback(vm-nobodyavail))
          same => n,ExecIf($["''${DIALSTATUS}"="CHANUNAVAIL"]?Playback(vm-nobodyavail))
