@@ -38,7 +38,7 @@ in
         omitPasswordAuth = false;
         acl = [
           "pattern readwrite vili/#"
-          "pattern readwrite homeassistant/device_tracker/vili_location/config"
+          "pattern readwrite homeassistant/device_tracker/vili_tracker/config"
           "pattern readwrite homeassistant/binary_sensor/vili_ignition/config"
           "pattern readwrite homeassistant/binary_sensor/vili_battery_charging/config"
           "pattern readwrite homeassistant/sensor/vili_battery_voltage/config"
