@@ -8,6 +8,7 @@
     ./features/chromium.nix
     ./features/shell/azure.nix
     ./features/discord.nix
+    ./features/linphone.nix
   ];
 
   monitors = [

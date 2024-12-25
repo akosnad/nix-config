@@ -10,6 +10,7 @@ in
     ./features/vscode.nix
     ./features/chromium.nix
     ./features/shell/azure.nix
+    ./features/linphone.nix
   ];
 
   colorscheme = lib.mkDefault colorSchemes.harmonic16-dark;
