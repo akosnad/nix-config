@@ -1,4 +1,12 @@
-{ config, ... }:
+{ config, lib, ... }:
+let
+  mkMosquittoSecret = {
+    sopsFile = ./secrets.yaml;
+    owner = config.systemd.services.mosquitto.serviceConfig.User;
+  };
+  mkMosquittoSecrets = names:
+    lib.genAttrs (map (name: "mosquitto-${name}") names) (_name: mkMosquittoSecret);
+in
 {
   services.mosquitto = {
     enable = true;
@@ -53,20 +61,10 @@
 
   networking.firewall.allowedTCPPorts = [ 8883 30160 ];
 
-  sops.secrets.mosquitto-cafile = {
-    sopsFile = ./secrets.yaml;
-    owner = config.systemd.services.mosquitto.serviceConfig.User;
-  };
-  sops.secrets.mosquitto-certfile = {
-    sopsFile = ./secrets.yaml;
-    owner = config.systemd.services.mosquitto.serviceConfig.User;
-  };
-  sops.secrets.mosquitto-keyfile = {
-    sopsFile = ./secrets.yaml;
-    owner = config.systemd.services.mosquitto.serviceConfig.User;
-  };
-  sops.secrets.mosquitto-vili-password = {
-    sopsFile = ./secrets.yaml;
-    owner = config.systemd.services.mosquitto.serviceConfig.User;
-  };
+  sops.secrets = mkMosquittoSecrets [
+    "cafile"
+    "certfile"
+    "keyfile"
+    "vili-password"
+  ];
 }
