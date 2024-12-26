@@ -9,6 +9,7 @@
     ./mqtt-notify.nix
     ./yubikey-touch-detector.nix
     ./spotify.nix
+    ./kde-connect.nix
   ];
 
   dconf.settings."org/gnome/desktop/interface".color-scheme =
