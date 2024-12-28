@@ -1,3 +1,7 @@
+{ lib, inputs, ... }:
+let
+  inherit (inputs.nix-colors) colorSchemes;
+in
 {
   imports = [
     ./global
@@ -12,6 +16,8 @@
     ./features/darktable.nix
     ./features/onedrive.nix
   ];
+
+  colorscheme = lib.mkDefault colorSchemes.everforest;
 
   monitors = [
     {
