@@ -56,9 +56,7 @@ in
           }
         })
         add_lsp(lspconfig.vhdl_ls, {})
-
-        if not configs.bicep then
-          configs.bicep = {
+if not configs.bicep then configs.bicep = {
             default_config = {
               cmd = { '${pkgs.dotnet-runtime_8}/bin/dotnet', '${bicep}/share/vscode/extensions/${bicep.vscodeExtUniqueId}/bicepLanguageServer/Bicep.LangServer.dll' },
               filetypes = { 'bicep' },
@@ -90,7 +88,6 @@ in
           strip_wrapping_quote_characters = { "'", '"', "`" },
           handle_leading_whitespace = false,
         })
-        otter.activate({"python", "lua", "typescript", "javascript", "bash", "dockerfile"})
       '';
     }
     rustaceanvim
