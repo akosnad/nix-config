@@ -4,6 +4,7 @@
     ./gammastep.nix
     ./wofi.nix
     ./eww
+    ./dynisland
     ./hyprlock.nix
     ./hypridle.nix
     ./waypipe.nix

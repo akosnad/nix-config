@@ -163,6 +163,7 @@
         windowrulev2 = [
           "opacity, 0.9, class:(Alacritty)"
           "opacity, 0.9, class:(kitty)"
+          "opacity, 0.0, class:(dynisland)"
 
           # this fixes bitwig studio
           # reference: https://github.com/hyprwm/Hyprland/issues/2034#issuecomment-1650278502

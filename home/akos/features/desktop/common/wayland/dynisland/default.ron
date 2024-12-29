@@ -1,0 +1,50 @@
+Config(
+    loaded_modules: ["ClockModule"],
+    layout: "SimpleLayout",
+    general_style_config: (
+        minimal_height: 40,
+        minimal_width: 60,
+        blur_radius: 6.0,
+        enable_drag_stretch: false,
+    ),
+    layout_configs: {
+        "SimpleLayout": (
+            orientation_horizontal: true,
+            window_position: (
+                layer: (
+                    Layer: "Top",
+                ),
+                h_anchor: (
+                    Alignment: "Center",
+                ),
+                v_anchor: (
+                    Alignment: "Start",
+                ),
+                margin_x: 0,
+                margin_y: 0,
+                exclusive_zone: -1,
+                monitor: "",
+                layer_shell: true,
+            ),
+            auto_minimize_timeout: 5000,
+            windows: {},
+        ),
+    },
+    module_config: {
+      "ClockModule": (
+          format_24h: true, // default value
+          hour_hand_color: "white", // default value
+          minute_hand_color: "white", // default value
+          tick_color: "lightgray", // default value
+          circle_color: "lightgray", // default value
+          windows: {
+            "": [
+              ( // every value except `circle_color` will be as defined in the default values above
+                circle_color: "orange",
+              ),
+            ],
+          },
+       ),
+    },
+    debug: None,
+)
