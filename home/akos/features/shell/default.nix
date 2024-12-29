@@ -1,6 +1,7 @@
 { pkgs, ... }:
 {
   imports = [
+    ./oh-my-posh.nix
     ./ranger.nix
     ./tmux.nix
     ./gpg.nix

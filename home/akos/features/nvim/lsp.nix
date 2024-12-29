@@ -15,56 +15,56 @@ in
       plugin = nvim-lspconfig;
       type = "lua";
       config = /* lua */ ''
-        local lspconfig = require('lspconfig')
-        local configs = require('lspconfig.configs')
+                local lspconfig = require('lspconfig')
+                local configs = require('lspconfig.configs')
 
-        function add_lsp(server, options)
-          if not options["cmd"] then
-            options["cmd"] = server["document_config"]["default_config"]["cmd"]
-          end
-          if not options["capabilities"] then
-            options["capabilities"] = require("cmp_nvim_lsp").default_capabilities()
-          end
+                function add_lsp(server, options)
+                  if not options["cmd"] then
+                    options["cmd"] = server["document_config"]["default_config"]["cmd"]
+                  end
+                  if not options["capabilities"] then
+                    options["capabilities"] = require("cmp_nvim_lsp").default_capabilities()
+                  end
 
-          -- if vim.fn.executable(options["cmd"][1]) == 1 then
-          --   server.setup(options)
-          -- end
-          if server.setup then
-            server.setup(options)
-          end
-        end
+                  -- if vim.fn.executable(options["cmd"][1]) == 1 then
+                  --   server.setup(options)
+                  -- end
+                  if server.setup then
+                    server.setup(options)
+                  end
+                end
 
-        add_lsp(lspconfig.dockerls, {})
-        add_lsp(lspconfig.bashls, {})
-        add_lsp(lspconfig.clangd, {})
-        add_lsp(lspconfig.pylsp, {})
-        add_lsp(lspconfig.lua_ls, {
-          settings = {
-            Lua = {
-              completion = {
-                callSnippet = "Replace",
-              }
-            }
-          }
-        })
-        add_lsp(lspconfig.ts_ls, {})
-        add_lsp(lspconfig.nil_ls, {
-          settings = {
-            formatting = {
-              command = { "nixpkgs-fmt" },
-            }
-          }
-        })
-        add_lsp(lspconfig.vhdl_ls, {})
-if not configs.bicep then configs.bicep = {
-            default_config = {
-              cmd = { '${pkgs.dotnet-runtime_8}/bin/dotnet', '${bicep}/share/vscode/extensions/${bicep.vscodeExtUniqueId}/bicepLanguageServer/Bicep.LangServer.dll' },
-              filetypes = { 'bicep' },
-              root_dir = lspconfig.util.root_pattern('.bicepconfig.json', 'bicepconfig.json', 'main.bicep', '.git'),
-            }
-          }
-        end
-        add_lsp(lspconfig.bicep, {})
+                add_lsp(lspconfig.dockerls, {})
+                add_lsp(lspconfig.bashls, {})
+                add_lsp(lspconfig.clangd, {})
+                add_lsp(lspconfig.pylsp, {})
+                add_lsp(lspconfig.lua_ls, {
+                  settings = {
+                    Lua = {
+                      completion = {
+                        callSnippet = "Replace",
+                      }
+                    }
+                  }
+                })
+                add_lsp(lspconfig.ts_ls, {})
+                add_lsp(lspconfig.nil_ls, {
+                  settings = {
+                    formatting = {
+                      command = { "nixpkgs-fmt" },
+                    }
+                  }
+                })
+                add_lsp(lspconfig.vhdl_ls, {})
+        if not configs.bicep then configs.bicep = {
+                    default_config = {
+                      cmd = { '${pkgs.dotnet-runtime_8}/bin/dotnet', '${bicep}/share/vscode/extensions/${bicep.vscodeExtUniqueId}/bicepLanguageServer/Bicep.LangServer.dll' },
+                      filetypes = { 'bicep' },
+                      root_dir = lspconfig.util.root_pattern('.bicepconfig.json', 'bicepconfig.json', 'main.bicep', '.git'),
+                    }
+                  }
+                end
+                add_lsp(lspconfig.bicep, {})
       '';
     }
     # LSP support for embedded code blocks

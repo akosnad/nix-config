@@ -17,7 +17,10 @@ in
     ./features/onedrive.nix
   ];
 
-  colorscheme = lib.mkDefault colorSchemes.everforest;
+  colorscheme = lib.mkDefault colorSchemes.equilibrium-dark;
+  specialisation = {
+    light.configuration.colorscheme = colorSchemes.equilibrium-light;
+  };
 
   monitors = [
     {
