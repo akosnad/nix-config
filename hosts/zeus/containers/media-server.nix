@@ -69,6 +69,7 @@ in
           "/raid/mediaklikk/:/raid/mediaklikk"
           "/raid/Torrents/nCoreFilmek/:/raid/Torrents/nCoreFilmek"
           "/raid/Torrents/nCoreSorozatok/:/raid/Torrents/nCoreSorozatok"
+          "/raid/dvdrips/:/raid/dvdrips"
         ];
         blkio_config.weight = 30;
       };
