@@ -11,6 +11,9 @@
 
       # SIP
       { destination = "10.20.0.4:5060"; proto = "udp"; sourcePort = 5060; }
+
+      # plex
+      { destination = "10.20.0.4:32400"; proto = "tcp"; sourcePort = 20020; }
     ];
   };
 
