@@ -32,6 +32,12 @@ let
             foreground = "p:info_fg";
           }
           {
+            type = "nix-shell";
+            template = "{{ if eq .Type \"impure\" }} {{ end }}";
+            background = "p:info_bg";
+            foreground = "p:info_fg";
+          }
+          {
             type = "path";
             properties = {
               style = "powerlevel";
