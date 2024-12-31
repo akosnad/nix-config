@@ -112,6 +112,10 @@ in
         vim.api.nvim_set_keymap('n', 'gr', '<cmd>Telescope lsp_references<CR>', { noremap = true, silent = true })
         vim.api.nvim_set_keymap('n', 'gs', '<cmd>Telescope lsp_workspace_symbols<CR>', { noremap = true, silent = true })
         vim.api.nvim_set_keymap('n', '<leader>a', '<cmd>lua vim.lsp.buf.code_action()<CR>', { noremap = true, silent = true })
+        vim.api.nvim_set_keymap('n', '<space>', '<cmd>lua vim.lsp.buf.hover()<CR>', { noremap = true, silent = true })
+        vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
+        vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = 'rounded' })
+        vim.diagnostic.config({ float = { border = 'rounded' } })
     '';
 
     plugins = with pkgs.vimPlugins; [
