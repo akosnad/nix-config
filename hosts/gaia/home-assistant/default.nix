@@ -52,6 +52,10 @@
       "ipp"
       "tplink"
       "bluetooth"
+      "bluetooth_adapters"
+      "bluetooth_tracker"
+      "bluetooth_le_tracker"
+      "bthome"
     ];
     extraPackages = python3Packages: with python3Packages; [
       # recorder postgresql support
