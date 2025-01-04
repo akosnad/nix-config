@@ -31,8 +31,8 @@
           allowRenewalAfterExpiry = false;
           disableSmallstepExtensions = false;
           minTLSCertDuration = "5m";
-          maxTLSCertDuration = "${toString (30 * 24)}h";
-          defaultTLSCertDuration = "${toString (14 * 24)}h";
+          maxTLSCertDuration = "${toString (60 * 24)}h";
+          defaultTLSCertDuration = "${toString (30 * 24)}h";
         };
         options = {
           x509 = { };
