@@ -19,6 +19,10 @@ creation_rules:
         - *ocean
         pgp:
         - *akos
+  - path_regex: home/akos/secrets.ya?ml$
+    key_groups:
+      - pgp:
+        - *akos
   - path_regex: hosts/gaia/secrets.ya?ml$
     key_groups:
       - age:

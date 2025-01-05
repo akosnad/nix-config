@@ -17,7 +17,11 @@
 
   home-manager.extraSpecialArgs = {
     inherit inputs outputs;
+    inherit (config.networking) hostName;
   };
+  home-manager.sharedModules = [
+    inputs.sops-nix.homeManagerModules.sops
+  ];
 
   nixpkgs = {
     overlays = builtins.attrValues outputs.overlays;

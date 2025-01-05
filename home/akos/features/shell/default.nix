@@ -9,13 +9,13 @@
     ./comma.nix
     ./gh.nix
     ./ssh.nix
+    ./cachix.nix
   ];
 
   home.packages = with pkgs; [
     ncdu
     jq
     htop
-    cachix
     nix-output-monitor
     file
   ];

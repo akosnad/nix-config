@@ -30,28 +30,9 @@ in
       sopsFile = ../../secrets.yaml;
       neededForUsers = true;
     };
-    cachix-auth-token = {
-      sopsFile = ../../secrets.yaml;
-      owner = "akos";
-    };
-    gh-auth-token = {
-      sopsFile = ../../secrets.yaml;
-      owner = "akos";
-    };
-    spotify-username = {
-      sopsFile = ../../secrets.yaml;
-      owner = "akos";
-    };
-    spotify-password = {
-      sopsFile = ../../secrets.yaml;
-      owner = "akos";
-    };
   };
 
   home-manager.users.akos = import ../../../../home/akos/${config.networking.hostName}.nix;
-  home-manager.extraSpecialArgs = {
-    inherit (config.networking) hostName;
-  };
 
   security.pam.services.hyprlock = {
     name = "hyprlock";

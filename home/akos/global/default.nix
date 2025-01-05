@@ -44,6 +44,11 @@ in
     git.enable = true;
   };
 
+  sops = {
+    gnupg.home = "${config.home.homeDirectory}/.gnupg";
+    defaultSopsFile = ../secrets.yaml;
+  };
+
   colorscheme = lib.mkOverride 1499 colorSchemes.classic-dark;
   specialisation = {
     dark.configuration.colorscheme = lib.mkOverride 1498 colorSchemes.classic-dark;

@@ -9,10 +9,6 @@ in
       enable = true;
       plugins = [ "git" "sudo" "fzf" "last-working-dir" ];
     };
-    envExtra = ''
-      [ -f /run/secrets/cachix-auth-token ] && export CACHIX_AUTH_TOKEN="$(cat /run/secrets/cachix-auth-token)"
-      [ -f /run/secrets/gh-auth-token ] && export GH_TOKEN="$(cat /run/secrets/gh-auth-token)"
-    '';
   };
 
   programs.fzf = {
