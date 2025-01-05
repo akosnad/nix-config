@@ -5,6 +5,7 @@
     ./networking.nix
 
     ../common/global
+    ../common/optional/high-availability.nix
     ../common/users/akos
   ];
 
