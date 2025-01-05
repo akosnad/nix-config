@@ -81,8 +81,8 @@ in
               build="$(curl -fs "${buildbotApi}/changes/$change/builds?builderid__eq=$builder" | jq -Mcr '.builds | sort_by(.number) | reverse | first')"
               buildnumber="$(jq -r '.number' <<< "$build")"
 
-              drv="$(curl -fs "${buildbotApi}/builders/$builder/builds/$buildnumber/properties" | jq -r '.properties[0].drv_path[0]')"
-              nix-store --realise "$drv" --no-fallback --max-silent-time 300 --timeout 1800
+              outPath="$(curl -fs "${buildbotApi}/builders/$builder/builds/$buildnumber/properties" | jq -r '.properties[0].out_path[0]')"
+              nix-store --realise "$outPath" --no-fallback --max-silent-time 300 --timeout 1800
             }
 
             newRevision="$(revision "${config.system.autoUpgrade.flake}")"
