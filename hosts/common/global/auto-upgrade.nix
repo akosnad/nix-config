@@ -82,7 +82,7 @@ in
               buildnumber="$(jq -r '.number' <<< "$build")"
 
               outPath="$(curl -fs "${buildbotApi}/builders/$builder/builds/$buildnumber/properties" | jq -r '.properties[0].out_path[0]')"
-              nix-store --realise "$outPath" --no-fallback --max-silent-time 300 --timeout 1800
+              nix-store --realise "$outPath" --no-fallback --max-silent-time 300 --timeout 1800 --option require-sigs false
             }
 
             newRevision="$(revision "${config.system.autoUpgrade.flake}")"
