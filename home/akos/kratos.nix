@@ -5,6 +5,7 @@ in
 {
   imports = [
     ./global
+    ./features/shell/full.nix
     ./features/nvim/full.nix
     ./features/desktop/hyprland
     ./features/vscode.nix

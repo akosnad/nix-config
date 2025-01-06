@@ -1,3 +1,4 @@
+{ config, ... }:
 {
   programs.ncspot = {
     enable = true;
@@ -13,9 +14,14 @@
         "artists"
       ];
       credentials = {
-        username_cmd = "cat /run/secrets/spotify-username";
-        password_cmd = "cat /run/secrets/spotify-password";
+        username_cmd = "cat ${config.sops.secrets.spotify-username.path}";
+        password_cmd = "cat ${config.sops.secrets.spotify-password.path}";
       };
     };
+  };
+
+  sops.secrets = {
+    spotify-username = { };
+    spotify-password = { };
   };
 }
