@@ -57,6 +57,7 @@
       "bluetooth_le_tracker"
       "bthome"
       "ibeacon"
+      "voip"
     ];
     extraPackages = python3Packages: with python3Packages; [
       # recorder postgresql support
