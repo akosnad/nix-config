@@ -64,6 +64,11 @@ let
       ip = "10.20.0.123";
       name = "kp105";
     }
+    {
+      mac = "EC:74:D7:20:2C:C7";
+      ip = "10.20.0.185";
+      name = "persephone";
+    }
   ];
 
 in
