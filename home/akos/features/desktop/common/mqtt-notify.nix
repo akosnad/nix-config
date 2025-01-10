@@ -45,6 +45,18 @@ let
         | while read -r message; do
           echo "Received message: ''${message}"
 
+          action=$(echo "$message" | jq -r '.action')
+          case "$action" in
+            "suspend")
+              systemctl suspend
+              ;;
+            "poweroff")
+              systemctl poweroff
+              ;;
+            *)
+              ;;
+          esac
+
           jq -e .body <<< "$message" || continue
 
           title=$(echo "$message" | jq -r '.title')
