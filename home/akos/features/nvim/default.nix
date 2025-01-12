@@ -27,7 +27,8 @@ in
       	set termguicolors
       	set noshowmode
       	set listchars=tab:→\ ,nbsp:+,space:·
-      	set timeoutlen=250
+        set timeoutlen=500
+        set scrolloff=25
 
       	hi! link @variable Normal
 
@@ -87,7 +88,7 @@ in
 
     extraLuaConfig = /* lua */ ''
       	-- Ranger
-      	vim.api.nvim_set_keymap('n', '<leader>ff', ':RangerEdit<CR>', { noremap = true, silent = true })
+        vim.api.nvim_set_keymap('n', '<leader>r', ':RangerEdit<CR>', { noremap = true, silent = true })
 
       	-- Telescope
       	vim.api.nvim_set_keymap('n', '<leader>f', ':Telescope find_files<CR>', { noremap = true, silent = true })
