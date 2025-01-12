@@ -3,7 +3,7 @@
   imports = [
     ./gammastep.nix
     ./wofi.nix
-    ./eww
+    ./waybar.nix
     ./hyprlock.nix
     ./hypridle.nix
     ./waypipe.nix
