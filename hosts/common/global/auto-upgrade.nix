@@ -9,7 +9,19 @@ let
   # This avoids accidental auto-upgrades when working locally.
   isClean = inputs.self ? rev;
 
+  hasRebootWindow = config.system.autoUpgrade.rebootWindow != null;
+  rebootWindowCheck = /* bash */ ''
+    now="$(date +%s)"
+    lower="$(date --date="${config.system.autoUpgrade.rebootWindow.lower}" +%s)"
+    upper="$(date --date="${config.system.autoUpgrade.rebootWindow.upper}" +%s)"
+    if [[ ("$now" -lt "$lower") || ("$now" -gt "$upper") ]]; then
+      echo "Outside reboot window, skipping"
+      return
+    fi
+  '';
+
   buildbotApi = "https://buildbot.fzt.one/api/v2";
+  systemAttr = "${config.system.autoUpgrade.flake}#checks.${config.nixpkgs.hostPlatform.system}.nixos-${config.networking.hostName}";
 in
 {
   system.autoUpgrade = {
@@ -66,7 +78,7 @@ in
       ExecStart = lib.mkForce (lib.getExe (
         pkgs.writeShellApplication {
           name = "nixos-upgrade";
-          runtimeInputs = with pkgs; [ curl jq nix ];
+          runtimeInputs = with pkgs; [ coreutils curl jq nix systemd ];
           text = ''
             revision() {
               nix flake metadata "$1" --refresh --json | jq -r '.revision'
@@ -85,14 +97,23 @@ in
               nix-store --realise "$outPath" --no-fallback --max-silent-time 300 --timeout 1800 --option require-sigs false
             }
 
+            apply() {
+              nix-env --profile /nix/var/nix/profiles/system --set "$1"
+              /nix/var/nix/profiles/system/bin/switch-to-configuration "${if config.system.autoUpgrade.allowReboot then "boot" else config.system.autoUpgrade.operation}"
+            }
+
+            rebootIfNeeded() {
+              ${if config.system.autoUpgrade.allowReboot then /* bash */ ''
+                ${if hasRebootWindow then rebootWindowCheck else "# no reboot window configured, allowed to reboot immediately"}
+                
+                shutdown -r +1 "Rebooting due to auto-upgrade"
+              '' else "# reboot is not allowed by configuration, skipping\nreturn"}
+            }
+
             newRevision="$(revision "${config.system.autoUpgrade.flake}")"
-            echo "Fetching system path for revision $newRevision ..."
-            newPath="$(getSystemPath "${config.system.autoUpgrade.flake}#checks.${config.nixpkgs.hostPlatform.system}.nixos-${config.networking.hostName}" "$newRevision")"
-            echo "Registering new system profile for $newPath ..."
-            nix-env --profile /nix/var/nix/profiles/system --set "$newPath"
-            echo "Activating new system profile ..."
-            /nix/var/nix/profiles/system/bin/switch-to-configuration "${config.system.autoUpgrade.operation}"
-            echo "Done."
+            newPath="$(getSystemPath "${systemAttr}" "$newRevision")"
+            apply "$newPath"
+            rebootIfNeeded
           '';
         }));
     };
