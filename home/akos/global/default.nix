@@ -7,7 +7,7 @@ in
     inputs.nix-colors.homeManagerModule
     inputs.impermanence.nixosModules.home-manager.impermanence
     ../features/shell
-    ../features/nvim
+    ../features/helix
   ] ++ (builtins.attrValues outputs.homeManagerModules);
 
   nixpkgs = {

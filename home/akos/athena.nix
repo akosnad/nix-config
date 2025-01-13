@@ -6,7 +6,7 @@ in
   imports = [
     ./global
     ./features/shell/full.nix
-    ./features/nvim/full.nix
+    ./features/helix/full.nix
     ./features/desktop/hyprland
     ./features/vscode.nix
     ./features/chromium.nix

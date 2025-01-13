@@ -5,8 +5,8 @@ in
 {
   imports = [
     ./global
+    ./features/helix/full.nix
     ./features/shell/full.nix
-    ./features/nvim/full.nix
     ./features/desktop/hyprland
     ./features/vscode.nix
     ./features/vscode-server.nix
