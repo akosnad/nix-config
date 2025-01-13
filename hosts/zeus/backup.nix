@@ -28,6 +28,7 @@ in
 
         "jackett/Jackett/log*"
         "jackett/Jackett/updater.txt.*"
+        "bitmagnet"
 
         "docker"
 

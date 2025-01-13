@@ -3,6 +3,7 @@ let
   torrentsPath = "/raid/Torrents";
   qbittorrentConfigPath = "/var/lib/qbittorrent";
   jackettConfigPath = "/var/lib/jackett";
+  bitmagnetData = "/var/lib/bitmagnet";
   commonServiceOptions = {
     networks = [ "internal" ];
     labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
@@ -59,6 +60,52 @@ in
         volumes = [ "${jackettConfigPath}/:/config" ];
         ports = [ "9117:9117" ];
       };
+
+      bitmagnet.service = lib.recursiveUpdate commonServiceOptions {
+        image = "ghcr.io/bitmagnet-io/bitmagnet:latest";
+        container_name = "bitmagnet";
+        ports = [
+          # API and WebUI
+          "3333:3333"
+          # BitTorrent ports
+          "3334:3334/tcp"
+          "3334:3334/udp"
+        ];
+        environment = {
+          POSTGRES_HOST = "bitmagnet-db";
+          POSTGRES_PASSWORD = "postgres";
+        };
+        command = [
+          "worker"
+          "run"
+          "--keys=http_server"
+          "--keys=queue_server"
+          "--keys=dht_crawler"
+        ];
+        depends_on.bitmagnet-db.condition = "service_healthy";
+      };
+
+      bitmagnet-db.service = lib.recursiveUpdate commonServiceOptions {
+        image = "postgres:16-alpine";
+        container_name = "bitmagnet-db";
+        volumes = [
+          "${bitmagnetData}:/var/lib/postgresql/data"
+        ];
+        environment = {
+          POSTGRES_PASSWORD = "postgres";
+          POSTGRES_DB = "bitmagnet";
+          PGUSER = "postgres";
+        };
+        healthcheck = {
+          test = [
+            "CMD-SHELL"
+            "pg_isready"
+          ];
+          start_period = "20s";
+          interval = "10s";
+        };
+      };
+
     };
 
     networks.internal.driver = "bridge";
@@ -81,6 +128,10 @@ in
       proxy_pass http://127.0.0.1:8818;
     '';
     "/jackett".proxyPass = "http://127.0.0.1:9117$request_uri";
+    "/bitmagnet".extraConfig = /* nginx */ ''
+      rewrite /bitmagnet/(.*) http://zeus:3333/$1 redirect;
+      rewrite /bitmagnet http://zeus:3333/ redirect;
+    '';
   };
 
   systemd.services.qbt-manager =
@@ -111,6 +162,7 @@ in
     "/persist".directories = [
       qbittorrentConfigPath
       jackettConfigPath
+      bitmagnetData
     ];
   };
 
@@ -126,10 +178,15 @@ in
       15577
       # jackett
       9117
+      # bitmagnet
+      3333
+      3334
     ];
     allowedUDPPorts = [
       # qbittorrent
       15577
+      # bitmagnet
+      3334
     ];
   };
 }
