@@ -1,6 +1,7 @@
-{ config, ... }:
+{ config, inputs, ... }:
 let
   c = config.colorScheme.palette;
+  toRGB = hex: builtins.concatStringsSep ", " (map toString (inputs.nix-colors.lib.conversions.hexToRGB hex));
 in
 {
   programs.waybar = {
@@ -9,12 +10,12 @@ in
       layer = "top";
       position = "top";
       height = 30;
-      spacing = 8;
       modules-left = [
         "hyprland/workspaces"
         "hyprland/window"
       ];
       modules-right = [
+        "hyprland/language"
         "tray"
         "clock"
       ];
@@ -24,6 +25,11 @@ in
         separate-outputs = true;
         icon = true;
         icon-size = 16;
+      };
+
+      "hyprland/language" = {
+        format-en = "en";
+        format-hu = "hu";
       };
 
       tray = {
@@ -44,10 +50,17 @@ in
         background-color: rgba(0, 0, 0, 0.0);
         border: none;
         box-shadow: none;
-        padding: 0.25em 2em;
       }
-      window#waybar.solo {
+      window#waybar > box {
+        padding: 0.5em 0.5em 0 0.5em;
+        background-color: rgba(0, 0, 0, 0.0);
+      }
+      window#waybar.solo > box {
+        padding: 0.5em;
         background-color: #${c.base00};
+      }
+      window#waybar.solo.kitty > box {
+        background-color: rgba(${toRGB c.base00}, 0.9);
       }
 
       #workspaces button {
@@ -67,6 +80,13 @@ in
         color: #${c.base00};
       }
 
+      #language {
+        background-color: #${c.base02};
+        padding: 0.125em 0.375em;
+        margin: 0.125em;
+        border-radius: 1em;
+      }
+
       #clock {
         background-color: #${c.base02};
         padding: 0.125em 0.375em;
@@ -78,6 +98,9 @@ in
         padding: 0.125em 0.375em;
         margin: 0.125em;
         border-radius: 1em;
+      }
+      window#waybar.empty #window {
+        background-color: rgba(0, 0, 0, 0.0);
       }
     '';
   };

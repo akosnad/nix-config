@@ -61,9 +61,9 @@
         )) ++ [
           # helper for no gaps when only one window on workspace
           # taken from: https://github.com/hyprwm/Hyprland/blob/3cec45d82113051d35e846e5d80719d8ea0f7002/example/hyprland.conf#L134-L145
-          "w[t1], gapsout:0, gapsin:0"
-          "w[tg1], gapsout:0, gapsin:0"
-          "f[1], gapsout:0, gapsin:0"
+          "w[t1], gapsout:0, gapsin:0, shadow:false"
+          "w[tg1], gapsout:0, gapsin:0, shadow:false"
+          "f[1], gapsout:0, gapsin:0, shadow:false"
         ];
 
         xwayland.force_zero_scaling = true;
@@ -176,6 +176,12 @@
           "rounding 0, floating:0, onworkspace:w[tg1]"
           "bordersize 0, floating:0, onworkspace:f[1]"
           "rounding 0, floating:0, onworkspace:f[1]"
+        ];
+
+        layerrule = [
+          "blur, waybar"
+          "ignorezero, waybar"
+          "noanim, waybar"
         ];
       };
   };
