@@ -120,7 +120,6 @@
         { host = "kratos"; }
         { host = "zeus"; }
         { host = "gaia"; arch = "aarch64-linux"; }
-        { host = "ocean"; }
       ];
       homes = nixosHosts ++ [{ host = "gepterem"; }];
     in
