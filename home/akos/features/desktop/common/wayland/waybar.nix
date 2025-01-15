@@ -1,4 +1,4 @@
-{ config, inputs, ... }:
+{ config, inputs, lib, ... }:
 let
   c = config.colorScheme.palette;
   toRGB = hex: builtins.concatStringsSep ", " (map toString (inputs.nix-colors.lib.conversions.hexToRGB hex));
@@ -103,5 +103,18 @@ in
         background-color: rgba(0, 0, 0, 0.0);
       }
     '';
+  };
+
+  systemd.user.services.waybar = lib.mkForce {
+    Unit = {
+      PartOf = [ "graphical-session.target" ];
+      After = "graphical-session-pre.target";
+    };
+    Install.WantedBy = [ "graphical-session.target" ];
+    Service = {
+      ExecStart = lib.getExe config.programs.waybar.package;
+      ExecReload = "kill -SIGUSR2 $MAINPID";
+      Restart = "on-failure";
+    };
   };
 }
