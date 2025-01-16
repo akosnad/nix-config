@@ -57,7 +57,10 @@ in
 
         ; let the extensions dial each other
         [from-internal]
-        exten = _6XXX,1,Dial(PJSIP/''${EXTEN})
+        exten => _6XXX,1,Dial(PJSIP/''${EXTEN},10)
+         same => n,VoiceMail(''${EXTEN}@internal)
+         same => n,PlayBack(vm-goodbye)
+         same => n,HangUp()
 
         ; allow dialing out
         [from-internal]
@@ -66,17 +69,30 @@ in
         exten = _36XXXXXXXXX,1,Dial(PJSIP/''${EXTEN}@trunk)
         exten = _36XXXXXXXX,1,Dial(PJSIP/''${EXTEN}@trunk)
 
+        ; internal voicemail
+        [from-internal]
+        exten => 999,1,VoiceMailMain(''${CALLERID(num)}@internal,s)
+
         [from-external]
         exten => s,1,Log(NOTICE, Incoming call from external source)
          same => n,Log(NOTICE, Caller ID: ''${CALLERID(num)})
          same => n,Answer()
          same => n,Dial(PJSIP/6001&PJSIP/6002,37:4,m(default))
-         same => n,Log(Notice, Call from ''${CALLERID(num)} ended with status ''${DIALSTATUS})
-         same => n,ExecIf($["''${DIALSTATUS}"="BUSY"]?Playback(vm-nobodyavail))
-         same => n,ExecIf($["''${DIALSTATUS}"="CHANUNAVAIL"]?Playback(vm-nobodyavail))
-         same => n,ExecIf($["''${DIALSTATUS}"="NOANSWER"]?Playback(vm-nobodyavail))
+         same => n,VoiceMail(6001@internal)
+         same => n,PlayBack(vm-goodbye)
          same => n,Hangup()
 
+      '';
+      "voicemail.conf" = /* asterisk */ ''
+        [general]
+        aliasescontext=aliases
+        
+        [internal]
+        6001 => 100,Default Mailbox,akos@localhost
+        6002 => 6001@internal
+
+        [aliases]
+        6002@devices => 6001@internal
       '';
       "acl.conf" = /* asterisk */ ''
         [internal-only]
@@ -115,12 +131,20 @@ in
     );
   };
 
-  environment.persistence."/persist".directories = [{
+  environment.persistence."/persist".directories = [
+  {
     directory = "/var/lib/asterisk";
     mode = "750";
     user = "asterisk";
     group = "asterisk";
-  }];
+  }
+  {
+    directory = "/var/spool/asterisk";
+    mode = "750";
+    user = "asterisk";
+    group = "asterisk";
+  }
+  ];
 
   sops.secrets.asterisk-trunk-config = {
     sopsFile = ./secrets.yaml;
