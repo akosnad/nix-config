@@ -24,6 +24,7 @@
     ../common/optional/yubikey.nix
     ../common/optional/use-builders.nix
     ../common/optional/xwayland-fix.nix
+    ../common/optional/virt-manager.nix
 
     ../common/users/akos
 
