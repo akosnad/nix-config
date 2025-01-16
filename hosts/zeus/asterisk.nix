@@ -132,18 +132,18 @@ in
   };
 
   environment.persistence."/persist".directories = [
-  {
-    directory = "/var/lib/asterisk";
-    mode = "750";
-    user = "asterisk";
-    group = "asterisk";
-  }
-  {
-    directory = "/var/spool/asterisk";
-    mode = "750";
-    user = "asterisk";
-    group = "asterisk";
-  }
+    {
+      directory = "/var/lib/asterisk";
+      mode = "750";
+      user = "asterisk";
+      group = "asterisk";
+    }
+    {
+      directory = "/var/spool/asterisk";
+      mode = "750";
+      user = "asterisk";
+      group = "asterisk";
+    }
   ];
 
   sops.secrets.asterisk-trunk-config = {
