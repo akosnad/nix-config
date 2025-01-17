@@ -11,7 +11,6 @@
   # FIXME: separate packages and their configs to desktop/common/ modules
   home.packages = with pkgs; [
     wofi
-    swaynotificationcenter
   ];
 
   xdg.portal = {

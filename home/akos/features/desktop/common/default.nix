@@ -10,6 +10,7 @@
     ./yubikey-touch-detector.nix
     ./spotify.nix
     ./kde-connect.nix
+    ./swaync.nix
   ];
 
   dconf.settings."org/gnome/desktop/interface".color-scheme =
