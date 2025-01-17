@@ -19,6 +19,9 @@ in
     light.configuration.colorscheme = colorSchemes.harmonic16-light;
   };
 
+  services.blueman-applet.enable = true;
+  services.network-manager-applet.enable = true;
+
   monitors = [
     {
       name = "eDP-1";

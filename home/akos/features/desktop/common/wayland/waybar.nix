@@ -2,6 +2,13 @@
 let
   c = config.colorScheme.palette;
   toRGB = hex: builtins.concatStringsSep ", " (map toString (inputs.nix-colors.lib.conversions.hexToRGB hex));
+
+  moduleBaseStyle = ''
+    background-color: #${c.base02};
+    padding: 0.125em 0.5em;
+    margin: 0.125em 0.25em;
+    border-radius: 1em;
+  '';
 in
 {
   programs.waybar = {
@@ -15,8 +22,10 @@ in
         "hyprland/window"
       ];
       modules-right = [
-        "hyprland/language"
         "tray"
+        "pulseaudio"
+        "hyprland/language"
+        "battery"
         "clock"
       ];
 
@@ -27,18 +36,47 @@ in
         icon-size = 16;
       };
 
-      "hyprland/language" = {
-        format-en = "en";
-        format-hu = "hu";
-      };
-
       tray = {
         icon-size = 16;
         spacing = 8;
       };
+
+      "pulseaudio" = {
+        format = "{icon} {volume}%";
+        format-bluetooth = "󰂰 {icon} {volume}%";
+        format-muted = " ";
+        format-icons = {
+          headphone = " ";
+          hands-free = " ";
+          headset = " ";
+          phone = " ";
+          portable = " ";
+          car = "󰄍 ";
+          default = " ";
+        };
+        on-click = "pavucontrol";
+        on-scroll-up = "";
+        on-scroll-down = "";
+      };
+
+      "hyprland/language" = {
+        format-en = "󰌌  en";
+        format-hu = "󰌌  hu";
+      };
+
+      battery = {
+        interval = 10;
+        format = "{icon} {capacity}%";
+        format-icons = {
+          charging =    [ "󰢟 " "󰢜 " "󰂆 " "󰂇 " "󰂈 " "󰢝 " "󰂉 " "󰢞 " "󰂊 " "󰂋 " "󰂅 " ];
+          discharging = [ "󰂎 " "󰁺 " "󰁻 " "󰁼 " "󰁽 " "󰁾 " "󰁿 " "󰂀 " "󰂁 " "󰂂 " "󰁹 " ];
+        };
+      };
+
       clock = {
         on-click = "swaync-client -t";
-        tooltip = false;
+        format = "󰥔  {:%H:%M}";
+        tooltip-format = "{:L%Y. %m. %d. %A}";
       };
     };
 
@@ -54,6 +92,7 @@ in
       window#waybar > box {
         padding: 0.5em 0.5em 0 0.5em;
         background-color: rgba(0, 0, 0, 0.0);
+        transition: background-color 250ms ease-in-out;
       }
       window#waybar.solo > box {
         padding: 0.5em;
@@ -65,12 +104,11 @@ in
 
       #workspaces button {
         background-color: #${c.base02};
-        color: #${c.base03};
         padding: 0.125em 0.375em;
-        margin: 0.125em;
+        margin: 0.125em 0.25em;
         border-radius: 1em;
+        color: #${c.base03};
       }
-
       #workspaces button.visible {
         background-color: #${c.base02};
         color: #${c.base0D};
@@ -80,27 +118,36 @@ in
         color: #${c.base00};
       }
 
-      #language {
-        background-color: #${c.base02};
-        padding: 0.125em 0.375em;
-        margin: 0.125em;
-        border-radius: 1em;
-      }
-
-      #clock {
-        background-color: #${c.base02};
-        padding: 0.125em 0.375em;
-        margin: 0.125em;
-        border-radius: 1em;
-      }
       #window {
-        background-color: #${c.base02};
-        padding: 0.125em 0.375em;
-        margin: 0.125em;
-        border-radius: 1em;
+        ${moduleBaseStyle}
       }
       window#waybar.empty #window {
         background-color: rgba(0, 0, 0, 0.0);
+      }
+
+      #tray {
+      	padding: 0.125em 0.25em;
+      	margin: 0;
+      }
+      #tray > .active {
+        background-color: #${c.base02};
+        border-radius: 1em;
+      }
+      #tray > .active > image {
+      	margin: 0 0.375em;
+      }
+
+      #pulseaudio {
+        ${moduleBaseStyle}
+      }
+      #language {
+        ${moduleBaseStyle}
+      }
+      #battery {
+        ${moduleBaseStyle}
+      }
+      #clock {
+        ${moduleBaseStyle}
       }
     '';
   };
