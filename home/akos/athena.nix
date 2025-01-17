@@ -14,9 +14,9 @@ in
     ./features/linphone.nix
   ];
 
-  colorscheme = lib.mkDefault colorSchemes.harmonic16-dark;
+  colorscheme = lib.mkDefault colorSchemes.selenized-dark;
   specialisation = {
-    light.configuration.colorscheme = colorSchemes.harmonic16-light;
+    light.configuration.colorscheme = colorSchemes.selenized-light;
   };
 
   services.blueman-applet.enable = true;

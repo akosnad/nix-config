@@ -1,4 +1,4 @@
-{ config, inputs, lib, ... }:
+{ pkgs, config, inputs, lib, ... }:
 let
   c = config.colorScheme.palette;
   toRGB = hex: builtins.concatStringsSep ", " (map toString (inputs.nix-colors.lib.conversions.hexToRGB hex));
@@ -160,7 +160,7 @@ in
     Install.WantedBy = [ "graphical-session.target" ];
     Service = {
       ExecStart = lib.getExe config.programs.waybar.package;
-      ExecReload = "kill -SIGUSR2 $MAINPID";
+      ExecReload = "${pkgs.procps}/bin/kill -SIGUSR2 $MAINPID";
       Restart = "on-failure";
     };
   };

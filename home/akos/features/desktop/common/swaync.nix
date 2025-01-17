@@ -1,4 +1,4 @@
-{ config, inputs, ... }:
+{ pkgs, config, inputs, ... }:
 let
   c = config.colorScheme.palette;
   toRGB = hex: builtins.concatStringsSep ", " (map toString (inputs.nix-colors.lib.conversions.hexToRGB hex));
@@ -511,4 +511,8 @@ in
       }
     '';
   };
+
+  xdg.configFile."swaync/style.css".onChange = ''
+    ${pkgs.systemd}/bin/systemctl --user reload-or-restart swaync.service
+  '';
 }
