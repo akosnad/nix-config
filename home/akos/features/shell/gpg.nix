@@ -29,6 +29,7 @@
         settings = {
           trust-model = "tofu+pgp";
         };
+        scdaemonSettings.disable-ccid = true;
         # publicKeys = [{
         #   source = ../../pgp.asc;
         #   trust = 5;
