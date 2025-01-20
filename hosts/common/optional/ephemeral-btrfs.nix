@@ -13,7 +13,7 @@ let
     }
 
     (
-      mount -t btrfs /dev/disk/by-partlabel/disk-vdb-root "$MNTPOINT"
+      mount -t btrfs "${config.fileSystems."/".device}" "$MNTPOINT"
       trap 'echo "Done"; umount "$MNTPOINT"' EXIT
 
       echo "Creating needed directories..."
