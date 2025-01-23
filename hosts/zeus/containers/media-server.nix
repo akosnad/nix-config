@@ -1,6 +1,7 @@
 { lib, config, ... }:
 let
   commonServiceOptions = {
+    restart = "unless-stopped";
     networks = [ "internal" "torrent_internal" ];
     labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
     environment = {
