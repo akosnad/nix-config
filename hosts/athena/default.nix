@@ -3,9 +3,7 @@
 , ...
 }: {
   imports = [
-    inputs.hardware.nixosModules.common-cpu-intel
-    inputs.hardware.nixosModules.common-gpu-intel
-    inputs.hardware.nixosModules.common-pc-ssd
+    inputs.hardware.nixosModules.microsoft-surface-pro-intel
 
     ./hardware-configuration.nix
     ./disk-config.nix
@@ -42,6 +40,9 @@
       accelSpeed = 0.3;
     };
   };
+
+  # stylus support not needed
+  services.iptsd.enable = false;
 
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
