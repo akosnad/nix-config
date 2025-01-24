@@ -1,5 +1,5 @@
 #! /usr/bin/env nix-shell
-#! nix-shell -i bash -p nix sops ssh-to-age openssh
+#! nix-shell -i bash -p nix sops ssh-to-age openssh yq-go
 set -o pipefail
 set -o errexit
 
@@ -32,7 +32,7 @@ populate_config() {
     ../common/users/akos
   ];
 
-  networking.hostName = "kratos-vm";
+  networking.hostName = "${hostname}";
 
   system.stateVersion = "24.11";
 }
@@ -109,9 +109,16 @@ EOF
   ssh_key="ssh_host_ed25519_key"
   ssh-keygen -t ed25519 -N '' -C "${hostname}" -f "./hosts/${hostname}/$ssh_key"
 
-  age_key="$(ssh-to-age -i "./hosts/${hostname}/ssh_host_ed25519_key.pub")"
-  printf "Generated system age key:\n\n%s\n\n" "$age_key"
+  if yq -e ".keys.hosts | filter(. | anchor == \"${hostname}\") | .[]" .sops.yaml &>/dev/null; then
+    echo "host age key for ${hostname} already present in .sops.yaml, refusing to overwrite."
+    exit 1
+  fi
 
+  age_key="$(ssh-to-age -i "./hosts/${hostname}/${ssh_key}.pub")"
+  printf "Generated system age key:\n\n%s\n\n" "$age_key"
+  yq -e ".keys.hosts += (\"${age_key}\" | . anchor = \"${hostname}\")" -i .sops.yaml
+  yq -e "with(.creation_rules[]; . | select(.path_regex == \"hosts/common/secrets.ya?ml\$\") | .key_groups.[0].age += (\"dummy\" | . alias = \"${hostname}\"))" -i .sops.yaml
+  sops -i -r --add-age "${age_key}" hosts/common/secrets.yaml
 }
 
 install_system() {
@@ -149,9 +156,8 @@ else
   populate_config
   echo "Configuration for ${hostname} has been generated."
   echo
-  echo "Make adjustments now to it, then do the following:"
-  echo "- add the generated age key to .sops.yaml and rotate secrets so the target machine can decrypt them"
-  echo "- add the system to the flake attributes in flake.nix (nixosMachines attribute)"
-  echo "- add files to VCS because nix will ignore ones that aren't tracked!"
+  echo "Now is a good time to make adjustments to it."
+  echo "After that, do the following:"
+  echo "- add the new files to VCS because nix will ignore ones that aren't tracked!"
   echo "- re-run this script to start installation."
 fi

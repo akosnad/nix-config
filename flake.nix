@@ -115,13 +115,7 @@
         config.allowUnfree = true;
       });
 
-      nixosHosts = [
-        { host = "athena"; }
-        { host = "kratos"; }
-        { host = "zeus"; }
-        { host = "gaia"; arch = "aarch64-linux"; }
-      ];
-      homes = nixosHosts ++ [{ host = "gepterem"; }];
+      homes = [{ host = "gepterem"; }];
     in
     flake-parts.lib.mkFlake { inherit inputs; } ({ ... }:
     {
@@ -163,13 +157,15 @@
 
         nixosConfigurations =
           let
-            mkNixosConfig = { host, ... }: {
+            mkNixosConfig = host: {
               name = host;
               value = lib.nixosSystem {
                 modules = [ ./hosts/${host} ];
                 specialArgs = { inherit inputs outputs; };
               };
             };
+            nixosHosts' = lib.filterAttrs (n: v: v == "directory" && n != "common") (builtins.readDir "${self}/hosts");
+            nixosHosts = builtins.attrNames nixosHosts';
           in
           builtins.listToAttrs (lib.map mkNixosConfig nixosHosts);
 
