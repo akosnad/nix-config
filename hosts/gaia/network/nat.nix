@@ -1,20 +1,18 @@
+{ config, lib, ... }:
+let
+  devices = builtins.attrValues config.devices;
+  mapForward = d: fp: proto: { destination = "${d.ip}:${toString fp.dest}"; sourcePort = fp.source; inherit proto; };
+  filterProto = target: candidate: target == candidate || candidate == "tcpudp";
+  forwardsForProto = proto: map (d: map (fp: mapForward d fp proto) (builtins.filter (fp: filterProto proto fp.proto) d.forwardedPorts)) devices;
+
+  forwardPorts = (lib.flatten (forwardsForProto "tcp")) ++ (lib.flatten (forwardsForProto "udp"));
+in
 {
   networking.nat = {
     enable = true;
     internalInterfaces = [ "br-lan" ];
     externalInterface = "wan0";
-    # TODO: get rid of port forwards
-    forwardPorts = [
-      # qbittorrent
-      { destination = "10.20.0.4:15577"; proto = "tcp"; sourcePort = 15577; }
-      { destination = "10.20.0.4:15577"; proto = "udp"; sourcePort = 15577; }
-
-      # SIP
-      { destination = "10.20.0.4:5060"; proto = "udp"; sourcePort = 5060; }
-
-      # plex
-      { destination = "10.20.0.4:32400"; proto = "tcp"; sourcePort = 20020; }
-    ];
+    inherit forwardPorts;
   };
 
   networking.nftables.tables = {

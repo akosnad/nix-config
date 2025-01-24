@@ -13,11 +13,12 @@ let
   mkLocalhostRewrite = mkHostRewrite lanIp;
 
   localhostHostsRewrites = builtins.map mkLocalhostRewrite localhostNetworkHosts;
-  hostRewrites = localhostHostsRewrites ++ [
-    (mkHostRewrite "10.20.0.4" "repo.fzt.one")
-    (mkHostRewrite "10.20.0.4" "frigate")
-    (mkHostRewrite "10.20.0.4" "frigate.${config.networking.domain}")
-  ];
+
+  devices = builtins.attrValues config.devices;
+  mapExtraHostname = d: h: [ (mkHostRewrite d.ip h) (mkHostRewrite d.ip "${h}.${config.networking.domain}") ];
+  devicesExtraHostnames = map (d: map (mapExtraHostname d) d.extraHostnames) devices;
+
+  hostRewrites = localhostHostsRewrites ++ (lib.flatten devicesExtraHostnames);
 in
 {
   services.adguardhome = {

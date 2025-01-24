@@ -1,4 +1,7 @@
 { config, ... }:
+let
+  inherit (config.networking) domain;
+in
 {
   services.frigate = {
     enable = true;
@@ -7,7 +10,7 @@
       auth.enabled = false;
       mqtt = {
         enabled = true;
-        host = "gaia.home.arpa";
+        host = "gaia.${domain}";
         port = 1883;
         stats_interval = 30;
       };
@@ -75,14 +78,14 @@
       ];
       streams = {
         arges = [
-          "ffmpeg:rtsp://frigate:\${ARGES_RTSP_PASSWORD}@arges.home.arpa/media/video1#video=copy#audio=opus#audio=aac#hardware"
+          "ffmpeg:rtsp://frigate:\${ARGES_RTSP_PASSWORD}@arges.${domain}/media/video1#video=copy#audio=opus#audio=aac#hardware"
         ];
       };
     };
   };
 
   services.nginx.virtualHosts.frigate = {
-    serverAliases = [ "frigate.home.arpa" ];
+    serverAliases = [ "frigate.${domain}" ];
     enableACME = true;
 
     # TODO: can't force SSL because Home Assistant doesn't trust the CA

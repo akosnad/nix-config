@@ -2,6 +2,7 @@
 {
   imports = [
     inputs.home-manager.nixosModules.home-manager
+    ./devices.nix
     ./locale.nix
     ./zsh.nix
     ./nix.nix
@@ -35,6 +36,8 @@
     loader.efi.canTouchEfiVariables = true;
   };
   hardware.enableRedistributableFirmware = true;
+
+  networking.domain = "home.arpa";
 
   programs.light.enable = true;
 

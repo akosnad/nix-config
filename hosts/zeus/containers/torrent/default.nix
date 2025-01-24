@@ -155,7 +155,7 @@ in
         QBITTORRENT_USERNAME = "admin";
         QBITTORRENT_URL = "http://127.0.0.1:8818/";
         QBT_MANAGER_CONFIG = "${./config.yml}";
-        MQTT_HOST = "gaia.home.arpa";
+        MQTT_HOST = "gaia.${config.networking.domain}";
       };
     };
 
