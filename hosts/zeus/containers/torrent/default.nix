@@ -3,7 +3,7 @@ let
   torrentsPath = "/raid/Torrents";
   qbittorrentConfigPath = "/var/lib/qbittorrent";
   jackettConfigPath = "/var/lib/jackett";
-  bitmagnetData = "/var/lib/bitmagnet";
+  bitmagnetData = "/raid/bitmagnet";
   commonServiceOptions = {
     restart = "unless-stopped";
     networks = [ "internal" ];
@@ -163,7 +163,6 @@ in
     "/persist".directories = [
       qbittorrentConfigPath
       jackettConfigPath
-      bitmagnetData
     ];
   };
 

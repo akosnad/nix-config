@@ -136,12 +136,17 @@
     sopsFile = ./secrets.yaml;
   };
 
-  environment.persistence."/persist".directories = [{
-    directory = "/var/lib/frigate";
-    mode = "750";
-    user = "frigate";
-    group = "frigate";
-  }];
+  systemd.services.frigate = {
+    requires = [ "var-lib-frigate.mount" ];
+  };
+  fileSystems."/var/lib/frigate" = {
+    device = "/raid/frigate";
+    options = [
+      "x-systemd.requires-mounts-for=/raid"
+      "bind"
+      "X-fstrim.notrim"
+    ];
+  };
 
   networking.firewall = {
     allowedTCPPorts = [
