@@ -18,6 +18,7 @@
     ../common/optional/buildbot-worker.nix
     ../common/optional/hercules-ci-agent.nix
     ../common/optional/use-builders.nix
+    ../common/optional/fail2ban.nix
 
     ../common/users/akos
 
@@ -28,7 +29,6 @@
     ./backup.nix
     ./frigate.nix
     ./asterisk.nix
-    ./fail2ban.nix
   ];
 
   boot.kernelParams = [

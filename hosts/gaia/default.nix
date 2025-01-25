@@ -14,6 +14,7 @@
     ../common/global
     ../common/optional/use-builders.nix
     ../common/optional/high-availability.nix
+    ../common/optional/fail2ban.nix
 
     ../common/users/akos
   ];
