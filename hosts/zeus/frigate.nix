@@ -20,6 +20,16 @@ in
           roles = [ "audio" "detect" "record" ];
         }];
         live.stream_name = "arges";
+        zones = {
+          inside = {
+            coordinates = "0.188,0.44,0.953,0.61,1,0.818,1,1,0,1,0,0.638";
+            inertia = 3;
+            loitering_time = 0;
+          };
+        };
+        review.alerts = {
+          required_zones = [ "inside" ];
+        };
         motion = {
           threshold = 40;
           contour_area = 30;
