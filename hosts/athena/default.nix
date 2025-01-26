@@ -21,6 +21,7 @@
     ../common/optional/wireshark.nix
     ../common/optional/yubikey.nix
     ../common/optional/xwayland-fix.nix
+    ../common/optional/bluetooth.nix
 
     ../common/users/akos
   ];
@@ -43,9 +44,6 @@
 
   # stylus support not needed
   services.iptsd.enable = false;
-
-  hardware.bluetooth.enable = true;
-  services.blueman.enable = true;
 
   # needed for Windows dual boot
   time.hardwareClockInLocalTime = true;
