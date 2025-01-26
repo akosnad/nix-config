@@ -328,11 +328,11 @@
     },
     "impermanence": {
       "locked": {
-        "lastModified": 1715197858,
-        "narHash": "sha256-a5Ij25qafHePoSlSzAw3OIG0A/r2OC9v+5XBCaRV1O0=",
+        "lastModified": 1737818691,
+        "narHash": "sha256-o8lSoj/y534272auYBNHcSwWgIa/gi3/qDYCnPhmZvU=",
         "owner": "misterio77",
         "repo": "impermanence",
-        "rev": "a0593216958c23e44f1d6b2b4124981f011d4d0b",
+        "rev": "278e1d135a7e204be2d2bfbb9f81cf06a9add3e0",
         "type": "github"
       },
       "original": {
@@ -635,11 +635,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1737768919,
-        "narHash": "sha256-0fJ9O6ijORRRWRbS+TrZQqefl+7Zgx9I6uknfTitCJk=",
+        "lastModified": 1737856110,
+        "narHash": "sha256-cjeRH64B/1Qd1sahu9EnmVBsFIe4r5Mu+q7Py1NgHXQ=",
         "owner": "nix-community",
         "repo": "nix-vscode-extensions",
-        "rev": "cb0aee6840fb29b70439880656ca6a313a6af101",
+        "rev": "972f95b3c6ecd61f1303436c693c40461d4459c7",
         "type": "github"
       },
       "original": {
