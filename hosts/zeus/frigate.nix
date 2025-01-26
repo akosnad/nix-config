@@ -15,10 +15,14 @@ in
         stats_interval = 30;
       };
       cameras.arges = {
-        ffmpeg.inputs = [{
-          path = "rtsp://127.0.0.1:8554/arges?video&audio";
-          roles = [ "audio" "detect" "record" ];
-        }];
+        ffmpeg = {
+          input_args = "preset-rtsp-restream";
+          output_args.record = "preset-record-generic-audio-copy";
+          inputs = [{
+            path = "rtsp://127.0.0.1:8554/arges";
+            roles = [ "audio" "detect" "record" ];
+          }];
+        };
         live.stream_name = "arges";
         zones = {
           inside = {
@@ -46,9 +50,10 @@ in
       record = {
         enabled = true;
         expire_interval = 120;
+        retain.days = 3;
         events.retain = {
           default = 14;
-          mode = "motion";
+          mode = "all";
           objects.person = 14;
         };
       };
