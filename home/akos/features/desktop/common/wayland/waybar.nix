@@ -18,6 +18,7 @@ in
       position = "top";
       height = 30;
       modules-left = [
+        "hyprland/submap"
         "hyprland/workspaces"
         "hyprland/window"
       ];
@@ -29,6 +30,7 @@ in
         "clock"
       ];
 
+      "hyprland/submap" = { };
       "hyprland/workspaces" = { };
       "hyprland/window" = {
         separate-outputs = true;
@@ -102,6 +104,13 @@ in
         background-color: rgba(${toRGB c.base00}, 0.9);
       }
 
+      #submap {
+        background-color: #${c.base0D};
+        color: #${c.base00};
+        padding: 0.125em 0.5em;
+        margin: 0.125em 0.25em;
+        border-radius: 1em;
+      }
       #workspaces button {
         background-color: #${c.base02};
         padding: 0.125em 0.375em;
