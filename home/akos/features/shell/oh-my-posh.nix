@@ -85,6 +85,10 @@ let
               fetch_upstream_icon = true;
             };
           }
+          {
+            type = "text";
+            template = "{{ if gt (int .Env.BGJOBS) 0}} 󰔛 {{ .Env.BGJOBS }}{{ end }}";
+          }
         ];
       }
     ];
@@ -110,12 +114,18 @@ in
 {
   home.packages = with pkgs; [ oh-my-posh ];
 
-  programs.zsh.initExtra = lib.mkIf config.programs.zsh.enable ''
+  programs.zsh.initExtra = lib.mkIf config.programs.zsh.enable /* zsh */ ''
     eval "$(oh-my-posh init zsh --config "${configPath}")"
+    function set_poshcontext() {
+      export BGJOBS="$(jobs | wc -l | xargs)"
+    }
   '';
 
-  programs.bash.bashrcExtra = lib.mkIf config.programs.bash.enable ''
+  programs.bash.bashrcExtra = lib.mkIf config.programs.bash.enable /* bash */ ''
     eval "$(oh-my-posh init bash --config "${configPath}")"
+    function set_poshcontext() {
+      export BGJOBS="$(jobs | wc -l | xargs)"
+    }
   '';
 
   xdg.configFile.oh-my-posh = {
