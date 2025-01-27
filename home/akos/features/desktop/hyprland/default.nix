@@ -124,15 +124,15 @@
 
           # Some default animations, see https://wiki.hyprland.org/Configuring/Animations/ for more
 
-          bezier = [ "myBezier, 0.05, 0.9, 0.1, 1.05" ];
+          bezier = [ "custom, 0.22, 1, 0.36, 1" ];
 
           animation = [
-            "windows, 1, 3, myBezier"
-            "windowsOut, 1, 3, default, popin 80%"
-            "border, 0, 10, default"
-            "borderangle, 0, 8, default"
-            "fade, 1, 3, default"
-            "workspaces, 1, 3, myBezier"
+            "windows, 1, 3, custom"
+            "windowsOut, 1, 3, custom, popin 80%"
+            "border, 0, 10, custom"
+            "borderangle, 0, 8, custom"
+            "fade, 1, 3, custom"
+            "workspaces, 1, 3, custom"
           ];
         };
 

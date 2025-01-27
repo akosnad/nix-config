@@ -111,7 +111,7 @@ in
       window#waybar > box {
         padding: 0.5em 0.5em 0 0.5em;
         background-color: rgba(0, 0, 0, 0.0);
-        transition: background-color 250ms ease-in-out;
+        transition: background-color 250ms cubic-bezier(0.22, 1, 0.36, 1);
       }
       window#waybar.solo > box {
         padding: 0.5em;
