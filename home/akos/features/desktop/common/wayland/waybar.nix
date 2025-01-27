@@ -72,9 +72,10 @@ in
           car = "󰄍 ";
           default = " ";
         };
-        on-click = "pavucontrol";
-        on-scroll-up = "";
-        on-scroll-down = "";
+        on-click = "${lib.getExe pkgs.pamixer} -t";
+        on-click-right = "pavucontrol";
+        on-scroll-up = "${lib.getExe pkgs.pamixer} -i 5";
+        on-scroll-down = "${lib.getExe pkgs.pamixer} -d 5";
       };
 
       "hyprland/language" = {
