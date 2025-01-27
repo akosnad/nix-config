@@ -24,6 +24,7 @@ in
       ];
       modules-right = [
         "tray"
+        "mpris"
         "pulseaudio"
         "hyprland/language"
         "battery"
@@ -41,6 +42,21 @@ in
       tray = {
         icon-size = 16;
         spacing = 8;
+      };
+
+      mpris = {
+        format = "{player_icon}{status_icon}{dynamic}";
+        dynamic-order = [ "artist" "title" ];
+        dynamic-importance-order = [ "title" "artist" ];
+        player-icons = {
+          default = " ";
+          spotify = " ";
+        };
+        status-icons = {
+          paused = "  ";
+          playing = "  ";
+          stopped = "  ";
+        };
       };
 
       "pulseaudio" = {
@@ -146,6 +162,10 @@ in
       	margin: 0 0.375em;
       }
 
+      #mpris {
+        ${moduleBaseStyle}
+      }
+
       #pulseaudio {
         ${moduleBaseStyle}
       }
@@ -160,6 +180,8 @@ in
       }
     '';
   };
+
+  services.playerctld.enable = true;
 
   systemd.user.services.waybar = lib.mkForce {
     Unit = {
