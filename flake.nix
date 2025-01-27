@@ -36,9 +36,7 @@
     home-manager.url = "github:nix-community/home-manager/release-24.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    # we use misterio77's fork to be able to use global default for symlinking
-    # impermanence.url = "github:nix-community/impermanence";
-    impermanence.url = "github:misterio77/impermanence";
+    impermanence.url = "github:nix-community/impermanence";
 
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
