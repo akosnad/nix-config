@@ -15,4 +15,11 @@
     sopsFile = ../secrets.yaml;
     owner = config.systemd.services.buildbot-worker.serviceConfig.User;
   };
+
+  environment.persistence."/persist".directories = [{
+    directory = "/var/lib/buildbot-worker";
+    mode = "700";
+    user = config.systemd.services.buildbot-worker.serviceConfig.User;
+    group = config.systemd.services.buildbot-worker.serviceConfig.Group;
+  }];
 }
