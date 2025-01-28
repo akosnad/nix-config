@@ -83,11 +83,11 @@ in
 {
   options = {
     devices = lib.mkOption {
-      default = null;
       description = ''
         Attributes of devices that get referenced throughout various configurations or present on the local network.
       '';
-      type = types.nullOr (types.attrsOf (types.submodule deviceModule));
+      type = types.attrsOf (types.submodule deviceModule);
+      default = { };
     };
   };
 }
