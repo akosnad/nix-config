@@ -22,6 +22,7 @@
     ../common/optional/yubikey.nix
     ../common/optional/xwayland-fix.nix
     ../common/optional/bluetooth.nix
+    ../common/optional/printing.nix
 
     ../common/users/akos
   ];

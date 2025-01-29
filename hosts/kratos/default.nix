@@ -25,6 +25,7 @@
     ../common/optional/use-builders.nix
     ../common/optional/xwayland-fix.nix
     ../common/optional/virt-manager.nix
+    ../common/optional/printing.nix
 
     ../common/users/akos
 
