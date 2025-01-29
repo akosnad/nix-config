@@ -45,7 +45,9 @@
         "flake-parts": [
           "flake-parts"
         ],
-        "hercules-ci-effects": "hercules-ci-effects",
+        "hercules-ci-effects": [
+          "hercules-ci-effects"
+        ],
         "nixpkgs": [
           "nixpkgs"
         ],
@@ -283,11 +285,9 @@
     "hercules-ci-effects": {
       "inputs": {
         "flake-parts": [
-          "buildbot-nix",
           "flake-parts"
         ],
         "nixpkgs": [
-          "buildbot-nix",
           "nixpkgs"
         ]
       },
@@ -503,6 +503,7 @@
         "disko": "disko",
         "flake-parts": "flake-parts",
         "hardware": "hardware",
+        "hercules-ci-effects": "hercules-ci-effects",
         "home-manager": "home-manager",
         "impermanence": "impermanence",
         "lanzaboote": "lanzaboote",
