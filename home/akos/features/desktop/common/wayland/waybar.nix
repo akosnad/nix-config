@@ -36,6 +36,7 @@ in
         "pulseaudio"
         "hyprland/language"
         "network"
+        "upower"
         "battery"
         "clock"
       ];
@@ -57,7 +58,7 @@ in
         format = "{player_icon}{status_icon}{dynamic}";
         dynamic-order = [ "artist" "title" ];
         dynamic-importance-order = [ "title" "artist" ];
-        dynamic-len = 25;
+        dynamic-len = 20;
         title-len = 15;
         artist-len = 15;
         player-icons = {
@@ -110,6 +111,15 @@ in
           wifi = [ "󰤯 " "󰤟 " "󰤢 " "󰤥 " "󰤨 " ];
           disconnected = "󰱟 ";
         };
+      };
+
+      upower = {
+        # Nothing Ear (a)
+        native-path = "/org/bluez/hci0/dev_2C_BE_EB_D3_EE_13";
+        icon-size = 16;
+        show-icon = false;
+        hide-if-empty = true;
+        format = "󰥉 {percentage}";
       };
 
       battery = {
@@ -216,6 +226,10 @@ in
       }
       #network.disconnected {
         ${error}
+      }
+
+      #upower {
+        ${base}
       }
 
       #battery {
