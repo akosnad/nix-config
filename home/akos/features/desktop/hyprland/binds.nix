@@ -161,9 +161,9 @@ in
         ",XF86MonBrightnessUp, exec, ${pkgs.light}/bin/light -A 5"
         ",XF86MonBrightnessDown, exec, ${pkgs.light}/bin/light -U 5"
 
-        ",XF86AudioRaiseVolume, exec, ${pkgs.alsa-utils}/bin/amixer -q set Master 5%+"
-        ",XF86AudioLowerVolume, exec, ${pkgs.alsa-utils}/bin/amixer -q set Master 5%-"
-        ",XF86AudioMute, exec, ${pkgs.alsa-utils}/bin/amixer -q set Master toggle"
+        ",XF86AudioRaiseVolume, exec, ${lib.getExe pkgs.pamixer} -i 5"
+        ",XF86AudioLowerVolume, exec, ${lib.getExe pkgs.pamixer} -d 5"
+        ",XF86AudioMute, exec, ${lib.getExe pkgs.pamixer} -t"
         ",XF86AudioPlay, exec, ${pkgs.playerctl}/bin/playerctl play-pause"
         ",XF86AudioPause, exec, ${pkgs.playerctl}/bin/playerctl play-pause"
       ];
