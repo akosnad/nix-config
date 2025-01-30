@@ -3,11 +3,19 @@ let
   c = config.colorScheme.palette;
   toRGB = hex: builtins.concatStringsSep ", " (map toString (inputs.nix-colors.lib.conversions.hexToRGB hex));
 
-  moduleBaseStyle = ''
+  base = /* css */ ''
     background-color: #${c.base02};
     padding: 0.125em 0.5em;
     margin: 0.125em 0.25em;
     border-radius: 1em;
+  '';
+  warning = /* css */ ''
+    background-color: #${c.base0A};
+    color: #${c.base00};
+  '';
+  error = /* css */ ''
+    background-color: #${c.base08};
+    color: #${c.base00};
   '';
 in
 {
@@ -27,6 +35,7 @@ in
         "mpris"
         "pulseaudio"
         "hyprland/language"
+        "network"
         "battery"
         "clock"
       ];
@@ -48,6 +57,9 @@ in
         format = "{player_icon}{status_icon}{dynamic}";
         dynamic-order = [ "artist" "title" ];
         dynamic-importance-order = [ "title" "artist" ];
+        dynamic-len = 25;
+        title-len = 15;
+        artist-len = 15;
         player-icons = {
           default = " ";
           spotify = " ";
@@ -83,12 +95,33 @@ in
         format-hu = "󰌌  hu";
       };
 
+      network = {
+        on-click = "${lib.getExe' pkgs.networkmanagerapplet "nm-connection-editor"}";
+        format = "{icon}";
+        format-wifi = "{icon} {essid}";
+        tooltip-format-wifi = builtins.concatStringsSep "\n" [
+          "󰩟 {ipaddr}/{cidr}"
+          "󱄙 {frequency} GHz 󰹤 {signaldBm} dBm ({signalStrength}%)"
+          " {bandwidthUpBits}"
+          " {bandwidthDownBits}"
+        ];
+        format-icons = {
+          ethernet = "󰛳 ";
+          wifi = [ "󰤯 " "󰤟 " "󰤢 " "󰤥 " "󰤨 " ];
+          disconnected = "󰱟 ";
+        };
+      };
+
       battery = {
         interval = 10;
         format = "{icon} {capacity}%";
         format-icons = {
           charging = [ "󰢟 " "󰢜 " "󰂆 " "󰂇 " "󰂈 " "󰢝 " "󰂉 " "󰢞 " "󰂊 " "󰂋 " "󰂅 " ];
           discharging = [ "󰂎 " "󰁺 " "󰁻 " "󰁼 " "󰁽 " "󰁾 " "󰁿 " "󰂀 " "󰂁 " "󰂂 " "󰁹 " ];
+        };
+        states = {
+          warning = 30;
+          critical = 10;
         };
       };
 
@@ -145,7 +178,7 @@ in
       }
 
       #window {
-        ${moduleBaseStyle}
+        ${base}
       }
       window#waybar.empty #window {
         background-color: rgba(0, 0, 0, 0.0);
@@ -154,6 +187,7 @@ in
       #tray {
       	padding: 0.125em 0.25em;
       	margin: 0;
+        color: #${c.base03};
       }
       #tray > .active {
         background-color: #${c.base02};
@@ -164,20 +198,38 @@ in
       }
 
       #mpris {
-        ${moduleBaseStyle}
+        ${base}
       }
 
       #pulseaudio {
-        ${moduleBaseStyle}
+        ${base}
       }
       #language {
-        ${moduleBaseStyle}
+        ${base}
       }
+
+      #network {
+        ${base}
+      }
+      #network.linked {
+        ${warning}
+      }
+      #network.disconnected {
+        ${error}
+      }
+
       #battery {
-        ${moduleBaseStyle}
+        ${base}
       }
+      #battery.discharging.warning {
+        ${warning}
+      }
+      #battery.discharging.critical {
+        ${error}
+      }
+
       #clock {
-        ${moduleBaseStyle}
+        ${base}
       }
     '';
   };
