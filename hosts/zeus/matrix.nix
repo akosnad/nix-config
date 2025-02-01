@@ -56,6 +56,9 @@
         # Synapse responses may be chunked, which is an HTTP/1.1 feature.
         proxy_http_version 1.1;
       '';
+      "/".extraConfig = /* nginx */ ''
+        return 302 "https://matrix.to/#/#public:m.fzt.one";
+      '';
       "/.well-known/matrix/client".extraConfig = /* nginx */ ''
         return 200 '{"m.homeserver": {"base_url": "https://m.fzt.one"}}';
         default_type application/json;
