@@ -6,6 +6,11 @@
       server_name = "m.fzt.one";
       public_baseurl = "https://m.fzt.one";
       registration_shared_secret_path = config.sops.secrets.matrix-registration-shared-secret.path;
+      default_identity_server = "matrix.org";
+      trusted_third_party_id_servers = [
+        "martrix.org"
+        "vector.im"
+      ];
     };
     extraConfigFiles = [ config.sops.secrets.matrix-secret-config.path ];
     extras = [
