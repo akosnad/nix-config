@@ -29,6 +29,7 @@
     ./backup.nix
     ./frigate.nix
     ./asterisk.nix
+    ./matrix.nix
   ];
 
   boot.kernelParams = [
@@ -41,6 +42,9 @@
   };
 
   services.hercules-ci-agent.settings.concurrentTasks = 8;
+
+  # urbit
+  networking.firewall.allowedTCPPorts = [ 4398 ];
 
   nix.distributedBuilds = lib.mkForce false;
   nix.buildMachines = lib.mkForce [ ];
