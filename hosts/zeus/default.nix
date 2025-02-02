@@ -45,6 +45,7 @@
 
   # urbit
   networking.firewall.allowedTCPPorts = [ 4398 ];
+  users.users.akos.linger = true;
 
   nix.distributedBuilds = lib.mkForce false;
   nix.buildMachines = lib.mkForce [ ];
