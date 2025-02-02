@@ -11,6 +11,7 @@
         "martrix.org"
         "vector.im"
       ];
+      allow_public_rooms_over_federation = true;
     };
     extraConfigFiles = [ config.sops.secrets.matrix-secret-config.path ];
     extras = [
