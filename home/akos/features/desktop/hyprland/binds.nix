@@ -65,6 +65,63 @@ let
       toggle_monitor "$monitor"
     done
   '';
+
+  comma-gui-picker = pkgs.writeShellApplication {
+    name = "comma-gui-picker";
+    runtimeInputs = [ pkgs.zenity ];
+    text = ''
+      zenity --list --title="Launch GUI app" --text="Selech which package to use:" --column="Derivation outputs"
+    '';
+  };
+
+  comma-gui-progress = pkgs.writeShellApplication {
+    name = "comma-gui-progress";
+    runtimeInputs = with pkgs; [ zenity gawk coreutils ];
+    text = ''
+      fifo="$(mktemp -u)"
+      mkfifo "$fifo"
+      cleanup() {
+        rm "$fifo"
+      }
+      trap cleanup EXIT
+
+      zenity --progress --auto-close --title="Launching $1..." --pulsate --text="Preparing..." <"$fifo" &
+      pid="$!"
+
+      tee >(awk '{print "# " $0; fflush()}' >"$fifo")
+
+      wait "$pid"
+    '';
+  };
+
+  comma-gui = pkgs.writeShellApplication {
+    name = "comma-gui";
+    runtimeInputs = with pkgs; [ zenity coreutils comma ];
+    text = ''
+      target="$(zenity --entry --title="Launch GUI app" --text="Enter binary name:")"
+
+      stdout="$(mktemp)"
+      stderr="$(mktemp)"
+      cleanup() {
+        rm -f "$stdout" "$stderr"
+      }
+      trap cleanup EXIT
+
+      ( ( (comma -P "${lib.getExe comma-gui-picker}" -x "$target" 3>&2 2>&1 1>&3) | "${lib.getExe comma-gui-progress}" "$target") 1>"$stderr" 2>"$stdout") &
+
+      wait < <(jobs -p)
+
+      bin="$(cat "$stdout")"
+      if [[ $bin == "" ]]; then
+        err="$(tail -n10 "$stderr")"
+        zenity --error --title="Launch GUI app failed" --text="$err"
+        exit 1
+      fi
+
+      </dev/null "$bin" &>/dev/null &
+      disown
+    '';
+  };
 in
 {
   wayland.windowManager.hyprland = {
@@ -80,6 +137,7 @@ in
         "$mainMod, E, exec, nautilus"
         "$mainMod, F, togglefloating"
         ", Menu, exec, ${wofi-launch}"
+        "$mainMod, Menu, exec, ${lib.getExe comma-gui}"
         "ALT, Space, exec, ${wofi-launch}"
         "$mainMod, Backspace, exec, ${toggle-dark-mode}"
         "$mainMod, N, exec, swaync-client -t"
