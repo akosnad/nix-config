@@ -8,6 +8,7 @@ let
     padding: 0.125em 0.5em;
     margin: 0.125em 0.25em;
     border-radius: 1em;
+    box-shadow: inset -1px -1px 2px rgba(0,0,0, 0.15);
   '';
   warning = /* css */ ''
     background-color: #${c.base0A};
@@ -96,13 +97,15 @@ in
         format-hu = "󰌌  hu";
       };
 
-      network = {
+      network = rec {
         on-click = "${lib.getExe' pkgs.networkmanagerapplet "nm-connection-editor"}";
         format = "{icon}";
         format-wifi = "{icon} {essid}";
-        tooltip-format-wifi = builtins.concatStringsSep "\n" [
+        tooltip-format-wifi = builtins.concatStringsSep "\n"
+          ([ "󱄙 {frequency} GHz 󰹤 {signaldBm} dBm ({signalStrength}%)" ]
+            ++ [ tooltip-format-ethernet ]);
+        tooltip-format-ethernet = builtins.concatStringsSep "\n" [
           "󰩟 {ipaddr}/{cidr}"
-          "󱄙 {frequency} GHz 󰹤 {signaldBm} dBm ({signalStrength}%)"
           " {bandwidthUpBits}"
           " {bandwidthDownBits}"
         ];
@@ -177,6 +180,7 @@ in
         margin: 0.125em 0.25em;
         border-radius: 1em;
         color: #${c.base03};
+        box-shadow: inset -1px -1px 2px rgba(0,0,0, 0.15);
       }
       #workspaces button.visible {
         background-color: #${c.base02};
@@ -192,6 +196,7 @@ in
       }
       window#waybar.empty #window {
         background-color: rgba(0, 0, 0, 0.0);
+        box-shadow: none;
       }
 
       #tray {
@@ -226,6 +231,10 @@ in
       }
       #network.disconnected {
         ${error}
+      }
+      #network.disconnected, #network.ethernet {
+        /* removes right offset from icon without text */
+        padding-right: 0.0375em;
       }
 
       #upower {
