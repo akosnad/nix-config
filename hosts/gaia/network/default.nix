@@ -13,6 +13,7 @@ in
     ./dhcp.nix
     ./adguard.nix
     ./dyndns.nix
+    ./block.nix
   ];
 
   networking = {

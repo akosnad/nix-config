@@ -25,6 +25,21 @@ let
     };
   };
 
+  blockInternetModule = {
+    options = {
+      ip = lib.mkOption {
+        type = types.bool;
+        description = "Block based on packets originating from device IP address";
+        default = false;
+      };
+      mac = lib.mkOption {
+        type = types.bool;
+        description = "Block based on packets originating from device MAC address";
+        default = false;
+      };
+    };
+  };
+
   deviceModule = { name, ... }: {
     options = {
       hostname = lib.mkOption {
@@ -76,6 +91,16 @@ let
             transform = x: if lib.isInt x then { dest = x; source = x; proto = "tcpudp"; } else x;
           in
           list: map transform list;
+      };
+      blockInternetAccess = lib.mkOption {
+        type = types.either types.bool (types.submodule blockInternetModule);
+        default = false;
+        description = ''
+          Block outgoing traffic originating from this device on the default gateway.
+
+          Applies only if the device is local.
+        '';
+        apply = x: if lib.isBool x then { mac = x; ip = x; } else x;
       };
     };
   };

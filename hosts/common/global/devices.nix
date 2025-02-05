@@ -10,10 +10,17 @@
     ap2 = {
       mac = "28:d1:27:be:7b:3d";
       ip = "10.20.0.5";
+      blockInternetAccess = { ip = true; };
     };
     ap3 = {
       mac = "3C:CD:57:73:05:22";
       ip = "10.20.0.6";
+      blockInternetAccess = { ip = true; };
+    };
+    ap4 = {
+      mac = "24:CF:24:56:CA:6F";
+      ip = "10.20.0.7";
+      blockInternetAccess = { ip = true; };
     };
     helios = {
       mac = "F4:91:1E:F6:E3:A3";

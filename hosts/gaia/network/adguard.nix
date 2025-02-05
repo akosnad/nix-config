@@ -77,10 +77,6 @@ in
         # mail list/newsletter service
         "@@||mlsend.com^$important"
 
-        # block Mi routers from calling home :P
-        "||api.miwifi.com^$client='10.20.0.5'"
-        "||api.miwifi.com^$client='10.20.0.6'"
-
         # block rekordbox from trying to validate license :P
         "||cloud.kuvo.com^"
         "||rb-share.kuvo.com^"
