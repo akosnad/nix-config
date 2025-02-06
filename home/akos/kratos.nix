@@ -56,10 +56,7 @@ in
       "XDG_SESSION_TYPE,wayland"
       "GBM_BACKEND,nvidia-drm"
       "__GLX_VENDOR_LIBRARY_NAME,nvidia"
-      "NVD_BACKEND,direct"
       "WLR_NO_HARDWARE_CURSORS,1"
-      "MOZ_DISABLE_RDD_SANDBOX,1"
-      "EGL_PLATFORM,wayland"
     ];
   };
 }
