@@ -16,6 +16,7 @@ in
     ./features/linphone.nix
     ./features/darktable.nix
     ./features/onedrive.nix
+    ./features/shell/iamb.nix
   ];
 
   colorscheme = lib.mkDefault colorSchemes.equilibrium-dark;

@@ -12,6 +12,7 @@ in
     ./features/chromium.nix
     ./features/shell/azure.nix
     ./features/linphone.nix
+    ./features/shell/iamb.nix
   ];
 
   colorscheme = lib.mkDefault colorSchemes.selenized-dark;
