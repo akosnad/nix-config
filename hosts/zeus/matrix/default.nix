@@ -1,5 +1,9 @@
 { config, ... }:
 {
+  imports = [
+    ./bridges.nix
+  ];
+
   services.matrix-synapse = {
     enable = true;
     settings = {
@@ -12,6 +16,7 @@
         "vector.im"
       ];
       allow_public_rooms_over_federation = true;
+      app_service_config_files = [ config.sops.secrets.matrix-doublepuppet-config.path ];
     };
     extraConfigFiles = [ config.sops.secrets.matrix-secret-config.path ];
     extras = [
@@ -24,11 +29,15 @@
   };
 
   sops.secrets.matrix-registration-shared-secret = {
-    sopsFile = ./secrets.yaml;
+    sopsFile = ../secrets.yaml;
     owner = "matrix-synapse";
   };
   sops.secrets.matrix-secret-config = {
-    sopsFile = ./secrets.yaml;
+    sopsFile = ../secrets.yaml;
+    owner = "matrix-synapse";
+  };
+  sops.secrets.matrix-doublepuppet-config = {
+    sopsFile = ../secrets.yaml;
     owner = "matrix-synapse";
   };
 

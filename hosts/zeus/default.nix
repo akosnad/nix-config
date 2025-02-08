@@ -29,7 +29,7 @@
     ./backup.nix
     ./frigate.nix
     ./asterisk.nix
-    ./matrix.nix
+    ./matrix
   ];
 
   boot.kernelParams = [
