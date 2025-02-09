@@ -22,6 +22,18 @@
       };
 
       layout.style = "restore";
+
+      macros = {
+        normal = {
+          gc = ":chats<Enter>";
+          gu = ":unreads<Enter>";
+          gs = ":spaces<Enter>";
+          gr = ":rooms<Enter>";
+          gd = ":dms<Enter>";
+        };
+      };
+
+      dirs.downloads = "~/Downloads/iamb";
     };
   };
 
