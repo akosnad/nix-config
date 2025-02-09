@@ -45,7 +45,7 @@ let
         "m.fzt.one" = "user";
         "@akosnad:m.fzt.one" = "admin";
       };
-      login_shared_secret_map."m.fzt.one" = "$DOUBLEPUPPET_AS_TOKEN";
+      login_shared_secret_map."m.fzt.one" = "as_token:$DOUBLEPUPPET_AS_TOKEN";
     };
 
     backfill = {
@@ -73,7 +73,7 @@ in
       messenger = {
         enable = true;
         registerToSynapse = true;
-        environmentFile = config.sops.secrets.mautrix-meta-env.path;
+        environmentFile = config.sops.secrets.mautrix-env.path;
         settings = lib.recursiveUpdate commonSettings {
           network.mode = "messenger";
           appservice = {
@@ -89,7 +89,7 @@ in
       instagram = {
         enable = true;
         registerToSynapse = true;
-        environmentFile = config.sops.secrets.mautrix-meta-env.path;
+        environmentFile = config.sops.secrets.mautrix-env.path;
         settings = lib.recursiveUpdate commonSettings {
           network.mode = "instagram";
           appservice = {
@@ -105,7 +105,22 @@ in
     };
   };
 
-  sops.secrets.mautrix-meta-env = {
+  services.mautrix-whatsapp = {
+    enable = true;
+    registerToSynapse = true;
+    environmentFile = config.sops.secrets.mautrix-env.path;
+    settings = lib.recursiveUpdate commonSettings {
+      appservice = {
+        id = "whatsappbot";
+        bot = {
+          username = "whatsappbot";
+          displayname = "WhatsApp bridge bot";
+        };
+      };
+    };
+  };
+
+  sops.secrets.mautrix-env = {
     sopsFile = ../secrets.yaml;
   };
 
@@ -119,6 +134,11 @@ in
       directory = "/var/lib/${config.services.mautrix-meta.instances.instagram.dataDir}";
       user = "mautrix-meta-instagram";
       group = "mautrix-meta";
+    }
+    {
+      directory = "/var/lib/mautrix-whatsapp";
+      user = "mautrix-whatsapp";
+      group = "mautrix-whatsapp";
     }
   ];
 }
