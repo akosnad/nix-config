@@ -9,6 +9,8 @@
     ../common/optional/high-availability.nix
 
     ../common/users/akos
+
+    ./matrix
   ];
 
   networking.hostName = "uranus";
@@ -19,6 +21,12 @@
   }];
 
   services.openssh.openFirewall = lib.mkForce false;
+
+  security.acme.defaults = lib.mkForce {
+    server = "https://acme-v02.api.letsencrypt.org/directory";
+    validMinDays = 30;
+    email = "contact@fzt.one";
+  };
 
   services.geoclue2.enable = lib.mkForce false;
   services.avahi.enable = lib.mkForce false;
