@@ -17,6 +17,7 @@ in
     ./features/darktable.nix
     ./features/onedrive.nix
     ./features/shell/iamb.nix
+    ./features/desktop/steam.nix
   ];
 
   colorscheme = lib.mkDefault colorSchemes.equilibrium-dark;
