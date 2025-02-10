@@ -40,3 +40,9 @@ creation_rules:
           - *zeus
         pgp:
           - *akos
+  - path_regex: hosts/uranus/secrets.ya?ml$
+    key_groups:
+      - age:
+          - *uranus
+        pgp:
+          - *akos
