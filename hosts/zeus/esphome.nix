@@ -1,7 +1,8 @@
+{ config, ... }:
 {
   services.esphome = {
     enable = true;
-    address = "10.20.0.4";
+    address = config.devices.zeus.ip;
   };
 
   services.nginx.virtualHosts.zeus.locations."/esphome" = {

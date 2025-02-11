@@ -97,7 +97,7 @@ in
       "acl.conf" = /* asterisk */ ''
         [internal-only]
         deny=0.0.0.0/0.0.0.0
-        permit=10.20.0.0/255.255.255.0
+        permit=10.0.0.0/255.0.0.0
       '';
       "pjsip.conf" = builtins.concatStringsSep "\n"  /* asterisk */ ([
         ''

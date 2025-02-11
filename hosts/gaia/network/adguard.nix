@@ -9,7 +9,7 @@ let
     domain = host;
     answer = ip;
   };
-  lanIp = "10.20.0.1";
+  lanIp = config.devices.gaia.ip;
   mkLocalhostRewrite = mkHostRewrite lanIp;
 
   localhostHostsRewrites = builtins.map mkLocalhostRewrite localhostNetworkHosts;
@@ -36,7 +36,7 @@ in
         interval = "24h";
       };
       dns = {
-        bind_hosts = [ "10.20.0.1" ];
+        bind_hosts = [ config.devices.gaia.ip ];
         protection_enabled = true;
         upstream_dns = [
           "# https://cloudflare-dns.com/dns-query"

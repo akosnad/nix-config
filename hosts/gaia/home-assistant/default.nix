@@ -92,7 +92,7 @@
       http = {
         ip_ban_enabled = false;
         use_x_forwarded_for = true;
-        trusted_proxies = [ "127.0.0.0/8" "::1" "10.20.0.0/24" ];
+        trusted_proxies = [ "127.0.0.0/8" "::1" "10.0.0.0/8" ];
       };
       backup = { };
       mobile_app = { };

@@ -14,7 +14,7 @@
       dnsNames = [
         config.networking.hostName
         "${config.networking.hostName}.${config.networking.domain}"
-        "10.20.0.1"
+        config.devices.gaia.ip
       ];
       logger.format = "text";
       db = {

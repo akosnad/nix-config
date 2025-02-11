@@ -87,7 +87,7 @@ in
         # loopback
         "127.0.0.1:8555"
         # lan
-        "10.20.0.4:8555"
+        "${config.devices."${config.networking.hostName}".ip}:8555"
         #tailscale
         "100.115.112.96:8555"
       ];

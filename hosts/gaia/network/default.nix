@@ -30,7 +30,7 @@ in
       trustedInterfaces = [ "br-lan" "tailscale0" ];
     };
     nameservers = [
-      "10.20.0.1"
+      config.devices.gaia.ip
     ];
     hosts = {
       "::1" = [ "localhost" hostName hostnameWithDomain ];

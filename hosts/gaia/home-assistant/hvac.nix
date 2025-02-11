@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, config, ... }:
 let
   topicPrefix = "home/helios";
   bridge = "${pkgs.nodePackages.gree-hvac-mqtt-bridge}/lib/node_modules/gree-hvac-mqtt-bridge/index.js";
@@ -7,7 +7,7 @@ let
     runtimeInputs = [ pkgs.nodejs ];
     text = ''
       node ${bridge} \
-        --hvac-host="10.20.0.30" \
+        --hvac-host="${config.devices.helios.ip}" \
         --mqtt-broker-url="mqtt://localhost" \
         --mqtt-topic-prefix="${topicPrefix}" \
         --mqtt-retain="true" \
