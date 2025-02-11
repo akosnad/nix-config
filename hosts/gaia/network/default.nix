@@ -26,6 +26,7 @@ in
       enable = true;
       allowPing = false;
       rejectPackets = false; # drop packets instead of rejecting them
+      filterForward = true; # critical for IPv6 as there is no NAT
       trustedInterfaces = [ "br-lan" "tailscale0" ];
     };
     nameservers = [
