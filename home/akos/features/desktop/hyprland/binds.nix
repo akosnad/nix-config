@@ -147,6 +147,8 @@ in
 
         "$mainMod, Space, togglesplit, # dwindle"
 
+        "$mainMod, F11, fullscreen"
+
         # Media controls with numpad 4 5 6
         "$mainMod, code:83, exec, ${pkgs.playerctl}/bin/playerctl previous"
         "$mainMod, code:84, exec, ${pkgs.playerctl}/bin/playerctl play-pause"
