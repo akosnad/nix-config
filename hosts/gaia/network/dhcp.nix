@@ -1,13 +1,7 @@
 { config, lib, ... }:
 let
-  gatewayIp = "10.20.0.1";
-  dhcpRange = {
-    ipPrefix = "10.20.0";
-    lower = "10";
-    upper = "254";
-    leaseTime = "1h";
-  };
   inherit (config.networking) domain;
+  gatewayIp = config.devices.gaia.ip;
 
   staticLeaseDevices = lib.filterAttrs
     (_: d:
@@ -29,18 +23,24 @@ in
   services.dnsmasq = {
     enable = true;
     settings = {
+      # disable DNS, only act as DHCP server
       port = "";
 
-      dhcp-range = with dhcpRange; [ "set:lan,${ipPrefix}.${lower},${ipPrefix}.${upper},${leaseTime}" ];
+      # serve in an unassigned address space for non-declared devices
+      dhcp-range = [ "set:lan,10.99.0.1,10.99.254.254,10m" ];
+      # Static leases
+      dhcp-host = builtins.map (device: "${device.mac},lan,${device.ip},${device.hostname},infinite") staticLeases;
+      # common options
       dhcp-option = [
-        # Gateway
-        "lan,3,${gatewayIp}"
-        # DNS server
-        "lan,6,${gatewayIp}"
+        "lan,option:netmask,255.0.0.0"
+        "lan,option:router,${gatewayIp}"
+        "lan,option:dns-server,${gatewayIp}"
+        "lan,option:domain-name,${domain}"
+        "lan,option:domain-search,${domain}"
+        "lan,option:sip-server,${config.devices.zeus.ip}"
+        "lan,option:tzdb-timezone,Europe/Budapest"
       ];
 
-      # Static leases
-      dhcp-host = builtins.map (device: "${device.mac},lan,${device.ip},${device.hostname}") staticLeases;
     };
   };
 

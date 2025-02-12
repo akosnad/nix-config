@@ -22,14 +22,11 @@
       "50-br-lan" = {
         matchConfig.Name = "br-lan";
         networkConfig = {
-          Address = [ "10.20.0.1/24" ];
+          Address = [ "10.0.0.1/8" ];
           DNS = [ "127.0.0.1" "::1" ];
           IPv6AcceptRA = false;
-
-          # TODO: fix ipv6 forwarding, instead of just disabling it
-          IPv6SendRA = false;
-          LinkLocalAddressing = false;
-
+          IPv6SendRA = true;
+          LinkLocalAddressing = true;
           DHCPPrefixDelegation = true;
           LLDP = true;
           MulticastDNS = true;

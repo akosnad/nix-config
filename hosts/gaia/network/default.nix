@@ -26,10 +26,11 @@ in
       enable = true;
       allowPing = false;
       rejectPackets = false; # drop packets instead of rejecting them
+      filterForward = true; # critical for IPv6 as there is no NAT
       trustedInterfaces = [ "br-lan" "tailscale0" ];
     };
     nameservers = [
-      "10.20.0.1"
+      config.devices.gaia.ip
     ];
     hosts = {
       "::1" = [ "localhost" hostName hostnameWithDomain ];

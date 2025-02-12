@@ -4,7 +4,7 @@
     hostName = "zeus";
     hosts = {
       # this is to fix hostname in servarr docker containers
-      "10.20.0.4" = [ "zeus" "zeus.local" "zeus.${config.networking.domain}" ];
+      "${config.devices."${config.networking.hostName}".ip}" = [ config.networking.hostName "${config.networking.hostName}.local" "${config.networking.hostName}.${config.networking.domain}" ];
     };
     networkmanager.enable = false;
     useDHCP = false;
@@ -19,8 +19,9 @@
     netdevs = {
       br0 = {
         netdevConfig = {
-          "Kind" = "bridge";
-          "Name" = "br0";
+          Kind = "bridge";
+          Name = "br0";
+          MACAddress = config.devices.zeus.mac;
         };
       };
     };
@@ -32,13 +33,11 @@
       br0 = {
         matchConfig."Name" = "br0";
         networkConfig = {
-          DHCP = "ipv6";
+          DHCP = true;
           IPv6AcceptRA = true;
+          LLDP = true;
           IPv6SendRA = false;
           DHCPPrefixDelegation = false;
-          Address = "10.20.0.4/24";
-          Gateway = "10.20.0.1";
-          DNS = [ "10.20.0.1" ];
         };
       };
     };
