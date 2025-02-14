@@ -26,6 +26,7 @@
     ../common/optional/xwayland-fix.nix
     ../common/optional/virt-manager.nix
     ../common/optional/printing.nix
+    ../common/optional/nautilus.nix
 
     ../common/users/akos
 

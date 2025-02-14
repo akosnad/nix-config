@@ -23,6 +23,7 @@
     ../common/optional/xwayland-fix.nix
     ../common/optional/bluetooth.nix
     ../common/optional/printing.nix
+    ../common/optional/nautilus.nix
 
     ../common/users/akos
   ];
