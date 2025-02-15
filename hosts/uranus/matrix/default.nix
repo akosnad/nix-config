@@ -17,6 +17,7 @@
       ];
       allow_public_rooms_over_federation = true;
       app_service_config_files = [ config.sops.secrets.matrix-doublepuppet-config.path ];
+      max_upload_size = "512M";
     };
     extraConfigFiles = [ config.sops.secrets.matrix-secret-config.path ];
     extras = [
@@ -70,7 +71,7 @@
 
           # Nginx by default only allows file uploads up to 1M in size
           # Increase client_max_body_size to match max_upload_size defined in homeserver.yaml
-          client_max_body_size 50M;
+          client_max_body_size ${config.services.matrix-synapse.settings.max_upload_size};
 
           # Synapse responses may be chunked, which is an HTTP/1.1 feature.
           proxy_http_version 1.1;
