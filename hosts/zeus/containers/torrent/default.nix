@@ -27,6 +27,8 @@ let
 
     meta.mainProgram = pname;
   };
+
+  qbt-manager-config = (pkgs.formats.yaml { }).generate "qbt-manager-config.yaml" (import ./config.nix);
 in
 {
   virtualisation.arion.projects.torrent.settings = {
@@ -154,7 +156,7 @@ in
         RUST_LOG = "info";
         QBITTORRENT_USERNAME = "admin";
         QBITTORRENT_URL = "http://127.0.0.1:8818/";
-        QBT_MANAGER_CONFIG = "${./config.yml}";
+        QBT_MANAGER_CONFIG = qbt-manager-config;
         MQTT_HOST = "gaia.${config.networking.domain}";
       };
     };
