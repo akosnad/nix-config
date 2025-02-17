@@ -14,6 +14,8 @@
       inputs;
   };
 
+  nur = inputs.nur.overlays.default;
+
   additions = final: prev: import ../pkgs { pkgs = final; }
     // {
     vimPlugins = (prev.vimPlugins or { }) // import ../pkgs/vim-plugins { pkgs = final; };

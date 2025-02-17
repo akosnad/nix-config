@@ -465,6 +465,32 @@
         "url": "https://flakehub.com/f/AshleyYakeley/NixVirt/0.5.0.tar.gz"
       }
     },
+    "nur": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "treefmt-nix": [
+          "treefmt-nix"
+        ]
+      },
+      "locked": {
+        "lastModified": 1739822111,
+        "narHash": "sha256-1PsZf4/HbmFlUpwFP8+ARBl12GGOJ3+F2iKsQWfUmt4=",
+        "owner": "nix-community",
+        "repo": "NUR",
+        "rev": "4fa0ae583717c3d7f2ad10d09775846fc685e993",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "NUR",
+        "type": "github"
+      }
+    },
     "pre-commit-hooks-nix": {
       "inputs": {
         "flake-compat": [
@@ -510,6 +536,7 @@
         "nix-index-database": "nix-index-database",
         "nixpkgs": "nixpkgs",
         "nixvirt": "nixvirt",
+        "nur": "nur",
         "sops-nix": "sops-nix",
         "treefmt-nix": "treefmt-nix",
         "vscode-extensions": "vscode-extensions",
