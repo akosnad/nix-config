@@ -20,7 +20,7 @@ let
     cargoLock = {
       lockFile = ./qbt-manager/Cargo.lock;
       outputHashes = {
-        "qbit-rs-0.4.6" = "sha256-CbB+Sf5/9b1M5eJx5ffJZyWF3NHwfNWoErfIcGT6nnA=";
+        "qbit-rs-0.4.6" = "sha256-h5/FRMStRHr2diOXJSSd689ogSYq1O5dDoHk8v5eQ0g=";
       };
     };
     doCheck = false;
