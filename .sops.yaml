@@ -7,6 +7,7 @@ keys:
     - &zeus age16kd99x3lsmq9tfxn42zr9npdtjtw8y68stykm6apjkt9gexwsdssmd3sjz
     - &gaia age1gqdrkenwc3dwk384285gtz0zzgfl2c55xklx2hvhr8c6h4duggyqwmy2w7
     - &uranus age1us58kmzzemu8ns8t2dm7y97dhwsxatqf8gnz573zwhqjhx43uurqvlwypz
+    - &hyperion age1qq68007k0v2tl4qwfvwhaxpp4lskaccallrmzsv7w3lhwpae635qckaykc
 creation_rules:
   - path_regex: hosts/common/secrets.ya?ml$
     key_groups:
@@ -16,6 +17,7 @@ creation_rules:
           - *zeus
           - *gaia
           - *uranus
+          - *hyperion
         pgp:
           - *akos
   - path_regex: home/akos/secrets.ya?ml$
