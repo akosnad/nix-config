@@ -14,6 +14,7 @@ in
     ./adguard.nix
     ./dyndns.nix
     ./block.nix
+    ./pxe
   ];
 
   networking = {

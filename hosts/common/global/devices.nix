@@ -19,7 +19,10 @@
         { proto = "tcp"; dest = 32400; source = 20020; }
       ];
     };
-    # hyperion = { };
+    hyperion = {
+      mac = "74:D0:2B:90:C3:BC";
+      ip = "10.0.0.3";
+    };
 
     # access points
     ap-eloszoba = {
