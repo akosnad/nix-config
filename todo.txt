@@ -1,0 +1,4 @@
+can't boot large initrds; it fails with EFI stub failing to map it.
+workaround ideas:
+	- serve squashfs over nfs
+	- serve actual nix store over nfs (skip building squashfs)
