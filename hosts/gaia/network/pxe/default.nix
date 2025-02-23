@@ -1,4 +1,4 @@
-{ pkgs, lib, inputs, config, ... }:
+{ pkgs, lib, inputs, outputs, config, ... }:
 let
   ipxeRootCA = pkgs.fetchurl {
     url = "http://ca.ipxe.org/ca.crt";
@@ -6,18 +6,9 @@ let
   };
   trustCertChain = [ ipxeRootCA ../../../common/gaia-roots.pem ];
 
-  # in nixpkgs targets are hardcoded to always include binaries for the host
-  # platform. we don't want that here. we only want to build for the
-  # following targets:
-  ipxeTargets = {
-    "bin-x86_64-efi/ipxe.efi" = "ipxe.efi";
-    "bin/undionly.kpxe" = "undionly.kpxe";
+  pkgs-x86_64 = import inputs.nixpkgs { config = { }; overlays = [ ]; system = "x86_64-linux"; };
 
-  };
-
-  pkgs_x86-64 = import inputs.nixpkgs { config = { }; overlays = [ ]; system = "x86_64-linux"; };
-
-  ipxe = (pkgs_x86-64.ipxe.override {
+  mkIpxe = pkgs: targets: (pkgs.ipxe.override {
     additionalOptions = [
       "CERT_CMD"
       "CONSOLE_CMD"
@@ -37,13 +28,13 @@ let
         # also trust the embedded certs
         "TRUST=${certs}"
 
-        "DEBUG=tls"
+        # "DEBUG=tls"
       ]
     );
 
     # the rest is borrowed from nixpkgs, overriding the hardcoded default targets
-    # with locally defined ipxeTargets
-    buildFlags = lib.attrNames ipxeTargets;
+    # with locally defined `targets`
+    buildFlags = lib.attrNames targets;
     installPhase = ''
       runHook preInstall
 
@@ -51,7 +42,7 @@ let
       ${lib.concatStringsSep "\n" (
         lib.mapAttrsToList (
           from: to: if to == null then "cp -v ${from} $out" else "cp -v ${from} $out/${to}"
-        ) ipxeTargets
+        ) targets
       )}
 
       # Some PXE constellations especially with dnsmasq are looking for the file with .0 ending
@@ -61,17 +52,68 @@ let
       runHook postInstall
     '';
   });
+  ipxeBuilds = {
+    x86_64 = mkIpxe pkgs-x86_64 {
+      "bin-x86_64-efi/ipxe.efi" = "ipxe.efi";
+      "bin/undionly.kpxe" = "undionly.kpxe";
+    };
+    aarch64 = mkIpxe pkgs {
+      "bin-arm64-efi/ipxe.efi" = "ipxe.efi";
+    };
+  };
+
+  mkInstaller = system: lib.nixosSystem {
+    modules = [ ((import ./installer) system) ];
+    specialArgs = { inherit inputs outputs; };
+  };
+  installers = {
+    x86_64 = mkInstaller "x86_64-linux";
+    aarch64 = mkInstaller "aarch64-linux";
+  };
+
+  bootWebroot = "http://boot.${config.networking.domain}";
 
   tftp-root = pkgs.stdenvNoCC.mkDerivation {
     name = "dnsmasq-tftp-root";
-    phases = [ "installPhase" ];
-    installPhase = ''
-      mkdir -p $out
-      cp -rv ${ipxe}/* $out/.
-    '';
-  };
+    dontUnpack = true;
+    buildPhase =
+      let
+        mkArchDir = arch: ''
+          mkdir -p $out/${arch}/installer
 
-  webrootUrl = "http://boot.home.arpa";
+          cp -rv --reflink=auto ${ipxeBuilds."${arch}"}/* $out/${arch}/.
+
+          ln -vs ${installers."${arch}".config.system.build.kernel}/${installers."${arch}".config.system.boot.loader.kernelFile} $out/${arch}/installer/kernel
+          ln -vs ${installers."${arch}".config.system.build.initialRamdisk}/initrd $out/${arch}/installer/initrd
+
+          cat << EOF > $out/${arch}/installer/boot.ipxe
+          #!ipxe
+          kernel ${bootWebroot}/${arch}/installer/kernel init=${toString installers."${arch}".config.system.build.toplevel}/init ${toString installers."${arch}".config.boot.kernelParams} \''${cmdline}
+          initrd ${bootWebroot}/${arch}/installer/initrd
+          imgstat
+          boot
+          EOF
+        '';
+      in
+      builtins.concatStringsSep "\n" [
+        "runHook preBuild"
+        (builtins.concatStringsSep "\n" (map mkArchDir [ "x86_64" "aarch64" ]))
+        ''
+          cat << EOF > $out/boot.ipxe
+          #!ipxe
+          iseq \''${buildarch} arm64 && chain ${bootWebroot}/aarch64/installer/boot.ipxe || echo
+          iseq \''${buildarch} x86_64 && chain ${bootWebroot}/x86_64/installer/boot.ipxe || goto err
+
+          exit
+
+          :err
+          echo "Unknown architecture, aborting."
+          exit
+          EOF
+        ''
+        "\nrunHook postBuild"
+      ];
+  };
 in
 {
   services.dnsmasq = {
@@ -81,18 +123,25 @@ in
 
       # set tag 'ipxe' if request comes from iPXE (user class)
       dhcp-userclass = "set:ipxe,iPXE";
-      dhcp-match = [ "set:efi-x86_64,option:client-arch,7" ];
+      # reference: https://datatracker.ietf.org/doc/html/rfc4578#section-2.1
+      dhcp-match = [
+        "set:efi-x86_64,option:client-arch,7"
+        "set:efi-x86_64,option:client-arch,9"
+        "set:efi-aarch64,option:client-arch,3"
+      ];
 
       # disallow multicast and broadcast discovery, and ask to download boot file immediately
       # dhcp-option = [ "vendor:PXEClient,6,2b" ];
 
       dhcp-boot = [
         # if request comes from firmware, load iPXE over TFTP
-        "tag:!ipxe,tag:efi-x86_64,ipxe.efi"
-        "tag:!ipxe,tag:!efi-x86_64,undionly.kpxe"
+        "tag:!ipxe,tag:efi-x86_64,x86_64/ipxe.efi"
+        # TODO: find a way to determine if client is actually aarch64, not just guess at last
+        "tag:!ipxe,tag:!efi-x86_64,aarch64/ipxe.efi"
 
         # if request comes from iPXE, direct it to bootstrap script
-        "tag:ipxe,${webrootUrl}/boot.ipxe"
+        "tag:ipxe,${bootWebroot}/boot.ipxe"
+        # "tag:ipxe,https://boot.netboot.xyz/"
       ];
 
       dhcp-option = [
@@ -117,5 +166,12 @@ in
         autoindex on;
       '';
     };
+  };
+
+  services.nfs.server = {
+    enable = true;
+    exports = ''
+      /nix/store *(ro,nohide,insecure,no_subtree_check)
+    '';
   };
 }
