@@ -63,6 +63,10 @@
       mac = "84:B1:E2:63:43:61";
       ip = "10.2.0.4";
     };
+    Orion-lan = {
+      mac = "D8:E2:DF:FD:EF:54";
+      ip = "10.2.0.5";
+    };
 
     # other machines
     Tecil = {
