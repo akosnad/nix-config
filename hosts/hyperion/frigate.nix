@@ -1,6 +1,12 @@
-{ config, ... }:
+{ config, pkgs, lib, ... }:
 let
   inherit (config.networking) domain;
+
+  ffmpegCuda = pkgs.ffmpeg-headless.override {
+    withCudaLLVM = true;
+    withNvdec = true;
+    withNvenc = true;
+  };
 in
 {
   services.frigate = {
@@ -14,6 +20,7 @@ in
         port = 1883;
         stats_interval = 30;
       };
+      ffmpeg.hwaccel_args = "preset-nvidia";
       cameras.arges = {
         ffmpeg = {
           input_args = "preset-rtsp-restream";
@@ -82,6 +89,7 @@ in
   services.go2rtc = {
     enable = true;
     settings = {
+      ffmpeg.bin = lib.getExe ffmpegCuda;
       rtsp.listen = ":8554";
       webrtc.candidates = [
         # loopback
@@ -156,6 +164,7 @@ in
 
   systemd.services.frigate = {
     requires = [ "var-lib-frigate.mount" ];
+    path = lib.mkBefore [ ffmpegCuda ];
   };
   fileSystems."/var/lib/frigate" = {
     device = "/raid/frigate";
