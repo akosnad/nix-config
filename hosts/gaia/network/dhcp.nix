@@ -37,7 +37,7 @@ in
         "lan,option:dns-server,${gatewayIp}"
         "lan,option:domain-name,${domain}"
         "lan,option:domain-search,${domain}"
-        "lan,option:sip-server,${config.devices.zeus.ip}"
+        "lan,option:sip-server,${config.devices.hyperion.ip}"
         "lan,option:tzdb-timezone,Europe/Budapest"
       ];
 

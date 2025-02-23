@@ -4,7 +4,6 @@ keys:
   hosts:
     - &athena age1nmfkvqnclhdr4j4ev7yug8ehrsl8hh09tuffmks0dfl8w4dkqv5sqhf3u4
     - &kratos age1vlxveywlyww4zymyxmd8y4mjg2dxeev6a3vdw4v7qvekcpgnc3asu2xvcu
-    - &zeus age16kd99x3lsmq9tfxn42zr9npdtjtw8y68stykm6apjkt9gexwsdssmd3sjz
     - &gaia age1gqdrkenwc3dwk384285gtz0zzgfl2c55xklx2hvhr8c6h4duggyqwmy2w7
     - &uranus age1us58kmzzemu8ns8t2dm7y97dhwsxatqf8gnz573zwhqjhx43uurqvlwypz
     - &hyperion age1qq68007k0v2tl4qwfvwhaxpp4lskaccallrmzsv7w3lhwpae635qckaykc
@@ -14,7 +13,6 @@ creation_rules:
       - age:
           - *athena
           - *kratos
-          - *zeus
           - *gaia
           - *uranus
           - *hyperion
@@ -36,15 +34,15 @@ creation_rules:
           - *gaia
         pgp:
           - *akos
-  - path_regex: hosts/zeus/secrets.ya?ml$
-    key_groups:
-      - age:
-          - *zeus
-        pgp:
-          - *akos
   - path_regex: hosts/uranus/secrets.ya?ml$
     key_groups:
       - age:
           - *uranus
+        pgp:
+          - *akos
+  - path_regex: hosts/hyperion/secrets.ya?ml$
+    key_groups:
+      - age:
+          - *hyperion
         pgp:
           - *akos

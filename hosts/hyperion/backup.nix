@@ -6,7 +6,7 @@ in
   services.restic.backups = {
     persist-onedrive = {
       initialize = true;
-      repository = "rclone:onedrive-personal:/Backups/zeus-persist";
+      repository = "rclone:onedrive-personal:/Backups/hyperion-persist";
       passwordFile = config.sops.secrets.restic-persist-password.path;
       rcloneConfigFile = "/persist/etc/rclone.conf";
       pruneOpts = [ "--keep-daily 14" "--keep-weekly 9" ];
@@ -62,7 +62,7 @@ in
 
     postgres = {
       initialize = true;
-      repository = "rclone:onedrive-personal:/Backups/zeus-postgres";
+      repository = "rclone:onedrive-personal:/Backups/hyperion-postgres";
       passwordFile = config.sops.secrets.restic-postgres-password.path;
       rcloneConfigFile = "/persist/etc/rclone.conf";
       pruneOpts = [ "--keep-daily 14" "--keep-weekly 9" ];

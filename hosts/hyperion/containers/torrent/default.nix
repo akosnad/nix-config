@@ -125,15 +125,15 @@ in
     });
   };
 
-  services.nginx.virtualHosts.zeus.locations = {
+  services.nginx.virtualHosts."${config.networking.hostName}".locations = {
     "/torrents/".extraConfig = /* nginx */ ''
       rewrite /torrents/(.*) /$1  break;
       proxy_pass http://127.0.0.1:8818;
     '';
     "/jackett".proxyPass = "http://127.0.0.1:9117$request_uri";
     "/bitmagnet".extraConfig = /* nginx */ ''
-      rewrite /bitmagnet/(.*) http://zeus:3333/$1 redirect;
-      rewrite /bitmagnet http://zeus:3333/ redirect;
+      rewrite /bitmagnet/(.*) http://${config.networking.hostName}:3333/$1 redirect;
+      rewrite /bitmagnet http://${config.networking.hostName}:3333/ redirect;
     '';
   };
 

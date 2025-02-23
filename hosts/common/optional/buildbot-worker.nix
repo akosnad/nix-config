@@ -8,7 +8,7 @@
     enable = true;
     name = config.networking.hostName;
     workerPasswordFile = "/run/secrets/buildbot-worker-password";
-    masterUrl = ''tcp:host=zeus:port=9989'';
+    masterUrl = ''tcp:host=hyperion:port=9989'';
   };
 
   sops.secrets.buildbot-worker-password = {

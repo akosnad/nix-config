@@ -3,8 +3,8 @@
   services.nginx = {
     enable = true;
     virtualHosts = {
-      zeus = {
-        serverAliases = [ "zeus.${config.networking.domain}" ];
+      "${config.networking.hostName}" = {
+        serverAliases = [ "${config.networking.hostName}.${config.networking.domain}" ];
         forceSSL = true;
         enableACME = true;
         locations."/" = {

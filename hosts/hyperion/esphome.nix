@@ -2,10 +2,10 @@
 {
   services.esphome = {
     enable = true;
-    address = config.devices.zeus.ip;
+    address = config.devices."${config.networking.hostName}".ip;
   };
 
-  services.nginx.virtualHosts.zeus.locations."/esphome" = {
+  services.nginx.virtualHosts."${config.networking.hostName}".locations."/esphome" = {
     extraConfig = /* nginx */ ''
       rewrite /esphome/(.*) /$1 break;
       proxy_pass http://127.0.0.1:6052;

@@ -88,7 +88,7 @@ in
     requires = [ "arion-torrent.service" ];
   };
 
-  services.nginx.virtualHosts.zeus.locations = {
+  services.nginx.virtualHosts."${config.networking.hostName}".locations = {
     "/radarr".proxyPass = "http://127.0.0.1:7878$request_uri";
     "/sonarr".proxyPass = "http://127.0.0.1:8989$request_uri";
     "^~ /overseerr" = {
@@ -123,7 +123,7 @@ in
         sub_filter '/site.webmanifest' '/$app/site.webmanifest';
       '';
     };
-    "/plex".return = "301 http://zeus:32400/web/";
+    "/plex".return = "301 http://${config.networking.hostName}:32400/web/";
   };
 
   environment.persistence = {

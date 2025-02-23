@@ -39,13 +39,13 @@ in
         chain pre {
           type nat hook prerouting priority dstnat; policy accept;
 
-          iifname "wan0" udp dport 10000-20000 dnat to ${config.devices.zeus.ip} comment "RTP to asterisk";
+          iifname "wan0" udp dport 10000-20000 dnat to ${config.devices.hyperion.ip} comment "RTP to asterisk";
         }
 
         chain post {
           type nat hook postrouting priority srcnat; policy accept;
 
-          ip saddr ${config.devices.zeus.ip} udp dport 10000-20000 oifname "wan0" masquerade comment "from asterisk to wan0";
+          ip saddr ${config.devices.hyperion.ip} udp dport 10000-20000 oifname "wan0" masquerade comment "from asterisk to wan0";
         }
       '';
     };

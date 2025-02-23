@@ -29,14 +29,14 @@ let
     supportedFeatures = [ "big-parallel" "kvm" ];
     systems = [ "x86_64-linux" "aarch64-linux" ];
   };
-  zeus = useBuilder {
-    hostname = "zeus";
+  hyperion = useBuilder {
+    hostname = "hyperion";
     supportedFeatures = [ "big-parallel" "kvm" ];
     systems = [ "x86_64-linux" "aarch64-linux" ];
   };
 
   machines =
-    builtins.filter (m: config.networking.hostName != m.hostname) [ kratos zeus ];
+    builtins.filter (m: config.networking.hostName != m.hostname) [ kratos hyperion ];
 
   substituters = map (machine: "ssh-ng://root@${machine.hostname}-builder") machines;
 in

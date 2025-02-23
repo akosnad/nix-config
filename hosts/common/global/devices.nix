@@ -7,6 +7,10 @@
     zeus = {
       mac = "FA:49:89:96:57:D1";
       ip = "10.0.0.2";
+    };
+    hyperion = {
+      mac = "74:D0:2B:90:C3:BC";
+      ip = "10.0.0.3";
       extraHostnames = [ "frigate" ];
       forwardedPorts = [
         # qbittorrent
@@ -18,10 +22,6 @@
         # plex
         { proto = "tcp"; dest = 32400; source = 20020; }
       ];
-    };
-    hyperion = {
-      mac = "74:D0:2B:90:C3:BC";
-      ip = "10.0.0.3";
     };
 
     # access points
