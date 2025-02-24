@@ -19,20 +19,19 @@
     ../common/optional/docker/arion.nix
     ../common/optional/builder
     ../common/optional/aarch64.nix
-    ../common/optional/buildbot-worker.nix
-    ../common/optional/hercules-ci-agent.nix
     ../common/optional/use-builders.nix
     ../common/optional/fail2ban.nix
 
     ../common/users/akos
 
-    ./buildbot-master.nix
+    ./buildbot
     ./esphome.nix
     ./containers
     ./webserver.nix
     ./backup.nix
     ./frigate.nix
     ./asterisk.nix
+    ./harmonia.nix
   ];
 
   networking.hostName = "hyperion";
@@ -52,8 +51,6 @@
   virtualisation.docker = {
     storageDriver = "btrfs";
   };
-
-  services.hercules-ci-agent.settings.concurrentTasks = 8;
 
   # urbit
   networking.firewall.allowedTCPPorts = [ 4398 ];

@@ -1,12 +1,13 @@
 { inputs, config, lib, ... }:
 let
   domain = "buildbot.fzt.one";
-  masterSecretNames = [
-    "buildbot-github-app-key"
-    "buildbot-webhook-secret"
-    "buildbot-github-oauth-secret"
+  masterSecretNames = map (s: "buildbot-${s}") [
+    "github-app-key"
+    "webhook-secret"
+    "github-oauth-secret"
+    "workers"
   ];
-  masterSecrets = lib.genAttrs masterSecretNames (_n: { sopsFile = ./secrets.yaml; neededForUsers = true; });
+  buildbotSecrets = lib.genAttrs masterSecretNames (_n: { sopsFile = ../secrets.yaml; neededForUsers = true; });
 
   secretsCfg = config.sops.secrets;
 in
@@ -34,11 +35,6 @@ in
       oauthId = "Ov23liqrF61WKdRZCwr7";
       oauthSecretFile = "${secretsCfg.buildbot-github-oauth-secret.path}";
     };
-    cachix = {
-      enable = true;
-      name = "akosnad";
-      auth.authToken.file = "${secretsCfg.buildbot-cachix-token.path}";
-    };
   };
 
   services.buildbot-master = {
@@ -55,16 +51,9 @@ in
   networking.firewall.allowedTCPPorts = [
     # buildbot HTTP
     8080
-    # buildbot worker protocol
-    9989
   ];
 
-  sops.secrets =
-    masterSecrets
-    // {
-      buildbot-workers = { sopsFile = ../common/secrets.yaml; neededForUsers = true; };
-      buildbot-cachix-token = { sopsFile = ./secrets.yaml; neededForUsers = true; };
-    };
+  sops.secrets = buildbotSecrets;
 
   environment.persistence."/persist".directories = [
     {

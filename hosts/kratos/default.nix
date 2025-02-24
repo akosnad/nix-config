@@ -19,8 +19,6 @@
     ../common/optional/envfs.nix
     ../common/optional/builder
     ../common/optional/aarch64.nix
-    ../common/optional/buildbot-worker.nix
-    ../common/optional/hercules-ci-agent.nix
     ../common/optional/yubikey.nix
     ../common/optional/use-builders.nix
     ../common/optional/xwayland-fix.nix
@@ -44,8 +42,6 @@
 
   # needed for Windows dual boot
   time.hardwareClockInLocalTime = true;
-
-  services.hercules-ci-agent.settings.concurrentTasks = 12;
 
   virtualisation.docker.storageDriver = "btrfs";
 
