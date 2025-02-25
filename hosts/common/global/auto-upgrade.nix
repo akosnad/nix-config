@@ -22,6 +22,11 @@ let
 
   buildbotApi = "https://buildbot.fzt.one/api/v2";
   systemAttr = "${config.system.autoUpgrade.flake}#checks.${config.nixpkgs.hostPlatform.system}.nixos-${config.networking.hostName}";
+  autoUpgradeSubstituters = [
+    "https://cache.nixos.org/"
+    "https://nix.fzt.one/"
+    "https://nix-community.cachix.org/"
+  ];
 in
 {
   system.autoUpgrade = {
@@ -94,7 +99,7 @@ in
               buildnumber="$(jq -r '.number' <<< "$build")"
 
               outPath="$(curl -fs "${buildbotApi}/builders/$builder/builds/$buildnumber/properties" | jq -r '.properties[0].out_path[0]')"
-              nix-store --realise "$outPath" --no-fallback --max-silent-time 300 --timeout 1800
+              nix-store --realise "$outPath" --no-fallback --max-silent-time 300 --timeout 1800 --option substituters '${builtins.concatStringsSep " " autoUpgradeSubstituters}'
             }
 
             apply() {
