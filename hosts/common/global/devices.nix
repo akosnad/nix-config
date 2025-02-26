@@ -26,7 +26,7 @@
 
     # access points
     ap-eloszoba = {
-      mac = "24:CF:24:56:CA:6F";
+      mac = "24:CF:24:56:CA:6E";
       ip = "10.1.0.1";
       blockInternetAccess = { ip = true; };
     };
