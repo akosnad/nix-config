@@ -1,4 +1,4 @@
-system: { inputs, pkgs, lib, config, ... }:
+nfsRemote: system: { inputs, pkgs, lib, config, ... }:
 {
   imports = [
     "${inputs.nixpkgs}/nixos/modules/profiles/all-hardware.nix"
@@ -8,75 +8,48 @@ system: { inputs, pkgs, lib, config, ... }:
   ];
 
   boot.loader.grub.enable = false;
+  boot.initrd.supportedFilesystems = ["nfs" "nfsv4" "overlay"];
+  boot.initrd.availableKernelModules = ["nfs" "nfsv4" "overlay"];
 
-  fileSystems."/" = lib.mkImageMediaOverride {
+  fileSystems."/" = {
     fsType = "tmpfs";
     options = [ "mode=0755" ];
   };
 
-  fileSystems."/nix/.rw-store" = lib.mkImageMediaOverride {
+  fileSystems."/nix/.rw-store" = {
     fsType = "tmpfs";
     options = [ "mode=0755" ];
     neededForBoot = true;
   };
 
-  fileSystems."/nix/store" = lib.mkImageMediaOverride {
+  fileSystems."/nix/.ro-store" = {
+    fsType = "nfs4";
+    options = [ "ro" "noatime" ];
+    device = "${nfsRemote}:/nix/store";
+    neededForBoot = true;
+  };
+
+  fileSystems."/nix/store" = {
     overlay = {
       lowerdir = [ "/nix/.ro-store" ];
       upperdir = "/nix/.rw-store/store";
       workdir = "/nix/.rw-store/work";
     };
-    neededForBoot = true;
+    depends = [
+      "/nix/.ro-store"
+      "/nix/.rw-store/store"
+      "/nix/.rw-store/work"
+    ];
   };
 
-  # available to load
-  boot.initrd.availableKernelModules = [ "e1000e" ];
-  # always loaded
-  boot.initrd.kernelModules = [ "nfs" "nfsv4" "nfsd" "sunrpc" "overlay" ];
-  boot.initrd.supportedFilesystems = {
-    nfs = true;
-    nfsv4 = true;
-    overlay = true;
-  };
-  boot.initrd.systemd = {
+  boot.initrd.network = {
     enable = true;
-    emergencyAccess = true;
-    network = {
-      enable = true;
-      wait-online.enable = true;
-      networks."99-dhcp-all" = {
-        matchConfig.Name = "*";
-        networkConfig.DHCP = "yes";
-      };
-    };
-    storePaths = with pkgs; [ nfs-utils ];
-    services = {
-      mount-remote-nix-store = {
-        script = ''
-          mkdir -p -m755 /sysroot/nix/.ro-store
-          ${lib.getExe' pkgs.nfs-utils "mount.nfs4"} -r -o defaults,ro,noatime,_netdev 10.0.0.1:/nix/store /sysroot/nix/.ro-store
-        '';
-        requiredBy = [ "sysroot-nix-store.mount" "initrd-fs.target" ];
-        before = [ "sysroot-nix-store.mount" "initrd-fs.target" ];
-        requires = [ "network-online.target" ];
-        after = [ "network-online.target" ];
-        serviceConfig = {
-          Type = "oneshot";
-          RemainAfterExit = true;
-        };
-      };
-    };
+    flushBeforeStage2 = false;
   };
+  networking.useDHCP = true;
 
   boot.postBootCommands = ''
-    # After booting, register the contents of the Nix store
-    # in the Nix database in the tmpfs.
-    ${config.nix.package}/bin/nix-store --load-db < /nix/store/nix-path-registration
-
-    # nixos-rebuild also requires a "system" profile and an
-    # /etc/NIXOS tag.
     touch /etc/NIXOS
-    ${config.nix.package}/bin/nix-env -p /nix/var/nix/profiles/system --set /run/current-system
 
     # Set password for user nixos if specified on cmdline
     # Allows using nixos-anywhere in headless environments
@@ -94,12 +67,31 @@ system: { inputs, pkgs, lib, config, ... }:
     done
   '';
 
+  nix.settings = {
+    experimental-features = "nix-command flakes";
+    warn-dirty = false;
+    substituters = [
+      "https://cache.nixos.org/"
+      "https://nix.fzt.one/"
+      "https://nix-community.cachix.org"
+      "https://hyprland.cachix.org"
+    ];
+    trusted-public-keys = [
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      "nix.fzt.one-1:W6+n+PqYiAINgEUYnAxoDrV0xrjPR0C0fJeIDp3nvAw="
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+    ];
+  };
   nixpkgs.config.allowUnfree = true;
   nixpkgs.hostPlatform = system;
 
   environment.systemPackages = with pkgs; [
     helix
+    git
+    htop
   ];
 
+  networking.hostName = "installer";
   system.stateVersion = "24.11";
 }

@@ -63,7 +63,7 @@ let
   };
 
   mkInstaller = system: lib.nixosSystem {
-    modules = [ ((import ./installer) system) ];
+    modules = [ ((import ./installer) config.devices."${config.networking.hostName}".ip system) ];
     specialArgs = { inherit inputs outputs; };
   };
   installers = {

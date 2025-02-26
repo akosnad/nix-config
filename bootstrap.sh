@@ -97,7 +97,7 @@ EOF
   fi
 
   cat >"./home/akos/${hostname}.nix" <<EOF
-{ lib, ... }:
+{ ... }:
 {
   imports = [
     ./global
