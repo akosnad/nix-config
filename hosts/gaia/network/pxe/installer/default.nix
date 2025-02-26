@@ -1,4 +1,4 @@
-nfsRemote: system: { inputs, pkgs, lib, config, ... }:
+nfsRemote: system: { inputs, pkgs, config, ... }:
 {
   imports = [
     "${inputs.nixpkgs}/nixos/modules/profiles/all-hardware.nix"
@@ -8,8 +8,8 @@ nfsRemote: system: { inputs, pkgs, lib, config, ... }:
   ];
 
   boot.loader.grub.enable = false;
-  boot.initrd.supportedFilesystems = ["nfs" "nfsv4" "overlay"];
-  boot.initrd.availableKernelModules = ["nfs" "nfsv4" "overlay"];
+  boot.initrd.supportedFilesystems = [ "nfs" "nfsv4" "overlay" ];
+  boot.initrd.availableKernelModules = [ "nfs" "nfsv4" "overlay" ];
 
   fileSystems."/" = {
     fsType = "tmpfs";
