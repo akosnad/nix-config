@@ -5,4 +5,6 @@
     yubikey-manager
     pcsc-tools
   ];
+
+  environment.etc."gnupg/scdaemon.conf".text = "disable-ccid";
 }
