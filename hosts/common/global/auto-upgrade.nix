@@ -57,7 +57,7 @@ in
 
             checkBuilt() {
               # change for given revision
-              change="$(curl -fs "${buildbotApi}/changes?field=revision&field=changeid" | jq -r ".changes[] | select(.revision == \"""$2""\") | .changeid")"
+              change="$(curl -fs "${buildbotApi}/changes?field=revision&field=changeid" | jq -r ".changes[] | select(.revision == \"""$2""\") | .changeid" | sort -nr | head -n1)"
               # builder for given host
               builder="$(curl -fs "${buildbotApi}/builders?field=name&field=builderid" | jq -r ".builders[] | select(.name == \"""$1""\") | .builderid")"
               # latest build for given change and builder
@@ -91,7 +91,7 @@ in
 
             getSystemPath() {
               # change for given revision
-              change="$(curl -fs "${buildbotApi}/changes?field=revision&field=changeid" | jq -r ".changes[] | select(.revision == \"""$2""\") | .changeid")"
+              change="$(curl -fs "${buildbotApi}/changes?field=revision&field=changeid" | jq -r ".changes[] | select(.revision == \"""$2""\") | .changeid" | sort -nr | head -n1)"
               # builder for given host
               builder="$(curl -fs "${buildbotApi}/builders?field=name&field=builderid" | jq -r ".builders[] | select(.name == \"""$1""\") | .builderid")"
               # latest build for given change and builder
