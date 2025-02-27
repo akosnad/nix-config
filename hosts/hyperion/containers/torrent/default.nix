@@ -107,6 +107,27 @@ in
           start_period = "20s";
           interval = "10s";
         };
+        blkio_config = {
+          weight = 1000;
+          device_read_iops = [
+            {
+              path = "/dev/disk/by-id/ata-WDC_WD20EFAX-68B2RN1_WD-WX52AA2EULPC";
+              rate = 120;
+            }
+            {
+              path = "/dev/disk/by-id/ata-WDC_WD20EFRX-68EUZN0_WD-WCC4M1246638";
+              rate = 120;
+            }
+          ];
+          device_write_iops = [{
+            path = "/dev/disk/by-id/ata-WDC_WD20EFAX-68B2RN1_WD-WX52AA2EULPC";
+            rate = 30;
+          }
+            {
+              path = "/dev/disk/by-id/ata-WDC_WD20EFRX-68EUZN0_WD-WCC4M1246638";
+              rate = 30;
+            }];
+        };
       };
 
     };
