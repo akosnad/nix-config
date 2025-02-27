@@ -3,7 +3,6 @@ let
   torrentsPath = "/raid/Torrents";
   qbittorrentConfigPath = "/var/lib/qbittorrent";
   jackettConfigPath = "/var/lib/jackett";
-  bitmagnetData = "/raid/bitmagnet";
   commonServiceOptions = {
     restart = "unless-stopped";
     networks = [ "internal" ];
@@ -63,73 +62,6 @@ in
         volumes = [ "${jackettConfigPath}/:/config" ];
         ports = [ "9117:9117" ];
       };
-
-      bitmagnet.service = lib.recursiveUpdate commonServiceOptions {
-        image = "ghcr.io/bitmagnet-io/bitmagnet:latest";
-        container_name = "bitmagnet";
-        ports = [
-          # API and WebUI
-          "3333:3333"
-          # BitTorrent ports
-          "3334:3334/tcp"
-          "3334:3334/udp"
-        ];
-        environment = {
-          POSTGRES_HOST = "bitmagnet-db";
-          POSTGRES_PASSWORD = "postgres";
-        };
-        command = [
-          "worker"
-          "run"
-          "--keys=http_server"
-          "--keys=queue_server"
-          "--keys=dht_crawler"
-        ];
-        depends_on.bitmagnet-db.condition = "service_healthy";
-      };
-
-      bitmagnet-db.service = lib.recursiveUpdate commonServiceOptions {
-        image = "postgres:16-alpine";
-        container_name = "bitmagnet-db";
-        volumes = [
-          "${bitmagnetData}:/var/lib/postgresql/data"
-        ];
-        environment = {
-          POSTGRES_PASSWORD = "postgres";
-          POSTGRES_DB = "bitmagnet";
-          PGUSER = "postgres";
-        };
-        healthcheck = {
-          test = [
-            "CMD-SHELL"
-            "pg_isready"
-          ];
-          start_period = "20s";
-          interval = "10s";
-        };
-        blkio_config = {
-          weight = 1000;
-          device_read_iops = [
-            {
-              path = "/dev/disk/by-id/ata-WDC_WD20EFAX-68B2RN1_WD-WX52AA2EULPC";
-              rate = 120;
-            }
-            {
-              path = "/dev/disk/by-id/ata-WDC_WD20EFRX-68EUZN0_WD-WCC4M1246638";
-              rate = 120;
-            }
-          ];
-          device_write_iops = [{
-            path = "/dev/disk/by-id/ata-WDC_WD20EFAX-68B2RN1_WD-WX52AA2EULPC";
-            rate = 30;
-          }
-            {
-              path = "/dev/disk/by-id/ata-WDC_WD20EFRX-68EUZN0_WD-WCC4M1246638";
-              rate = 30;
-            }];
-        };
-      };
-
     };
 
     networks.internal.driver = "bridge";
