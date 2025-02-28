@@ -73,53 +73,60 @@ let
 
   bootWebroot = "http://boot.${config.networking.domain}";
 
-  tftp-root = pkgs.stdenvNoCC.mkDerivation {
-    name = "dnsmasq-tftp-root";
+  ipxeBootstrap = pkgs.writeTextFile {
+    name = "ipxe-bootstrap.ipxe";
+    destination = "/boot.ipxe";
+    text = /* sh */ ''
+      #!ipxe
+      iseq ''${buildarch} arm64 && chain ${bootWebroot}/aarch64/installer/boot.ipxe || echo
+      iseq ''${buildarch} x86_64 && chain ${bootWebroot}/x86_64/installer/boot.ipxe || goto err
+      exit
+
+      :err
+      echo "Unknown architecture, aborting."
+      exit
+    '';
+  };
+
+  mkIpxeInstallerBootstrap = arch: pkgs.writeTextFile {
+    name = "ipxe-installer-bootstrap-${arch}.ipxe";
+    destination = "/${arch}/installer/boot.ipxe";
+    text = /* sh */ ''
+      #!ipxe
+      kernel ${bootWebroot}/${arch}/installer/kernel init=${toString installers."${arch}".config.system.build.toplevel}/init ${toString installers."${arch}".config.boot.kernelParams} ''${cmdline}
+      initrd ${bootWebroot}/${arch}/installer/initrd
+      imgstat
+      boot
+    '';
+  };
+
+  mkInstallBootDir = arch: pkgs.stdenvNoCC.mkDerivation {
+    name = "ipxe-installer-dir-${arch}";
     dontUnpack = true;
-    buildPhase =
-      let
-        mkArchDir = arch: ''
-          mkdir -p $out/${arch}/installer
+    buildPhase = ''
+      mkdir -p $out/${arch}/installer
 
-          cp -rv --reflink=auto ${ipxeBuilds."${arch}"}/* $out/${arch}/.
+      # cp -rv --reflink=auto ${ipxeBuilds."${arch}"}/* $out/${arch}/.
+      for f in ${ipxeBuilds."${arch}"}/*; do
+        ln -vs "$f" $out/${arch}/.
+      done
 
-          ln -vs ${installers."${arch}".config.system.build.kernel}/${installers."${arch}".config.system.boot.loader.kernelFile} $out/${arch}/installer/kernel
-          ln -vs ${installers."${arch}".config.system.build.initialRamdisk}/initrd $out/${arch}/installer/initrd
+      ln -vs ${installers."${arch}".config.system.build.kernel}/${installers."${arch}".config.system.boot.loader.kernelFile} $out/${arch}/installer/kernel
+      ln -vs ${installers."${arch}".config.system.build.initialRamdisk}/initrd $out/${arch}/installer/initrd
+    '';
+  };
 
-          cat << EOF > $out/${arch}/installer/boot.ipxe
-          #!ipxe
-          kernel ${bootWebroot}/${arch}/installer/kernel init=${toString installers."${arch}".config.system.build.toplevel}/init ${toString installers."${arch}".config.boot.kernelParams} \''${cmdline}
-          initrd ${bootWebroot}/${arch}/installer/initrd
-          imgstat
-          boot
-          EOF
-        '';
-      in
-      builtins.concatStringsSep "\n" [
-        "runHook preBuild"
-        (builtins.concatStringsSep "\n" (map mkArchDir [ "x86_64" "aarch64" ]))
-        ''
-          cat << EOF > $out/boot.ipxe
-          #!ipxe
-          iseq \''${buildarch} arm64 && chain ${bootWebroot}/aarch64/installer/boot.ipxe || echo
-          iseq \''${buildarch} x86_64 && chain ${bootWebroot}/x86_64/installer/boot.ipxe || goto err
-
-          exit
-
-          :err
-          echo "Unknown architecture, aborting."
-          exit
-          EOF
-        ''
-        "\nrunHook postBuild"
-      ];
+  bootArchitectures = [ "x86_64" "aarch64" ];
+  tftpRoot = pkgs.symlinkJoin {
+    name = "tftp-root";
+    paths = (map mkInstallBootDir bootArchitectures) ++ (map mkIpxeInstallerBootstrap bootArchitectures) ++ [ ipxeBootstrap ];
   };
 in
 {
   services.dnsmasq = {
     settings = {
       enable-tftp = true;
-      tftp-root = "${tftp-root}";
+      tftp-root = "${tftpRoot}";
 
       # set tag 'ipxe' if request comes from iPXE (user class)
       dhcp-userclass = "set:ipxe,iPXE";
@@ -161,7 +168,7 @@ in
     enableACME = true;
     serverAliases = [ "boot.${config.networking.domain}" ];
     locations."/" = {
-      root = "${tftp-root}";
+      root = "${tftpRoot}";
       extraConfig = ''
         autoindex on;
       '';
