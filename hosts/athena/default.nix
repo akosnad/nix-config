@@ -51,6 +51,7 @@
   time.hardwareClockInLocalTime = true;
 
   powerManagement.powertop.enable = true;
+  boot.kernelParams = [ "i915.enable_psr=1" "i915.enable_rc6=1" ];
 
   systemd.services.docker = {
     enable = true;
