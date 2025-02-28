@@ -67,6 +67,10 @@ nfsRemote: system: { inputs, pkgs, config, ... }:
     done
   '';
 
+  users.users.root = {
+    openssh.authorizedKeys.keyFiles = [ ../../../../../home/akos/ssh.pub ];
+  };
+
   nix.settings = {
     experimental-features = "nix-command flakes";
     warn-dirty = false;
