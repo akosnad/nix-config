@@ -11,6 +11,7 @@
     ../common/users/akos
 
     ./matrix
+    ./backup.nix
   ];
 
   networking.hostName = "uranus";
