@@ -5,8 +5,12 @@
     signKeyPaths = [ config.sops.secrets.harmonia-key.path ];
     settings = {
       bind = "[::]:5959";
+
       # cache.nixos.org is 40
-      priority = 30;
+      # *.cachix.org are 41
+      # lower is preferred
+      priority = 50;
+
       workers = 4;
       max_connection_rate = 256;
     };
