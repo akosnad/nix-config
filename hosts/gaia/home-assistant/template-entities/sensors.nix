@@ -112,14 +112,14 @@
         state = /* jinja2 */ ''
           {{ "unavailable" if states('sensor.gate_door_distance') == "unavailable"
             else "zárva" if states('sensor.gate_door_distance') == "unknown"
-            else "zárva" if (states('sensor.gate_door_distance') | float) > 1.55
+            else "zárva" if ((states('sensor.gate_door_distance') | float) > 1.55) or (states('sensor.gate_door_distance') | float) < 0.19
             else "félig nyitva" if (states('sensor.gate_door_distance') | float) > 0.5
             else "nyitva"
           }}
         '';
         icon = /* jinja2 */ ''
           {{ 'hass:gate' if states('sensor.gate_door_distance') == "unknown"
-            else 'hass:gate' if (states('sensor.gate_door_distance') | float) > 1.55
+            else 'hass:gate' if ((states('sensor.gate_door_distance') | float) > 1.55) or (states('sensor.gate_door_distance') | float) < 0.19
             else 'hass:gate-alert' if (states('sensor.gate_door_distance') | float) > 0.5
             else 'hass:gate-open'
           }}
