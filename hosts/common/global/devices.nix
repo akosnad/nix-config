@@ -133,7 +133,10 @@
       mac = "28:EE:52:41:3F:98";
       ip = "10.4.1.8";
     };
-    # l-pavilon = { };
+    l-pavilon = {
+      mac = "D4:A6:51:91:0D:9E";
+      ip = "10.4.1.9";
+    };
 
     # ESPHome
     cerberus = {
