@@ -62,6 +62,10 @@ in
           "wpad.local"
           "wpad.${config.networking.domain}"
         ];
+        use_private_ptr_resolvers = true;
+        local_ptr_upstreams = [
+          "127.0.0.1:5953"
+        ];
       };
       user_rules = [
         # unblock some used sites

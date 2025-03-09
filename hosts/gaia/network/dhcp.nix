@@ -23,8 +23,11 @@ in
   services.dnsmasq = {
     enable = true;
     settings = {
-      # disable DNS, only act as DHCP server
-      port = "";
+      port = "5953";
+      dhcp-authoritative = true;
+      domain-needed = true;
+      bogus-priv = true;
+      expand-hosts = true;
 
       # serve in an unassigned address space for non-declared devices
       dhcp-range = [ "set:lan,10.99.0.1,10.99.254.254,10m" ];
