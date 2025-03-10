@@ -16,6 +16,8 @@ let
     version = 2;
     final_space = true;
     upgrade = {
+      # note: this is not sufficient to actually disable the notice,
+      # see below where the cache file is overwritten
       notice = false;
       auto = false;
     };
@@ -131,5 +133,33 @@ in
   xdg.configFile.oh-my-posh = {
     target = "oh-my-posh.json";
     text = builtins.toJSON ompConfig;
+  };
+
+  home.file.".cache/oh-my-posh/omp.cache" = {
+    # safe to forcibly overwrite
+    # nothing important is stored here
+    force = true;
+
+    text = builtins.toJSON {
+      # disables update check and notice by setting the TTL to -1,
+      # this is what the `oh-my-posh disable notice` command does
+      upgrade_check = {
+        timestamp = 0;
+        ttl = -1;
+        value = "disabled";
+      };
+
+      # rest here is needed to function
+      environment_platform = {
+        timestamp = 0;
+        ttl = -1;
+        value = "nixos";
+      };
+      is_wsl = {
+        timestamp = 0;
+        ttl = -1;
+        value = "false";
+      };
+    };
   };
 }
