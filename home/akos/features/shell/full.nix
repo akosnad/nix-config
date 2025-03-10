@@ -1,7 +1,6 @@
 { pkgs, ... }:
 {
   imports = [
-    ./comma.nix
     ./gh.nix
   ];
 
