@@ -59,6 +59,9 @@
     };
   };
 
+  home.file."${config.home.homeDirectory}/.gnupg/sshcontrol".force = true;
+  home.file."${config.home.homeDirectory}/.gnupg/scdaemon.conf".force = true;
+
   home.persistence."/persist/${config.home.homeDirectory}".directories = [{
     directory = ".gnupg";
     method = "bindfs";
