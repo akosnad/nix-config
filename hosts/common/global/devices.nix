@@ -87,6 +87,10 @@
       mac = "22:3B:91:96:90:93";
       ip = "10.3.0.3";
     };
+    Sylvester = {
+      mac = "60:AB:67:FA:52:09";
+      ip = "10.3.0.4";
+    };
 
     # security devices
     alarm = {
