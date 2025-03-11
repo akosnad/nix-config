@@ -58,6 +58,7 @@
       "bthome"
       "ibeacon"
       "voip"
+      "fully_kiosk"
     ];
     extraPackages = python3Packages: with python3Packages; [
       # recorder postgresql support
