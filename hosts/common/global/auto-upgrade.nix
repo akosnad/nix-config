@@ -8,18 +8,7 @@ let
   # Only enable auto upgrade if current config came from a clean tree
   # This avoids accidental auto-upgrades when working locally.
   isClean = inputs.self ? rev;
-
   hasRebootWindow = config.system.autoUpgrade.rebootWindow != null;
-  rebootWindowCheck = /* bash */ ''
-    now="$(date +%s)"
-    lower="$(date --date="${config.system.autoUpgrade.rebootWindow.lower}" +%s)"
-    upper="$(date --date="${config.system.autoUpgrade.rebootWindow.upper}" +%s)"
-    if [[ ("$now" -lt "$lower") || ("$now" -gt "$upper") ]]; then
-      echo "Outside reboot window, skipping"
-      return
-    fi
-  '';
-
   buildbotApi = "https://buildbot.fzt.one/api/v2";
   systemAttr = "${config.system.autoUpgrade.flake}#checks.${config.nixpkgs.hostPlatform.system}.nixos-${config.networking.hostName}";
   autoUpgradeSubstituters = [
@@ -102,23 +91,43 @@ in
               nix-store --realise "$outPath" --no-fallback --max-silent-time 300 --timeout 1800 --option substituters '${builtins.concatStringsSep " " autoUpgradeSubstituters}'
             }
 
-            apply() {
-              nix-env --profile /nix/var/nix/profiles/system --set "$1"
-              /nix/var/nix/profiles/system/bin/switch-to-configuration "${if config.system.autoUpgrade.allowReboot then "boot" else config.system.autoUpgrade.operation}"
+            canReboot() {
+              ${if !hasRebootWindow then "# no reboot window configured, skipping check" else /* bash */ ''
+                now="$(date +%s)"
+                lower="$(date --date="${config.system.autoUpgrade.rebootWindow.lower}" +%s)"
+                upper="$(date --date="${config.system.autoUpgrade.rebootWindow.upper}" +%s)"
+                if [[ ("$now" -lt "$lower") || ("$now" -gt "$upper") ]]; then
+                  echo "Outside reboot window"
+                  return 1
+                fi
+                echo "Inside reboot window"
+              ''}
+              return 0
             }
 
-            rebootIfNeeded() {
+            apply() {
+              # bump system profile, creating a new one if needed
+              profile="/nix/var/nix/profiles/system"
+              nix-env --profile "$profile" --set "$1"
+
               ${if config.system.autoUpgrade.allowReboot then /* bash */ ''
-                ${if hasRebootWindow then rebootWindowCheck else "# no reboot window configured, allowed to reboot immediately"}
-                
-                shutdown -r +1 "Rebooting due to auto-upgrade"
-              '' else "# reboot is not allowed by configuration, skipping\nreturn"}
+                if canReboot; then
+                  # we're inside the reboot window or no window is defined
+                  "$profile"/bin/switch-to-configuration "boot"
+                  shutdown -r +1 "Rebooting due to auto-upgrade"
+                else
+                  # we're outside the reboot window
+                  "$profile"/bin/switch-to-configuration "${config.system.autoUpgrade.operation}"
+                fi
+              '' else /* bash */ ''
+                # reboot is not allowed
+                "$profile"/bin/switch-to-configuration "${config.system.autoUpgrade.operation}"
+              ''}
             }
 
             newRevision="$(revision "${config.system.autoUpgrade.flake}")"
             newPath="$(getSystemPath "${systemAttr}" "$newRevision")"
             apply "$newPath"
-            rebootIfNeeded
           '';
         }));
     };
