@@ -59,6 +59,8 @@
       "ibeacon"
       "voip"
       "fully_kiosk"
+      "wake_word"
+      "wyoming"
     ];
     extraPackages = python3Packages: with python3Packages; [
       # recorder postgresql support
