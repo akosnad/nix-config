@@ -123,37 +123,12 @@ let
     '';
   };
 
-  browser-launch =
-    let
-      profilePath = "/persist/home/akos/.mozilla/firefox/default";
-    in
-    pkgs.writeShellApplication {
-      name = "firefox-profile-wrapper";
-      runtimeInputs = with pkgs; [ firefox coreutils ];
-      text = ''
-        makeLink() {
-          if ! [ -L "${profilePath}/$1" ]; then
-            rm -rf "${profilePath}/$1"
-            ln -sf "/home/akos/.mozilla/firefox/${config.programs.firefox.profiles.default.path}/$1" "${profilePath}/$1"
-          fi
-        }
-
-        mkdir -p "${profilePath}"
-
-        makeLink ".keep"
-        makeLink "user.js"
-        makeLink "search.json.mozlz4"
-        makeLink "extensions"
-
-        firefox --profile ${profilePath}
-      '';
-    };
 in
 {
   wayland.windowManager.hyprland = {
     settings = {
       "$mainMod" = "SUPER";
-      "$browser" = "${lib.getExe browser-launch}";
+      "$browser" = "microsoft-edge";
 
       bind = [
         "$mainMod, Return, exec, kitty"

@@ -3,7 +3,7 @@
   imports = [
     ./fonts.nix
     ./gtk.nix
-    ./firefox.nix
+    ./edge.nix
     ./kitty
     ./audio.nix
     ./mqtt-notify.nix
