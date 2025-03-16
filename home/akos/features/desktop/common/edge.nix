@@ -17,5 +17,7 @@
 
   home.persistence."/persist/${config.home.homeDirectory}".directories = [
     ".config/microsoft-edge"
+    ".cache/Microsoft/Edge"
+    ".cache/microsoft-edge"
   ];
 }
