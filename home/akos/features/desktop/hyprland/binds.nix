@@ -146,7 +146,11 @@ in
         "$mainMod, D, exec, ${lib.getExe config.programs.hyprlock.package} --immediate"
         "$mainMod, W, exec, ${cycle-wallpaper}"
 
-        "$mainMod, Space, togglesplit, # dwindle"
+        "$mainMod, Space, togglesplit," # dwindle
+        "$mainMod, Space, scroller:toggleoverview" # scroller
+
+        "$mainMod, bracketleft, scroller:setmode, col"
+        "$mainMod, bracketright, scroller:setmode, row"
 
         "$mainMod, F11, fullscreen"
 
@@ -207,6 +211,13 @@ in
         "SUPERALT, L, movecurrentworkspacetomonitor, +1"
 
         # "$mainMod, P, pseudo, # dwindle"
+        "$mainMod, P, scroller:pin"
+
+        "$mainMod, equal, scroller:cyclesize, next"
+        "$mainMod, minus, scroller:cyclesize, prev"
+        "$mainMod, A, scroller:fitsize,all"
+        "$mainMod, C, scroller:fitsize,active"
+        "$mainMod, V, scroller:fitsize,visible"
 
         # Scroll through existing workspaces with mainMod + scroll
         "$mainMod, mouse_down, workspace, e+1"
@@ -272,7 +283,9 @@ in
       bind = SHIFT, H    , movetoworkspace, -1
       bind = SHIFT, L    , movetoworkspace, +1
 
-      bind  = , space , togglesplit,
+      bind  = , space , togglesplit         , # dwindle
+      bind  = , space , scroller:admitwindow,
+      bind  = , Return, scroller:expelwindow,
 
       bind =  , ESCAPE, submap    , reset
       submap = reset
@@ -297,6 +310,10 @@ in
       binde = SHIFT, down  , resizeactive,  0  50
       binde = SHIFT, up    , resizeactive,  0 -50
       binde = SHIFT, right , resizeactive,  50  0
+
+      bind = , c, scroller:fitsize, active
+      bind = , a, scroller:fitsize, all
+      bind = , v, scroller:fitsize, visible
 
       bind  = , space , togglesplit,
 
