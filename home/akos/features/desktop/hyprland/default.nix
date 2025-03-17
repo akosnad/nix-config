@@ -18,6 +18,8 @@
     configPackages = [ config.wayland.windowManager.hyprland.package ];
   };
 
+  xdg.dataFile."icons/Quintom Ink".source = "${pkgs.quintom-ink-hyprcursor}/usr/share/icons/Quintom Ink";
+
   wayland.windowManager.hyprland = {
     enable = true;
     plugins = with pkgs.hyprlandPlugins; [
@@ -103,6 +105,11 @@
         cursor = {
           inactive_timeout = 1;
         };
+
+        env = [
+          "HYPRCURSOR_THEME,Quintom Ink"
+          "HYPRCURSOR_SIZE,24"
+        ];
 
         misc = {
           disable_hyprland_logo = "yes";

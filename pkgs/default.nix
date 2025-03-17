@@ -6,4 +6,6 @@ args: {
   vim-plugins = import ./vim-plugins args;
 
   librespot-auth = import ./librespot-auth args;
+
+  quintom-ink-hyprcursor = import ./quintom-ink-hyprcursor.nix args;
 }
