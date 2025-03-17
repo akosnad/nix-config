@@ -23,6 +23,7 @@
   home-manager.sharedModules = [
     inputs.sops-nix.homeManagerModules.sops
   ];
+  home-manager.backupFileExtension = "hm-backup";
 
   nixpkgs = {
     overlays = builtins.attrValues outputs.overlays;
