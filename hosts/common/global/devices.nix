@@ -108,60 +108,74 @@
     l-eloszoba = {
       mac = "5C:E5:0C:89:2F:21";
       ip = "10.4.1.1";
+      blockInternetAccess = true;
     };
     arwen = {
       mac = "B4:60:ED:0F:CB:0D";
       ip = "10.4.1.2";
+      blockInternetAccess = true;
     };
     l-overhead = {
       mac = "04:CF:8C:7C:CF:E3";
       ip = "10.4.1.3";
+      blockInternetAccess = true;
     };
     l-desk = {
       mac = "7C:49:EB:D2:22:DB";
       ip = "10.4.1.4";
+      blockInternetAccess = true;
     };
     l-desk-led = {
       mac = "28:6D:CD:07:2A:6B";
       ip = "10.4.1.5";
+      blockInternetAccess = true;
     };
     l-fali = {
       mac = "7C:C2:94:81:90:2B";
       ip = "10.4.1.6";
+      blockInternetAccess = true;
     };
     ranarp = {
       mac = "44:23:7C:CA:40:4F";
       ip = "10.4.1.7";
+      blockInternetAccess = true;
     };
     kp105 = {
       mac = "28:EE:52:41:3F:98";
       ip = "10.4.1.8";
+      blockInternetAccess = true;
     };
     l-pavilon = {
       mac = "D4:A6:51:91:0D:9E";
       ip = "10.4.1.9";
+      blockInternetAccess = true;
     };
 
     # ESPHome
     cerberus = {
       mac = "98:CD:AC:2E:F9:0C";
       ip = "10.4.2.1";
+      blockInternetAccess = true;
     };
     indoor_sensor = {
       mac = "8C:AA:B5:7C:FA:80";
       ip = "10.4.2.2";
+      blockInternetAccess = true;
     };
     outside_sensor = {
       mac = "8C:AA:B5:7A:AD:A6";
       ip = "10.4.2.3";
+      blockInternetAccess = true;
     };
     outside-front-sensor = {
       mac = "98:CD:AC:26:10:8A";
       ip = "10.4.2.4";
+      blockInternetAccess = true;
     };
     ha-ble-proxy = {
       mac = "D8:13:2A:2E:DA:20";
       ip = "10.4.2.5";
+      blockInternetAccess = true;
     };
 
     # other IoT
