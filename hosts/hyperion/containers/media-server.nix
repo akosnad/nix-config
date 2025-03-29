@@ -147,16 +147,20 @@ in
       # reference: https://support.plex.tv/articles/201543147-what-network-ports-do-i-need-to-allow-through-my-firewall/
       32400
       8324
+      # plex DLNA server
       32469
     ];
     allowedUDPPorts = [
       # plex
       32400
       5353
+      # plex GDM network discovery
       32410
       32412
       32413
       32414
+      # plex DLNA server
+      1900
     ];
   };
 
