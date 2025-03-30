@@ -26,5 +26,13 @@
     nodePackages = (prev.nodePackages or { }) // import ../pkgs/nodePackages { pkgs = final; };
   };
 
-  modifications = _final: _prev: { };
+  modifications = final: _prev:
+    let
+      pkgsUnstable = import inputs.nixpkgs-unstable { inherit (final) system; };
+    in
+    {
+      # >= 2.26.0 is required for buildbot-nix
+      # TODO: remove during upgrade to 25.05
+      inherit (pkgsUnstable) nix-eval-jobs;
+    };
 }
