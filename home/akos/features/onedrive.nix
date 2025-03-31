@@ -28,12 +28,13 @@ in
         ${lib.getExe pkgs.rclone} mount -v \
           --config "${rcloneConfigFile}" \
           --cache-dir "${cacheDir}"\
-          --dir-cache-time 1m \
+          --dir-cache-time 15m \
           --vfs-cache-mode full \
           --vfs-cache-max-age 168h \
           --allow-non-empty \
           --use-mmap=true \
           --vfs-cache-max-size 200G \
+          --no-modtime \
           --rc \
           ${remote}: "${mountpoint}"
       '';
