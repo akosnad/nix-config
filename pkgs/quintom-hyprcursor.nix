@@ -1,5 +1,11 @@
-{ pkgs }: pkgs.stdenvNoCC.mkDerivation {
-  name = "quintom-ink-hyprcursor";
+{ pkgs, variant }:
+let
+  first = builtins.substring 0 1 variant;
+  rest = builtins.substring 1 (builtins.stringLength variant) variant;
+  variantCapitalized = (pkgs.lib.toUpper first) + rest;
+in
+pkgs.stdenvNoCC.mkDerivation {
+  name = "quintom-${variant}-hyprcursor";
 
   src = pkgs.fetchFromGitLab {
     owner = "Burning_Cube";
@@ -12,13 +18,13 @@
 
   unpackPhase = ''
     mkdir -p source
-    cp -r "$src/Quintom_Ink Cursors/Quintom_Ink"/* ./source/.
+    cp -r "$src/Quintom_${variantCapitalized} Cursors/Quintom_${variantCapitalized}"/* ./source/.
   '';
 
   buildPhase = ''
     hyprcursor-util -x ./source
     cat << EOF > extracted_source/manifest.hl
-    name = Quintom Ink
+    name = Quintom ${variantCapitalized}
     description = A cursor theme designed to look decent.
     version = 0.1
     cursors_directory = hyprcursors
@@ -28,8 +34,8 @@
   '';
 
   installPhase = ''
-    target="$out/usr/share/icons/Quintom Ink"
+    target="$out/usr/share/icons/Quintom ${variantCapitalized}"
     mkdir -p "$target"
-    cp -r "theme_Quintom Ink"/* "$target"
+    cp -r "theme_Quintom ${variantCapitalized}"/* "$target"
   '';
 }

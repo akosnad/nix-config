@@ -7,5 +7,6 @@ args: {
 
   librespot-auth = import ./librespot-auth args;
 
-  quintom-ink-hyprcursor = import ./quintom-ink-hyprcursor.nix args;
+  quintom-snow-hyprcursor = import ./quintom-hyprcursor.nix (args // { variant = "snow"; });
+  quintom-ink-hyprcursor = import ./quintom-hyprcursor.nix (args // { variant = "ink"; });
 }

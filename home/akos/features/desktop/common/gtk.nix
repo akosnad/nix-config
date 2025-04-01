@@ -1,4 +1,4 @@
-{ config, inputs, pkgs, ... }:
+{ config, inputs, pkgs, lib, ... }:
 let
   inherit (inputs.nix-colors.lib.contrib { inherit pkgs; }) gtkThemeFromScheme;
 in
@@ -18,9 +18,14 @@ rec {
       package = pkgs.papirus-icon-theme;
     };
     cursorTheme = {
-      name = "Quintom_Ink";
+      name = lib.mkDefault "Quintom_Ink";
       package = pkgs.quintom-cursor-theme;
     };
+  };
+
+  specialisation = {
+    dark.configuration.gtk.cursorTheme.name = "Quintom_Ink";
+    light.configuration.gtk.cursorTheme.name = "Quintom_Snow";
   };
 
   services.xsettingsd = {
