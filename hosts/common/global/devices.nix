@@ -91,6 +91,10 @@
       mac = "60:AB:67:FA:52:09";
       ip = "10.3.0.4";
     };
+    Aether = {
+      mac = "60:AB:67:FA:79:EF";
+      ip = "10.3.0.5";
+    };
 
     # security devices
     alarm = {
