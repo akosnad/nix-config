@@ -4,29 +4,6 @@ let
     IPv6AcceptRA = true;
     LLDP = true;
   };
-
-  mkDefaultRoutes = { metric }: [
-    {
-      Table = "mwan";
-      Destination = "0.0.0.0/0";
-      Protocol = "static";
-      Gateway = "_dhcp4";
-      Metric = metric;
-    }
-    {
-      Table = "mwan";
-      Destination = "::/0";
-      Protocol = "static";
-      Gateway = "_ipv6ra";
-      Metric = metric;
-    }
-  ];
-
-  mkDefaultRoutingPolicyRules = { ifname, priority }: [{
-    OutgoingInterface = ifname;
-    Table = "mwan";
-    Priority = priority;
-  }];
 in
 {
   systemd.network = {
@@ -45,8 +22,6 @@ in
       "50-wan0" = {
         matchConfig.Name = "wan0";
         inherit networkConfig;
-        routes = mkDefaultRoutes { metric = 500; };
-        routingPolicyRules = mkDefaultRoutingPolicyRules { ifname = "wan0"; priority = 500; };
         cakeConfig = {
           Bandwidth = "500M";
           FlowIsolationMode = "src-host";
@@ -58,8 +33,6 @@ in
       "51-wan-rndis" = {
         matchConfig.Name = "wan-rndis";
         inherit networkConfig;
-        routes = mkDefaultRoutes { metric = 1000; };
-        routingPolicyRules = mkDefaultRoutingPolicyRules { ifname = "wan-rndis"; priority = 1000; };
         cakeConfig = {
           Bandwidth = "30M";
           AutoRateIngress = true;

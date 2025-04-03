@@ -15,6 +15,7 @@ in
     ./dyndns.nix
     ./block.nix
     ./pxe
+    ./failover.nix
   ];
 
   networking = {
