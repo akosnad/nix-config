@@ -26,13 +26,27 @@
     nodePackages = (prev.nodePackages or { }) // import ../pkgs/nodePackages { pkgs = final; };
   };
 
-  modifications = final: _prev:
+  modifications = final: prev:
     let
       pkgsUnstable = import inputs.nixpkgs-unstable { inherit (final) system; };
+
+      # TODO: remove when upstream fixes this
+      mkIcalPatch = ical: ical.overrideAttrs (previousAttrs: {
+        patches = (previousAttrs.patches or [ ]) ++ [ ./0001-fix-tests-remove-missing-timezone.patch ];
+      });
     in
     {
       # >= 2.26.0 is required for buildbot-nix
       # TODO: remove during upgrade to 25.05
       inherit (pkgsUnstable) nix-eval-jobs;
+
+      python3Packages = prev.python3Packages // {
+        ical = mkIcalPatch prev.python3Packages.ical;
+      };
+      home-assistant = prev.home-assistant.override {
+        packageOverrides = _final: prev: prev // {
+          ical = mkIcalPatch prev.ical;
+        };
+      };
     };
 }

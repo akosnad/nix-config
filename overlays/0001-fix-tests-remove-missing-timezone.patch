@@ -1,0 +1,27 @@
+From 746a6bf9a498d3a10bbdb1c9e904f5b7bc293954 Mon Sep 17 00:00:00 2001
+From: akosnad <akos@nadudvari.org>
+Date: Sun, 6 Apr 2025 14:42:53 +0200
+Subject: [PATCH] fix(tests): remove missing timezone
+
+---
+ tests/tzif/test_timezoneinfo.py | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/tests/tzif/test_timezoneinfo.py b/tests/tzif/test_timezoneinfo.py
+index 9d5b0ce..14d4173 100644
+--- a/tests/tzif/test_timezoneinfo.py
++++ b/tests/tzif/test_timezoneinfo.py
+@@ -9,7 +9,9 @@ from ical.tzif import timezoneinfo, tz_rule
+ 
+ 
+ IGNORED_TIMEZONES = {
+-    "Asia/Hanoi",  # Not in tzdata
++    # Not in tzdata
++    "Asia/Hanoi",
++    "America/Coyhaique"
+ }
+ 
+ 
+-- 
+2.47.2
+
