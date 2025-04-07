@@ -38,6 +38,8 @@
     grub.enable = lib.mkForce true;
   };
 
+  services.openssh.openFirewall = lib.mkForce false;
+
   services.geoclue2.enable = lib.mkForce false;
   services.avahi.enable = lib.mkForce false;
   programs.dconf.enable = lib.mkForce false;
