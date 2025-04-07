@@ -20,9 +20,9 @@ in
     ./features/desktop/steam.nix
   ];
 
-  colorscheme = lib.mkDefault colorSchemes.equilibrium-dark;
+  colorscheme = lib.mkDefault colorSchemes.sandcastle;
   specialisation = {
-    light.configuration.colorscheme = colorSchemes.equilibrium-light;
+    light.configuration.colorscheme = colorSchemes.atelier-lakeside-light;
   };
 
   monitors = [

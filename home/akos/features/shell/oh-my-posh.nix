@@ -97,11 +97,12 @@ let
     transient_prompt = {
       template = "<p:bg,transparent></><,p:bg> {{ .Segments.Path.Path }} </><p:bg,transparent></> ";
       background = "transparent";
-      foreground = "p:fg";
+      foreground = "p:fg_faded";
     };
     palette = with palette; {
       bg = base02;
-      fg = base05;
+      fg = base06;
+      fg_faded = base05;
       info_bg = base0D;
       info_fg = base00;
       warning_bg = base0A;

@@ -5,6 +5,7 @@ let
 
   base = /* css */ ''
     background-color: #${c.base02};
+    color: #${c.base06};
     padding: 0.125em 0.5em;
     margin: 0.125em 0.25em;
     border-radius: 1em;

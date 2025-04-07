@@ -50,9 +50,14 @@
 
     settings =
       let
-        selection = "0xaa${config.colorscheme.palette.base08}";
-        active = "0xaa${config.colorscheme.palette.base0C}";
-        inactive = "0xaa${config.colorscheme.palette.base02}";
+        inherit (config.colorscheme) palette variant;
+        activeOpacity = "55";
+        inactiveOpacity = "22";
+        selection = "0x${activeOpacity}${palette.base08}";
+        active = "0x${activeOpacity}${palette.base0C}";
+        inactive = "0x${inactiveOpacity}${palette.base02}";
+        shadow = if variant == "light" then "0x${activeOpacity}${palette.base07}" else "0x${activeOpacity}${palette.base00}";
+        shadowInactive = if variant == "light" then "0x${inactiveOpacity}${palette.base07}" else "0x${inactiveOpacity}${palette.base00}";
       in
       {
         monitor = map
@@ -131,6 +136,16 @@
           #blur_size = 3
           #blur_passes = 1
           #blur_new_optimizations = on
+
+          shadow = {
+            enabled = true;
+            range = 18;
+            render_power = 2;
+            sharp = false;
+            ignore_window = true;
+            color = shadow;
+            color_inactive = shadowInactive;
+          };
         };
 
         animations = {
