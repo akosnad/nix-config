@@ -28,4 +28,10 @@ in
       header = "#${palette.base0E}";
     };
   };
+
+  programs.eza = {
+    enable = true;
+    icons = "auto";
+    git = true;
+  };
 }
