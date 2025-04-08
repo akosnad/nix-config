@@ -6,11 +6,17 @@
 
     ../common/global
     ../common/optional/ephemeral-btrfs.nix
+    ../common/optional/high-availability.nix
 
     ../common/users/akos
   ];
 
   networking.hostName = "ceyx";
+
+  swapDevices = [{
+    device = "/swap/swapfile";
+    size = 8 * 1024;
+  }];
 
   networking.useDHCP = lib.mkForce false;
   networking.interfaces.ens18 = {
