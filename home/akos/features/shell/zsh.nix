@@ -9,6 +9,9 @@ in
       enable = true;
       plugins = [ "git" "sudo" "fzf" "last-working-dir" ];
     };
+    shellAliases = {
+      tree = "eza -l --tree";
+    };
   };
 
   programs.fzf = {
