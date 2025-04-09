@@ -27,7 +27,7 @@
 
     ../common/users/akos
 
-    ./steam.nix
+    ./gaming.nix
     ./vivado.nix
   ];
 
