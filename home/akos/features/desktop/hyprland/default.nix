@@ -121,6 +121,7 @@
 
         env = [
           "HYPRCURSOR_SIZE,24"
+          "XDG_SESSION_TYPE,wayland"
         ];
 
         misc = {

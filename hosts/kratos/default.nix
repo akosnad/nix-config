@@ -2,7 +2,7 @@
   imports = [
     inputs.hardware.nixosModules.common-cpu-amd
     inputs.hardware.nixosModules.common-cpu-amd-pstate
-    inputs.hardware.nixosModules.common-gpu-nvidia
+    inputs.hardware.nixosModules.common-gpu-amd
     inputs.hardware.nixosModules.common-pc-ssd
 
     ./hardware-configuration.nix
@@ -11,7 +11,6 @@
     ../common/global
     ../common/optional/ephemeral-btrfs.nix
     ../common/optional/secureboot.nix
-    ../common/optional/nvidia.nix
     ../common/optional/quietboot.nix
     ../common/optional/pipewire.nix
     ../common/optional/greetd.nix
@@ -34,8 +33,6 @@
 
   networking.hostName = "kratos";
   networking.networkmanager.enable = true;
-
-  hardware.nvidia.prime.offload.enable = false;
 
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
