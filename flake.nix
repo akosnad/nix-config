@@ -92,7 +92,7 @@
     };
 
     buildbot-nix = {
-      url = "github:nix-community/buildbot-nix";
+      url = "github:nix-community/buildbot-nix/474d5e49962363ea69d6388dd308292a13874068";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-parts.follows = "flake-parts";
       inputs.treefmt-nix.follows = "treefmt-nix";
