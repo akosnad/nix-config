@@ -1,4 +1,4 @@
-{ lib, inputs, ... }:
+{ lib, inputs, config, ... }:
 let
   inherit (inputs.nix-colors) colorSchemes;
 in
@@ -17,7 +17,6 @@ in
     ./features/darktable.nix
     ./features/onedrive.nix
     ./features/shell/iamb.nix
-    ./features/desktop/steam.nix
   ];
 
   colorscheme = lib.mkDefault colorSchemes.sandcastle;
@@ -51,5 +50,11 @@ in
       name = "Unknown-1";
       enabled = false;
     }
+  ];
+
+  home.persistence."/persist/${config.home.homeDirectory}".directories = [
+    ".local/share/Steam"
+    ".local/share/lutris"
+    "Games"
   ];
 }
