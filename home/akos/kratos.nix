@@ -36,6 +36,7 @@ in
       x = 0;
       workspace = "1";
       primary = true;
+      vrr = 1;
     }
     {
       # Asus

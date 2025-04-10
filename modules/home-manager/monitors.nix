@@ -34,6 +34,10 @@ in
             type = types.int;
             default = 60;
           };
+          vrr = mkOption {
+            type = types.nullOr types.int;
+            default = null;
+          };
           x = mkOption {
             type = types.int;
             default = 0;

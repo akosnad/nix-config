@@ -67,10 +67,14 @@
               resolution = "${toString m.width}x${toString m.height}@${toString m.refreshRate}";
               position = "${toString m.x}x${toString m.y}";
               scale = "${toString m.scale}";
+              vrr = if m.vrr != null then "vrr, ${toString m.vrr}" else "";
             in
             "${m.name},${
           if m.enabled
-          then "${resolution},${position},${scale}"
+          then (lib.pipe [ resolution position scale vrr ] [
+            (lib.filter (s: s != "" && s != null))
+            (lib.concatStringsSep ",")
+          ])
           else "disable"
         }"
           )
