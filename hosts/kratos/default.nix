@@ -1,4 +1,4 @@
-{ inputs, lib, ... }: {
+{ inputs, lib, pkgs, ... }: {
   imports = [
     inputs.hardware.nixosModules.common-cpu-amd
     inputs.hardware.nixosModules.common-cpu-amd-pstate
@@ -36,6 +36,10 @@
 
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
+
+  hardware.graphics.extraPackages = with pkgs; [
+    rocmPackages.clr.icd
+  ];
 
   # needed for Windows dual boot
   time.hardwareClockInLocalTime = true;
