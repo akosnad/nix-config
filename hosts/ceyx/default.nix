@@ -15,7 +15,7 @@
 
   swapDevices = [{
     device = "/swap/swapfile";
-    size = 8 * 1024;
+    size = 4 * 1024;
   }];
 
   networking.useDHCP = lib.mkForce false;
