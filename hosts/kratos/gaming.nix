@@ -33,5 +33,19 @@
     capSysNice = true;
   };
 
-  programs.gamemode.enable = true;
+  programs.gamemode = {
+    enable = true;
+    enableRenice = true;
+    settings = {
+      general = {
+        renice = 10;
+        desiredgov = "performance";
+        inhibit_screensaver = 1;
+      };
+
+      gpu = {
+        amd_performance_level = "high";
+      };
+    };
+  };
 }
