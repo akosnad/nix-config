@@ -22,6 +22,12 @@ in
 
   services.blueman-applet.enable = true;
 
+  wayland.windowManager.hyprland.settings = {
+    input.touchpad = {
+      scroll_factor = 0.15;
+    };
+  };
+
   monitors = [
     {
       name = "eDP-1";
