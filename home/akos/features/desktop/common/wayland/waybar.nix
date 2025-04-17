@@ -46,75 +46,16 @@ let
 
   yubilock-toggle = pkgs.writeShellApplication {
     name = "yubilock-toggle";
-    runtimeInputs = with pkgs; [ systemd libnotify ];
-    # adapted from: https://github.com/guttermonk/yubilock/blob/main/scripts/yubilock-toggle.sh
+    runtimeInputs = with pkgs; [ socat ];
     text = ''
-      STATE_FILE="$HOME/.cache/yubilock-state"
-
-      # Create state file if it doesn't exist
-      if [ ! -f "$STATE_FILE" ]; then
-          echo "off" > "$STATE_FILE"
-      fi
-
-      # Read current state
-      current_state=$(cat "$STATE_FILE")
-
-      # Toggle state
-      sleep 1
-      if [ "$current_state" = "on" ]; then
-          # Turn off monitoring
-          notify-send "Yubilock is shutting down" -e
-          echo "off" > "$STATE_FILE"
-          # Kill the monitoring process if it's running
-          systemctl --user stop yubilock
-          echo '{"text": "Yubilock: OFF", "class": "yubilock-off", "tooltip": "Yubilock disabled"}'
-      else
-          # Turn on monitoring
-          echo "on" > "$STATE_FILE"
-          # Start the monitoring script
-          notify-send "Yubilock is now starting" -e
-          systemctl --user start yubilock
-          echo '{"text": "Yubilock: ON", "class": "yubilock-on", "tooltip": "Yubilock enabled"}'
-      fi
+      echo "toggle" | socat - UNIX-CONNECT:"$XDG_RUNTIME_DIR/yubilock.sock"
     '';
   };
-  yubilock-status = pkgs.writeShellApplication {
-    name = "yubilock-status";
-    runtimeInputs = with pkgs; [ usbutils systemd ];
-    # adapted from: https://github.com/guttermonk/yubilock/blob/main/scripts/yubikey-status.sh
+  yubilock-state = pkgs.writeShellApplication {
+    name = "yubilock-state";
+    runtimeInputs = with pkgs; [ socat ];
     text = ''
-      STATE_FILE="$HOME/.cache/yubilock-state"
-
-      # Create state file if it doesn't exist
-      if [ ! -f "$STATE_FILE" ]; then
-          echo "off" > "$STATE_FILE"
-      fi
-
-      # Read current state
-      current_state=$(cat "$STATE_FILE")
-
-      # Check if YubiKey is present
-      if lsusb -d "1050:0407" > /dev/null; then
-          yubikey_status="(inserted)"
-          yubikey_class="inserted"
-      else
-          yubikey_status="(not present)"
-          yubikey_class="not-present"
-      fi
-
-      # Output JSON for waybar
-      if [ "$current_state" = "on" ]; then
-          # Check if process is actually running
-          if [[ "$(systemctl --user is-active yubilock.service)" == "active" ]]; then
-              echo "{\"text\": \"Yubilock: ON $yubikey_status\", \"class\": \"yubilock-on-$yubikey_class\", \"tooltip\": \"Yubilock enabled $yubikey_status\", \"alt\": \"active\"}"
-          else
-              # Process died, update state
-              echo "off" > "$STATE_FILE"
-              echo "{\"text\": \"Yubilock: OFF $yubikey_status\", \"class\": \"yubilock-off-$yubikey_class\", \"tooltip\": \"YubiKey not present $yubikey_status\", \"alt\": \"inactive\"}"
-          fi
-      else
-          echo "{\"text\": \"Yubilock: OFF $yubikey_status\", \"class\": \"yubilock-off-$yubikey_class\", \"tooltip\": \"Yubilock disabled $yubikey_status\", \"alt\": \"inactive\"}"
-      fi
+      stdbuf -i0 -o0 -e0 socat -u UNIX-CONNECT:"$XDG_RUNTIME_DIR"/yubilock.sock -
     '';
   };
 in
@@ -254,8 +195,7 @@ in
       };
       "custom/yubilock" = {
         return-type = "json";
-        interval = 5;
-        exec = lib.getExe yubilock-status;
+        exec = lib.getExe yubilock-state;
         on-click = lib.getExe yubilock-toggle;
         tooltip = true;
         format = "{icon}";
@@ -390,17 +330,17 @@ in
       #custom-yubilock {
         ${base}
       }
-      #custom-yubilock.yubilock-on-inserted {
+      #custom-yubilock.yubilock-locked-connected {
         padding-right: 0.18em;
       }
-      #custom-yubilock.yubilock-on-not-present {
+      #custom-yubilock.yubilock-locked-disconnected {
         ${error}
         padding-right: 0.18em;
       }
-      #custom-yubilock.yubilock-off-inserted {
+      #custom-yubilock.yubilock-unlocked-connected {
         ${warning}
       }
-      #custom-yubilock.yubilock-off-not-present {
+      #custom-yubilock.yubilock-unlocked-disconnected {
         ${error}
       }
     '';

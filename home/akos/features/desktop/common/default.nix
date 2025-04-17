@@ -8,7 +8,7 @@
     ./audio.nix
     ./mqtt-notify.nix
     ./yubikey-touch-detector.nix
-    ./yubilock.nix
+    ./yubilock
     ./spotify.nix
     ./kde-connect.nix
     ./swaync.nix
