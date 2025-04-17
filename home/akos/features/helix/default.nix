@@ -1,3 +1,4 @@
+{ pkgs, lib, ... }:
 {
   imports = [
     ./theme.nix
@@ -18,4 +19,22 @@
       };
     };
   };
+
+  xdg.configFile =
+    let
+      reloadHelix = lib.getExe (pkgs.writeShellApplication {
+        name = "reload-helix";
+        runtimeInputs = with pkgs; [ util-linux procps ];
+        text = ''
+          pids="$(pidof hx)"
+          if [[ "$pids" != "" ]]; then
+            xargs kill -USR1 <<<"$pids"
+          fi
+        '';
+      });
+    in
+    {
+      "helix/config.toml".onChange = reloadHelix;
+      "helix/themes/base16.toml".onChange = reloadHelix;
+    };
 }
