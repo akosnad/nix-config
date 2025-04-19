@@ -25,6 +25,7 @@
       reloadHelix = lib.getExe (pkgs.writeShellApplication {
         name = "reload-helix";
         runtimeInputs = with pkgs; [ util-linux procps ];
+        bashOptions = [ ];
         text = ''
           pids="$(pidof hx)"
           if [[ "$pids" != "" ]]; then
