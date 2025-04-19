@@ -15,7 +15,7 @@ in
   systemd.user.services.yubilock = {
     Unit = {
       Description = "Yubikey presence locking daemon";
-      After = "graphical-session.target";
+      After = "graphical-session-pre.target";
       Before = "waybar.service";
     };
     Service = {
