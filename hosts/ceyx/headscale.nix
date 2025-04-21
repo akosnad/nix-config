@@ -29,7 +29,6 @@ in
   environment.persistence."/persist".directories = [{
     directory = "/var/lib/headscale";
     mode = "750";
-    user = config.services.headscale.user;
-    group = config.services.headscale.group;
+    inherit (config.services.headscale) user group;
   }];
 }
