@@ -64,4 +64,8 @@
       value = "1048576";
     }
   ];
+
+  # TODO: remove workaround after upstream patch is available
+  # https://nixpk.gs/pr-tracker.html?pr=398397
+  systemd.shutdownRamfs.enable = lib.mkForce false;
 }
