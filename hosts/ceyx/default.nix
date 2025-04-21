@@ -9,6 +9,7 @@
     ../common/optional/high-availability.nix
 
     ../common/users/akos
+    ./headscale.nix
   ];
 
   networking.hostName = "ceyx";
@@ -49,6 +50,14 @@
   services.geoclue2.enable = lib.mkForce false;
   services.avahi.enable = lib.mkForce false;
   programs.dconf.enable = lib.mkForce false;
+
+  services.nginx.enable = true;
+  networking.firewall.allowedTCPPorts = [ 80 443 ];
+  security.acme.defaults = lib.mkForce {
+    server = "https://acme-v02.api.letsencrypt.org/directory";
+    validMinDays = 30;
+    email = "contact@fzt.one";
+  };
 
   system.stateVersion = "24.11";
 }
