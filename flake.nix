@@ -125,7 +125,7 @@
       inherit systems;
       imports = [
         inputs.treefmt-nix.flakeModule
-      ];
+      ] ++ (builtins.attrValues (import ./modules/flake));
 
       perSystem = { pkgs, config, ... }: {
         packages = import ./pkgs { inherit pkgs; };
@@ -184,6 +184,14 @@
             };
           in
           builtins.listToAttrs (lib.map mkHomeConfig homes);
+
+        esphomeConfigurations =
+          let
+            dir = builtins.attrNames (builtins.readDir "${self}/esphome-hosts");
+            stripExtension = fname: lib.head (lib.splitString ".nix" fname);
+            hosts = map stripExtension dir;
+          in
+          lib.listToAttrs (map (host: lib.nameValuePair host (import "${self}/esphome-hosts/${host}.nix")) hosts);
       };
     });
 }

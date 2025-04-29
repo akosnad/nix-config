@@ -1,7 +1,8 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, inputs, ... }:
 let
   inherit (lib) types;
   cfg = config.services.esphome.configurations;
+  configurationModule = import ../common/esphome.nix;
   deviceSettingsFormat = pkgs.formats.yaml { };
 
   defaultSettings = name: {
@@ -44,52 +45,6 @@ let
     (lib.mapAttrs (name: cfg: renderDeviceSettingsFile "${name}.yaml" cfg))
     (lib.mapAttrs' (name: cfg: lib.nameValuePair "${name}.yaml" cfg))
   ];
-
-  configurationModule = {
-    options = {
-      autoUpdate = {
-        enable = lib.mkOption {
-          description = ''
-            Whether to enable OTA updater service for this device.
-          '';
-          type = types.bool;
-          default = true;
-        };
-        onCalendar = lib.mkOption {
-          description = ''
-            Schedule for OTA updates.
-          
-            The value is passed to the systemd timer unit's OnCalendar.
-          '';
-          type = types.string;
-          default = "*-*-* 02:00:00";
-        };
-      };
-      settings = lib.mkOption {
-        description = ''
-          Settings for the device to pass to ESHome.
-
-          Contents are placed in a in YAML configuration file and will be visible on the ESPHome Dashboard.
-        '';
-        example = {
-          esphome = {
-            name = "esp1";
-            platform = "ESP8266";
-            board = "d1_mini";
-          };
-          logger = { };
-          api = { };
-          ota = { };
-          wifi = {
-            ssid = "Stuff";
-            password = "!secret wifi_pass";
-          };
-        };
-        type = types.attrs;
-        default = { };
-      };
-    };
-  };
 
   firmwareUpdateScript = pkgs.writeShellApplication {
     name = "esphome-update-device";
@@ -177,6 +132,8 @@ in
     };
   };
   config = lib.mkIf config.services.esphome.enable {
+    services.esphome.configurations = inputs.self.esphomeConfigurations;
+
     environment.etc = lib.mapAttrs'
       (target: source: lib.nameValuePair "esphome/${target}" {
         inherit source;
