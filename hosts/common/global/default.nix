@@ -2,7 +2,6 @@
 {
   imports = [
     inputs.home-manager.nixosModules.home-manager
-    ./devices.nix
     ./locale.nix
     ./zsh.nix
     ./nix.nix
@@ -15,6 +14,8 @@
     ./optin-persistence.nix
     ./certs.nix
   ] ++ (builtins.attrValues outputs.nixosModules);
+
+  devices = lib.mkForce inputs.self.devices;
 
   home-manager.extraSpecialArgs = {
     inherit inputs outputs;

@@ -158,6 +158,8 @@
 
         overlays = import ./overlays { inherit inputs outputs; };
 
+        devices = import ./devices.nix;
+
         nixosConfigurations =
           let
             mkNixosConfig = host: {
