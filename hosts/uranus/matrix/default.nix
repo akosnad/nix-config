@@ -18,6 +18,7 @@
       allow_public_rooms_over_federation = true;
       app_service_config_files = [ config.sops.secrets.matrix-doublepuppet-config.path ];
       max_upload_size = "512M";
+      media_retention.remote_media_lifetime = "7d";
     };
     extraConfigFiles = [ config.sops.secrets.matrix-secret-config.path ];
     extras = [
