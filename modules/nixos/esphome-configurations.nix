@@ -13,6 +13,11 @@ let
       ssid = "!secret wifi_ssid";
       password = "!secret wifi_pass";
       domain = ".${config.networking.domain}";
+      ap = {
+        # careful: can't be longer than 32 chars!
+        ssid = "${name} fallback";
+        password = "!secret wifi_fallback_pass";
+      };
       manual_ip =
         if lib.hasAttr name config.devices then
           {
@@ -22,9 +27,13 @@ let
             dns1 = config.devices.gaia.ip;
           } else { };
     };
-    ota.platform = "esphome";
+    ota = {
+      platform = "esphome";
+      password = "!secret ota_pass";
+    };
     logger = { };
     api = { };
+    captive_portal = { };
   };
 
   # borrowed from nixpkgs: https://github.com/NixOS/nixpkgs/blob/nixos-24.11/nixos/modules/services/home-automation/home-assistant.nix
