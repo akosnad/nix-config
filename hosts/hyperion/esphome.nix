@@ -30,7 +30,5 @@
   sops.secrets.esphome-secrets = {
     sopsFile = ./secrets.yaml;
     path = "/etc/esphome/secrets.yaml";
-    owner = "esphome";
-    group = "esphome";
   };
 }

@@ -59,7 +59,7 @@ let
     name = "esphome-update-device";
     runtimeInputs = with pkgs; [ esphome ];
     text = ''
-      ln -sf /etc/esphome/secrets.yaml ./secrets.yaml
+      ln -sf "$CREDENTIALS_DIRECTORY"/esphome-secrets ./secrets.yaml
       ln -sf /etc/esphome/"$1" ./"$1"
       esphome run --no-logs "$1"
     '';
@@ -116,6 +116,7 @@ let
         "@mount" # Required by platformio for chroot
       ];
       UMask = "0077";
+      LoadCredential = "esphome-secrets:${config.sops.secrets.esphome-secrets.path}";
     };
   };
 
