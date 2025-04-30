@@ -65,66 +65,75 @@ let
     '';
   };
 
-  mkUpdateService = name: _cfg: {
-    description = "ESPHome firmware updater for ${name}";
-    environment = {
-      PLATFORMIO_CORE_DIR = "/var/lib/esphome/.platformio";
-    };
-    after = [ "network.target" ];
-    serviceConfig = {
-      ExecStart = "${lib.getExe firmwareUpdateScript} ${name}.yaml";
-      DynamicUser = true;
-      User = "esphome";
-      Group = "esphome";
-      WorkingDirectory = "/var/lib/esphome";
-      StateDirectory = "esphome";
-      StateDirectoryMode = "0750";
-      Restart = "on-failure";
+  mkUpdateService = name: cfg:
+    let
+      mkIfNotScheduled = lib.mkIf (builtins.isNull cfg.autoUpdate.schedule);
+    in
+    lib.mkIf cfg.autoUpdate.enable {
+      description = "ESPHome firmware updater for ${name}";
+      environment = {
+        PLATFORMIO_CORE_DIR = "/var/lib/esphome/.platformio";
+      };
+      after = [ "network.target" ];
+      wantedBy = mkIfNotScheduled [ "multi-user.target" ];
+      restartIfChanged = mkIfNotScheduled true;
+      restartTriggers = mkIfNotScheduled [ config.environment.etc."esphome/${name}.yaml".source ];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        ExecStart = "${lib.getExe firmwareUpdateScript} ${name}.yaml";
+        DynamicUser = true;
+        User = "esphome";
+        Group = "esphome";
+        WorkingDirectory = "/var/lib/esphome";
+        StateDirectory = "esphome";
+        StateDirectoryMode = "0750";
+        Restart = "on-failure";
 
-      # Hardening
-      # taken from: https://github.com/NixOS/nixpkgs/blob/330d0a4167924b43f31cc9406df363f71b768a02/nixos/modules/services/home-automation/esphome.nix#L111C1-L145C24
-      CapabilityBoundingSet = "";
-      LockPersonality = true;
-      MemoryDenyWriteExecute = true;
-      DevicePolicy = "closed";
-      #NoNewPrivileges = true; # Implied by DynamicUser
-      PrivateUsers = true;
-      #PrivateTmp = true; # Implied by DynamicUser
-      ProtectClock = true;
-      ProtectControlGroups = true;
-      ProtectHome = true;
-      ProtectHostname = false; # breaks bwrap
-      ProtectKernelLogs = false; # breaks bwrap
-      ProtectKernelModules = true;
-      ProtectKernelTunables = false; # breaks bwrap
-      ProtectProc = "invisible";
-      ProcSubset = "all"; # Using "pid" breaks bwrap
-      ProtectSystem = "strict";
-      #RemoveIPC = true; # Implied by DynamicUser
-      RestrictAddressFamilies = [
-        "AF_INET"
-        "AF_INET6"
-        "AF_NETLINK"
-        "AF_UNIX"
-      ];
-      RestrictNamespaces = false; # Required by platformio for chroot
-      RestrictRealtime = true;
-      #RestrictSUIDSGID = true; # Implied by DynamicUser
-      SystemCallArchitectures = "native";
-      SystemCallFilter = [
-        "@system-service"
-        "@mount" # Required by platformio for chroot
-      ];
-      UMask = "0077";
-      LoadCredential = "esphome-secrets:${config.sops.secrets.esphome-secrets.path}";
+        # Hardening
+        # taken from: https://github.com/NixOS/nixpkgs/blob/330d0a4167924b43f31cc9406df363f71b768a02/nixos/modules/services/home-automation/esphome.nix#L111C1-L145C24
+        CapabilityBoundingSet = "";
+        LockPersonality = true;
+        MemoryDenyWriteExecute = true;
+        DevicePolicy = "closed";
+        #NoNewPrivileges = true; # Implied by DynamicUser
+        PrivateUsers = true;
+        #PrivateTmp = true; # Implied by DynamicUser
+        ProtectClock = true;
+        ProtectControlGroups = true;
+        ProtectHome = true;
+        ProtectHostname = false; # breaks bwrap
+        ProtectKernelLogs = false; # breaks bwrap
+        ProtectKernelModules = true;
+        ProtectKernelTunables = false; # breaks bwrap
+        ProtectProc = "invisible";
+        ProcSubset = "all"; # Using "pid" breaks bwrap
+        ProtectSystem = "strict";
+        #RemoveIPC = true; # Implied by DynamicUser
+        RestrictAddressFamilies = [
+          "AF_INET"
+          "AF_INET6"
+          "AF_NETLINK"
+          "AF_UNIX"
+        ];
+        RestrictNamespaces = false; # Required by platformio for chroot
+        RestrictRealtime = true;
+        #RestrictSUIDSGID = true; # Implied by DynamicUser
+        SystemCallArchitectures = "native";
+        SystemCallFilter = [
+          "@system-service"
+          "@mount" # Required by platformio for chroot
+        ];
+        UMask = "0077";
+        LoadCredential = "esphome-secrets:${config.sops.secrets.esphome-secrets.path}";
+      };
     };
-  };
 
-  mkUpdateTimer = name: cfg: {
+  mkUpdateTimer = name: cfg: lib.mkIf (!(builtins.isNull cfg.autoUpdate.schedule)) {
     description = "Scheduled ESPHome firmware update for ${name}";
     wantedBy = [ "multi-user.target" ];
     timerConfig = {
-      OnCalendar = cfg.autoUpdate.onCalendar;
+      OnCalendar = cfg.autoUpdate.schedule;
       Persistent = true;
     };
   };
