@@ -8,25 +8,28 @@
       let
         frequency = "19531Hz";
         max_power = 0.88;
+        min_power = 0.01;
       in
       [
         {
           platform = "ledc";
           pin = "GPIO19";
           id = "output_warm";
-          inherit frequency max_power;
+          inherit frequency max_power min_power;
         }
         {
           platform = "ledc";
           pin = "GPIO23";
           id = "output_cold";
-          inherit frequency max_power;
+          inherit frequency max_power min_power;
         }
         {
           platform = "ledc";
           pin = "GPIO18";
           id = "output_nightlight";
-          inherit frequency max_power;
+          frequency = "19531Hz";
+          max_power = 0.25;
+          min_power = 0.02;
         }
       ];
     light = [
@@ -36,7 +39,7 @@
         id = "night_light";
         icon = "mdi:weather-night";
         output = "output_nightlight";
-        gamma_correct = 0;
+        gamma_correct = 1.5;
         restore_mode = "RESTORE_DEFAULT_OFF";
         on_turn_on = [{ "light.turn_off" = "ceiling_light"; }];
       }
@@ -50,34 +53,11 @@
         cold_white_color_temperature = "6000K";
         warm_white_color_temperature = "2700K";
         constant_brightness = true;
-        gamma_correct = 0;
+        gamma_correct = 2.2;
         restore_mode = "RESTORE_DEFAULT_ON";
         on_turn_on = [{ "light.turn_off" = "night_light"; }];
-        effects = [
-          { random = { }; }
-          { pulse = { }; }
-          { strobe = { }; }
-          { flicker = { }; }
-        ];
       }
     ];
-    number = [{
-      platform = "template";
-      id = "pwm_freq_input";
-      min_value = 0;
-      max_value = 999999;
-      step = 1;
-      name = "PWM frekvencia";
-      entity_category = "diagnostic";
-      unit_of_measurement = "Hz";
-      mode = "box";
-      icon = "mdi:square-wave";
-      optimistic = true;
-      on_value."then" = [
-        { "output.ledc.set_frequency" = { id = "output_warm"; frequency = ''!lambda "return x;"''; }; }
-        { "output.ledc.set_frequency" = { id = "output_cold"; frequency = ''!lambda "return x;"''; }; }
-      ];
-    }];
     sensor = with (common.sensorPresets "Előszoba lámpa"); [
       wifi_signal
     ];
