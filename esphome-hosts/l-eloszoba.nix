@@ -1,3 +1,4 @@
+{ common, ... }:
 {
   settings = {
     esphome.friendly_name = "Előszoba lámpa";
@@ -60,10 +61,8 @@
         ];
       }
     ];
-    sensor = [{
-      platform = "wifi_signal";
-      name = "l-eloszoba Signal";
-      update_interval = "10s";
-    }];
+    sensor = with (common.sensorPresets "Előszoba lámpa"); [
+      wifi_signal
+    ];
   };
 }

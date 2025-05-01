@@ -189,11 +189,15 @@
 
         esphomeConfigurations =
           let
-            dir = builtins.attrNames (builtins.readDir "${self}/esphome-hosts");
+            dir' = lib.filterAttrs (n: v: v == "regular" && n != "common.nix") (builtins.readDir "${self}/esphome-hosts");
+            dir = builtins.attrNames dir';
             stripExtension = fname: lib.head (lib.splitString ".nix" fname);
             hosts = map stripExtension dir;
+            applyConfig = host: (import "${self}/esphome-hosts/${host}.nix") {
+              common = import "${self}/esphome-hosts/common.nix";
+            };
           in
-          lib.listToAttrs (map (host: lib.nameValuePair host (import "${self}/esphome-hosts/${host}.nix")) hosts);
+          lib.listToAttrs (map (host: lib.nameValuePair host (applyConfig host)) hosts);
       };
     });
 }

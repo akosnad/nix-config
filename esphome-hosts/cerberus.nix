@@ -1,3 +1,4 @@
+{ common, ... }:
 {
   settings = {
     esphome = {
@@ -35,12 +36,8 @@
         on_turn_on = [{ delay = "2000ms"; } { "switch.turn_off" = "bell"; }];
       }
     ];
-    sensor = [
-      {
-        platform = "wifi_signal";
-        name = "Cerberus Signal";
-        update_interval = "10s";
-      }
+    sensor = with (common.sensorPresets "Cerberus"); [
+      wifi_signal
       {
         platform = "ultrasonic";
         trigger_pin = "D8";
