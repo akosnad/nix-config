@@ -61,6 +61,23 @@
         ];
       }
     ];
+    number = [{
+      platform = "template";
+      id = "pwm_freq_input";
+      min_value = 0;
+      max_value = 999999;
+      step = 1;
+      name = "PWM frekvencia";
+      entity_category = "diagnostic";
+      unit_of_measurement = "Hz";
+      mode = "box";
+      icon = "mdi:square-wave";
+      optimistic = true;
+      on_value."then" = [
+        { "output.ledc.set_frequency" = { id = "output_warm"; frequency = ''!lambda "return x;"''; }; }
+        { "output.ledc.set_frequency" = { id = "output_cold"; frequency = ''!lambda "return x;"''; }; }
+      ];
+    }];
     sensor = with (common.sensorPresets "Előszoba lámpa"); [
       wifi_signal
     ];
