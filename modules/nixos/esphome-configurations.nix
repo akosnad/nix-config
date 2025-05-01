@@ -57,8 +57,13 @@ let
 
   firmwareUpdateScript = pkgs.writeShellApplication {
     name = "esphome-update-device";
-    runtimeInputs = with pkgs; [ esphome ];
+    runtimeInputs = with pkgs; [ bash util-linux esphome ];
     text = ''
+      exec 200>/var/lib/esphome/.update-device.lock
+      # only allow a single instance to run at a time
+      # and block until it's our turn
+      flock -x 200
+
       ln -sf "$CREDENTIALS_DIRECTORY"/esphome-secrets ./secrets.yaml
       ln -sf /etc/esphome/"$1" ./"$1"
       esphome run --no-logs "$1"
@@ -78,6 +83,8 @@ let
       wantedBy = mkIfNotScheduled [ "multi-user.target" ];
       restartIfChanged = mkIfNotScheduled true;
       restartTriggers = mkIfNotScheduled [ config.environment.etc."esphome/${name}.yaml".source ];
+      startLimitIntervalSec = 10;
+      startLimitBurst = 3;
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
