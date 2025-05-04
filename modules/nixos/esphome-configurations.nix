@@ -5,36 +5,37 @@ let
   configurationModule = import ../common/esphome.nix;
   deviceSettingsFormat = pkgs.formats.yaml { };
 
-  defaultSettings = name: {
-    esphome = {
-      inherit name;
-    };
-    wifi = {
-      ssid = "!secret wifi_ssid";
-      password = "!secret wifi_pass";
-      domain = ".${config.networking.domain}";
-      ap = {
-        # careful: can't be longer than 32 chars!
-        ssid = "${name} fallback";
-        password = "!secret wifi_fallback_pass";
+  defaultSettings = name: lib.recursiveUpdate
+    {
+      esphome = {
+        inherit name;
       };
-      manual_ip =
-        if lib.hasAttr name config.devices then
-          {
-            static_ip = config.devices."${name}".ip;
-            subnet = "255.0.0.0";
-            gateway = config.devices.gaia.ip;
-            dns1 = config.devices.gaia.ip;
-          } else { };
-    };
-    ota = {
-      platform = "esphome";
-      password = "!secret ota_pass";
-    };
-    logger = { };
-    api = { };
-    captive_portal = { };
-  };
+      wifi = {
+        ssid = "!secret wifi_ssid";
+        password = "!secret wifi_pass";
+        domain = ".${config.networking.domain}";
+        ap = {
+          # careful: can't be longer than 32 chars!
+          ssid = "${name} fallback";
+          password = "!secret wifi_fallback_pass";
+        };
+      };
+      ota = {
+        platform = "esphome";
+        password = "!secret ota_pass";
+      };
+      logger = { };
+      api = { };
+      captive_portal = { };
+    }
+    (if lib.hasAttr name config.devices then {
+      wifi.manual_ip = {
+        static_ip = config.devices."${name}".ip;
+        subnet = "255.0.0.0";
+        gateway = config.devices.gaia.ip;
+        dns1 = config.devices.gaia.ip;
+      };
+    } else { });
 
   # borrowed from nixpkgs: https://github.com/NixOS/nixpkgs/blob/nixos-24.11/nixos/modules/services/home-automation/home-assistant.nix
   # 

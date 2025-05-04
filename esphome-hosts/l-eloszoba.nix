@@ -16,12 +16,14 @@
           pin = "GPIO19";
           id = "output_warm";
           inherit frequency max_power min_power;
+          zero_means_zero = true;
         }
         {
           platform = "ledc";
           pin = "GPIO23";
           id = "output_cold";
           inherit frequency max_power min_power;
+          zero_means_zero = true;
         }
         {
           platform = "ledc";
@@ -30,6 +32,7 @@
           frequency = "19531Hz";
           max_power = 0.25;
           min_power = 0.02;
+          zero_means_zero = true;
         }
       ];
     light = [

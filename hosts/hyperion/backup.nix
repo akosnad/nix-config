@@ -43,8 +43,7 @@ in
 
         "tailscale/tailscaled.log*.txt"
 
-        "private/esphome/.platformio"
-        "private/esphome/.esphome/build"
+        "private/esphome"
 
         "qbittorrent/qBittorrent/logs"
 
