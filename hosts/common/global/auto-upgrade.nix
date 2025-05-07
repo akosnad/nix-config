@@ -25,6 +25,36 @@ in
     flake = "github:akosnad/nix-config";
   };
 
+  services.webhook = lib.mkIf config.system.autoUpgrade.enable {
+    enable = true;
+    hooks.nixos-upgrade-trigger = {
+      execute-command = lib.getExe (pkgs.writeShellApplication {
+        name = "nixos-upgrade-trigger";
+        runtimeInputs = with pkgs; [ systemd ];
+        text = ''
+          systemctl --no-block start nixos-upgrade.service
+        '';
+      });
+      trigger-rule.or = [
+        # only allow tailnet
+        { match = { type = "ip-whitelist"; ip-range = "100.64.0.0/10"; }; }
+        { match = { type = "ip-whitelist"; ip-range = "fd7a:115c:a1e0::/48"; }; }
+
+        { match = { type = "ip-whitelist"; ip-range = "127.0.0.0/8"; }; }
+      ];
+    };
+  };
+  security.polkit.extraConfig = /* js */ ''
+    /* allow webhook to start nixos-upgrade service autonomously */
+    polkit.addRule(function(action, subject) {
+        if (action.id == "org.freedesktop.systemd1.manage-units" &&
+            action.lookup("unit") == "nixos-upgrade.service" &&
+            subject.user == "${config.services.webhook.user}") {
+            return polkit.Result.YES;
+        }
+    });
+  '';
+
   # Only run if current config (self) is older than the new one.
   systemd.services.nixos-upgrade = lib.mkIf config.system.autoUpgrade.enable {
     serviceConfig = {
