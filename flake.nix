@@ -97,6 +97,12 @@
       inputs.flake-parts.follows = "flake-parts";
       inputs.treefmt-nix.follows = "treefmt-nix";
     };
+
+    hercules-ci-effects = {
+      url = "github:hercules-ci/hercules-ci-effects";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
+    };
   };
 
   outputs =
@@ -125,6 +131,8 @@
       inherit systems;
       imports = [
         inputs.treefmt-nix.flakeModule
+        inputs.hercules-ci-effects.flakeModule
+        ./effects.nix
       ] ++ (builtins.attrValues (import ./modules/flake));
 
       perSystem = { pkgs, config, ... }: {
