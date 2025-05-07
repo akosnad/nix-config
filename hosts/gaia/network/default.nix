@@ -28,7 +28,7 @@ in
       allowPing = false;
       rejectPackets = false; # drop packets instead of rejecting them
       filterForward = true; # critical for IPv6 as there is no NAT
-      trustedInterfaces = [ "br-lan" "tailscale0" ];
+      trustedInterfaces = [ "br-lan" ];
     };
     nameservers = [
       config.devices.gaia.ip

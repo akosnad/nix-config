@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, config, ... }:
 {
   services.tailscale = {
     enable = true;
@@ -10,6 +10,10 @@
       "https://ts.fzt.one"
     ];
   };
+
+  networking.firewall.trustedInterfaces = [
+    config.services.tailscale.interfaceName
+  ];
 
   sops.secrets.tailscale-auth-key = {
     sopsFile = ../secrets.yaml;
