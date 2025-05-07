@@ -44,7 +44,7 @@ in
       ];
     };
   };
-  security.polkit.extraConfig = /* js */ ''
+  security.polkit.extraConfig = lib.mkIf config.system.autoUpgrade.enable /* js */ ''
     /* allow webhook to start nixos-upgrade service autonomously */
     polkit.addRule(function(action, subject) {
         if (action.id == "org.freedesktop.systemd1.manage-units" &&
