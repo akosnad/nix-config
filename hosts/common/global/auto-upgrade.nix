@@ -16,6 +16,14 @@ let
     "https://nix.fzt.one/"
     "https://nix-community.cachix.org/"
   ];
+
+  upgradeTriggerScript = pkgs.writeShellApplication {
+    name = "nixos-upgrade-trigger";
+    runtimeInputs = with pkgs; [ systemd ];
+    text = ''
+      systemctl --no-block start nixos-upgrade.service
+    '';
+  };
 in
 {
   system.autoUpgrade = {
@@ -28,13 +36,7 @@ in
   services.webhook = lib.mkIf config.system.autoUpgrade.enable {
     enable = true;
     hooks.nixos-upgrade-trigger = {
-      execute-command = lib.getExe (pkgs.writeShellApplication {
-        name = "nixos-upgrade-trigger";
-        runtimeInputs = with pkgs; [ systemd ];
-        text = ''
-          systemctl --no-block start nixos-upgrade.service
-        '';
-      });
+      execute-command = lib.getExe (pkgs.writeShellScriptBin "nixos-upgrade-trigger-hook" "/run/wrappers/bin/sudo ${lib.getExe upgradeTriggerScript}");
       trigger-rule.or = [
         # only allow tailnet
         { match = { type = "ip-whitelist"; ip-range = "100.64.0.0/10"; }; }
@@ -44,15 +46,8 @@ in
       ];
     };
   };
-  security.polkit.extraConfig = lib.mkIf config.system.autoUpgrade.enable /* js */ ''
-    /* allow webhook to start nixos-upgrade service autonomously */
-    polkit.addRule(function(action, subject) {
-        if (action.id == "org.freedesktop.systemd1.manage-units" &&
-            action.lookup("unit") == "nixos-upgrade.service" &&
-            subject.user == "${config.services.webhook.user}") {
-            return polkit.Result.YES;
-        }
-    });
+  security.sudo.extraConfig = lib.mkIf config.system.autoUpgrade.enable ''
+    ${config.services.webhook.user} ALL=(root) NOPASSWD: ${lib.getExe upgradeTriggerScript}
   '';
 
   # Only run if current config (self) is older than the new one.
