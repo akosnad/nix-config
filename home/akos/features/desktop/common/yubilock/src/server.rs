@@ -93,11 +93,11 @@ impl State {
         format!("{json}\n")
     }
 
-    fn handle_event(&mut self, event: Event) {
+    async fn handle_event(&mut self, event: Event) {
         match event {
             Event::Disconnected if self.locked && self.connected => {
                 self.connected = false;
-                handle_locked_disconnect();
+                handle_locked_disconnect().await;
             }
             Event::Disconnected => self.connected = false,
             Event::Connected => self.connected = true,
@@ -187,7 +187,7 @@ impl Server {
 
     async fn handle_event(&mut self, event: Event) {
         let old_state = self.state;
-        self.state.handle_event(event);
+        self.state.handle_event(event).await;
         if self.state != old_state {
             self.broadcast_state().await;
         }
@@ -247,12 +247,20 @@ async fn read_client(
     Ok(())
 }
 
-fn handle_locked_disconnect() {
-    match std::process::Command::new("hyprlock")
-        .args(["--immediate"])
-        .spawn()
-    {
-        Ok(child) => println!("spawned child: {child:?}"),
-        Err(e) => eprintln!("failed to spawn child: {e:?}"),
-    }
+async fn handle_locked_disconnect() {
+    tokio::spawn(async {
+        match std::process::Command::new("hyprlock")
+            .args(["--immediate"])
+            .spawn()
+        {
+            Ok(mut child) => {
+                println!("spawned child: {child:?}");
+                match child.wait() {
+                    Err(e) => eprintln!("child failed: {e:?}"),
+                    Ok(exit_status) => println!("child exited with: {exit_status}"),
+                }
+            }
+            Err(e) => eprintln!("failed to spawn child: {e:?}"),
+        }
+    });
 }
