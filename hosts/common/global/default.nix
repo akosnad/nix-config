@@ -39,7 +39,7 @@
   };
   hardware.enableRedistributableFirmware = true;
 
-  networking.domain = "home.arpa";
+  networking.domain = lib.mkDefault "home.arpa";
 
   programs.light.enable = true;
 

@@ -48,3 +48,9 @@ creation_rules:
           - *hyperion
         pgp:
           - *akos
+  - path_regex: hosts/ceyx/secrets.ya?ml$
+    key_groups:
+      - age:
+          - *ceyx
+        pgp:
+          - *akos

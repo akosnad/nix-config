@@ -7,12 +7,17 @@
     ../common/global
     ../common/optional/ephemeral-btrfs.nix
     ../common/optional/high-availability.nix
+    ../common/optional/fail2ban.nix
 
     ../common/users/akos
     ./headscale.nix
+    ./backup.nix
   ];
 
-  networking.hostName = "ceyx";
+  networking = {
+    hostName = "ceyx";
+    domain = "fzt.one";
+  };
 
   swapDevices = [{
     device = "/swap/swapfile";
@@ -45,7 +50,8 @@
     grub.enable = lib.mkForce true;
   };
 
-  services.openssh.openFirewall = lib.mkForce false;
+  # backup access if headscale goes down
+  services.openssh.openFirewall = lib.mkForce true;
 
   services.geoclue2.enable = lib.mkForce false;
   services.avahi.enable = lib.mkForce false;
