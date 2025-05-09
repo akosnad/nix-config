@@ -10,13 +10,12 @@
       name = "${prefix} Illuminance";
       address = 35;
       filters = [ "quantile" ];
-      update_interval = "15s";
+      update_interval = "5s";
     };
     bme280 = {
       platform = "bme280_i2c";
       temperature = {
         name = "${prefix} Temperature";
-        oversampling = "16x";
         filters = [ "quantile" ];
       };
       pressure = {
@@ -29,8 +28,8 @@
         filters = [ "quantile" ];
       };
       address = 118;
-      iir_filter = "2x";
-      update_interval = "60s";
+      iir_filter = "16x";
+      update_interval = "5s";
     };
   };
 }
