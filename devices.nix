@@ -110,7 +110,7 @@
 
   # lights
   l-eloszoba = {
-    mac = "5C:E5:0C:89:2F:21";
+    mac = "D8:13:2A:2E:DA:20";
     ip = "10.4.1.1";
     blockInternetAccess = true;
   };
@@ -176,9 +176,9 @@
     ip = "10.4.2.4";
     blockInternetAccess = true;
   };
-  ha-ble-proxy = {
-    mac = "D8:13:2A:2E:DA:20";
-    ip = "10.4.2.5";
+  pavilon-sensor = {
+    mac = "D8:13:2A:2E:E2:D4";
+    ip = "10.4.2.6";
     blockInternetAccess = true;
   };
 
