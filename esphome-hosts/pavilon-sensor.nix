@@ -3,8 +3,8 @@
   settings = {
     esp32.board = "wemos_d1_mini32";
     i2c = [{
-      sda = "GPIO2";
-      scl = "GPIO4";
+      sda = "GPIO25";
+      scl = "GPIO27";
       scan = true;
     }];
     sensor = with (common.sensorPresets "Pavilon"); [
