@@ -12,4 +12,7 @@
     }
     ".config/Code"
   ];
+
+  # TODO: can't install settings.json unter /persist
+  stylix.targets.vscode.enable = false;
 }

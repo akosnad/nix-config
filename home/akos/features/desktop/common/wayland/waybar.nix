@@ -1,23 +1,20 @@
-{ pkgs, config, inputs, lib, ... }:
+{ pkgs, config, lib, ... }:
 let
-  c = config.colorScheme.palette;
-  toRGB = hex: builtins.concatStringsSep ", " (map toString (inputs.nix-colors.lib.conversions.hexToRGB hex));
-
   base = /* css */ ''
-    background-color: #${c.base02};
-    color: #${c.base06};
+    background-color: @base02;
+    color: @base06;
     padding: 0.125em 0.5em;
     margin: 0.125em 0.25em;
     border-radius: 1em;
     box-shadow: inset -1px -1px 2px rgba(0,0,0, 0.15);
   '';
   warning = /* css */ ''
-    background-color: #${c.base0A};
-    color: #${c.base00};
+    background-color: @base0A;
+    color: @base00;
   '';
   error = /* css */ ''
-    background-color: #${c.base08};
-    color: #${c.base00};
+    background-color: @base08;
+    color: @base00;
   '';
 
   scrollerModeSignal = 8;
@@ -225,10 +222,10 @@ in
       /*
       window#waybar.solo > box {
         padding: 0.5em;
-        background-color: #${c.base00};
+        background-color: @base00;
       }
       window#waybar.solo.kitty > box {
-        background-color: rgba(${toRGB c.base00}, 0.9);
+        background-color: alpha(@base00, 0.9);
       }
       */
 
@@ -240,27 +237,27 @@ in
         padding-right: 0.325em;
       }
       #submap {
-        background-color: #${c.base0D};
-        color: #${c.base00};
+        background-color: @base0D;
+        color: @base00;
         padding: 0.125em 0.5em;
         margin: 0.125em 0.25em;
         border-radius: 1em;
       }
       #workspaces button {
-        background-color: #${c.base02};
+        background-color: @base02;
         padding: 0.125em 0.375em;
         margin: 0.125em 0.25em;
         border-radius: 1em;
-        color: #${c.base03};
+        color: @base03;
         box-shadow: inset -1px -1px 2px rgba(0,0,0, 0.15);
       }
       #workspaces button.visible {
-        background-color: #${c.base02};
-        color: #${c.base0D};
+        background-color: @base02;
+        color: @base0D;
       }
       #workspaces button.active {
-        background-color: #${c.base0D};
-        color: #${c.base00};
+        background-color: @base0D;
+        color: @base00;
       }
 
       #window {
@@ -274,10 +271,10 @@ in
       #tray {
       	padding: 0.125em 0.25em;
       	margin: 0;
-        color: #${c.base03};
+        color: @base03;
       }
       #tray > .active {
-        background-color: #${c.base02};
+        background-color: @base02;
         border-radius: 1em;
       }
       #tray > .active > image {
@@ -345,6 +342,8 @@ in
       }
     '';
   };
+
+  stylix.targets.waybar.addCss = false;
 
   services.playerctld.enable = true;
 

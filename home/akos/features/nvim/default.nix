@@ -1,7 +1,4 @@
 { pkgs, config, lib, ... }:
-let
-  color = pkgs.writeText "color.vim" (import ./theme.nix config.colorScheme);
-in
 {
   imports = [
     ./ui.nix
@@ -31,8 +28,6 @@ in
         set scrolloff=25
 
       	hi! link @variable Normal
-
-        source ${color}
 
       	set pastetoggle=<F2>
       	 

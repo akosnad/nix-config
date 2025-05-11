@@ -1,9 +1,5 @@
 { pkgs, lib, ... }:
 {
-  imports = [
-    ./theme.nix
-  ];
-
   programs.helix = {
     enable = true;
     defaultEditor = true;
@@ -36,6 +32,6 @@
     in
     {
       "helix/config.toml".onChange = reloadHelix;
-      "helix/themes/base16.toml".onChange = reloadHelix;
+      "helix/themes/stylix.toml".onChange = reloadHelix;
     };
 }

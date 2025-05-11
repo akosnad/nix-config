@@ -50,12 +50,13 @@
 
     settings =
       let
-        inherit (config.colorscheme) palette variant;
+        palette = config.lib.stylix.colors;
+        inherit (palette) variant;
         activeOpacity = "55";
         inactiveOpacity = "22";
         selection = "0x${activeOpacity}${palette.base08}";
-        active = "0x${activeOpacity}${palette.base0C}";
-        inactive = "0x${inactiveOpacity}${palette.base02}";
+        # active = "0x${activeOpacity}${palette.base0C}";
+        # inactive = "0x${inactiveOpacity}${palette.base02}";
         shadow = if variant == "light" then "0x${activeOpacity}${palette.base07}" else "0x${activeOpacity}${palette.base00}";
         shadowInactive = if variant == "light" then "0x${inactiveOpacity}${palette.base07}" else "0x${inactiveOpacity}${palette.base00}";
       in
@@ -86,9 +87,6 @@
 
         xwayland.force_zero_scaling = true;
 
-        # exec-once = systemctl start --user hyprland-session.service & /usr/lib/polkit-kde-authentication-agent-1 & eww daemon & eww open topbar
-        exec-once = "eww daemon & eww open topbar";
-
         input = {
           kb_layout = "us,hu";
           kb_options = "grp:caps_toggle";
@@ -113,8 +111,6 @@
           gaps_in = 5;
           gaps_out = 10;
           border_size = 0;
-          "col.active_border" = active;
-          "col.inactive_border" = inactive;
 
           layout = "scroller";
         };
@@ -129,7 +125,6 @@
         ];
 
         misc = {
-          disable_hyprland_logo = "yes";
           vfr = "yes";
         };
 
@@ -148,8 +143,10 @@
             render_power = 2;
             sharp = false;
             ignore_window = true;
-            color = shadow;
-            color_inactive = shadowInactive;
+
+            # not-as-strong shadow colors
+            color = lib.mkForce shadow;
+            color_inactive = lib.mkForce shadowInactive;
           };
         };
 

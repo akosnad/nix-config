@@ -1,10 +1,6 @@
 { inputs, outputs, pkgs, lib, config, ... }:
-let
-  inherit (inputs.nix-colors) colorSchemes;
-in
 {
   imports = [
-    inputs.nix-colors.homeManagerModule
     inputs.impermanence.nixosModules.home-manager.impermanence
     ../features/shell
     ../features/helix
@@ -48,16 +44,18 @@ in
     defaultSopsFile = ../secrets.yaml;
   };
 
-  colorscheme = lib.mkOverride 1499 colorSchemes.classic-dark;
+  stylix.targets.gnome.enable = lib.mkForce false;
+  stylix.targets.kde.enable = lib.mkForce false;
+
   specialisation = {
-    dark.configuration.colorscheme = lib.mkOverride 1498 colorSchemes.classic-dark;
-    light.configuration.colorscheme = lib.mkOverride 1498 colorSchemes.classic-light;
+    dark.configuration.stylix.base16Scheme = lib.mkOverride 1498 "${pkgs.base16-schemes}/share/themes/classic-dark.yaml";
+    light.configuration.stylix.base16Scheme = lib.mkOverride 1498 "${pkgs.base16-schemes}/share/themes/classic-light.yaml";
   };
 
   home = {
     file = {
-      ".colorscheme".text = config.colorscheme.slug;
-      ".colorscheme.json".text = builtins.toJSON config.colorscheme;
+      ".colorscheme".text = config.lib.stylix.colors.slug;
+      ".colorscheme-variant".text = config.lib.stylix.colors.variant;
       ".yubico/authorized_yubikeys".text = "${config.home.username}:cccccbkcfrgn";
     };
     username = lib.mkDefault "akos";
@@ -116,7 +114,7 @@ in
         if [ -n "$1" ]; then
           theme="$1"
         else
-          current="$(${lib.getExe pkgs.jq} -re '.variant' "$HOME/.colorscheme.json")"
+          current="$(cat "$HOME/.colorscheme-variant")"
           if [ "$current" = "light" ]; then
             theme="dark"
           else

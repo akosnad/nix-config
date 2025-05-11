@@ -1,7 +1,4 @@
-{ lib, inputs, config, ... }:
-let
-  inherit (inputs.nix-colors) colorSchemes;
-in
+{ config, pkgs, ... }:
 {
   imports = [
     ./global
@@ -19,10 +16,7 @@ in
     ./features/shell/iamb.nix
   ];
 
-  colorscheme = lib.mkDefault colorSchemes.sandcastle;
-  specialisation = {
-    light.configuration.colorscheme = colorSchemes.atelier-lakeside-light;
-  };
+  specialisation.light.configuration.stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/atelier-lakeside-light.yaml";
 
   monitors = [
     {

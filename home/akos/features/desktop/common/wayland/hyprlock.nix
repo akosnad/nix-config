@@ -1,7 +1,6 @@
 { pkgs, lib, config, ... }:
 let
   primaryMonitor = builtins.head (builtins.filter (m: m.primary) config.monitors);
-  fontFamily = config.fontProfiles.regular.family;
 
   batteryInfo = pkgs.writeShellApplication {
     name = "hyprlock-battery-info";
@@ -42,7 +41,7 @@ in
         disable_loading_bar = true;
       };
 
-      background = [
+      background = lib.mkForce [
         {
           path = "screenshot";
           blur_passes = 3;
@@ -51,11 +50,13 @@ in
         }
       ];
 
-      label = [
+      input-field = lib.mkForce null;
+
+      label = lib.mkForce [
         {
           monitor = primaryMonitor.name;
           font_size = 32;
-          font_family = fontFamily;
+          font_family = config.stylix.fonts.serif.name;
           position = "0, 0";
           valign = "center";
           halign = "center";
@@ -64,7 +65,7 @@ in
         {
           monitor = primaryMonitor.name;
           font_size = 16;
-          font_family = fontFamily;
+          font_family = config.stylix.fonts.serif.name;
           position = "0, -36";
           valign = "center";
           halign = "center";
@@ -73,7 +74,7 @@ in
         {
           monitor = primaryMonitor.name;
           font_size = 12;
-          font_family = fontFamily;
+          font_family = config.stylix.fonts.monospace.name;
           position = "0, -72";
           valign = "center";
           halign = "center";

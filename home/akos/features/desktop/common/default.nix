@@ -1,10 +1,9 @@
-{ config, pkgs, ... }:
+{ pkgs, config, ... }:
 {
   imports = [
-    ./fonts.nix
     ./gtk.nix
     ./edge.nix
-    ./kitty
+    ./kitty.nix
     ./audio.nix
     ./mqtt-notify.nix
     ./yubikey-touch-detector.nix
@@ -15,8 +14,8 @@
   ];
 
   dconf.settings."org/gnome/desktop/interface".color-scheme =
-    if config.colorscheme.variant == "dark" then "prefer-dark"
-    else if config.colorscheme.variant == "light" then "prefer-light"
+    if config.lib.stylix.colors.variant == "dark" then "prefer-dark"
+    else if config.lib.stylix.colors.variant == "light" then "prefer-light"
     else "default";
 
 

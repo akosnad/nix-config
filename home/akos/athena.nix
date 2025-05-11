@@ -1,7 +1,3 @@
-{ lib, inputs, ... }:
-let
-  inherit (inputs.nix-colors) colorSchemes;
-in
 {
   imports = [
     ./global
@@ -14,11 +10,6 @@ in
     ./features/linphone.nix
     ./features/shell/iamb.nix
   ];
-
-  colorscheme = lib.mkDefault colorSchemes.selenized-dark;
-  specialisation = {
-    light.configuration.colorscheme = colorSchemes.selenized-light;
-  };
 
   services.blueman-applet.enable = true;
 

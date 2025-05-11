@@ -1,7 +1,3 @@
-{ config, ... }:
-let
-  inherit (config.colorscheme) palette;
-in
 {
   programs.zsh = {
     enable = true;
@@ -14,23 +10,7 @@ in
     };
   };
 
-  programs.fzf = {
-    enable = true;
-    colors = {
-      fg = "-1";
-      "fg+" = "#${palette.base06}";
-      bg = "-1";
-      "bg+" = "-1";
-      hl = "#${palette.base04}";
-      "hl+" = "#${palette.base06}";
-      info = "#${palette.base07}";
-      marker = "#${palette.base0B}";
-      prompt = "#${palette.base0C}";
-      spinner = "#${palette.base0B}";
-      pointer = "#${palette.base0B}";
-      header = "#${palette.base0E}";
-    };
-  };
+  programs.fzf.enable = true;
 
   programs.eza = {
     enable = true;

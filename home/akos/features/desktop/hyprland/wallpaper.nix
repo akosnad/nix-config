@@ -69,4 +69,7 @@ in
       Install.WantedBy = [ "graphical-session.target" ];
     };
   };
+
+  services.hyprpaper.enable = lib.mkForce false;
+  stylix.targets.hyprpaper.enable = lib.mkForce false;
 }

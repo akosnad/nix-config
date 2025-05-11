@@ -13,6 +13,7 @@
     ./nh.nix
     ./optin-persistence.nix
     ./certs.nix
+    ./stylix.nix
   ] ++ (builtins.attrValues outputs.nixosModules);
 
   devices = lib.mkForce inputs.self.devices;

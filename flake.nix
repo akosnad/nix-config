@@ -48,9 +48,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-colors = {
-      url = "github:misterio77/nix-colors";
-      inputs.nixpkgs-lib.follows = "nixpkgs";
+    stylix = {
+      url = "github:/danth/stylix/release-24.11";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
     };
 
     hardware.url = "github:nixos/nixos-hardware";
@@ -159,9 +160,7 @@
       flake = {
         inherit lib;
 
-        nixosModules = import ./modules/nixos {
-          inherit inputs;
-        };
+        nixosModules = import ./modules/nixos;
         homeManagerModules = import ./modules/home-manager;
 
         overlays = import ./overlays { inherit inputs outputs; };
