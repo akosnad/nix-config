@@ -4,6 +4,7 @@
     esphome = {
       platform = "ESP8266";
       board = "d1_mini";
+      friendly_name = "Cerberus";
     };
     wifi.power_save_mode = "none";
 

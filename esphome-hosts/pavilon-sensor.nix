@@ -1,6 +1,7 @@
 { common, ... }:
 {
   settings = {
+    esphome.friendly_name = "Pavilon szenzor";
     esp32 = {
       board = "wemos_d1_mini32";
       framework.type = "esp-idf";

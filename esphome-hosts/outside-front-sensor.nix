@@ -1,6 +1,7 @@
 { common, ... }:
 {
   settings = {
+    esphome.friendly_name = "Kinti elöli szenzor";
     esp8266.board = "d1_mini";
     i2c = [{
       sda = "D3";
