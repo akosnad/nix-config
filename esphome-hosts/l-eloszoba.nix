@@ -47,7 +47,10 @@
         output = "output_nightlight";
         gamma_correct = 1.5;
         restore_mode = "RESTORE_DEFAULT_OFF";
-        on_turn_on = [{ "light.turn_off" = "ceiling_light"; }];
+        on_turn_on = [
+          { "light.turn_off" = "ceiling_light"; }
+          { "globals.set" = { id = "last_used_light"; value = "1"; }; }
+        ];
       }
       {
         platform = "cwww";
@@ -61,15 +64,131 @@
         constant_brightness = true;
         gamma_correct = 2.2;
         restore_mode = "RESTORE_DEFAULT_ON";
-        on_turn_on = [{ "light.turn_off" = "night_light"; }];
+        on_turn_on = [
+          { "light.turn_off" = "night_light"; }
+          { "globals.set" = { id = "last_used_light"; value = "0"; }; }
+        ];
       }
     ];
     sensor = with common.sensorPresets; [
       wifi_signal
     ];
     bluetooth_proxy = { };
+    globals = [
+      {
+        id = "last_used_light";
+        type = "int";
+        restore_value = true;
+        initial_value = "0";
+      }
+      {
+        id = "colortemp_cycle";
+        type = "int";
+        restore_value = true;
+        initial_value = "0";
+      }
+      {
+        id = "colortemp_cycle_direction";
+        type = "int";
+        restore_value = true;
+        initial_value = "0";
+      }
+    ];
   } // (common.yee-rc {
-    mac_address = "F8:24:41:EC:49:CB";
-    prefix = "Ákos";
+    mac_address = "F8:24:41:ED:0B:9D";
+    on_press =
+      let
+        dimStepPercent = 10;
+      in
+      [
+        {
+          keycode = 0; # ON
+          "then" = [{
+            "if" = {
+              condition.lambda = "return id(last_used_light) == 0;";
+              "then" = [{ "light.turn_on" = "ceiling_light"; }];
+              "else" = [{ "light.turn_on" = "night_light"; }];
+            };
+          }];
+        }
+        {
+          keycode = 1; # OFF
+          "then" = [
+            { "light.turn_off" = "night_light"; }
+            { "light.turn_off" = "ceiling_light"; }
+          ];
+        }
+        {
+          keycode = 2; # Sun
+          "then" = [{
+            "if" = {
+              condition."light.is_on" = "ceiling_light";
+              "then".lambda = /* cpp */ ''
+                const int num_steps = 5;
+                if(id(colortemp_cycle) == 0 && id(colortemp_cycle_direction) == 0) {
+                  id(colortemp_cycle) = 1;
+                  id(colortemp_cycle_direction) = 1;
+                } else if(id(colortemp_cycle) == num_steps - 1 && id(colortemp_cycle_direction) == 1) {
+                  id(colortemp_cycle) = num_steps - 2;
+                  id(colortemp_cycle_direction) = 0;
+                } else if(id(colortemp_cycle_direction) == 1) {
+                  id(colortemp_cycle) += 1;
+                } else {
+                  id(colortemp_cycle) -= 1;
+                }
+
+                const int step_size = 5990 - 2700;
+                float kelvin = (float(id(colortemp_cycle)) * float(step_size / num_steps)) + 2700.0;
+                auto call = id(ceiling_light).turn_on();
+                call.set_color_temperature(1000000.0 / kelvin);
+                call.perform();
+              '';
+            };
+          }];
+        }
+        {
+          keycode = 3; # +
+          "then" = [{
+            "if" = {
+              condition."light.is_on" = "ceiling_light";
+              "then"."light.dim_relative" = {
+                id = "ceiling_light";
+                relative_brightness = "${toString dimStepPercent}%";
+              };
+              "else"."light.dim_relative" = {
+                id = "night_light";
+                relative_brightness = "${toString dimStepPercent}%";
+              };
+            };
+          }];
+        }
+        {
+          keycode = 4; # M
+          "then" = [{
+            "if" = {
+              condition."light.is_on" = "ceiling_light";
+              "then"."light.turn_on" = "night_light";
+              "else"."light.turn_on" = "ceiling_light";
+            };
+          }];
+        }
+        {
+          keycode = 5; # -
+          "then" = [{
+            "if" = {
+              condition."light.is_on" = "ceiling_light";
+              "then"."light.dim_relative" = {
+                id = "ceiling_light";
+                relative_brightness = "-${toString dimStepPercent}%";
+              };
+              "else"."light.dim_relative" = {
+                id = "night_light";
+                relative_brightness = "-${toString dimStepPercent}%";
+              };
+            };
+          }];
+        }
+      ];
+    on_long_press = [ ];
   });
 }
