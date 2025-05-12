@@ -8,7 +8,6 @@
     ./scenes
     ./hvac.nix
     ./heating.nix
-    ./template-entities
     ./notify.nix
     ./bkk-stop.nix
     ./network-entities.nix

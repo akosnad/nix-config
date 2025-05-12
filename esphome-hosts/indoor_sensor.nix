@@ -8,7 +8,7 @@
       scl = "D4";
       scan = "True";
     }];
-    sensor = with (common.sensorPresets "Inside"); [
+    sensor = with common.sensorPresets; [
       wifi_signal
       bme280
     ];

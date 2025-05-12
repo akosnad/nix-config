@@ -35,7 +35,7 @@
         id = "output_warm";
       }
     ];
-    sensor = with (common.sensorPresets "Ákos asztali lámpa"); [
+    sensor = with common.sensorPresets; [
       wifi_signal
       {
         platform = "rotary_encoder";

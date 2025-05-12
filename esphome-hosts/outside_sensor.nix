@@ -8,7 +8,7 @@
       scl = "D4";
       scan = true;
     }];
-    sensor = with (common.sensorPresets "Outside"); [
+    sensor = with common.sensorPresets; [
       wifi_signal
       bh1750
       bme280

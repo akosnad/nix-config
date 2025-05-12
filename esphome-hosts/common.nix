@@ -1,6 +1,6 @@
 # TODO: module system similar to NixOS options
 {
-  sensorPresets = prefix: {
+  sensorPresets = {
     wifi_signal = {
       platform = "wifi_signal";
       name = "Signal";
@@ -8,7 +8,7 @@
     };
     bh1750 = {
       platform = "bh1750";
-      name = "${prefix} Illuminance";
+      name = "Illuminance";
       address = 35;
       filters = [ "quantile" ];
       update_interval = "5s";
@@ -16,16 +16,16 @@
     bme280 = {
       platform = "bme280_i2c";
       temperature = {
-        name = "${prefix} Temperature";
+        name = "Temperature";
         filters = [ "quantile" ];
       };
       pressure = {
-        name = "${prefix} Pressure";
+        name = "Pressure";
         accuracy_decimals = 3;
         filters = [ "quantile" ];
       };
       humidity = {
-        name = "${prefix} Humidity";
+        name = "Humidity";
         filters = [ "quantile" ];
       };
       address = 118;

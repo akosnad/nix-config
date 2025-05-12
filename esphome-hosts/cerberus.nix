@@ -37,7 +37,7 @@
         on_turn_on = [{ delay = "2000ms"; } { "switch.turn_off" = "bell"; }];
       }
     ];
-    sensor = with (common.sensorPresets "Cerberus"); [
+    sensor = with common.sensorPresets; [
       wifi_signal
       {
         platform = "ultrasonic";

@@ -61,7 +61,7 @@
         on_turn_on = [{ "light.turn_off" = "night_light"; }];
       }
     ];
-    sensor = with (common.sensorPresets "Előszoba lámpa"); [
+    sensor = with common.sensorPresets; [
       wifi_signal
     ];
   } // (common.yee-rc {

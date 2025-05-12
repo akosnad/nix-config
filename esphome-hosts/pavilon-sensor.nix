@@ -11,7 +11,7 @@
       scl = "GPIO27";
       scan = true;
     }];
-    sensor = with (common.sensorPresets "Pavilon"); [
+    sensor = with common.sensorPresets; [
       wifi_signal
       bme280
     ];
