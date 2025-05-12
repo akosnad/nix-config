@@ -2,7 +2,10 @@
 {
   settings = {
     esphome.friendly_name = "Előszoba lámpa";
-    esp32.board = "wemos_d1_mini32";
+    esp32 = {
+      board = "wemos_d1_mini32";
+      framework.type = "esp-idf";
+    };
 
     output =
       let
@@ -64,6 +67,7 @@
     sensor = with common.sensorPresets; [
       wifi_signal
     ];
+    bluetooth_proxy = { };
   } // (common.yee-rc {
     mac_address = "F8:24:41:EC:49:CB";
     prefix = "Ákos";
