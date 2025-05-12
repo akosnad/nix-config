@@ -78,7 +78,9 @@ let
     lib.mkIf cfg.autoUpdate.enable {
       description = "ESPHome firmware updater for ${name}";
       environment = {
-        PLATFORMIO_CORE_DIR = "/var/lib/esphome/.platformio";
+        # fixes esp-idf compile error
+        # reference: https://github.com/NixOS/nixpkgs/issues/339557
+        PLATFORMIO_CORE_DIR = "/var/lib/private/esphome/.platformio";
       };
       after = [ "network.target" ];
       wantedBy = mkIfNotScheduled [ "multi-user.target" ];

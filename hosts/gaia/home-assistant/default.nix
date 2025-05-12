@@ -61,6 +61,7 @@
       "fully_kiosk"
       "wake_word"
       "wyoming"
+      "xiaomi_ble"
     ];
     extraPackages = python3Packages: with python3Packages; [
       # recorder postgresql support
