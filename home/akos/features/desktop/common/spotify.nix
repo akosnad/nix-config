@@ -1,8 +1,8 @@
-{ pkgs, config, ... }:
+{ config, ... }:
 {
-  home.packages = with pkgs; [
-    spotify
-  ];
+  programs.spicetify = {
+    enable = true;
+  };
 
   home.persistence."/persist/${config.home.homeDirectory}".directories = [
     ".config/spotify"

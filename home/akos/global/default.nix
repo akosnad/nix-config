@@ -2,6 +2,7 @@
 {
   imports = [
     inputs.impermanence.nixosModules.home-manager.impermanence
+    inputs.spicetify.homeManagerModules.spicetify
     ../features/shell
     ../features/helix
   ] ++ (builtins.attrValues outputs.homeManagerModules);

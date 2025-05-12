@@ -54,6 +54,11 @@
       inputs.home-manager.follows = "home-manager";
     };
 
+    spicetify = {
+      url = "github:Gerg-L/spicetify-nix/24.11";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     hardware.url = "github:nixos/nixos-hardware";
     disko = {
       url = "github:nix-community/disko/v1.7.0";
