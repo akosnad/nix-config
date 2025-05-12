@@ -7,6 +7,7 @@
       plotly-graph-card
       wallpanel
       webrtc-camera
+      card-mod
     ];
 
     # sets the mode for default dashboard
