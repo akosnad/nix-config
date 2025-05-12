@@ -64,5 +64,8 @@
     sensor = with (common.sensorPresets "Előszoba lámpa"); [
       wifi_signal
     ];
-  };
+  } // (common.yee-rc {
+    mac_address = "F8:24:41:EC:49:CB";
+    prefix = "Ákos";
+  });
 }
