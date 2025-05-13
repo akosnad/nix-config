@@ -1,5 +1,6 @@
 { inputs
 , lib
+, pkgs
 , ...
 }: {
   imports = [
@@ -64,6 +65,8 @@
 
   # needed to open for firewall
   programs.kdeconnect.enable = true;
+
+  stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/selenized-dark.yaml";
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "23.11";
