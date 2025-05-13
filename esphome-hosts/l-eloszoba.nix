@@ -9,9 +9,9 @@
 
     output =
       let
-        frequency = "19531Hz";
+        frequency = "1220Hz";
         max_power = 0.88;
-        min_power = 0.01;
+        min_power = 0.06;
       in
       [
         {
@@ -32,7 +32,7 @@
           platform = "ledc";
           pin = "GPIO18";
           id = "output_nightlight";
-          frequency = "19531Hz";
+          inherit frequency;
           max_power = 0.25;
           min_power = 0.02;
           zero_means_zero = true;
@@ -62,7 +62,7 @@
         cold_white_color_temperature = "6000K";
         warm_white_color_temperature = "2700K";
         constant_brightness = true;
-        gamma_correct = 2.2;
+        gamma_correct = 1.5;
         restore_mode = "RESTORE_DEFAULT_ON";
         on_turn_on = [
           { "light.turn_off" = "night_light"; }
@@ -137,7 +137,7 @@
                   id(colortemp_cycle) -= 1;
                 }
 
-                const int step_size = 5990 - 2700;
+                const int step_size = 6000 - 2700;
                 float kelvin = (float(id(colortemp_cycle)) * float(step_size / num_steps)) + 2700.0;
                 auto call = id(ceiling_light).turn_on();
                 call.set_color_temperature(1000000.0 / kelvin);
