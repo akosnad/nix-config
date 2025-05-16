@@ -2,7 +2,7 @@
 {
   imports = [
     ./oh-my-posh.nix
-    ./ranger.nix
+    ./yazi.nix
     ./tmux.nix
     ./ssh.nix
     ./gpg.nix

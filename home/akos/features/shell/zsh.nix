@@ -7,6 +7,7 @@
     };
     shellAliases = {
       tree = "eza -l --tree";
+      y = "yazi";
     };
   };
 
