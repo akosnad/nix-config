@@ -32,5 +32,9 @@
     gping
     curlie
     doggo
+
+    # nix utilities
+    nvd
+    nix-tree
   ];
 }
