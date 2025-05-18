@@ -4,6 +4,7 @@ let
     mapAttrs mapAttrs' mkEnableOption flip nameValuePair head tail length;
 
   cfg = config.virtualisation.arion;
+  hasArionProjects = length (attrNames config.virtualisation.arion.projects) > 0;
 in
 {
   options.topology.extractors.arion.enable = mkEnableOption "topology arion extractor" // { default = true; };
@@ -35,6 +36,7 @@ in
           }];
       }) // {
         icon = "interfaces.tun";
+        network = "${config.topology.self.id}-docker";
       });
 
       services = flip mapAttrs c.settings.services (n: v: {
@@ -48,9 +50,17 @@ in
       });
     });
 
-    topology.self.interfaces = mkIf (length (attrNames config.virtualisation.arion.projects) > 0) {
+    topology.self.interfaces = mkIf hasArionProjects {
       docker = {
+        network = "${config.topology.self.id}-docker";
         icon = "interfaces.tun";
+      };
+    };
+
+    topology.networks = mkIf hasArionProjects {
+      "${config.topology.self.id}-docker" = {
+        name = "Docker network on ${config.topology.self.id}";
+        icon = "services.docker";
       };
     };
   };
