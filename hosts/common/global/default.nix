@@ -2,6 +2,7 @@
 {
   imports = [
     inputs.home-manager.nixosModules.home-manager
+    inputs.nix-topology.nixosModules.default
     ./locale.nix
     ./zsh.nix
     ./nix.nix

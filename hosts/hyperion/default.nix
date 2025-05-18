@@ -59,6 +59,5 @@
   nix.distributedBuilds = lib.mkForce false;
   nix.buildMachines = lib.mkForce [ ];
 
-
   system.stateVersion = "24.11";
 }

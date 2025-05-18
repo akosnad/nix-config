@@ -23,4 +23,11 @@
   environment.persistence = {
     "/persist".directories = [ "/var/lib/tailscale" ];
   };
+
+  topology.self.interfaces."${config.services.tailscale.interfaceName}" = {
+    network = "tailnet";
+    virtual = true;
+    type = "tailscale";
+    icon = "interfaces.tailscale";
+  };
 }

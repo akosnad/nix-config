@@ -14,7 +14,7 @@ let
 in
 {
   services.restic.backups = {
-    home-assistant = {
+    home-assistant-data = {
       paths = [ "${config.services.home-assistant.configDir}/backups" ];
       initialize = true;
       repository = "rclone:onedrive-personal:/Backups/gaia-home-assistant";

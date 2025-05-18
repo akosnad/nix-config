@@ -33,5 +33,13 @@
   services.avahi.enable = lib.mkForce false;
   programs.dconf.enable = lib.mkForce false;
 
+  topology.self = {
+    icon = "devices.cloud-server";
+    hardware.info = "Vultr 2048.00 MB Regular Cloud Compute";
+    interfaces.enp1s0.physicalConnections = [
+      { node = "internet"; interface = "*"; renderer.reverse = true; }
+    ];
+  };
+
   system.stateVersion = "24.11";
 }

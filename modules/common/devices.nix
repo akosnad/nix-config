@@ -51,6 +51,29 @@ let
           Defaults to attribute name.
         '';
       };
+      name = lib.mkOption {
+        type = types.str;
+        default = name;
+        description = ''
+          Name of the device.
+
+          Appears on the topology graph.
+        '';
+      };
+      info = lib.mkOption {
+        type = types.nullOr types.str;
+        default = null;
+        description = ''
+          Short description about the device.
+
+          Appears on the topology graph.
+        '';
+      };
+      hidden = lib.mkOption {
+        type = types.bool;
+        default = false;
+        description = "Hide this device from topology or other visualisations.";
+      };
       ip = lib.mkOption {
         type = types.nullOr types.str;
         default = null;
@@ -67,6 +90,11 @@ let
         type = types.bool;
         default = true;
         description = "Whether the device is local to the network";
+      };
+      connectionMedium = lib.mkOption {
+        type = types.enum [ "eth" "wifi" ];
+        default = "eth";
+        description = "What medium the device is connected to the network primarily";
       };
       extraHostnames = lib.mkOption {
         type = types.listOf types.str;

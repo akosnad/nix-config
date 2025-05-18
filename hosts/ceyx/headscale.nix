@@ -98,4 +98,10 @@ in
     mode = "750";
     inherit (config.services.headscale) user group;
   }];
+
+  topology.networks.tailnet = {
+    name = "Headscale tailnet (${config.services.headscale.settings.dns.base_domain})";
+    cidrv4 = config.services.headscale.settings.prefixes.v4;
+    cidrv6 = config.services.headscale.settings.prefixes.v6;
+  };
 }

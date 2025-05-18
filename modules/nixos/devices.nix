@@ -9,7 +9,12 @@ in
       {
         assertion =
           let
-            macs = builtins.filter (mac: mac != null) (map (d: d.mac) (builtins.attrValues cfg));
+            # macs = builtins.filter (mac: mac != null) (map (d: d.mac) (builtins.attrValues cfg));
+            macs = lib.pipe cfg [
+              builtins.attrValues
+              (map (d: d.mac))
+              (builtins.filter (mac: mac != null))
+            ];
           in
           lib.length (lib.unique macs) == lib.length macs;
         message = ''
@@ -23,7 +28,12 @@ in
       {
         assertion =
           let
-            localIPs = map (d: d.ip) (builtins.filter (d: d.local && d.ip != null) (builtins.attrValues cfg));
+            # localIPs = map (d: d.ip) (builtins.filter (d: d.local && d.ip != null) (builtins.attrValues cfg));
+            localIPs = lib.pipe cfg [
+              builtins.attrValues
+              (builtins.filter (d: d.local && d.ip != null))
+              (map (d: d.ip))
+            ];
           in
           lib.length (lib.unique localIPs) == lib.length localIPs;
         message = ''

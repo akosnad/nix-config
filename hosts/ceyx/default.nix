@@ -65,5 +65,13 @@
     email = "contact@fzt.one";
   };
 
+  topology.self = {
+    icon = "devices.cloud-server";
+    hardware.info = "MikroVPS HU/KVM-1G";
+    interfaces.ens18.physicalConnections = [
+      { node = "internet"; interface = "*"; renderer.reverse = true; }
+    ];
+  };
+
   system.stateVersion = "24.11";
 }

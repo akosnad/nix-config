@@ -109,6 +109,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-parts.follows = "flake-parts";
     };
+
+    nix-topology = {
+      url = "github:/oddlama/nix-topology";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -138,10 +143,11 @@
       imports = [
         inputs.treefmt-nix.flakeModule
         inputs.hercules-ci-effects.flakeModule
+        inputs.nix-topology.flakeModule
         ./effects.nix
       ] ++ (builtins.attrValues (import ./modules/flake));
 
-      perSystem = { pkgs, config, ... }: {
+      perSystem = { pkgs, config, system, ... }: {
         packages = import ./pkgs { inherit pkgs; };
         devShells = import ./shell.nix { inherit pkgs; } // { treefmt = config.treefmt.build.devShell; };
         treefmt = {
@@ -155,22 +161,28 @@
           };
         };
 
+        topology.modules = [
+          ./topology.nix
+          ((import ./modules/topology.nix) outputs)
+        ];
+
         checks =
           let
             nixosMachines = lib.mapAttrs' (name: config: lib.nameValuePair "nixos-${name}" config.config.system.build.toplevel) ((lib.filterAttrs (_: config: config.pkgs.stdenv.hostPlatform.system == pkgs.system)) outputs.nixosConfigurations);
+            topology = if system != "x86_64-linux" then { } else { topology = self.topology.${system}.config.output; };
           in
-          nixosMachines;
+          nixosMachines // topology;
       };
 
       flake = {
         inherit lib;
 
-        nixosModules = import ./modules/nixos;
+        nixosModules = import ./modules/nixos { inherit lib; };
         homeManagerModules = import ./modules/home-manager;
 
         overlays = import ./overlays { inherit inputs outputs; };
 
-        devices = import ./devices.nix;
+        inherit ((lib.evalModules { modules = [{ devices = import ./devices.nix; } (import ./modules/common/devices.nix)]; }).config) devices;
 
         nixosConfigurations =
           let
