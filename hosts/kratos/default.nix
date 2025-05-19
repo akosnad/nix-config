@@ -54,7 +54,7 @@
   # needed to open for firewall
   programs.kdeconnect.enable = true;
 
-  stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/sandcastle.yaml";
+  stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/equilibrium-gray-dark.yaml";
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "23.11";
