@@ -21,6 +21,37 @@ outputs: { lib, ... }: {
             }];
           };
         };
+        services.forwardedPorts = lib.mkIf (lib.length d.forwardedPorts > 0) {
+          name = "Forwarded ports";
+          icon = "services.nat";
+          details =
+            let
+              filterProtocol = proto: builtins.filter (p: builtins.elem p.proto [ proto "tcpudp" ]);
+              formatPorts = map (p: if p.source == p.dest then toString p.dest else "${toString p.dest}:${toString p.source}");
+              mkPortForwardList = proto: lib.pipe d.forwardedPorts [
+                (filterProtocol proto)
+                formatPorts
+              ];
+
+              tcpPorts = mkPortForwardList "tcp";
+              udpPorts = mkPortForwardList "udp";
+            in
+            {
+              tcp = lib.mkIf (lib.length tcpPorts > 0) { text = lib.concatStringsSep " " tcpPorts; };
+              udp = lib.mkIf (lib.length udpPorts > 0) { text = lib.concatStringsSep " " udpPorts; };
+            };
+        };
+        services.blockInternetAccess = lib.mkIf (builtins.elem true (lib.attrValues d.blockInternetAccess)) {
+          name = "Internet access blocked";
+          icon = "services.block-internet";
+          details = {
+            methods.text = lib.pipe d.blockInternetAccess [
+              (lib.filterAttrs (_: v: v))
+              lib.attrNames
+              (lib.concatStringsSep " ")
+            ];
+          };
+        };
       })
       localDevices;
 

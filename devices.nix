@@ -57,7 +57,7 @@
 
   # desktop machines
   kratos = {
-    info = "Ryzen 3600X, 64GB RAM, Radeon 7800XT";
+    info = "Ryzen 3600X, 32GB RAM, Radeon 7800XT";
     mac = "A8:5E:45:CD:FC:8A";
     ip = "10.2.0.1";
   };
@@ -68,13 +68,13 @@
     connectionMedium = "wifi";
   };
   Apollo = {
-    info = "Surface Pro 10";
+    info = "Surface Pro 11";
     mac = "C4:CB:76:B5:7E:8B";
     ip = "10.2.0.3";
     connectionMedium = "wifi";
   };
   Orion = {
-    info = "Surface Pro 10";
+    info = "Surface Pro 11";
     mac = "84:B1:E2:63:43:61";
     ip = "10.2.0.4";
     connectionMedium = "wifi";
@@ -205,6 +205,7 @@
 
   # ESPHome
   cerberus = {
+    info = "Garden gate controller";
     mac = "98:CD:AC:2E:F9:0C";
     ip = "10.4.2.1";
     blockInternetAccess = true;
