@@ -61,6 +61,8 @@
       "wake_word"
       "wyoming"
       "xiaomi_ble"
+      "html5"
+      "my"
     ];
     extraPackages = python3Packages: with python3Packages; [
       # recorder postgresql support
@@ -131,5 +133,14 @@
         proxy_set_header X-Forwarded-For $remote_addr;
       '';
     };
+    locations."/api/notify.html5/callback".extraConfig = ''
+      if ($http_authorization = "") { return 403; }
+      allow all;
+      proxy_pass http://127.0.0.1:8123;
+      proxy_set_header Host $host;
+      proxy_set_header Authorization $http_authorization;
+      proxy_pass_header Authorization;
+      proxy_redirect http:// https://;
+    '';
   };
 }
