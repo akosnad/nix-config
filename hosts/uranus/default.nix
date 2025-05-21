@@ -29,10 +29,6 @@
     email = "contact@fzt.one";
   };
 
-  services.geoclue2.enable = lib.mkForce false;
-  services.avahi.enable = lib.mkForce false;
-  programs.dconf.enable = lib.mkForce false;
-
   topology.self = {
     icon = "devices.cloud-server";
     hardware.info = "Vultr 2048.00 MB Regular Cloud Compute";

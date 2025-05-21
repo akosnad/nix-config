@@ -53,10 +53,6 @@
   # backup access if headscale goes down
   services.openssh.openFirewall = lib.mkForce true;
 
-  services.geoclue2.enable = lib.mkForce false;
-  services.avahi.enable = lib.mkForce false;
-  programs.dconf.enable = lib.mkForce false;
-
   services.nginx.enable = true;
   networking.firewall.allowedTCPPorts = [ 80 443 ];
   security.acme.defaults = lib.mkForce {
