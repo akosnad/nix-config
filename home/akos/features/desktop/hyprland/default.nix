@@ -55,7 +55,7 @@
         activeOpacity = "55";
         inactiveOpacity = "22";
         selection = "0x${activeOpacity}${palette.base08}";
-        # active = "0x${activeOpacity}${palette.base0C}";
+        active = "0x${activeOpacity}${palette.base0C}";
         # inactive = "0x${inactiveOpacity}${palette.base02}";
         shadow = if variant == "light" then "0x${activeOpacity}${palette.base07}" else "0x${activeOpacity}${palette.base00}";
         shadowInactive = if variant == "light" then "0x${inactiveOpacity}${palette.base07}" else "0x${inactiveOpacity}${palette.base00}";
@@ -81,7 +81,10 @@
           )
           config.monitors;
 
-        workspace = map (m: "${m.name},${m.workspace}") (
+        workspace = [
+          "w[tv1], gapsout:0, gapsin:0"
+          "f[1], gapsout:0, gapsin:0"
+        ] ++ map (m: "${m.name},${m.workspace}") (
           lib.filter (m: m.enabled && m.workspace != null) config.monitors
         );
 
@@ -198,6 +201,8 @@
           focus_wrap = false;
           gesture_workspace_switch_prefix = "e";
           center_row_if_space_available = true;
+          jump_labels_color = active;
+          jump_labels_keys = "sadjklewcmpgh";
         };
 
         windowrulev2 = [
@@ -210,13 +215,10 @@
 
           # no gaps when only one window on workspace
           # taken from: https://github.com/hyprwm/Hyprland/blob/3cec45d82113051d35e846e5d80719d8ea0f7002/example/hyprland.conf#L134-L145
-          #
-          # disabled until we can somehow have hyprscroller updated (to at least https://github.com/dawsers/hyprscroller/commit/1b40d06071496e121bdaf6df1900cc1a07310db7)
-          #
-          # "bordersize 0, floating:0, onworkspace:w[tv1]"
-          # "rounding 0, floating:0, onworkspace:w[tv1]"
-          # "bordersize 0, floating:0, onworkspace:f[1]"
-          # "rounding 0, floating:0, onworkspace:f[1]"
+          "bordersize 0, floating:0, onworkspace:w[tv1]"
+          "rounding 0, floating:0, onworkspace:w[tv1]"
+          "bordersize 0, floating:0, onworkspace:f[1]"
+          "rounding 0, floating:0, onworkspace:f[1]"
 
           # set scroller column width to full screen if only window on workspace
           "plugin:scroller:columnwidth one, onworkspace:w[tv1]"

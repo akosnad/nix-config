@@ -217,17 +217,13 @@ in
         background-color: rgba(0, 0, 0, 0.0);
         transition: background-color 250ms cubic-bezier(0.22, 1, 0.36, 1);
       }
-
-      /* disabled until we can somehow have hyprscroller updated (to at least https://github.com/dawsers/hyprscroller/commit/1b40d06071496e121bdaf6df1900cc1a07310db7) */
-      /*
       window#waybar.solo > box {
         padding: 0.5em;
         background-color: @base00;
       }
       window#waybar.solo.kitty > box {
-        background-color: alpha(@base00, 0.9);
+        background-color: alpha(@base00, ${toString config.stylix.opacity.terminal});
       }
-      */
 
       #custom-scroller-mode {
         ${base}

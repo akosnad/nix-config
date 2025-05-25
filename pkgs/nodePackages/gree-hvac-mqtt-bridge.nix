@@ -12,5 +12,10 @@
   npmDepsHash = "sha256-g4i7ruGTFq/Bm1uBYvlvV8JOD2N6VZuZZmSuMuJb/50=";
   dontNpmBuild = true;
 
+  postInstall = ''
+    # remove broken symlinks
+    find $out/lib/node_modules -xtype l -type l -delete
+  '';
+
   passthru.entrypoint = "index.js";
 }

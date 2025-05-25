@@ -7,7 +7,7 @@ in
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [ oh-my-posh ];
 
-    programs.zsh.initExtra = lib.mkIf config.programs.zsh.enable /* zsh */ ''
+    programs.zsh.initContent = lib.mkIf config.programs.zsh.enable /* zsh */ ''
       function set_poshcontext() {
         export BGJOBS="$(jobs | wc -l | xargs)"
       }

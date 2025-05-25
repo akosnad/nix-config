@@ -87,6 +87,7 @@
 , libsecret
 , # Edge Specific
   libuuid
+, libgbm
 ,
 }:
 
@@ -153,6 +154,7 @@ let
       wget
       libsecret
       libuuid
+      libgbm
     ]
     ++ lib.optional pulseSupport libpulseaudio
     ++ lib.optional libvaSupport libva

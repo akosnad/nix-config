@@ -47,7 +47,9 @@ let
 
       # Some PXE constellations especially with dnsmasq are looking for the file with .0 ending
       # let's provide it as a symlink to be compatible in this case.
-      ln -s undionly.kpxe $out/undionly.kpxe.0
+      if [ -f "$out/undionly.kpxe" ]; then
+        ln -s undionly.kpxe $out/undionly.kpxe.0
+      fi
 
       runHook postInstall
     '';

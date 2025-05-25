@@ -139,7 +139,6 @@ in
         "$mainMod, F, togglefloating"
         ", Menu, exec, ${wofi-launch}"
         "$mainMod, Menu, exec, ${lib.getExe comma-gui}"
-        "ALT, Space, exec, ${wofi-launch}"
         "$mainMod, Backspace, exec, ${toggle-dark-mode}"
         "$mainMod, N, exec, swaync-client -t"
         "$mainMod, G, exec, ${toggle-gammastep}"
@@ -148,6 +147,7 @@ in
 
         "$mainMod, Space, togglesplit," # dwindle
         "$mainMod, Space, scroller:toggleoverview" # scroller
+        "ALT, Space, scroller:jump"
 
         "$mainMod, bracketleft, scroller:setmode, col"
         "$mainMod, bracketright, scroller:setmode, row"
