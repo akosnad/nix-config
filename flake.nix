@@ -19,8 +19,7 @@
   };
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
 
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
@@ -31,7 +30,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    home-manager.url = "github:nix-community/home-manager/release-24.11";
+    home-manager.url = "github:nix-community/home-manager/release-25.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     nur = {
@@ -49,19 +48,19 @@
     };
 
     stylix = {
-      url = "github:/danth/stylix/release-24.11";
+      url = "github:/nix-community/stylix/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
 
     spicetify = {
-      url = "github:Gerg-L/spicetify-nix/24.11";
+      url = "github:Gerg-L/spicetify-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     hardware.url = "github:nixos/nixos-hardware";
     disko = {
-      url = "github:nix-community/disko/v1.7.0";
+      url = "github:nix-community/disko/v1.12.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -80,9 +79,8 @@
     };
 
     nixvirt = {
-      url = "https://flakehub.com/f/AshleyYakeley/NixVirt/0.5.0.tar.gz";
+      url = "github:AshleyYakeley/NixVirt/v0.6.0";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.nixpkgs-ovmf.follows = "nixpkgs";
     };
 
     arion = {
@@ -92,8 +90,7 @@
     };
 
     lanzaboote = {
-      url = "github:nix-community/lanzaboote/v0.3.0";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/lanzaboote";
       inputs.flake-parts.follows = "flake-parts";
     };
 
@@ -117,6 +114,11 @@
 
     microsoft-edge-src = {
       url = "https://msedge-flake-input.akos-23c.workers.dev/";
+      flake = false;
+    };
+
+    hyprscroller-src = {
+      url = "github:akosnad/hyprscroller";
       flake = false;
     };
   };

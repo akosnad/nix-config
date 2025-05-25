@@ -1,9 +1,9 @@
 use qbit_rs::{
+    Qbit,
     model::{
         Credential, GetTorrentListArg, Hashes, RatioLimit, SeedingTimeLimit,
         SetTorrentSharedLimitArg,
     },
-    Qbit,
 };
 use rumqttc::{AsyncClient, Event, MqttOptions, Packet, QoS};
 use serde::Deserialize;
