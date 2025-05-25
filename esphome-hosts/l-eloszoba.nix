@@ -34,7 +34,7 @@
           id = "output_nightlight";
           inherit frequency;
           max_power = 0.25;
-          min_power = 0.02;
+          min_power = 0.01;
           zero_means_zero = true;
         }
       ];
