@@ -16,8 +16,8 @@
       };
       sansSerif = config.stylix.fonts.serif;
       monospace = {
-        package = pkgs.nerdfonts.override { fonts = [ "Recursive" ]; };
-        name = "RecMono Linear Nerd Font";
+        package = pkgs.nerd-fonts.recursive-mono;
+        name = "RecMonoLinear Nerd Font";
       };
       emoji = {
         package = pkgs.noto-fonts-emoji;
