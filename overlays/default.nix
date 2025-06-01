@@ -28,7 +28,11 @@
 
   modifications = final: prev:
     let
-      pkgsUnstable = import inputs.nixpkgs-unstable { inherit (final) system; };
+      pkgsUnstable = import inputs.nixpkgs-unstable {
+        inherit (final) system;
+        overlays = [ inputs.nur.overlays.default ];
+        config.allowUnfree = true;
+      };
     in
     {
       # >= 2.26.0 is required for buildbot-nix
@@ -48,5 +52,9 @@
           };
         });
       };
+
+      # was removed in 25.05
+      # TODO: remove if re-inited upstream
+      inherit (pkgsUnstable.nur.repos.nanamiiiii) microsoft-edge;
     };
 }
