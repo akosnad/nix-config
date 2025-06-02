@@ -8,8 +8,9 @@
         let
           legacyPackages = (flake.legacyPackages or { }).${final.system} or { };
           packages = (flake.packages or { }).${final.system} or { };
+          outPath = flake.outPath or { };
         in
-        if legacyPackages != { } then legacyPackages else packages
+        if legacyPackages != { } then legacyPackages else if packages != { } then packages else outPath
       )
       inputs;
   };
@@ -30,7 +31,6 @@
     let
       pkgsUnstable = import inputs.nixpkgs-unstable {
         inherit (final) system;
-        overlays = [ inputs.nur.overlays.default ];
         config.allowUnfree = true;
       };
     in
@@ -52,9 +52,5 @@
           };
         });
       };
-
-      # was removed in 25.05
-      # TODO: remove if re-inited upstream
-      inherit (pkgsUnstable.nur.repos.nanamiiiii) microsoft-edge;
     };
 }

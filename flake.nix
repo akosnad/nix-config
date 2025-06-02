@@ -114,6 +114,11 @@
       url = "github:/oddlama/nix-topology";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    microsoft-edge-src = {
+      url = "https://msedge-flake-input.akos-23c.workers.dev/";
+      flake = false;
+    };
   };
 
   outputs =
@@ -148,7 +153,7 @@
       ] ++ (builtins.attrValues (import ./modules/flake));
 
       perSystem = { pkgs, config, system, ... }: {
-        packages = import ./pkgs { inherit pkgs; };
+        packages = import ./pkgs { inherit pkgs inputs; };
         devShells = import ./shell.nix { inherit pkgs; } // { treefmt = config.treefmt.build.devShell; };
         treefmt = {
           projectRootFile = "flake.nix";
