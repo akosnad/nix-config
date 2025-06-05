@@ -93,6 +93,7 @@
         auth_providers = [
           { type = "homeassistant"; }
         ];
+        allowlist_external_dirs = [ "/tmp" ];
       };
       http = {
         ip_ban_enabled = false;
