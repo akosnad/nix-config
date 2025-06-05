@@ -32,16 +32,16 @@ in
       # serve in an unassigned address space for non-declared devices
       dhcp-range = [ "set:lan,10.99.0.1,10.99.254.254,10m" ];
       # Static leases
-      dhcp-host = builtins.map (device: "${device.mac},lan,${device.ip},${device.hostname},infinite") staticLeases;
+      dhcp-host = builtins.map (device: "${device.mac},set:lan,${device.ip},${device.hostname},infinite") staticLeases;
       # common options
       dhcp-option = [
-        "lan,option:netmask,255.0.0.0"
-        "lan,option:router,${gatewayIp}"
-        "lan,option:dns-server,${gatewayIp}"
-        "lan,option:domain-name,${domain}"
-        "lan,option:domain-search,${domain}"
-        "lan,option:sip-server,${config.devices.hyperion.ip}"
-        "lan,option:tzdb-timezone,Europe/Budapest"
+        "tag:lan,option:netmask,255.0.0.0"
+        "tag:lan,option:router,${gatewayIp}"
+        "tag:lan,option:dns-server,${gatewayIp}"
+        "tag:lan,option:domain-name,${domain}"
+        "tag:lan,option:domain-search,${domain}"
+        "tag:lan,option:sip-server,${config.devices.hyperion.ip}"
+        "tag:lan,option:tzdb-timezone,Europe/Budapest"
       ];
 
     };

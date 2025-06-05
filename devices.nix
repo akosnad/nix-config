@@ -211,13 +211,13 @@
     blockInternetAccess = true;
     connectionMedium = "wifi";
   };
-  indoor_sensor = {
+  indoor-sensor = {
     mac = "8C:AA:B5:7C:FA:80";
     ip = "10.4.2.2";
     blockInternetAccess = true;
     connectionMedium = "wifi";
   };
-  outside_sensor = {
+  outside-sensor = {
     mac = "8C:AA:B5:7A:AD:A6";
     ip = "10.4.2.3";
     blockInternetAccess = true;

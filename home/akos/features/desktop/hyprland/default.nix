@@ -90,6 +90,8 @@
 
         xwayland.force_zero_scaling = true;
 
+        ecosystem.no_update_news = true;
+
         input = {
           kb_layout = "us,hu";
           kb_options = "grp:caps_toggle";

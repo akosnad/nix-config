@@ -1,11 +1,8 @@
 { common, ... }:
 {
   settings = {
-    esphome = {
-      platform = "ESP8266";
-      board = "d1_mini";
-      friendly_name = "Cerberus";
-    };
+    esphome.friendly_name = "Cerberus";
+    esp8266.board = "d1_mini";
     wifi.power_save_mode = "none";
 
     switch = [
