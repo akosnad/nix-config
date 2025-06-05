@@ -94,6 +94,7 @@
           { type = "homeassistant"; }
         ];
         allowlist_external_dirs = [ "/tmp" ];
+        media_dirs.local = "/tmp";
       };
       http = {
         ip_ban_enabled = false;
@@ -109,6 +110,7 @@
       logbook = { };
       cloud = { };
       stream = { };
+      media_source = { };
     };
   };
 
