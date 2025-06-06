@@ -11,6 +11,7 @@
     ./features/linphone.nix
     ./features/shell/iamb.nix
     ./features/kicad.nix
+    ./features/darktable.nix
   ];
 
   specialisation.light.configuration.stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/selenized-light.yaml";
