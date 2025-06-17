@@ -78,6 +78,12 @@ in
           url.text = cfg.settings.public_baseurl;
         };
     };
+
+    miniflux = mkIf config.services.miniflux.enable {
+      name = "Miniflux";
+      icon = "services.miniflux";
+      info = config.services.miniflux.config.BASE_URL;
+    };
   };
 
   # give nodes a camera icon that are referenced in frigate

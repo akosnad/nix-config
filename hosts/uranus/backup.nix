@@ -53,7 +53,7 @@ in
   services.postgresqlBackup = {
     enable = true;
     startAt = "*-*-* 01:15:00";
-    databases = [ "matrix-synapse" ];
+    databases = [ "matrix-synapse" "miniflux" ];
     compression = "none"; # TODO: gzip --rsyncable possible?
     location = "/persist/var/backup/postgresql";
   };
