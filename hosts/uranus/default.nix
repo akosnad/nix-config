@@ -7,12 +7,16 @@
     ../common/global
     ../common/optional/ephemeral-btrfs.nix
     ../common/optional/high-availability.nix
+    ../common/optional/docker
+    ../common/optional/docker/watchtower.nix
+    ../common/optional/docker/arion.nix
 
     ../common/users/akos
 
     ./matrix
     ./backup.nix
     ./miniflux.nix
+    ./deploy.nix
   ];
 
   networking.hostName = "uranus";

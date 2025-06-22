@@ -6,6 +6,7 @@ let
     "webhook-secret"
     "github-oauth-secret"
     "workers"
+    "uranus-deploy-key"
   ];
   buildbotSecrets = lib.genAttrs masterSecretNames (_n: { sopsFile = ../secrets.yaml; neededForUsers = true; });
 
@@ -34,6 +35,9 @@ in
       webhookSecretFile = "${secretsCfg.buildbot-webhook-secret.path}";
       oauthId = "Ov23liqrF61WKdRZCwr7";
       oauthSecretFile = "${secretsCfg.buildbot-github-oauth-secret.path}";
+    };
+    effects.perRepoSecretFiles = {
+      "github:akosnad/personal-site" = config.sops.secrets.buildbot-uranus-deploy-key.path;
     };
   };
 
