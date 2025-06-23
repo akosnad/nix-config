@@ -17,6 +17,7 @@
     ./backup.nix
     ./miniflux.nix
     ./deploy.nix
+    ./personal-site.nix
   ];
 
   networking.hostName = "uranus";
