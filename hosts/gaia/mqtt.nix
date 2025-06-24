@@ -34,6 +34,15 @@ in
         };
       }
       {
+        port = 8084;
+        omitPasswordAuth = true;
+        acl = [ "pattern readwrite #" ];
+        settings = {
+          protocol = "websockets";
+          allow_anonymous = true;
+        };
+      }
+      {
         port = 30160;
         omitPasswordAuth = false;
         acl = [
