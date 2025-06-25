@@ -150,14 +150,12 @@
     info = "Yeelight Arwen 550C (ceilc)";
     mac = "B4:60:ED:0F:CB:0D";
     ip = "10.4.1.2";
-    blockInternetAccess = true;
     connectionMedium = "wifi";
   };
   l-overhead = {
     info = "Yeelight LED Bulb (color2)";
     mac = "04:CF:8C:7C:CF:E3";
     ip = "10.4.1.3";
-    blockInternetAccess = true;
     connectionMedium = "wifi";
   };
   l-desk = {
@@ -178,14 +176,12 @@
     info = "Yeelight LED Bulb W3 (colorb)";
     mac = "7C:C2:94:81:90:2B";
     ip = "10.4.1.6";
-    blockInternetAccess = true;
     connectionMedium = "wifi";
   };
   ranarp = {
     info = "Mi Smart LED Bulb Essential (White and Color) (color5)";
     mac = "44:23:7C:CA:40:4F";
     ip = "10.4.1.7";
-    blockInternetAccess = true;
     connectionMedium = "wifi";
   };
   kp105 = {
