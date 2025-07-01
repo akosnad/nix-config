@@ -11,6 +11,7 @@
 
     ../common/users/akos
     ./headscale.nix
+    ./rustdesk.nix
     ./backup.nix
   ];
 
