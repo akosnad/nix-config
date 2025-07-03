@@ -11,6 +11,7 @@
     ./spotify.nix
     ./kde-connect.nix
     ./swaync.nix
+    ./keepassxc.nix
   ];
 
   dconf.settings."org/gnome/desktop/interface".color-scheme =
@@ -20,6 +21,7 @@
 
 
   xdg.portal.enable = true;
+  xdg.autostart.enable = true;
 
   home.packages = with pkgs; [
     vlc
