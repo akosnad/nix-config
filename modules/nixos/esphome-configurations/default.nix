@@ -2,23 +2,23 @@
 let
   inherit (lib) types;
   cfg = config.services.esphome.configurations;
-  configurationModule = import ../common/esphome.nix;
+  configurationModule = import ../../common/esphome.nix;
   deviceSettingsFormat = pkgs.formats.yaml { };
+  targetFirmwareVersion = inputs.self.shortRev or "unclean-tree";
 
   defaultSettings = name: lib.recursiveUpdate
     {
       esphome = {
         inherit name;
+        project = {
+          name = "akosnad.nix-config";
+          version = targetFirmwareVersion;
+        };
       };
       wifi = {
         ssid = "!secret wifi_ssid";
         password = "!secret wifi_pass";
         domain = ".${config.networking.domain}";
-        ap = {
-          # careful: can't be longer than 32 chars!
-          ssid = "${name} fallback";
-          password = "!secret wifi_fallback_pass";
-        };
       };
       ota = {
         platform = "esphome";
@@ -26,7 +26,6 @@ let
       };
       logger = { };
       api = { };
-      captive_portal = { };
     }
     (if lib.hasAttr name config.devices then {
       wifi.manual_ip = {
@@ -55,6 +54,18 @@ let
     (lib.mapAttrs (name: cfg: renderDeviceSettingsFile "${name}.yaml" cfg))
     (lib.mapAttrs' (name: cfg: lib.nameValuePair "${name}.yaml" cfg))
   ];
+
+  firmwareUpdateCheckScript = pkgs.stdenv.mkDerivation rec {
+    name = "esphome-firmware-version-check";
+    propagatedBuildInputs = [
+      (pkgs.python3.withPackages (ps: with ps; [
+        aioesphomeapi
+      ]))
+    ];
+    dontUnpack = true;
+    installPhase = "install -Dm755 ${./esphome-firmware-version-check.py} $out/bin/${name}";
+    meta.mainProgram = name;
+  };
 
   firmwareUpdateScript = pkgs.writeShellApplication {
     name = "esphome-update-device";
@@ -91,6 +102,7 @@ let
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
+        ExecCondition = "${lib.getExe firmwareUpdateCheckScript} ${name} ${targetFirmwareVersion}";
         ExecStart = "${lib.getExe firmwareUpdateScript} ${name}.yaml";
         DynamicUser = true;
         User = "esphome";

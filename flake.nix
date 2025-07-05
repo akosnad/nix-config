@@ -165,6 +165,7 @@
             statix.enable = true;
             deadnix.enable = true;
             shfmt.enable = true;
+            black.enable = true;
           };
         };
 
