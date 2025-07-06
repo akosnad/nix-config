@@ -76,6 +76,7 @@
       localtuya
       frigate
       webrtc-camera
+      adaptive_lighting
     ];
     customThemes = with pkgs.home-assistant-custom-themes; [
       google
@@ -110,6 +111,7 @@
       cloud = { };
       stream = { };
       media_source = { };
+      adaptive_lighting = { };
     };
   };
 
