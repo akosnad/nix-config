@@ -73,7 +73,6 @@
       hap-python
     ];
     customComponents = with pkgs.home-assistant-custom-components; [
-      xiaomi_miot
       localtuya
       frigate
       webrtc-camera
