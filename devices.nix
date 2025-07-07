@@ -153,8 +153,8 @@
     connectionMedium = "wifi";
   };
   l-overhead = {
-    info = "Yeelight LED Bulb (color2)";
-    mac = "04:CF:8C:7C:CF:E3";
+    info = "Athom 15W RGBCT Bulb";
+    mac = "4C:EB:D6:DC:7F:4A";
     ip = "10.4.1.3";
     connectionMedium = "wifi";
   };
@@ -173,14 +173,14 @@
     connectionMedium = "wifi";
   };
   l-fali = {
-    info = "Yeelight LED Bulb W3 (colorb)";
-    mac = "7C:C2:94:81:90:2B";
+    info = "Athom 15W RGBCT Bulb";
+    mac = "D4:8C:49:0E:A0:78";
     ip = "10.4.1.6";
     connectionMedium = "wifi";
   };
   ranarp = {
-    info = "Mi Smart LED Bulb Essential (White and Color) (color5)";
-    mac = "44:23:7C:CA:40:4F";
+    info = "Athom 15W RGBCT Bulb";
+    mac = "D4:8C:49:0E:8A:5F";
     ip = "10.4.1.7";
     connectionMedium = "wifi";
   };
