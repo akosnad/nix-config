@@ -150,12 +150,14 @@
     info = "Yeelight Arwen 550C (ceilc)";
     mac = "B4:60:ED:0F:CB:0D";
     ip = "10.4.1.2";
+    blockInternetAccess = true;
     connectionMedium = "wifi";
   };
   l-overhead = {
     info = "Athom 15W RGBCT Bulb";
     mac = "4C:EB:D6:DC:7F:4A";
     ip = "10.4.1.3";
+    blockInternetAccess = true;
     connectionMedium = "wifi";
   };
   l-desk = {
@@ -176,12 +178,14 @@
     info = "Athom 15W RGBCT Bulb";
     mac = "D4:8C:49:0E:A0:78";
     ip = "10.4.1.6";
+    blockInternetAccess = true;
     connectionMedium = "wifi";
   };
   ranarp = {
     info = "Athom 15W RGBCT Bulb";
     mac = "D4:8C:49:0E:8A:5F";
     ip = "10.4.1.7";
+    blockInternetAccess = true;
     connectionMedium = "wifi";
   };
   kp105 = {
