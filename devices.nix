@@ -168,7 +168,7 @@
     connectionMedium = "wifi";
   };
   l-desk-led = {
-    info = "Tuya-based RGB LED strip";
+    info = "Tuya-based RGB LED strip (modded controller)";
     mac = "28:6D:CD:07:2A:6B";
     ip = "10.4.1.5";
     blockInternetAccess = true;
