@@ -93,49 +93,53 @@
       }
     ];
 
-    output = [
-      {
-        platform = "esp8266_pwm";
-        id = "red_output";
-        pin = "GPIO4";
-        min_power = 0.000499;
-        max_power = 1;
-        zero_means_zero = true;
-      }
-      {
-        platform = "esp8266_pwm";
-        id = "green_output";
-        pin = "GPIO12";
-        min_power = 0.000499;
-        max_power = 1;
-        zero_means_zero = true;
-      }
-      {
-        platform = "esp8266_pwm";
-        id = "blue_output";
-        pin = "GPIO14";
-        min_power = 0.000499;
-        max_power = 1;
-        zero_means_zero = true;
-      }
-      {
-        platform = "esp8266_pwm";
-        id = "white_output";
-        pin = "GPIO5";
-        min_power = 0.01;
-        max_power = 0.9;
-        zero_means_zero = true;
-      }
-      {
-        platform = "esp8266_pwm";
-        id = "ct_output";
-        inverted = true;
-        pin = "GPIO13";
-        min_power = 0.01;
-        max_power = 0.9;
-        zero_means_zero = true;
-      }
-    ];
+    output =
+      let
+        max_power = 0.85;
+      in
+      [
+        {
+          platform = "esp8266_pwm";
+          id = "red_output";
+          pin = "GPIO4";
+          min_power = 0.000499;
+          inherit max_power;
+          zero_means_zero = true;
+        }
+        {
+          platform = "esp8266_pwm";
+          id = "green_output";
+          pin = "GPIO12";
+          min_power = 0.000499;
+          inherit max_power;
+          zero_means_zero = true;
+        }
+        {
+          platform = "esp8266_pwm";
+          id = "blue_output";
+          pin = "GPIO14";
+          min_power = 0.000499;
+          inherit max_power;
+          zero_means_zero = true;
+        }
+        {
+          platform = "esp8266_pwm";
+          id = "white_output";
+          pin = "GPIO5";
+          min_power = 0.01;
+          inherit max_power;
+          zero_means_zero = true;
+        }
+        {
+          platform = "esp8266_pwm";
+          id = "ct_output";
+          inverted = true;
+          pin = "GPIO13";
+          min_power = 0.01;
+          inherit max_power;
+          zero_means_zero = true;
+        }
+      ];
 
     light = [{
       platform = "rgbct";
