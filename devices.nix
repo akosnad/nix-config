@@ -196,7 +196,7 @@
     connectionMedium = "wifi";
   };
   l-pavilon = {
-    info = "Tuya-based RGB LED strip";
+    info = "Tuya-based RGB LED strip (custom firmware)";
     mac = "D4:A6:51:91:0D:9E";
     ip = "10.4.1.9";
     blockInternetAccess = true;
