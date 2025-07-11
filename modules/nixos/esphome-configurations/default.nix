@@ -4,16 +4,12 @@ let
   cfg = config.services.esphome.configurations;
   configurationModule = import ../../common/esphome.nix;
   deviceSettingsFormat = pkgs.formats.yaml { };
-  targetFirmwareVersion = inputs.self.shortRev or "unclean-tree";
 
   defaultSettings = name: lib.recursiveUpdate
     {
       esphome = {
         inherit name;
-        project = {
-          name = "akosnad.nix-config";
-          version = targetFirmwareVersion;
-        };
+        project.name = "akosnad.nix-config";
       };
       wifi = {
         ssid = "!secret wifi_ssid";
@@ -45,8 +41,12 @@ let
   renderDeviceSettingsFile =
     fn: yaml:
     pkgs.runCommandLocal fn { } ''
-      cp ${deviceSettingsFormat.generate fn yaml} $out
-      sed -i -e "s/'\!\([a-z_]\+\) \(.*\)'/\!\1 \2/;s/^\!\!/\!/;" $out
+      temp=$(mktemp)
+      cp ${deviceSettingsFormat.generate fn yaml} $temp
+      storeHash=$(sed -E 's/^\/nix\/store\/([0-9a-z]{32}).*$/\1/' <<<"$out")
+      ${lib.getExe pkgs.yq-go} -i ".esphome.project.version = \"$storeHash\"" $temp
+      sed -i -e "s/'\!\([a-z_]\+\) \(.*\)'/\!\1 \2/;s/^\!\!/\!/;" $temp
+      cp $temp $out
     '';
 
   settingFiles = lib.pipe cfg [
@@ -54,18 +54,6 @@ let
     (lib.mapAttrs (name: cfg: renderDeviceSettingsFile "${name}.yaml" cfg))
     (lib.mapAttrs' (name: cfg: lib.nameValuePair "${name}.yaml" cfg))
   ];
-
-  firmwareUpdateCheckScript = pkgs.stdenv.mkDerivation rec {
-    name = "esphome-firmware-version-check";
-    propagatedBuildInputs = [
-      (pkgs.python3.withPackages (ps: with ps; [
-        aioesphomeapi
-      ]))
-    ];
-    dontUnpack = true;
-    installPhase = "install -Dm755 ${./esphome-firmware-version-check.py} $out/bin/${name}";
-    meta.mainProgram = name;
-  };
 
   firmwareUpdateScript = pkgs.writeShellApplication {
     name = "esphome-update-device";
@@ -102,7 +90,6 @@ let
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
-        ExecCondition = "${lib.getExe firmwareUpdateCheckScript} ${name} ${targetFirmwareVersion}";
         ExecStart = "${lib.getExe firmwareUpdateScript} ${name}.yaml";
         DynamicUser = true;
         User = "esphome";
