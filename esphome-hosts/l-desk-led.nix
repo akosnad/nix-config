@@ -35,6 +35,7 @@
       green = "output_green";
       blue = "output_blue";
       restore_mode = "RESTORE_DEFAULT_OFF";
+      gamma_correct = 1.4;
     }];
 
     remote_receiver.pin = {
