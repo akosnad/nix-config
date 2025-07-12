@@ -17,7 +17,9 @@ jobs:
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Update flake.lock
+        id: update
         uses: DeterminateSystems/update-flake-lock@v24
-        with:
-          pr-labels: |
-            merge-queue
+      - name: Enable auto-merge for created PR
+        run: gh pr merge ${{ steps.update.outputs.pull-request-number }} --auto --rebase
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
