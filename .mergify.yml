@@ -1,14 +1,15 @@
 queue_rules:
-    - name: default
-      merge_conditions:
-          - check-success=buildbot/nix-build
-          - schedule=03:00-06:00[Europe/Budapest]
-      merge_method: rebase
-
+  - name: default
+    merge_conditions:
+      - check-success=buildbot/nix-build
+      - schedule=03:00-06:00[Europe/Budapest]
+    merge_method: rebase
 pull_request_rules:
-    - name: Queue
-      conditions:
-          - base=main
-          - label~=merge-queue|dependencies
-      actions:
-          queue:
+  - name: Queue
+    conditions:
+      - base=main
+      - label~=merge-queue|dependencies
+    actions:
+      queue:
+merge_queue:
+  max_parallel_checks: 1
