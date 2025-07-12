@@ -27,6 +27,11 @@
     size = 8 * 1024;
   }];
 
+  services.journald.extraConfig = ''
+    SystemMaxUse=5G
+    SystemKeepFree=1G
+  '';
+
   services.openssh.openFirewall = lib.mkForce false;
 
   security.acme.defaults = lib.mkForce {
