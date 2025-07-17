@@ -552,18 +552,6 @@
         "type": "github"
       }
     },
-    "microsoft-edge-src": {
-      "flake": false,
-      "locked": {
-        "narHash": "sha256-hJGrAsrmCR6fkQYCD1lBReKSNGodtFXS85UeycsE7wI=",
-        "type": "file",
-        "url": "https://msedge-flake-input.akos-23c.workers.dev/"
-      },
-      "original": {
-        "type": "file",
-        "url": "https://msedge-flake-input.akos-23c.workers.dev/"
-      }
-    },
     "nix-index-database": {
       "inputs": {
         "nixpkgs": [
@@ -774,7 +762,6 @@
         "hyprscroller-src": "hyprscroller-src",
         "impermanence": "impermanence",
         "lanzaboote": "lanzaboote",
-        "microsoft-edge-src": "microsoft-edge-src",
         "nix-index-database": "nix-index-database",
         "nix-topology": "nix-topology",
         "nixpkgs": "nixpkgs_2",

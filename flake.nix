@@ -37,7 +37,6 @@
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-parts.follows = "flake-parts";
-      inputs.treefmt-nix.follows = "treefmt-nix";
     };
 
     impermanence.url = "github:nix-community/impermanence";
@@ -50,7 +49,6 @@
     stylix = {
       url = "github:/nix-community/stylix/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
     };
 
     spicetify = {
@@ -110,11 +108,6 @@
     nix-topology = {
       url = "github:/oddlama/nix-topology";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    microsoft-edge-src = {
-      url = "https://msedge-flake-input.akos-23c.workers.dev/";
-      flake = false;
     };
 
     hyprscroller-src = {
