@@ -6,6 +6,11 @@
     settings = {
       editor = {
         line-number = "relative";
+        inline-diagnostics = {
+          cursor-line = "warning";
+          other-lines = "warning";
+          max-diagnostics = 5;
+        };
       };
       keys.normal = {
         space.w = ":w";
