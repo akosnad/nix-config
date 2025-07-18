@@ -68,6 +68,7 @@ in
     interfaceGroups = [ [ "eth1" "eth2" "eth3" "eth4" "eth5" ] ];
     connections = {
       eth3 = mkConnection "persephone" "lan1";
+      eth4 = mkConnection "kronos" "lan1";
       eth5 = mkConnection "kratos" "lan1";
     };
   };

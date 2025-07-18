@@ -279,4 +279,10 @@
     ip = "10.4.3.7";
     connectionMedium = "wifi";
   };
+  kronos = {
+    info = "Rigol DHO924S oscilloscope";
+    mac = "00:19:AF:A0:3D:75";
+    ip = "10.4.3.8";
+    blockInternetAccess = true;
+  };
 }
