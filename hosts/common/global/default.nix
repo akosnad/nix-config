@@ -23,9 +23,6 @@
     inherit inputs outputs;
     inherit (config.networking) hostName;
   };
-  home-manager.sharedModules = [
-    inputs.sops-nix.homeManagerModules.sops
-  ];
   home-manager.backupFileExtension = "hm-backup";
 
   nixpkgs = {

@@ -36,8 +36,4 @@
       dirs.downloads = "~/Downloads/iamb";
     };
   };
-
-  sops.secrets = {
-    matrix-password = { };
-  };
 }

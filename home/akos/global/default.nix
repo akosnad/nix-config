@@ -40,10 +40,7 @@
     git.enable = true;
   };
 
-  sops = {
-    gnupg.home = "${config.home.homeDirectory}/.gnupg";
-    defaultSopsFile = ../secrets.yaml;
-  };
+  sops.sopsFile = ../secrets.yaml;
 
   stylix.targets.gnome.enable = lib.mkForce false;
   stylix.targets.kde.enable = lib.mkForce false;
