@@ -58,6 +58,7 @@ in
   options.sops = {
     wrapped-commands = mkOption {
       type = types.attrsOf (types.submodule wrappedCmdModule);
+      default = { };
     };
     sopsFile = mkOption {
       type = types.path;
