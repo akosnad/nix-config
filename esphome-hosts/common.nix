@@ -95,6 +95,7 @@
 
     output =
       let
+        white_max_power = 0.6;
         max_power = 0.85;
       in
       [
@@ -127,7 +128,7 @@
           id = "white_output";
           pin = "GPIO5";
           min_power = 0.01;
-          inherit max_power;
+          max_power = white_max_power;
           zero_means_zero = true;
         }
         {
@@ -136,7 +137,7 @@
           inverted = true;
           pin = "GPIO13";
           min_power = 0.01;
-          inherit max_power;
+          max_power = white_max_power;
           zero_means_zero = true;
         }
       ];
