@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, config, ... }:
 let
   wallpapersDir = pkgs.stdenvNoCC.mkDerivation {
     name = "wallpapers";
@@ -20,7 +20,11 @@ let
 
       # select random file other than current
       next_img="$(find "${wallpapersDir}" -type f ! -path "$curr" | sort -R | tail -n1)"
-      swww img "$next_img"
+      ${lib.pipe config.monitors [
+        (lib.filter (m: m.enabled))
+        (map (m: "swww img -o ${m.name} \"$next_img\""))
+        (lib.concatStringsSep "\n")
+      ]}
     '';
   };
 in
@@ -47,7 +51,8 @@ in
         };
 
         Service = {
-          ExecStart = "${pkgs.swww}/bin/swww-daemon";
+          ExecStart = lib.getExe' pkgs.swww "swww-daemon";
+          ExecStartPost = "${lib.getExe pkgs.swww} clear ${config.lib.stylix.colors.base00}";
         };
         Install.WantedBy = [ "graphical-session.target" ];
       };
