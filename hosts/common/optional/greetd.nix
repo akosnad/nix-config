@@ -1,9 +1,6 @@
 { lib, config, pkgs, ... }:
 let
   homeCfgs = config.home-manager.users;
-  homeSharePaths = lib.mapAttrsToList (_: v: "${v.home.path}/share") homeCfgs;
-  vars = ''XDG_DATA_DIRS="$XDG_DATA_DIRS:${lib.concatStringsSep ":" homeSharePaths}" GTK_USE_PORTAL=0 GTK_THEME=${gtkTheme.name}'';
-
 
   akosConfig = homeCfgs.akos;
   gtkTheme = akosConfig.gtk.theme;
@@ -37,7 +34,7 @@ let
       tap enabled
     }
     exec '${lib.getExe monitor-timeout}'
-    exec '${vars} ${command}; ${swaymsg} exit'
+    exec '${command}; ${swaymsg} exit'
   ''}";
 
   hyprlandConfig = akosConfig.wayland.windowManager.hyprland;
@@ -54,7 +51,19 @@ in
 
   services.greetd = {
     enable = true;
-    settings.default_session.command = sway-kiosk (lib.getExe pkgs.greetd.gtkgreet);
+    settings.default_session.command = sway-kiosk (lib.getExe config.programs.regreet.package);
+  };
+
+  programs.regreet = {
+    enable = true;
+    settings = {
+      background.path = lib.mkForce "";
+      appearance.greeting_msg = "";
+      widget.clock = {
+        format = "%Y. %m. %d. %H:%M";
+        timezone = config.time.timeZone;
+      };
+    };
   };
 
   environment.etc."greetd/environments".text = ''
