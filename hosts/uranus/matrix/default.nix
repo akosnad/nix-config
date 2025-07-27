@@ -25,7 +25,6 @@
       "systemd"
       "postgres"
       "url-preview"
-      "user-search"
       "oidc"
     ];
   };
