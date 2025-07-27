@@ -70,6 +70,28 @@ let
     '';
   };
 
+  firmwareUpdateCheckScript = pkgs.stdenv.mkDerivation rec {
+    name = "esphome-firmware-version-check";
+    propagatedBuildInputs = [
+      (pkgs.python3.withPackages (ps: with ps; [
+        aioesphomeapi
+      ]))
+    ];
+    dontUnpack = true;
+    installPhase = "install -Dm755 ${./esphome-firmware-version-check.py} $out/bin/${name}";
+    meta.mainProgram = name;
+  };
+
+  updateConditionScript = pkgs.writeShellApplication {
+    name = "esphome-check-needs-update";
+    runtimeInputs = (with pkgs; [ bash util-linux ]) ++ [ firmwareUpdateCheckScript ];
+    text = ''
+      targetConfig="$(realpath /etc/esphome/"$1".yaml)"
+      storeHash=$(sed -E 's/^\/nix\/store\/([0-9a-z]{32}).*$/\1/' <<<"$targetConfig")
+      esphome-firmware-version-check "$1" "$storeHash"
+    '';
+  };
+
   mkUpdateService = name: cfg:
     let
       mkIfNotScheduled = lib.mkIf (builtins.isNull cfg.autoUpdate.schedule);
@@ -90,6 +112,7 @@ let
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
+        ExecCondition = "${lib.getExe updateConditionScript} ${name}";
         ExecStart = "${lib.getExe firmwareUpdateScript} ${name}.yaml";
         DynamicUser = true;
         User = "esphome";

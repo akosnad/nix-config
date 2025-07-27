@@ -29,10 +29,6 @@ async def main():
     found_version = device_info.project_version
     expected_version = args.target_version
 
-    if expected_version == "unclean-tree":
-        print("expected version tree is unclean, forcing upgrade")
-        sys.exit(0)
-
     if found_version == expected_version:
         print("firmware version up-to-date:", found_version)
         print("skipping upgrade...")
