@@ -16,15 +16,28 @@ def parse_args():
     return parser.parse_args()
 
 
-async def main():
-    args = parse_args()
-    api = aioesphomeapi.APIClient(args.name, args.port, "")
+async def get_device_info(api):
     await api.connect(login=False)
 
     print(api.api_version, file=sys.stderr)
 
     device_info = await api.device_info()
     print(device_info, file=sys.stderr)
+    return device_info
+
+
+async def main():
+    args = parse_args()
+    api = aioesphomeapi.APIClient(args.name, args.port, "")
+    device_info = {}
+    try:
+        device_info = await get_device_info(api)
+    except Exception as e:
+        print(e, file=sys.stderr)
+        print("failed to get device info...")
+        # mark unit as failed
+        # reference: https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html#ExecCondition=
+        sys.exit(255)
 
     found_version = device_info.project_version
     expected_version = args.target_version

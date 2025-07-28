@@ -107,7 +107,7 @@ let
       wantedBy = mkIfNotScheduled [ "multi-user.target" ];
       restartIfChanged = mkIfNotScheduled true;
       restartTriggers = mkIfNotScheduled [ config.environment.etc."esphome/${name}.yaml".source ];
-      startLimitIntervalSec = 10;
+      startLimitIntervalSec = 30;
       startLimitBurst = 3;
       serviceConfig = {
         Type = "oneshot";
