@@ -1,4 +1,7 @@
 {
+  imports = [
+    ./probe-rs.nix
+  ];
   services.udev.extraRules = /* udev */ ''
     ## Prohibit turning off usb devices
 

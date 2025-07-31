@@ -18,6 +18,7 @@ in
       "docker"
       "podman"
       "libvirtd"
+      "plugdev"
     ];
 
     openssh.authorizedKeys.keys = [ (builtins.readFile ../../../../home/akos/ssh.pub) ];

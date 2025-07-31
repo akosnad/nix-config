@@ -10,7 +10,7 @@
     ./openssh.nix
     ./sops.nix
     ./tailscale.nix
-    ./udev.nix
+    ./udev
     ./nh.nix
     ./optin-persistence.nix
     ./certs.nix
