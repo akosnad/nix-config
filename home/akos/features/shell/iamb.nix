@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   home.packages = with pkgs; [
     iamb
@@ -14,11 +14,7 @@
 
       settings = {
         image_preview.protocol.type = "kitty";
-        notifications = {
-          enabled = true;
-          show_message = true;
-          via = "desktop";
-        };
+        username_display = "displayname";
       };
 
       layout.style = "restore";
@@ -33,7 +29,7 @@
         };
       };
 
-      dirs.downloads = "~/Downloads/iamb";
+      dirs.downloads = "${config.home.homeDirectory}/Downloads/iamb";
     };
   };
 }
