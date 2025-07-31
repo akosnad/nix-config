@@ -14,6 +14,8 @@
         SearchInAllDatabases = true;
       };
 
+      FdoSecrets.Enabled = true;
+
       GUI = {
         MinimizeOnClose = true;
         MinimizeOnStartup = true;
