@@ -1,4 +1,6 @@
 {
+  users.groups.plugdev = { };
+
   services.udev.extraRules = /* udev */ ''
     # Copy this file to /etc/udev/rules.d/
     # If rules fail to reload automatically, you can refresh udev rules
