@@ -57,7 +57,19 @@ in
     8080
   ];
 
-  sops.secrets = buildbotSecrets;
+  sops.secrets = buildbotSecrets // {
+    buildbot-github-ssh-key = {
+      sopsFile = ../secrets.yaml;
+      owner = "buildbot-worker";
+    };
+  };
+
+  programs.ssh.extraConfig = ''
+    Host github.com
+      User git
+      IdentityFile ${config.sops.secrets.buildbot-github-ssh-key.path}
+      IdentitiesOnly yes
+  '';
 
   environment.persistence."/persist".directories = [
     {
