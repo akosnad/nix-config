@@ -43,4 +43,5 @@ in
     "net.ipv6.conf.all.forwarding" = "1";
   };
   services.openssh.openFirewall = false;
+  services.tailscale.useRoutingFeatures = "server";
 }

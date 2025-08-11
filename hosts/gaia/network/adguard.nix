@@ -36,7 +36,10 @@ in
         interval = "24h";
       };
       dns = {
-        bind_hosts = [ config.devices.gaia.ip ];
+        bind_hosts = [
+          config.devices.gaia.ip # LAN
+          "100.64.0.5" # Tailnet
+        ];
         protection_enabled = true;
         upstream_dns = [
           "# https://cloudflare-dns.com/dns-query"
