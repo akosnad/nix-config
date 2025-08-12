@@ -29,6 +29,7 @@ in
       rejectPackets = false; # drop packets instead of rejecting them
       filterForward = true; # critical for IPv6 as there is no NAT
       trustedInterfaces = [ "br-lan" ];
+      extraForwardRules = "iifname ${config.services.tailscale.interfaceName} accept"; # allow tailnet to access LAN
     };
     nameservers = [
       config.devices.gaia.ip
