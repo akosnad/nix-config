@@ -8,6 +8,7 @@
     shellAliases = {
       tree = "eza -l --tree";
       y = "yazi";
+      nd = "nix develop -c $SHELL";
     };
   };
 
