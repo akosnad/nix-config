@@ -139,7 +139,8 @@
         config.allowUnfree = true;
       });
 
-      homes = [{ host = "gepterem"; }];
+      nixosHosts' = lib.filterAttrs (n: v: v == "directory" && n != "common") (builtins.readDir "${self}/hosts");
+      nixosHosts = builtins.attrNames nixosHosts';
     in
     flake-parts.lib.mkFlake { inherit inputs; } ({ ... }:
     {
@@ -198,23 +199,35 @@
                 specialArgs = { inherit inputs outputs; };
               };
             };
-            nixosHosts' = lib.filterAttrs (n: v: v == "directory" && n != "common") (builtins.readDir "${self}/hosts");
-            nixosHosts = builtins.attrNames nixosHosts';
           in
           builtins.listToAttrs (lib.map mkNixosConfig nixosHosts);
 
         homeConfigurations =
           let
-            mkHomeConfig = { host, arch ? "x86_64-linux", ... }: {
+            mkHomeConfig = { host, system, config, ... }: {
               name = "akos@${host}";
               value = lib.homeManagerConfiguration {
-                modules = [ ./home/akos/${host}.nix ];
-                pkgs = pkgsFor.${arch};
+                modules = [
+                  config
+                  inputs.stylix.homeModules.stylix
+                ];
+                pkgs = pkgsFor.${system};
                 extraSpecialArgs = { inherit inputs outputs; };
               };
             };
           in
-          builtins.listToAttrs (lib.map mkHomeConfig homes);
+          lib.pipe (builtins.readDir ./home/akos) [
+            # all nix files in directory
+            (lib.filterAttrs (filename: filetype: filetype != "directory" && (builtins.match ".+\.nix$" filename != null)))
+            # <name>.nix -> <name>
+            (lib.mapAttrs' (filename: _: lib.nameValuePair (lib.head (lib.match "^(.*)\.nix$" filename)) { }))
+            # remove home configs that are a part of NixOS machines
+            (lib.filterAttrs (host: _: !(lib.elem host nixosHosts)))
+            # import files
+            (lib.mapAttrs (host: _: import ./home/akos/${host}.nix))
+            # generate home configs
+            (lib.mapAttrs' (host: toplevel: mkHomeConfig { inherit host; inherit (toplevel) system config; }))
+          ];
 
         esphomeConfigurations =
           let
