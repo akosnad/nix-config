@@ -15,6 +15,7 @@ in
     ./dyndns.nix
     ./block.nix
     ./pxe
+    ./wan-failover.nix
   ];
 
   networking = {
@@ -29,7 +30,11 @@ in
       rejectPackets = false; # drop packets instead of rejecting them
       filterForward = true; # critical for IPv6 as there is no NAT
       trustedInterfaces = [ "br-lan" ];
-      extraForwardRules = "iifname ${config.services.tailscale.interfaceName} accept"; # allow tailnet to access LAN
+      checkReversePath = "loose";
+      extraForwardRules = ''
+        iifname ${config.services.tailscale.interfaceName} accept comment "tailnet -> LAN access"
+        iifname "br-lan" oifname "wan-rndis" accept comment "LAN -> wan-rndis access"
+      '';
     };
     nameservers = [
       config.devices.gaia.ip

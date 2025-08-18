@@ -31,6 +31,11 @@
           LLDP = true;
           MulticastDNS = true;
         };
+        routingPolicyRules = [{
+          Table = "main";
+          Priority = 50;
+          To = "10.0.0.0/8";
+        }];
       };
     };
   };

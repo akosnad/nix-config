@@ -19,17 +19,9 @@ in
     nat-rndis = {
       family = "ip";
       content = /* nftables */ ''
-        chain pre {
-          type nat hook prerouting priority dstnat; policy accept;
-        }
-
         chain post {
-          type nat hook postrouting priority srcnat; policy accept;
-          iifname "br-lan" oifname "wan-rndis" masquerade comment "from br-lan to wan-rndis";
-        }
-
-        chain out {
-          type nat hook output priority mangle; policy accept;
+          type nat hook postrouting priority 100;
+          oifname "wan-rndis" masquerade;
         }
       '';
     };

@@ -5,28 +5,22 @@ let
     LLDP = true;
   };
 
-  mkDefaultRoutes = { metric }: [
+  mkRoutes = { name, metric ? 1024 }: [
     {
-      Table = "mwan";
+      Table = name;
       Destination = "0.0.0.0/0";
       Protocol = "static";
       Gateway = "_dhcp4";
       Metric = metric;
     }
     {
-      Table = "mwan";
+      Table = name;
       Destination = "::/0";
       Protocol = "static";
       Gateway = "_ipv6ra";
       Metric = metric;
     }
   ];
-
-  mkDefaultRoutingPolicyRules = { ifname, priority }: [{
-    OutgoingInterface = ifname;
-    Table = "mwan";
-    Priority = priority;
-  }];
 in
 {
   systemd.network = {
@@ -45,8 +39,12 @@ in
       "50-wan0" = {
         matchConfig.Name = "wan0";
         inherit networkConfig;
-        routes = mkDefaultRoutes { metric = 500; };
-        routingPolicyRules = mkDefaultRoutingPolicyRules { ifname = "wan0"; priority = 500; };
+        routes = mkRoutes { name = "wan-primary"; };
+        routingPolicyRules = [{
+          Table = "wan-primary";
+          Priority = 6000;
+          FirewallMark = "0xC8/0xFF";
+        }];
         cakeConfig = {
           Bandwidth = "500M";
           FlowIsolationMode = "src-host";
@@ -58,8 +56,12 @@ in
       "51-wan-rndis" = {
         matchConfig.Name = "wan-rndis";
         inherit networkConfig;
-        routes = mkDefaultRoutes { metric = 1000; };
-        routingPolicyRules = mkDefaultRoutingPolicyRules { ifname = "wan-rndis"; priority = 1000; };
+        routes = mkRoutes { name = "wan-failover"; };
+        routingPolicyRules = [{
+          Table = "wan-failover";
+          Priority = 6000;
+          FirewallMark = "0xC9/0xFF";
+        }];
         cakeConfig = {
           Bandwidth = "30M";
           AutoRateIngress = true;
@@ -70,7 +72,8 @@ in
     };
 
     config.routeTables = {
-      mwan = 200;
+      wan-primary = 200;
+      wan-failover = 201;
     };
   };
 }

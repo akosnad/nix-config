@@ -38,7 +38,7 @@ let
   script = pkgs.writeShellApplication {
     name = "ha-network-monitor";
     bashOptions = [ "errexit" "nounset" "pipefail" /* "xtrace" */ ];
-    runtimeInputs = with pkgs; [ mosquitto python3 iproute2 jq ];
+    runtimeInputs = with pkgs; [ mosquitto python3 iproute2 jq nftables ];
     text = /* bash */ ''
       # start by clearing ifstat temp files
       # this prevents a rare occurrence of ifstat crashing
@@ -87,7 +87,15 @@ let
           fi
           mosquitto_pub -L "$mqttEndpoint/gaia-router/link/$d" -m "$up" -q 1
         done
-        active_dev="$(ip --json route show table mwan | jq -r 'sort_by(.metric) | .[0].dev')"
+        active_failover_mark="$(nft -n list chain inet wan-failover wan_mark | grep 'ct mark set' | grep -oP "0x[0-9a-f]+$")"
+        active_dev="null"
+        if [[ "$active_failover_mark" == "0x000000c8" ]]; then
+          active_dev="wan0"
+        else
+          # TODO: this is fine for now, but later on multiple failovers could exitst
+          # and we need to query which one is active
+          active_dev="wan-rndis"
+        fi
         if [[ "$active_dev" == "null" ]]; then
           sleep $window_size
           continue
