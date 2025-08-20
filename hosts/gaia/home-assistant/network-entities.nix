@@ -65,7 +65,7 @@ let
       last_rx="0"
       last_tx="0"
       last_sample="0"
-      window_size=10
+      window_size=3
       while true; do
         raw="$(ifstat -a -j)"
         for d in ${builtins.concatStringsSep " " watchedInterfaces }; do
