@@ -114,10 +114,6 @@
       url = "github:akosnad/hyprscroller";
       flake = false;
     };
-
-    iamb = {
-      url = "github:ulyssa/iamb";
-    };
   };
 
   outputs =

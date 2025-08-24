@@ -27,8 +27,4 @@
     nodePackages = (prev.nodePackages or { }) // import ../pkgs/nodePackages { pkgs = final; };
     hyprlandPlugins = (prev.hyprlandPlugins or { }) // import ../pkgs/hyprland-plugins { pkgs = final; };
   };
-
-  modifications = final: _prev: {
-    iamb = inputs.iamb.packages.${final.system}.default;
-  };
 }
