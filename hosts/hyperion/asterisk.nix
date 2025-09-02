@@ -30,8 +30,12 @@ in
       verbose=5
       debug=3
     '';
-    useTheseDefaultConfFiles = [ ];
     confFiles = {
+      "modules.conf" = ''
+        [modules]
+        autoload=yes
+        noload => res_websocket_client.so
+      '';
       "logger.conf" = /* asterisk */ ''
         [general]
         dateformat=%F %T
