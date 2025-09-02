@@ -67,6 +67,7 @@ in
     info = "TP-Link TL-SG105";
     interfaceGroups = [ [ "eth1" "eth2" "eth3" "eth4" "eth5" ] ];
     connections = {
+      eth2 = mkConnection "iris" "lan1";
       eth3 = mkConnection "persephone" "lan1";
       eth4 = mkConnection "kronos" "lan1";
       eth5 = mkConnection "kratos" "lan1";
