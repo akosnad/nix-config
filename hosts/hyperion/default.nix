@@ -30,7 +30,7 @@
     ./webserver.nix
     ./backup.nix
     ./frigate.nix
-    ./asterisk.nix
+    ./asterisk
     ./harmonia.nix
   ];
 
