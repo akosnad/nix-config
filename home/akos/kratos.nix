@@ -47,6 +47,11 @@
     }
   ];
 
+  home.packages = with pkgs; [
+    gimp3
+    inkscape
+  ];
+
   home.persistence."/persist/${config.home.homeDirectory}".directories = [
     ".local/share/Steam"
     ".local/share/lutris"
