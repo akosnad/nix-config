@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 let
   mkEndpoint = ext: ''
     [${ext}]
@@ -22,8 +22,13 @@ let
   '';
 in
 {
+  imports = [
+    ./callerid-notifier-service.nix
+  ];
+
   services.asterisk = {
     enable = true;
+    package = pkgs.asterisk_18;
     extraArguments = [ ];
     extraConfig = ''
       [options]
@@ -34,7 +39,12 @@ in
       "modules.conf" = ''
         [modules]
         autoload=yes
-        noload => res_websocket_client.so
+
+        ; fix symbol not found errors by forcing module load order:
+        load => res_websocket_client.so
+        load => res_ari.so
+        load => res_ari_applications.so
+        load => app_stasis.so
       '';
       "logger.conf" = /* asterisk */ ''
         [general]
@@ -77,6 +87,12 @@ in
         [from-internal]
         exten => 999,1,VoiceMailMain(''${CALLERID(num)}@internal,s)
 
+        ; pd test
+        [from-internal]
+        exten => 300,1,Log(NOTICE, Calling PD bot - internal test)
+         same => n,Stasis(pd_bot)
+         same => n,Hangup()
+
         [from-external]
         exten => s,1,Log(NOTICE, Incoming call from external source)
          same => n,Log(NOTICE, Caller ID: ''${CALLERID(num)})
@@ -86,6 +102,13 @@ in
          same => n,PlayBack(vm-goodbye)
          same => n,Hangup()
 
+        [from-pd]
+        exten => s,1,Log(NOTICE, Incoming call to package delivery bot number)
+         same => n,Log(NOTICE, Caller ID: ''${CALLERID(num)})
+         same => n,Answer()
+         same => n,VoiceMail(6001@internal)
+         same => n,PlayBack(vm-goodbye)
+         same => n,Hangup()
       '';
       "voicemail.conf" = /* asterisk */ ''
         [general]
@@ -108,15 +131,42 @@ in
           [transport-udp]
           type=transport
           protocol=udp
-          bind=0.0.0.0
+          bind=0.0.0.0:5060
+
+          [transport-udp-alt]
+          type=transport
+          protocol=udp
+          bind=0.0.0.0:5065
 
           #include ${config.sops.secrets.asterisk-trunk-config.path}
+          #include ${config.sops.secrets.asterisk-trunk-pd-config.path}
         ''
       ] ++ [
         (mkEndpoint "6001")
         (mkEndpoint "6002")
         (mkEndpoint "6003")
       ]);
+      "http.conf" = ''
+        [general]
+        enabled=yes
+        bindaddr=0.0.0.0
+        bindport=1098
+      '';
+      "ari.conf" = ''
+        [general]
+        enabled=yes
+        pretty=yes
+        allowed_origins=https://ari.asterisk.org
+
+        [asterisk]
+        type=user
+        read_only=no
+        password=asterisk
+      '';
+      "res_websocket_client.conf" = ''
+        [general]
+        enabled = no
+      '';
     };
   };
 
@@ -150,11 +200,19 @@ in
     }
   ];
 
-  sops.secrets.asterisk-trunk-config = {
-    sopsFile = ./secrets.yaml;
-    owner = "asterisk";
-    group = "asterisk";
-    mode = "600";
+  sops.secrets = {
+    asterisk-trunk-config = {
+      sopsFile = ../secrets.yaml;
+      owner = "asterisk";
+      group = "asterisk";
+      mode = "600";
+    };
+    asterisk-trunk-pd-config = {
+      sopsFile = ../secrets.yaml;
+      owner = "asterisk";
+      group = "asterisk";
+      mode = "600";
+    };
   };
 
   networking.firewall = {
@@ -162,6 +220,7 @@ in
       # SIP, IAX, IAX2, MGCP
       5060
       5061
+      5065
       4569
       5036
       2727
