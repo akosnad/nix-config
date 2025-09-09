@@ -14,9 +14,9 @@
     }];
 
     config.rest_command = {
-      get_akos_leave_for_school_plan = {
+      get_akos_leave_for_work_plan = {
         method = "GET";
-        url = "!secret get_akos_leave_for_school_plan_url";
+        url = "!secret get_akos_leave_for_work_plan_url";
         headers = { accept = "application/json"; };
       };
     };
