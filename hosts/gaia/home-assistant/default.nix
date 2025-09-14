@@ -1,4 +1,7 @@
 { config, pkgs, ... }:
+let
+  publicMediaMountPath = "${config.services.home-assistant.configDir}/www/public/media";
+in
 {
   imports = [
     ./postgres.nix
@@ -33,6 +36,8 @@
       "co2signal"
       "adguard"
       "tuya"
+      "androidtv"
+      "nfandroidtv"
       "androidtv_remote"
       "plex"
       "openai_conversation"
@@ -147,4 +152,13 @@
       proxy_redirect http:// https://;
     '';
   };
+  systemd.services.home-assistant = {
+    serviceConfig = {
+      TemporaryFilesystem = [ publicMediaMountPath ];
+    };
+  };
+  systemd.tmpfiles.rules = [
+    # ensure public media mount can be mounted and be accessed by HASS
+    "d ${publicMediaMountPath} 0755 hass hass -"
+  ];
 }
