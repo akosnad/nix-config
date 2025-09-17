@@ -4,7 +4,10 @@
     enable = true;
     enableExtraSocket = true;
     enableSshSupport = true;
-    sshKeys = [ "8982A3F1FF72EEA336D3A94556B248201ED48A49" ];
+    sshKeys = [
+      "8982A3F1FF72EEA336D3A94556B248201ED48A49"
+      "649DB7E712683C8DBD47333A041080EAC01D7066"
+    ];
     pinentry.package = if config.gtk.enable then pkgs.pinentry-gnome3 else pkgs.pinentry-curses;
   };
 
@@ -38,7 +41,7 @@
 
       git.signing = {
         signByDefault = true;
-        key = "DC6C238558CF0FC39400BA2EE2256EAE7390AF2C";
+        key = "73CF708E26789E613672C40D236F3ED93EDDCDEF";
       };
     };
 

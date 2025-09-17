@@ -21,7 +21,10 @@ in
       "plugdev"
     ];
 
-    openssh.authorizedKeys.keys = [ (builtins.readFile ../../../../home/akos/ssh.pub) ];
+    openssh.authorizedKeys.keys = [
+      (builtins.readFile ../../../../home/akos/ssh-old.pub)
+      (builtins.readFile ../../../../home/akos/ssh.pub)
+    ];
     hashedPasswordFile = config.sops.secrets.akos-password.path;
     packages = [ pkgs.home-manager ];
   };
