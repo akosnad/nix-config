@@ -1,6 +1,5 @@
 keys:
   users:
-    - &akos-old DC6C238558CF0FC39400BA2EE2256EAE7390AF2C
     - &akos 73CF708E26789E613672C40D236F3ED93EDDCDEF
   hosts:
     - &athena age1nmfkvqnclhdr4j4ev7yug8ehrsl8hh09tuffmks0dfl8w4dkqv5sqhf3u4
@@ -24,40 +23,34 @@ creation_rules:
   - path_regex: home/akos/secrets.ya?ml$
     key_groups:
       - pgp:
-          - *akos-old
           - *akos
   - path_regex: hosts/gaia/secrets.ya?ml$
     key_groups:
       - age:
           - *gaia
         pgp:
-          - *akos-old
           - *akos
   - path_regex: hosts/gaia/home-assistant/secrets.ya?ml$
     key_groups:
       - age:
           - *gaia
         pgp:
-          - *akos-old
           - *akos
   - path_regex: hosts/uranus/secrets.ya?ml$
     key_groups:
       - age:
           - *uranus
         pgp:
-          - *akos-old
           - *akos
   - path_regex: hosts/hyperion/secrets.ya?ml$
     key_groups:
       - age:
           - *hyperion
         pgp:
-          - *akos-old
           - *akos
   - path_regex: hosts/ceyx/secrets.ya?ml$
     key_groups:
       - age:
           - *ceyx
         pgp:
-          - *akos-old
           - *akos

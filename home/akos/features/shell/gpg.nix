@@ -4,10 +4,7 @@
     enable = true;
     enableExtraSocket = true;
     enableSshSupport = true;
-    sshKeys = [
-      "8982A3F1FF72EEA336D3A94556B248201ED48A49"
-      "649DB7E712683C8DBD47333A041080EAC01D7066"
-    ];
+    sshKeys = [ "649DB7E712683C8DBD47333A041080EAC01D7066" ];
     pinentry.package = if config.gtk.enable then pkgs.pinentry-gnome3 else pkgs.pinentry-curses;
   };
 

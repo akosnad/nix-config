@@ -22,7 +22,6 @@ in
     ];
 
     openssh.authorizedKeys.keys = [
-      (builtins.readFile ../../../../home/akos/ssh-old.pub)
       (builtins.readFile ../../../../home/akos/ssh.pub)
     ];
     hashedPasswordFile = config.sops.secrets.akos-password.path;
