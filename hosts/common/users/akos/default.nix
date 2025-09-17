@@ -1,6 +1,9 @@
-{ config, pkgs, ... }:
+args @ { config, pkgs, ... }:
 let
   ifGroupExists = groups: builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
+
+  gpgKeyDerivation = pkgs.callPackage ../../../../home/akos/gpg-key.nix args;
+  gpgSshKey = builtins.readFile "${gpgKeyDerivation}/ssh.pub";
 in
 {
   users.mutableUsers = false;
@@ -21,9 +24,7 @@ in
       "plugdev"
     ];
 
-    openssh.authorizedKeys.keys = [
-      (builtins.readFile ../../../../home/akos/ssh.pub)
-    ];
+    openssh.authorizedKeys.keys = [ gpgSshKey ];
     hashedPasswordFile = config.sops.secrets.akos-password.path;
     packages = [ pkgs.home-manager ];
   };

@@ -11,7 +11,7 @@
 , ...
 }: {
   default = pkgs.mkShell {
-    NIX_CONFIG = "extra-experimental-features = nix-command flakes repl-flake";
+    NIX_CONFIG = "extra-experimental-features = nix-command flakes";
     nativeBuildInputs = with pkgs; [
       nix
       home-manager
@@ -25,6 +25,6 @@
   };
 
   aarch64 = pkgs.pkgsCross.aarch64-multiplatform.buildPackages.mkShell {
-    NIX_CONFIG = "extra-experimental-features = nix-command flakes repl-flake";
+    NIX_CONFIG = "extra-experimental-features = nix-command flakes";
   };
 }

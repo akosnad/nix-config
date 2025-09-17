@@ -1,10 +1,16 @@
-{ pkgs, config, lib, ... }:
+args @ { pkgs, config, lib, ... }:
+let
+
+  gpgKeyDerivation = pkgs.callPackage ../../gpg-key.nix args;
+  keygrip = builtins.readFile "${gpgKeyDerivation}/keygrip";
+  keyFingerprint = builtins.readFile "${gpgKeyDerivation}/fingerprint";
+in
 {
   services.gpg-agent = {
     enable = true;
     enableExtraSocket = true;
     enableSshSupport = true;
-    sshKeys = [ "649DB7E712683C8DBD47333A041080EAC01D7066" ];
+    sshKeys = [ keygrip ];
     pinentry.package = if config.gtk.enable then pkgs.pinentry-gnome3 else pkgs.pinentry-curses;
   };
 
@@ -38,7 +44,7 @@
 
       git.signing = {
         signByDefault = true;
-        key = "73CF708E26789E613672C40D236F3ED93EDDCDEF";
+        key = keyFingerprint;
       };
     };
 

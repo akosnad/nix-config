@@ -1,4 +1,8 @@
-nfsRemote: system: { inputs, pkgs, config, ... }:
+nfsRemote: system: args @ { inputs, pkgs, config, ... }:
+let
+  gpgKeyDerivation = pkgs.callPackage ../../../../../home/akos/gpg-key.nix args;
+  gpgSshKey = builtins.readFile "${gpgKeyDerivation}/ssh.pub";
+in
 {
   imports = [
     "${inputs.nixpkgs}/nixos/modules/profiles/all-hardware.nix"
@@ -68,7 +72,7 @@ nfsRemote: system: { inputs, pkgs, config, ... }:
   '';
 
   users.users.root = {
-    openssh.authorizedKeys.keyFiles = [ ../../../../../home/akos/ssh.pub ];
+    openssh.authorizedKeys.keys = [ gpgSshKey ];
   };
 
   nix.settings = {
