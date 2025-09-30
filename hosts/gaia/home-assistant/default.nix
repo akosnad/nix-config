@@ -68,6 +68,11 @@ in
       "xiaomi_ble"
       "html5"
       "my"
+
+      # calendar related
+      "local_calendar"
+      "remote_calendar"
+      "holiday"
     ];
     extraPackages = python3Packages: with python3Packages; [
       # recorder postgresql support
