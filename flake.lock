@@ -224,6 +224,22 @@
         "type": "github"
       }
     },
+    "flake-compat_3": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1747046372,
+        "narHash": "sha256-CIVLLkVgvHYbgI2UpXvIIBJ12HWgX+fjA8Xf8PUmqCY=",
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "rev": "9100a0f413b0c601e0533d1d94ffd501ce2e7885",
+        "type": "github"
+      },
+      "original": {
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "type": "github"
+      }
+    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": [
@@ -595,6 +611,26 @@
         "type": "github"
       }
     },
+    "nixos-wsl": {
+      "inputs": {
+        "flake-compat": "flake-compat_3",
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "lastModified": 1758545256,
+        "narHash": "sha256-mT6B+7SXVozVd1vWnnVvNcSLiTtcj00YFx7y3TNnXFk=",
+        "owner": "nix-community",
+        "repo": "NixOS-WSL",
+        "rev": "b94cb3be3550662b0dd42e823da8eae12e5972f4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "ref": "release-25.05",
+        "repo": "NixOS-WSL",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1754243818,
@@ -612,6 +648,22 @@
       }
     },
     "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1755922037,
+        "narHash": "sha256-wY1+2JPH0ZZC4BQefoZw/k+3+DowFyfOxv17CN/idKs=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "b1b3291469652d5a2edb0becc4ef0246fff97a7c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-25.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_3": {
       "locked": {
         "lastModified": 1759143472,
         "narHash": "sha256-TvODmeR2W7yX/JmOCmP+lAFNkTT7hAxYcF3Kz8SZV3w=",
@@ -764,7 +816,8 @@
         "lanzaboote": "lanzaboote",
         "nix-index-database": "nix-index-database",
         "nix-topology": "nix-topology",
-        "nixpkgs": "nixpkgs_2",
+        "nixos-wsl": "nixos-wsl",
+        "nixpkgs": "nixpkgs_3",
         "nixvirt": "nixvirt",
         "nur": "nur",
         "sops-nix": "sops-nix",

@@ -114,6 +114,8 @@
       url = "github:akosnad/hyprscroller";
       flake = false;
     };
+
+    nixos-wsl.url = "github:nix-community/NixOS-WSL/release-25.05";
   };
 
   outputs =
