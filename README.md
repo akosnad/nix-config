@@ -21,6 +21,9 @@ This repo contains declarative configuration for:
 > However, feel free to get inspired or object to anything related to it. I do not take responsibility in any harm
 > caused to your sanity while reading through all this. If you want me to license it for some reason, feel free to reach out.
 
+*If you really want to understand what this is about, check out the [AI generated documentation on DeepWiki](https://deepwiki.com/akosnad/nix-config).
+It did a pretty good job of understanding the repo. Some things are overly verbose and repetitive, but only a couple of small details were left out, like how are ESPHome devices updated.*
+
 ## Device topology
 
 Here is a diagram that explains what this mess is about better than I did above.
