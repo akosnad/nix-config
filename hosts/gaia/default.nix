@@ -10,6 +10,7 @@
     ./mqtt.nix
     ./backup.nix
     ./step-ca
+    ./ntp.nix
 
     ../common/global
     ../common/optional/use-builders.nix
