@@ -289,7 +289,6 @@
     info = "BUSE BS120 LED matrix display (custom controller)";
     mac = "02:00:00:FC:18:B5";
     ip = "10.4.3.9";
-    # TODO: can be enabled whenever a local NTP server is set up
-    blockInternetAccess = false;
+    blockInternetAccess = true;
   };
 }
