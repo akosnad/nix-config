@@ -1,8 +1,13 @@
 {
-  services.openntpd = {
+  services.chrony = {
     enable = true;
+    extraFlags = [
+      # no RTC on this host, always set system time to last shutdown time
+      "-s"
+    ];
     extraConfig = ''
-      listen on *
+      allow
     '';
   };
+  services.timesyncd.enable = false;
 }
