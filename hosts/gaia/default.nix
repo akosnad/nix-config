@@ -20,6 +20,19 @@
     ../common/users/akos
   ];
 
+  hardware.raspberry-pi."4" = {
+    gpio.enable = true;
+    i2c1 = {
+      enable = true;
+      frequency = 100000;
+    };
+  };
+  boot.kernelParams = [
+    # tell the serial driver to use only one port,
+    # without this it doesn't load.
+    "8250.nr_uarts=1"
+  ];
+
   environment.persistence."/persist".enable = lib.mkForce false;
 
   hardware.raspberry-pi."4".bluetooth.enable = true;
