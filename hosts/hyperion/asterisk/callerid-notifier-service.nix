@@ -18,6 +18,7 @@ in
       ASTERISK_ENDPOINT = "http://127.0.0.1:1098/ari";
       ASTERISK_USERNAME = "asterisk";
       ASTERISK_PASSWORD = "asterisk";
+      NOTIFY_TIMEOUT = "20";
     };
   };
 }

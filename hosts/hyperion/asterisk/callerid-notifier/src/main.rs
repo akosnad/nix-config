@@ -94,10 +94,17 @@ async fn handle_mqtt_event(event: Event) -> anyhow::Result<()> {
 }
 
 async fn notify(mqtt_client: &mut AsyncClient, text: String) -> anyhow::Result<()> {
+    let timeout = std::env::var("NOTIFY_TIMEOUT")
+        .ok()
+        .and_then(|s| s.parse::<usize>().ok())
+        .map(|i| json!(i))
+        .unwrap_or(serde_json::Value::Null);
     let payload = json!({
         "image": "phone_ringing",
-        "text": text
+        "text": text,
+        "timeout": timeout,
     });
+    log::info!("publishing event: {payload:?}");
     mqtt_client
         .publish(
             "iris/event",
