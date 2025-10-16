@@ -41,6 +41,14 @@
     rocmPackages.clr.icd
   ];
 
+  services.libinput = {
+    enable = true;
+    mouse = {
+      accelProfile = "flat";
+      accelSpeed = "0";
+    };
+  };
+
   # needed for Windows dual boot
   time.hardwareClockInLocalTime = true;
 

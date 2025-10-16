@@ -39,9 +39,13 @@
 
   services.libinput = {
     enable = true;
+    mouse = {
+      accelProfile = "flat";
+      accelSpeed = "0";
+    };
     touchpad = {
       tapping = true;
-      accelSpeed = 0.3;
+      accelSpeed = "0.3";
     };
   };
 
