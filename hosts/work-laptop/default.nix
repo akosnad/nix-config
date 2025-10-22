@@ -2,6 +2,8 @@
   imports = [
     ../common/global
     ../common/users/akos
+
+    ./docker-desktop.nix
   ];
 
   environment.persistence."/persist".enable = lib.mkForce false;
