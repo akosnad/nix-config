@@ -27,4 +27,18 @@
     nodePackages = (prev.nodePackages or { }) // import ../pkgs/nodePackages { pkgs = final; };
     hyprlandPlugins = (prev.hyprlandPlugins or { }) // import ../pkgs/hyprland-plugins { pkgs = final; };
   };
+
+  backports = _: prev:
+    let
+      pkgsUnstable = import inputs.nixpkgs-unstable {
+        inherit (prev) system;
+        config.permittedInsecurePackages = [
+          "olm-3.2.16"
+        ];
+      };
+      backportPkgs = [
+        "mautrix-meta"
+      ];
+    in
+    prev.lib.genAttrs backportPkgs (pkgName: pkgsUnstable.${pkgName});
 }
