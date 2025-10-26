@@ -8,7 +8,6 @@
     ./features/vscode.nix
     ./features/chromium.nix
     ./features/shell/azure.nix
-    ./features/linphone.nix
     ./features/shell/iamb.nix
     ./features/kicad.nix
     ./features/darktable.nix

@@ -4,7 +4,9 @@
     steamcmd
     steam-run
     mangohud
-    lutris
+    # TODO: lutris is uninstalled until upstream is updated
+    # upstream currently depends on unmaintaned mbedtls 2.x
+    # lutris
     protonup
   ];
   environment.sessionVariables = {

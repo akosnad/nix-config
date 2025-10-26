@@ -10,7 +10,6 @@
     ./features/chromium.nix
     ./features/shell/azure.nix
     ./features/discord.nix
-    ./features/linphone.nix
     ./features/darktable.nix
     ./features/onedrive.nix
     ./features/shell/iamb.nix
