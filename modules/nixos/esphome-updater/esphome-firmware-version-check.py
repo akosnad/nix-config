@@ -13,6 +13,9 @@ def parse_args():
     parser.add_argument(
         "target_version", type=str, help="Expected version string to check"
     )
+    parser.add_argument(
+        "esphome_target_version", type=str, help="Expected ESPHome version to check"
+    )
     return parser.parse_args()
 
 
@@ -38,6 +41,16 @@ async def main():
         # mark unit as failed
         # reference: https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html#ExecCondition=
         sys.exit(255)
+
+    found_esphome_version = device_info.esphome_version
+    expected_esphome_version = args.esphome_target_version
+
+    if found_esphome_version == expected_esphome_version:
+        print("ESPHome version up-to-date:", found_esphome_version)
+    else:
+        print("found ESPHome version:", found_esphome_version)
+        print("expected:", expected_esphome_version)
+        sys.exit(0)
 
     found_version = device_info.project_version
     expected_version = args.target_version

@@ -38,7 +38,6 @@
       };
       backportPkgs = [
         "mautrix-meta"
-        "esphome"
       ];
     in
     prev.lib.genAttrs backportPkgs (pkgName: pkgsUnstable.${pkgName});

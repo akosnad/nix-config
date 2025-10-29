@@ -10,11 +10,11 @@ in
         It can be any docker image tag, which can be found at:
         https://github.com/esphome/esphome/pkgs/container/esphome
         
-        It defaults to the "latest" tag.
+        It defaults to the ESPHome version found in the updater machine's nixpkgs.
       '';
-      type = types.str;
+      type = types.nullOr types.str;
       example = "2025.10";
-      default = "latest";
+      default = null;
     };
     autoUpdate = {
       enable = mkOption {

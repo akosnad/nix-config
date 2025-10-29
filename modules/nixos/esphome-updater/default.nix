@@ -70,7 +70,7 @@ let
       ${lib.getExe config.virtualisation.docker.package} \
         run --rm --network=host \
         -v "$PWD":/config \
-        ${dockerImage}:"$2" -- \
+        ${dockerImage}:"$2" \
         run --no-logs "$1"
     '';
   };
@@ -93,7 +93,7 @@ let
     text = ''
       targetConfig="$(realpath /etc/esphome/"$1".yaml)"
       storeHash=$(sed -E 's/^\/nix\/store\/([0-9a-z]{32}).*$/\1/' <<<"$targetConfig")
-      esphome-firmware-version-check "$1" "$storeHash"
+      esphome-firmware-version-check "$1" "$storeHash" "$2"
     '';
   };
   preUpdateScript = pkgs.writeShellApplication {
@@ -124,7 +124,7 @@ let
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
-        ExecCondition = "${lib.getExe updateConditionScript} ${name}";
+        ExecCondition = "${lib.getExe updateConditionScript} ${name} ${cfg.frameworkVersion}";
         ExecStartPre = "${lib.getExe preUpdateScript} ${cfg.frameworkVersion}";
         ExecStart = "${lib.getExe firmwareUpdateScript} ${name}.yaml ${cfg.frameworkVersion}";
         WorkingDirectory = "/var/lib/esphome";
@@ -166,7 +166,8 @@ in
   };
   config = lib.mkIf config.services.esphome-updater.enable {
     virtualisation.docker.enable = true;
-    services.esphome-updater.configurations = inputs.self.esphomeConfigurations;
+    services.esphome-updater.configurations = lib.flip lib.mapAttrs inputs.self.esphomeConfigurations
+      (_: cfg: lib.recursiveUpdate cfg (if builtins.isNull cfg.frameworkVersion then { frameworkVersion = config.services.esphome.package.version; } else { }));
 
     environment.etc = lib.mapAttrs'
       (target: source: lib.nameValuePair "esphome/${target}" {
