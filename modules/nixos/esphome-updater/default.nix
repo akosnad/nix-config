@@ -1,7 +1,8 @@
 { pkgs, lib, config, inputs, ... }:
 let
   inherit (lib) types;
-  cfg = config.services.esphome.configurations;
+  dockerImage = "ghcr.io/esphome/esphome";
+  cfg = config.services.esphome-updater;
   configurationModule = import ../../common/esphome.nix;
   deviceSettingsFormat = pkgs.formats.yaml { };
 
@@ -49,7 +50,7 @@ let
       cp $temp $out
     '';
 
-  settingFiles = lib.pipe cfg [
+  settingFiles = lib.pipe cfg.configurations [
     (lib.mapAttrs (name: cfg: lib.recursiveUpdate (defaultSettings name) cfg.settings))
     (lib.mapAttrs (name: cfg: renderDeviceSettingsFile "${name}.yaml" cfg))
     (lib.mapAttrs' (name: cfg: lib.nameValuePair "${name}.yaml" cfg))
@@ -57,16 +58,20 @@ let
 
   firmwareUpdateScript = pkgs.writeShellApplication {
     name = "esphome-update-device";
-    runtimeInputs = with pkgs; [ bash util-linux esphome ];
+    runtimeInputs = with pkgs; [ bash util-linux ];
     text = ''
       exec 200>/var/lib/esphome/.update-device.lock
       # only allow a single instance to run at a time
       # and block until it's our turn
       flock -x 200
 
-      ln -sf "$CREDENTIALS_DIRECTORY"/esphome-secrets ./secrets.yaml
-      ln -sf /etc/esphome/"$1" ./"$1"
-      esphome run --no-logs "$1"
+      cp "$CREDENTIALS_DIRECTORY"/esphome-secrets ./secrets.yaml
+      cp /etc/esphome/"$1" ./"$1"
+      ${lib.getExe config.virtualisation.docker.package} \
+        run --rm --network=host \
+        -v "$PWD":/config \
+        ${dockerImage}:"$2" -- \
+        run --no-logs "$1"
     '';
   };
 
@@ -91,6 +96,12 @@ let
       esphome-firmware-version-check "$1" "$storeHash"
     '';
   };
+  preUpdateScript = pkgs.writeShellApplication {
+    name = "esphome-pre-update";
+    text = ''
+      ${lib.getExe config.virtualisation.docker.package} pull ${dockerImage}:"$1"
+    '';
+  };
 
   mkUpdateService = name: cfg:
     let
@@ -103,7 +114,8 @@ let
         # reference: https://github.com/NixOS/nixpkgs/issues/339557
         PLATFORMIO_CORE_DIR = "/var/lib/private/esphome/.platformio";
       };
-      after = [ "network.target" ];
+      after = [ "network.target" "docker.socket" ];
+      wants = [ "docker.socket" ];
       wantedBy = mkIfNotScheduled [ "multi-user.target" ];
       restartIfChanged = mkIfNotScheduled true;
       restartTriggers = mkIfNotScheduled [ config.environment.etc."esphome/${name}.yaml".source ];
@@ -113,51 +125,14 @@ let
         Type = "oneshot";
         RemainAfterExit = true;
         ExecCondition = "${lib.getExe updateConditionScript} ${name}";
-        ExecStart = "${lib.getExe firmwareUpdateScript} ${name}.yaml";
-        DynamicUser = true;
-        User = "esphome";
-        Group = "esphome";
+        ExecStartPre = "${lib.getExe preUpdateScript} ${cfg.frameworkVersion}";
+        ExecStart = "${lib.getExe firmwareUpdateScript} ${name}.yaml ${cfg.frameworkVersion}";
         WorkingDirectory = "/var/lib/esphome";
         StateDirectory = "esphome";
         StateDirectoryMode = "0750";
         Restart = "on-failure";
-
-        # Hardening
-        # taken from: https://github.com/NixOS/nixpkgs/blob/330d0a4167924b43f31cc9406df363f71b768a02/nixos/modules/services/home-automation/esphome.nix#L111C1-L145C24
-        CapabilityBoundingSet = "";
-        LockPersonality = true;
-        MemoryDenyWriteExecute = true;
-        DevicePolicy = "closed";
-        #NoNewPrivileges = true; # Implied by DynamicUser
-        PrivateUsers = true;
-        #PrivateTmp = true; # Implied by DynamicUser
-        ProtectClock = true;
-        ProtectControlGroups = true;
-        ProtectHome = true;
-        ProtectHostname = false; # breaks bwrap
-        ProtectKernelLogs = false; # breaks bwrap
-        ProtectKernelModules = true;
-        ProtectKernelTunables = false; # breaks bwrap
-        ProtectProc = "invisible";
-        ProcSubset = "all"; # Using "pid" breaks bwrap
-        ProtectSystem = "strict";
-        #RemoveIPC = true; # Implied by DynamicUser
-        RestrictAddressFamilies = [
-          "AF_INET"
-          "AF_INET6"
-          "AF_NETLINK"
-          "AF_UNIX"
-        ];
-        RestrictNamespaces = false; # Required by platformio for chroot
-        RestrictRealtime = true;
-        #RestrictSUIDSGID = true; # Implied by DynamicUser
-        SystemCallArchitectures = "native";
-        SystemCallFilter = [
-          "@system-service"
-          "@mount" # Required by platformio for chroot
-        ];
-        UMask = "0077";
         LoadCredential = "esphome-secrets:${config.sops.secrets.esphome-secrets.path}";
+        UMask = "077";
       };
     };
 
@@ -170,10 +145,17 @@ let
     };
   };
 
-  mkSystemdUnits = mapFn: lib.mapAttrs' (name: cfg: lib.nameValuePair "esphome-update-${name}" (mapFn name cfg)) cfg;
+  mkSystemdUnits = mapFn: lib.mapAttrs' (name: cfg: lib.nameValuePair "esphome-update-${name}" (mapFn name cfg)) cfg.configurations;
 in
 {
-  options.services.esphome = {
+  options.services.esphome-updater = {
+    enable = lib.mkOption {
+      description = ''
+        Enable creation of ESPHome device OTA updater services
+      '';
+      type = types.bool;
+      default = false;
+    };
     configurations = lib.mkOption {
       description = ''
         ESPHome device configurations.
@@ -182,8 +164,9 @@ in
       default = { };
     };
   };
-  config = lib.mkIf config.services.esphome.enable {
-    services.esphome.configurations = inputs.self.esphomeConfigurations;
+  config = lib.mkIf config.services.esphome-updater.enable {
+    virtualisation.docker.enable = true;
+    services.esphome-updater.configurations = inputs.self.esphomeConfigurations;
 
     environment.etc = lib.mapAttrs'
       (target: source: lib.nameValuePair "esphome/${target}" {

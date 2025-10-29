@@ -4,6 +4,18 @@ let
 in
 {
   options = {
+    frameworkVersion = mkOption {
+      description = ''
+        ESPHome version to use for compiling and updating this device.
+        It can be any docker image tag, which can be found at:
+        https://github.com/esphome/esphome/pkgs/container/esphome
+        
+        It defaults to the "latest" tag.
+      '';
+      type = types.str;
+      example = "2025.10";
+      default = "latest";
+    };
     autoUpdate = {
       enable = mkOption {
         description = ''
