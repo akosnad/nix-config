@@ -5,7 +5,6 @@
   wsl = {
     enable = true;
     wslConf.automount.root = "/mnt";
-    wslConf.interop.appendWindowsPath = false;
     wslConf.network.generateHosts = false;
 
     # Enable integration with Docker Desktop (needs to be installed)
