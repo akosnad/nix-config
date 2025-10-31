@@ -4,6 +4,7 @@
     ./global
     ./features/helix/full.nix
     ./features/shell/full.nix
+    ./features/vscode-server.nix
   ];
 
   home.persistence = lib.mkForce { };

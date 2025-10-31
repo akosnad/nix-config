@@ -1,4 +1,4 @@
-{ lib, ... }: {
+{ lib, config, ... }: {
   imports = [
     ../common/global
     ../common/users/akos
@@ -12,6 +12,7 @@
   wsl = {
     enable = true;
     defaultUser = "akos";
+    wslConf.automount.options = "metadata,uid=${toString config.users.users.akos.uid},gid=${toString config.users.groups.users.gid},umask=002,dmask=002,fmask=002";
   };
   networking.hostName = "work-laptop";
   networking.firewall.enable = false;
