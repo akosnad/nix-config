@@ -237,6 +237,12 @@
     blockInternetAccess = true;
     connectionMedium = "wifi";
   };
+  hades-controller = {
+    mac = "E4:B3:23:F8:0B:8C";
+    ip = "10.4.2.5";
+    blockInternetAccess = true;
+    connectionMedium = "wifi";
+  };
 
   # other IoT
   helios = {
