@@ -10,11 +10,16 @@
       federatedRoots = null;
       crt = config.sops.secrets.step-ca-intermediate-ca.path;
       key = config.sops.secrets.step-ca-intermediate-ca-key.path;
-      insecureAddress = "";
+      insecureAddress = ":9001";
+      crl = {
+        enabled = true;
+        idpURL = "http://${config.networking.hostName}.${config.networking.domain}${config.services.step-ca.settings.insecureAddress}/1.0/crl";
+      };
       dnsNames = [
         config.networking.hostName
         "${config.networking.hostName}.${config.networking.domain}"
-        config.devices.gaia.ip
+        config.devices.${config.networking.hostName}.ip
+        "ca.${config.networking.domain}"
       ];
       logger.format = "text";
       db = {

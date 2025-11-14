@@ -11,6 +11,7 @@
     ./backup.nix
     ./step-ca
     ./ntp.nix
+    ./alarm-fix.nix
 
     ../common/global
     ../common/optional/use-builders.nix
