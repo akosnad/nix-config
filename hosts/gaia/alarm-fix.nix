@@ -3,10 +3,10 @@
 let
   script = pkgs.writeShellApplication {
     name = "alarm-fix";
-    runtimeInputs = with pkgs; [ espflash mosquitto ];
+    runtimeInputs = with pkgs; [ espflash mosquitto coreutils-full ];
     text = ''
       function do_reset() {
-        until espflash -S reset; do
+        until timeout 5s espflash -S reset; do
           echo reset failed, retrying...
           sleep 3
         done
