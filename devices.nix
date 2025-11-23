@@ -125,6 +125,12 @@
     ip = "10.3.0.5";
     connectionMedium = "wifi";
   };
+  harpokrates = {
+    info = "Pixel 9a";
+    mac = "B0:D5:FB:A2:E6:FE";
+    ip = "10.3.0.6";
+    connectionMedium = "wifi";
+  };
 
   # security devices
   alarm = {
