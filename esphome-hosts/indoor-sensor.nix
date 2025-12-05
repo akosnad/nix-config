@@ -10,7 +10,8 @@
     }];
     sensor = with common.sensorPresets; [
       wifi_signal
-      bme280
+      aht20
+      ens160
     ];
   };
 }

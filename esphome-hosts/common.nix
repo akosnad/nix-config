@@ -32,6 +32,32 @@
       iir_filter = "16x";
       update_interval = "5s";
     };
+    aht20 = {
+      platform = "aht10";
+      variant = "AHT20";
+      update_interval = "5s";
+      temperature = {
+        name = "Temperature";
+        id = "temperature";
+        filters = [ "quantile" ];
+      };
+      humidity = {
+        name = "Humidity";
+        id = "humidity";
+        filters = [ "quantile" ];
+      };
+    };
+    ens160 = {
+      platform = "ens160_i2c";
+      update_interval = "5s";
+      eco2.name = "eCO2";
+      tvoc.name = "Total Volatile Organic Compounds";
+      aqi.name = "Air Quality Index";
+      compensation = {
+        temperature = "temperature";
+        humidity = "humidity";
+      };
+    };
   };
 
   yee-rc = { mac_address, on_press ? [ ], on_long_press ? [ ] }: {
