@@ -17,15 +17,18 @@
       platform = "bme280_i2c";
       temperature = {
         name = "Temperature";
+        id = "temperature";
         filters = [ "quantile" ];
       };
       pressure = {
         name = "Pressure";
+        id = "pressure";
         accuracy_decimals = 3;
         filters = [ "quantile" ];
       };
       humidity = {
         name = "Humidity";
+        id = "humidity";
         filters = [ "quantile" ];
       };
       address = 118;
@@ -49,10 +52,19 @@
     };
     ens160 = {
       platform = "ens160_i2c";
-      update_interval = "5s";
-      eco2.name = "eCO2";
-      tvoc.name = "Total Volatile Organic Compounds";
-      aqi.name = "Air Quality Index";
+      update_interval = "30s";
+      eco2 = {
+        name = "eCO2";
+        id = "eco2";
+      };
+      tvoc = {
+        name = "Total Volatile Organic Compounds";
+        id = "tvoc";
+      };
+      aqi = {
+        name = "Air Quality Index";
+        id = "aqi";
+      };
       compensation = {
         temperature = "temperature";
         humidity = "humidity";
