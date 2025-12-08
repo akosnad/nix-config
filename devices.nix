@@ -249,6 +249,12 @@
     blockInternetAccess = true;
     connectionMedium = "wifi";
   };
+  gate-button = {
+    mac = "E4:B3:23:F8:23:40";
+    ip = "10.4.2.7";
+    blockInternetAccess = true;
+    connectionMedium = "wifi";
+  };
 
   # other IoT
   helios = {
