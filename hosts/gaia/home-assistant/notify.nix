@@ -23,7 +23,7 @@ in
         name = "Ákos notify";
         services = [
           { service = "kratos"; }
-          { service = "mobile_app_akosrnp"; }
+          { service = "mobile_app_harpokrates"; }
           { service = "kratos_nixos_notify"; }
           { service = "athena_nixos_notify"; }
         ];
