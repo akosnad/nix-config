@@ -311,4 +311,9 @@
     ip = "10.4.3.9";
     blockInternetAccess = true;
   };
+  hecate = {
+    info = "LG DF365FPS dishwasher";
+    mac = "30:34:DB:73:0A:84";
+    ip = "10.4.3.10";
+  };
 }

@@ -68,6 +68,7 @@ in
       "xiaomi_ble"
       "html5"
       "my"
+      "lg_thinq"
 
       # calendar related
       "local_calendar"
