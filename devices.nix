@@ -315,5 +315,14 @@
     info = "LG DF365FPS dishwasher";
     mac = "30:34:DB:73:0A:84";
     ip = "10.4.3.10";
+    connectionMedium = "wifi";
+  };
+
+  # Door and window opening sensors
+  op-eloszoba = {
+    mac = "FC:E8:C0:E1:0A:3C";
+    ip = "10.4.4.1";
+    blockInternetAccess = true;
+    connectionMedium = "wifi";
   };
 }
