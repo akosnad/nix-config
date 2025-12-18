@@ -136,10 +136,22 @@
       pkgsFor = lib.genAttrs systems (system: import nixpkgs {
         inherit system;
         config.allowUnfree = true;
+        overlays = lib.attrValues (import ./overlays { inherit inputs outputs; });
       });
 
       nixosHosts' = lib.filterAttrs (n: v: v == "directory" && n != "common") (builtins.readDir "${self}/hosts");
       nixosHosts = builtins.attrNames nixosHosts';
+
+      exportedFlakeModules = lib.pipe (builtins.readDir ./modules/flake) [
+        # all nix files in directory
+        (lib.filterAttrs (filename: filetype: filetype != "directory" && (builtins.match ".+\.nix$" filename != null)))
+        # <name>.nix -> <name>
+        (lib.mapAttrs' (filename: _: lib.nameValuePair (lib.head (lib.match "^(.*)\.nix$" filename)) { }))
+        # filenames -> { <filename> = path; }
+        (lib.mapAttrs' (k: _v: lib.nameValuePair k ./modules/flake/${k}.nix))
+        # import
+        (lib.mapAttrs (_: x: lib.modules.importApply x { }))
+      ];
     in
     flake-parts.lib.mkFlake { inherit inputs; } ({ ... }:
     {
@@ -149,9 +161,19 @@
         inputs.hercules-ci-effects.flakeModule
         inputs.nix-topology.flakeModule
         ./effects.nix
-      ] ++ (builtins.attrValues (import ./modules/flake));
+      ] ++ (lib.pipe exportedFlakeModules [
+        # wrap to properly set file names
+        # this aids in showing correct location of option definitions in eval error messages
+        (lib.mapAttrs (k: v: {
+          _file = k;
+          inherit (v) imports;
+        }))
+        # get values (the modules themselves)
+        lib.attrValues
+      ]);
 
       perSystem = { pkgs, config, system, ... }: {
+        _module.args.pkgs = pkgsFor.${system};
         packages = import ./pkgs { inherit pkgs inputs; };
         devShells = import ./shell.nix { inherit pkgs; } // { treefmt = config.treefmt.build.devShell; };
         treefmt = {
@@ -182,12 +204,13 @@
       flake = {
         inherit lib;
 
+        flakeModules = exportedFlakeModules;
         nixosModules = import ./modules/nixos { inherit lib; };
         homeManagerModules = import ./modules/home-manager;
 
         overlays = import ./overlays { inherit inputs outputs; };
 
-        inherit ((lib.evalModules { modules = [{ devices = import ./devices.nix; } (import ./modules/common/devices.nix)]; }).config) devices;
+        devices = import ./devices.nix;
 
         nixosConfigurations =
           let

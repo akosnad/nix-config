@@ -3,7 +3,7 @@ let
   inherit (lib) types;
   dockerImage = "ghcr.io/esphome/esphome";
   cfg = config.services.esphome-updater;
-  configurationModule = import ../../common/esphome.nix;
+  configurationModule = lib.modules.importApply ../../common/esphome.nix { inherit pkgs; };
   deviceSettingsFormat = pkgs.formats.yaml { };
 
   defaultSettings = name: lib.recursiveUpdate

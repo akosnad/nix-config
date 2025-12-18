@@ -18,7 +18,7 @@
     ./stylix.nix
   ] ++ (builtins.attrValues outputs.nixosModules);
 
-  devices = lib.mkForce inputs.self.devices;
+  devices = lib.mkForce outputs.devices;
 
   home-manager.extraSpecialArgs = {
     inherit inputs outputs;

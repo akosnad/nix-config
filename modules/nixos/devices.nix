@@ -1,9 +1,18 @@
-{ lib, config, ... } @ args:
+{ lib, config, ... }:
 let
+  inherit (lib) types mkOption;
+  configurationModule = lib.modules.importApply ../common/devices.nix { };
   cfg = config.devices;
 in
 {
-  options.devices = (import ../common/devices.nix args).options.devices;
+  options.devices = mkOption {
+    description = ''
+      Devices imported from top-level flake `devices` output.
+    '';
+    type = types.attrsOf (types.submodule configurationModule);
+    default = { };
+  };
+
   config = {
     assertions = [
       {
