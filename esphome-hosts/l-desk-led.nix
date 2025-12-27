@@ -26,28 +26,17 @@
       }
     ];
 
-    e131 = { };
-
-    light = [
-      {
-        platform = "partition";
-        id = "light_rgb";
-        name = "Fény";
-        icon = "mdi:led-strip-variant";
-        restore_mode = "RESTORE_DEFAULT_OFF";
-        segments = [{ single_light_id = "light_rgb_internal"; }];
-        effects = [{ e131 = { universe = 1; }; }];
-      }
-      {
-        platform = "rgb";
-        id = "light_rgb_internal";
-        internal = true;
-        red = "output_red";
-        green = "output_green";
-        blue = "output_blue";
-        gamma_correct = 1.4;
-      }
-    ];
+    light = [{
+      platform = "rgb";
+      id = "light_rgb";
+      name = "Fény";
+      icon = "mdi:led-strip-variant";
+      red = "output_red";
+      green = "output_green";
+      blue = "output_blue";
+      restore_mode = "RESTORE_DEFAULT_OFF";
+      gamma_correct = 1.4;
+    }];
 
     remote_receiver.pin = {
       number = "6";
