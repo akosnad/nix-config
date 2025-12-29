@@ -51,9 +51,6 @@ in
         { action = "accept"; src = [ "*" ]; dst = [ "tag:installer:*" ]; }
         { action = "accept"; src = [ "tag:trusted" ]; dst = [ "*:*" ]; }
       ];
-      grants = [
-        { src = [ "tag:trusted" "10.0.0.0/8" ]; dst = [ "tag:trusted" "10.0.0.0/8" ]; ip = [ "*:*" ]; }
-      ];
     };
   };
 
