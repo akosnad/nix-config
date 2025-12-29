@@ -59,6 +59,8 @@
 
   programs.nh.clean.enable = false;
 
+  virtualisation.waydroid.enable = true;
+
   # needed to open for firewall
   programs.kdeconnect.enable = true;
 
