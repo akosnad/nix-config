@@ -44,6 +44,16 @@
     address = "2a02:6080::1";
     interface = "ens18";
   };
+  networking.nameservers = [
+    "1.1.1.1"
+    "1.0.0.1"
+    "2606:4700:4700::1111"
+    "2606:4700:4700::1001"
+
+    # fallback
+    "8.8.8.8"
+    "8.8.4.4"
+  ];
 
   boot.loader = {
     systemd-boot.enable = lib.mkForce false;
