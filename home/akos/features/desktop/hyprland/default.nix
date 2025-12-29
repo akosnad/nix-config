@@ -178,12 +178,6 @@
           preserve_split = "yes"; # you probably want this
         };
 
-        gestures = {
-          # See https://wiki.hyprland.org/Configuring/Variables/ for more
-          workspace_swipe = true;
-          workspace_swipe_fingers = 4;
-        };
-
         binds.allow_workspace_cycles = "yes";
 
         plugin.hyprexpo = {
@@ -208,8 +202,8 @@
         };
 
         windowrulev2 = [
-          "opacity, 0.9, class:(Alacritty)"
-          "opacity, 0.9, class:(kitty)"
+          "opacity 0.9, class:Alacritty"
+          "opacity 0.9, class:kitty"
 
           # this fixes bitwig studio
           # reference: https://github.com/hyprwm/Hyprland/issues/2034#issuecomment-1650278502

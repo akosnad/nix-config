@@ -30,7 +30,7 @@ in
             roles = [ "audio" "detect" "record" ];
           }];
         };
-        live.stream_name = "arges";
+        live.streams.main_stream = "arges";
         zones = {
           inside = {
             coordinates = "0.188,0.44,0.953,0.61,1,0.818,1,1,0,1,0,0.638";
@@ -58,10 +58,13 @@ in
         enabled = true;
         expire_interval = 120;
         retain.days = 3;
-        events.retain = {
-          default = 14;
+        alerts.retain = {
+          days = 14;
           mode = "all";
-          objects.person = 14;
+        };
+        detections.retain = {
+          days = 14;
+          mode = "all";
         };
       };
       snapshots = {

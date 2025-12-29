@@ -28,10 +28,8 @@ in
     admins = [ "akosnad" ];
     github = {
       topic = "buildbot-akosnad";
-      authType.app = {
-        id = 960427;
-        secretKeyFile = "${secretsCfg.buildbot-github-app-key.path}";
-      };
+      appId = 960427;
+      appSecretKeyFile = "${secretsCfg.buildbot-github-app-key.path}";
       webhookSecretFile = "${secretsCfg.buildbot-webhook-secret.path}";
       oauthId = "Ov23liqrF61WKdRZCwr7";
       oauthSecretFile = "${secretsCfg.buildbot-github-oauth-secret.path}";

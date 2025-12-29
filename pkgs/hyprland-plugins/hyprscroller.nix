@@ -1,11 +1,11 @@
-{ pkgs, mkHyprlandPlugin, ... }:
+{ pkgs, inputs, mkHyprlandPlugin, ... }:
 let
   inherit (pkgs) lib hyprland cmake unstableGitUpdater;
 in
 
 mkHyprlandPlugin hyprland {
   pluginName = "hyprscroller";
-  version = "0-unstable-2025-04-22";
+  version = inputs.hyprscroller-src.shortRev;
 
   src = pkgs.inputs.hyprscroller-src;
 

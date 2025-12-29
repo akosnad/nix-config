@@ -19,8 +19,7 @@
   };
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
 
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
@@ -31,7 +30,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    home-manager.url = "github:nix-community/home-manager/release-25.05";
+    home-manager.url = "github:nix-community/home-manager/release-25.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     nur = {
@@ -48,7 +47,7 @@
     };
 
     stylix = {
-      url = "github:/nix-community/stylix/release-25.05";
+      url = "github:/nix-community/stylix/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -77,11 +76,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixvirt = {
-      url = "github:AshleyYakeley/NixVirt/v0.6.0";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     arion = {
       url = "github:hercules-ci/arion";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -89,12 +83,11 @@
     };
 
     lanzaboote = {
-      url = "github:nix-community/lanzaboote";
-      inputs.flake-parts.follows = "flake-parts";
+      url = "github:nix-community/lanzaboote/v1.0.0";
     };
 
     buildbot-nix = {
-      url = "github:nix-community/buildbot-nix/474d5e49962363ea69d6388dd308292a13874068";
+      url = "github:nix-community/buildbot-nix/4f590eb97462eef698f2c96c67a080876c1f8051";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-parts.follows = "flake-parts";
       inputs.treefmt-nix.follows = "treefmt-nix";
@@ -116,7 +109,7 @@
       flake = false;
     };
 
-    nixos-wsl.url = "github:nix-community/NixOS-WSL/release-25.05";
+    nixos-wsl.url = "github:nix-community/NixOS-WSL/release-25.11";
   };
 
   outputs =
@@ -195,7 +188,7 @@
 
         checks =
           let
-            nixosMachines = lib.mapAttrs' (name: config: lib.nameValuePair "nixos-${name}" config.config.system.build.toplevel) ((lib.filterAttrs (_: config: config.pkgs.stdenv.hostPlatform.system == pkgs.system)) outputs.nixosConfigurations);
+            nixosMachines = lib.mapAttrs' (name: config: lib.nameValuePair "nixos-${name}" config.config.system.build.toplevel) ((lib.filterAttrs (_: config: config.pkgs.stdenv.hostPlatform.system == pkgs.stdenv.hostPlatform.system)) outputs.nixosConfigurations);
             topology = if system != "x86_64-linux" then { } else { topology = self.topology.${system}.config.output; };
           in
           nixosMachines // topology;

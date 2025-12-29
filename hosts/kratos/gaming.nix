@@ -4,10 +4,8 @@
     steamcmd
     steam-run
     mangohud
-    # TODO: lutris is uninstalled until upstream is updated
-    # upstream currently depends on unmaintaned mbedtls 2.x
-    # lutris
-    protonup
+    lutris
+    protonup-ng
   ];
   environment.sessionVariables = {
     STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\${HOME}/.steam/root/compatibilitytools.d";

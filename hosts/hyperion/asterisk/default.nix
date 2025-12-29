@@ -28,7 +28,7 @@ in
 
   services.asterisk = {
     enable = true;
-    package = pkgs.asterisk_18;
+    package = pkgs.asterisk_20;
     extraArguments = [ ];
     extraConfig = ''
       [options]

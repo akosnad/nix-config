@@ -4,7 +4,9 @@
 , ...
 }: {
   imports = [
-    inputs.hardware.nixosModules.microsoft-surface-pro-intel
+    inputs.hardware.nixosModules.common-pc-laptop
+    inputs.hardware.nixosModules.common-cpu-intel
+    inputs.hardware.nixosModules.common-pc-ssd
 
     ./hardware-configuration.nix
     ./disk-config.nix
@@ -32,9 +34,9 @@
   networking.hostName = "athena";
   networking.networkmanager.enable = true;
 
-  services.logind = {
-    lidSwitch = "suspend";
-    lidSwitchExternalPower = "suspend";
+  services.logind.settings.Login = {
+    HandleLidSwitch = "suspend";
+    HandleLidSwitchExternalPower = "suspend";
   };
 
   services.libinput = {

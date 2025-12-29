@@ -165,7 +165,7 @@ in
   home.packages = with pkgs; [
     # LSP servers
     nodePackages.bash-language-server
-    dockerfile-language-server-nodejs
+    dockerfile-language-server
     python311Packages.python-lsp-server
     nodePackages.typescript-language-server
     lua-language-server

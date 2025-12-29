@@ -65,7 +65,7 @@ let
   };
 
   mkInstaller = system: lib.nixosSystem {
-    modules = [ ((import ./installer) config.devices."${config.networking.hostName}".ip system) ];
+    modules = [ ((lib.modules.importApply ./installer) { nfsRemote = config.devices."${config.networking.hostName}".ip; inherit system; }) ];
     specialArgs = { inherit inputs outputs; };
   };
   installers = {

@@ -4,7 +4,7 @@
     extraPackages = with pkgs; [
       marksman
       nodePackages.bash-language-server
-      dockerfile-language-server-nodejs
+      dockerfile-language-server
       python3Packages.python-lsp-server
       nodePackages.typescript-language-server
       lua-language-server

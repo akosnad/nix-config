@@ -1,13 +1,13 @@
 { inputs, ... }: {
   # Alias 'pkgs.inputs.${flake}' to
-  # 'inputs.${flake}.packages.${pkgs.system}' or
-  # 'inputs.${flake}.legacyPackages.${pkgs.system}'
+  # 'inputs.${flake}.packages.${pkgs.stdenv.hostPlatform.system}' or
+  # 'inputs.${flake}.legacyPackages.${pkgs.stdenv.hostPlatform.system}'
   flake-inputs = final: _: {
     inputs = builtins.mapAttrs
       (_: flake:
         let
-          legacyPackages = (flake.legacyPackages or { }).${final.system} or { };
-          packages = (flake.packages or { }).${final.system} or { };
+          legacyPackages = (flake.legacyPackages or { }).${final.stdenv.hostPlatform.system} or { };
+          packages = (flake.packages or { }).${final.stdenv.hostPlatform.system} or { };
           outPath = flake.outPath or { };
         in
         if legacyPackages != { } then legacyPackages else if packages != { } then packages else outPath
@@ -20,25 +20,11 @@
   additions = final: prev: import ../pkgs { pkgs = final; }
     // {
     vimPlugins = (prev.vimPlugins or { }) // import ../pkgs/vim-plugins { pkgs = final; };
-    vscode-extensions = (prev.vscode-extensions or { }) // inputs.vscode-extensions.extensions.${final.system}.vscode-marketplace;
+    vscode-extensions = (prev.vscode-extensions or { }) // inputs.vscode-extensions.extensions.${final.stdenv.hostPlatform.system}.vscode-marketplace;
     home-assistant-custom-components = (prev.home-assistant-custom-components or { }) // import ../pkgs/home-assistant-custom-components { pkgs = final; };
     home-assistant-custom-lovelace-modules = (prev.home-assistant-custom-lovelace-modules or { }) // import ../pkgs/home-assistant-custom-lovelace-modules { pkgs = final; };
     home-assistant-custom-themes = import ../pkgs/home-assistant-custom-themes { pkgs = final; };
     nodePackages = (prev.nodePackages or { }) // import ../pkgs/nodePackages { pkgs = final; };
-    hyprlandPlugins = (prev.hyprlandPlugins or { }) // import ../pkgs/hyprland-plugins { pkgs = final; };
+    hyprlandPlugins = (prev.hyprlandPlugins or { }) // import ../pkgs/hyprland-plugins { pkgs = final; inherit inputs; };
   };
-
-  backports = _: prev:
-    let
-      pkgsUnstable = import inputs.nixpkgs-unstable {
-        inherit (prev) system;
-        config.permittedInsecurePackages = [
-          "olm-3.2.16"
-        ];
-      };
-      backportPkgs = [
-        "mautrix-meta"
-      ];
-    in
-    prev.lib.genAttrs backportPkgs (pkgName: pkgsUnstable.${pkgName});
 }

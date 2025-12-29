@@ -1,4 +1,5 @@
-nfsRemote: system: args @ { inputs, pkgs, config, ... }:
+{ nfsRemote, system }:
+args @ { inputs, lib, pkgs, ... }:
 let
   gpgKeyDerivation = pkgs.callPackage ../../../../../home/akos/gpg-key.nix args;
   gpgSshKey = builtins.readFile "${gpgKeyDerivation}/ssh.pub";
@@ -50,7 +51,7 @@ in
     enable = true;
     flushBeforeStage2 = false;
   };
-  networking.useDHCP = true;
+  networking.useDHCP = lib.mkForce true;
 
   boot.postBootCommands = ''
     touch /etc/NIXOS
