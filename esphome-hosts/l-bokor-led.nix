@@ -52,8 +52,8 @@
               transition_length = {
                 on_length = "1s";
                 off_length = "500ms";
-                update_interval = "1.5s";
               };
+              update_interval = "1.5s";
             };
           }
         ];
