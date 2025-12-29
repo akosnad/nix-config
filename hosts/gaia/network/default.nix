@@ -1,10 +1,4 @@
 { config, ... }:
-let
-  inherit (config.networking) domain;
-  hostName = "gaia";
-
-  hostnameWithDomain = "${hostName}.${domain}";
-in
 {
   imports = [
     ./lan.nix
@@ -19,7 +13,7 @@ in
   ];
 
   networking = {
-    inherit hostName;
+    hostName = "gaia";
     useDHCP = false;
     networkmanager.enable = false;
     useNetworkd = true;
@@ -40,8 +34,8 @@ in
       config.devices.gaia.ip
     ];
     hosts = {
-      "::1" = [ "localhost" hostName hostnameWithDomain ];
-      "127.0.0.1" = [ "localhost" hostName hostnameWithDomain ];
+      "::1" = [ "localhost" ];
+      "127.0.0.1" = [ "localhost" ];
     };
   };
   boot.kernel.sysctl = {

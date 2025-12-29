@@ -161,8 +161,7 @@ in
   };
 
   networking.hosts = {
-    "::1" = [ "boot" "boot.${config.networking.domain}" ];
-    "127.0.0.1" = [ "boot" "boot.${config.networking.domain}" ];
+    "${config.devices.${config.networking.hostName}.ip}" = [ "boot" "boot.${config.networking.domain}" ];
   };
   services.nginx.virtualHosts.boot = {
     forceSSL = false;

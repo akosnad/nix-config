@@ -134,8 +134,7 @@ in
   };
 
   networking.hosts = {
-    "::1" = [ "homeassistant" "homeassistant.${config.networking.domain}" ];
-    "127.0.0.1" = [ "homeassistant" "homeassistant.${config.networking.domain}" ];
+    "${config.devices.${config.networking.hostName}.ip}" = [ "homeassistant" "homeassistant.${config.networking.domain}" ];
   };
   services.nginx.virtualHosts.homeassistant = {
     forceSSL = true;
