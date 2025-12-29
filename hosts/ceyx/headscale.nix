@@ -43,9 +43,12 @@ in
       };
     };
     policy = {
+      groups = {
+        "group:admin" = [ "akos@" ];
+      };
       tagOwners = {
-        "tag:installer" = [ "akos" ];
-        "tag:trusted" = [ "akos" ];
+        "tag:installer" = [ "group:admin" ];
+        "tag:trusted" = [ "group:admin" ];
       };
       acls = [
         { action = "accept"; src = [ "*" ]; dst = [ "tag:installer:*" ]; }
