@@ -15,6 +15,7 @@
     ./features/shell/iamb.nix
     ./features/kicad.nix
     ./features/claude.nix
+    ./features/waydroid.nix
   ];
 
   specialisation.light.configuration.stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/equilibrium-gray-light.yaml";

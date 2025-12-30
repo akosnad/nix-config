@@ -24,6 +24,7 @@
     ../common/optional/virt-manager.nix
     ../common/optional/printing.nix
     ../common/optional/nautilus.nix
+    ../common/optional/waydroid.nix
 
     ../common/users/akos
 
@@ -58,8 +59,6 @@
   nix.buildMachines = lib.mkForce [ ];
 
   programs.nh.clean.enable = false;
-
-  virtualisation.waydroid.enable = true;
 
   # needed to open for firewall
   programs.kdeconnect.enable = true;
