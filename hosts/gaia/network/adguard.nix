@@ -37,8 +37,7 @@ in
       };
       dns = {
         bind_hosts = [
-          config.devices.gaia.ip # LAN
-          "100.64.0.5" # Tailnet
+          config.devices.${config.networking.hostName}.ip # LAN
         ];
         protection_enabled = true;
         upstream_dns = [
