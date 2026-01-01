@@ -5,6 +5,11 @@
       matchConfig.PermanentMACAddress = "dc:a6:32:19:bc:79";
       linkConfig.Name = "lan0";
     };
+    # Realtek r8152 USB Ethernet adapter
+    links."11-lan1" = {
+      matchConfig.PermanentMACAddress = "00:E0:4C:68:00:5A";
+      linkConfig.Name = "lan1";
+    };
 
     netdevs."20-br-lan" = {
       netdevConfig = {
