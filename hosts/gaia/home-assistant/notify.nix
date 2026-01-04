@@ -1,4 +1,8 @@
 let
+  machines = [
+    "kratos"
+    "athena"
+  ];
   mkNixMachineNotify = hostName: {
     command_topic = "${hostName}_notify";
     availability = [{
@@ -6,16 +10,13 @@ let
     }];
     name = "${hostName} NixOS notify";
     qos = 1;
-    object_id = "${hostName}_nixos_notify";
+    default_entity_id = "${hostName}_nixos_notify";
     unique_id = "${hostName}_nixos_notify";
   };
 in
 {
   services.home-assistant.config = {
-    mqtt.notify = [
-      (mkNixMachineNotify "kratos")
-      (mkNixMachineNotify "athena")
-    ];
+    mqtt.notify = map mkNixMachineNotify machines;
 
     notify = [
       {
@@ -24,9 +25,7 @@ in
         services = [
           { service = "kratos"; }
           { service = "mobile_app_harpokrates"; }
-          { service = "kratos_nixos_notify"; }
-          { service = "athena_nixos_notify"; }
-        ];
+        ] ++ (map (hostName: { service = "${hostName}_notify"; }) machines);
       }
       {
         platform = "group";
