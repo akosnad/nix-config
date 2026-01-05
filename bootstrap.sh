@@ -1,5 +1,5 @@
 #! /usr/bin/env nix-shell
-#! nix-shell -i bash -p nix sops ssh-to-age openssh yq-go
+#! nix-shell -i bash -p nix sops ssh-to-age openssh yq-go fd
 set -o pipefail
 set -o errexit
 
@@ -68,7 +68,7 @@ EOF
   printf "Generated system age key:\n\n%s\n\n" "$age_key"
   yq -e ".keys.hosts += (\"${age_key}\" | . anchor = \"${hostname}\")" -i .sops.yaml
   yq -e "with(.creation_rules[]; . | select(.path_regex == \"hosts/common/secrets.ya?ml\$\") | .key_groups.[0].age += (\"dummy\" | . alias = \"${hostname}\"))" -i .sops.yaml
-  sops -i -r --add-age "${age_key}" hosts/common/secrets.yaml
+  fd 'secrets.ya?ml' -x sops updatekeys -y
 }
 
 populate_config_efi() {
