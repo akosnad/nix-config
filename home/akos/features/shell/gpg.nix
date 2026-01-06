@@ -72,7 +72,7 @@ in
     force = true;
   };
 
-  home.persistence."/persist/${config.home.homeDirectory}".directories = [{
+  home.persistence."/persist/${config.home.homeDirectory}".directories = lib.mkIf config.programs.gpg.enable [{
     directory = ".gnupg";
     method = "bindfs";
   }];

@@ -24,15 +24,36 @@ let
       # shellcheck disable=SC2016
       win_appdata="$(/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -Command 'echo $env:appdata')"
       win_appdata="$(tr -d '\r' <<< "$win_appdata")"
-      socket_path="$win_appdata"/../Local/gnupg/S.gpg-agent.extra
+      socket_path="$win_appdata"/../Local/gnupg/"$1"
 
       /run/npiperelay -ep -ei -s -a "$socket_path"
     '';
   };
 
-  gpgCliWrapper = pkgs.writeShellScriptBin "gpg" ''
-    gpg.exe $@
-  '';
+  gpgWslHostWrapper = pkgs.stdenvNoCC.mkDerivation {
+    name = "gpg-wsl-host-wrapper";
+    phases = [ "installPhase" ];
+    installPhase = ''
+      mkdir -p $out/bin
+
+      # this assumes that WSL Path env var passing is enabled
+      script="#!/usr/bin/env bash
+      target=\"\$(basename \$0)\"
+      exec \"\$target\".exe \$@"
+
+      do_install() {
+        echo "installing $1"
+        echo "$script"> "$out"/bin/"$1"
+        chmod +x "$out"/bin/"$1"
+      }
+
+      do_install "gpgconf"
+      do_install "gpg-connect-agent"
+      while IFS= read -r target; do
+        do_install "$target"
+      done < <(${lib.getExe' pkgs.gnupg "gpgconf"} | awk -F: '{print $1}')
+    '';
+  };
 in
 {
   config = mkIf enable {
@@ -60,6 +81,15 @@ in
             Accept = true;
           };
         };
+        gpg-agent-extra = lib.mkForce {
+          wantedBy = [ "sockets.target" ];
+          socketConfig = {
+            ListenStream = "%t/gnupg/S.gpg-agent.extra";
+            SocketMode = "0600";
+            DirectoryMode = "0700";
+            Accept = true;
+          };
+        };
         gpg-agent-ssh = lib.mkForce {
           wantedBy = [ "sockets.target" ];
           socketConfig = {
@@ -77,7 +107,17 @@ in
           requires = [ "gpg-agent.socket" ];
           serviceConfig = {
             Type = "simple";
-            ExecStart = lib.getExe gpgAgentBridgeScript;
+            ExecStart = "${lib.getExe gpgAgentBridgeScript} S.gpg-agent";
+            StandardInput = "socket";
+          };
+        };
+        "gpg-agent-extra@" = {
+          description = "WSL GPG agent (extra socket) host bridge";
+          wantedBy = [ "default.target" ];
+          requires = [ "gpg-agent-extra.socket" ];
+          serviceConfig = {
+            Type = "simple";
+            ExecStart = "${lib.getExe gpgAgentBridgeScript} S.gpg-agent.extra";
             StandardInput = "socket";
           };
         };
@@ -87,7 +127,7 @@ in
           requires = [ "gpg-agent-ssh.socket" ];
           serviceConfig = {
             Type = "simple";
-            ExecStart = "/run/npiperelay -ei -s '//./pipe/openssh-ssh-agent'";
+            ExecStart = "/run/npiperelay -p -l -ei -s '//./pipe/openssh-ssh-agent'";
             StandardInput = "socket";
           };
         };
@@ -97,10 +137,10 @@ in
     programs.git = {
       enable = true;
       config = {
-        gpg.program = lib.getExe gpgCliWrapper;
+        gpg.program = lib.getExe' gpgWslHostWrapper "gpg";
       };
     };
 
-    environment.systemPackages = [ gpgCliWrapper ];
+    environment.systemPackages = [ (lib.hiPrio gpgWslHostWrapper) ];
   };
 }
