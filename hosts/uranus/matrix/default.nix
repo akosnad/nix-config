@@ -11,10 +11,6 @@
       public_baseurl = "https://m.fzt.one";
       registration_shared_secret_path = config.sops.secrets.matrix-registration-shared-secret.path;
       default_identity_server = "matrix.org";
-      trusted_third_party_id_servers = [
-        "martrix.org"
-        "vector.im"
-      ];
       allow_public_rooms_over_federation = true;
       app_service_config_files = [ config.sops.secrets.matrix-doublepuppet-config.path ];
       max_upload_size = "512M";
@@ -62,11 +58,8 @@
           # otherwise nginx will canonicalise the URI and cause signature verification
           # errors.
           proxy_pass http://127.0.0.1:8008;
-          # proxy_set_header X-Forwarded-For $remote_addr;
-          proxy_set_header X-Forwarded-For $http_x_forwarded_for;
-          # proxy_set_header X-Forwarded-Proto $scheme;
-          proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
-          # proxy_set_header Host $host:$server_port;
+          proxy_set_header X-Forwarded-For $remote_addr;
+          proxy_set_header X-Forwarded-Proto $scheme;
           proxy_set_header Host $host;
 
           # Nginx by default only allows file uploads up to 1M in size
