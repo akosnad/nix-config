@@ -24,7 +24,11 @@
   services.nginx.virtualHosts."auth.${config.networking.domain}" = {
     forceSSL = true;
     enableACME = true;
-    locations."/".proxyPass = "http://${config.services.pocket-id.settings.HOST}:${toString config.services.pocket-id.settings.PORT}";
+    locations."/" = {
+      proxyPass = "http://${config.services.pocket-id.settings.HOST}:${toString config.services.pocket-id.settings.PORT}";
+      # this also ensures that the IP -> GeoLiteDB resolving is correct
+      recommendedProxySettings = true;
+    };
     extraConfig = ''
       # increased header sizes due to frontend specialities
       # reference: https://pocket-id.org/docs/advanced/nginx-reverse-proxy
