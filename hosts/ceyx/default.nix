@@ -11,6 +11,7 @@
 
     ../common/users/akos
     ./headscale.nix
+    ./pocket-id.nix
     ./backup.nix
   ];
 
