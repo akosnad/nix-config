@@ -81,6 +81,8 @@ let
     text = /* sh */ ''
       #!ipxe
       iseq ''${buildarch} arm64 && chain ${bootWebroot}/aarch64/installer/boot.ipxe || echo
+      # this assumes that the host booted in legacy BIOS mode. i386 is not actually a supported arch.
+      iseq ''${buildarch} i386 && chain ${bootWebroot}/x86_64/installer/boot.ipxe || echo
       iseq ''${buildarch} x86_64 && chain ${bootWebroot}/x86_64/installer/boot.ipxe || goto err
       exit
 
@@ -145,8 +147,12 @@ in
       dhcp-boot = [
         # if request comes from firmware, load iPXE over TFTP
         "tag:!ipxe,tag:efi-x86_64,x86_64/ipxe.efi"
+
         # TODO: find a way to determine if client is actually aarch64, not just guess at last
-        "tag:!ipxe,tag:!efi-x86_64,aarch64/ipxe.efi"
+        # "tag:!ipxe,tag:!efi-x86_64,aarch64/ipxe.efi"
+
+        # fall back to X86_64 BIOS by default
+        "tag:!ipxe,tag:!efi-x86_64,x86_64/undionly.kpxe"
 
         # if request comes from iPXE, direct it to bootstrap script
         "tag:ipxe,${bootWebroot}/boot.ipxe"

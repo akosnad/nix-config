@@ -6,15 +6,17 @@ let
 in
 {
   imports = [
-    "${inputs.nixpkgs}/nixos/modules/profiles/all-hardware.nix"
     "${inputs.nixpkgs}/nixos/modules/profiles/base.nix"
     "${inputs.nixpkgs}/nixos/modules/profiles/installation-device.nix"
     "${inputs.nixpkgs}/nixos/modules/profiles/minimal.nix"
   ];
 
+  hardware.enableAllHardware = true;
+
   boot.loader.grub.enable = false;
   boot.initrd.supportedFilesystems = [ "nfs" "nfsv4" "overlay" ];
-  boot.initrd.availableKernelModules = [ "nfs" "nfsv4" "overlay" ];
+  boot.initrd.kernelModules = [ "nfs" "nfsv4" "overlay" ];
+  boot.initrd.availableKernelModules = [ "r8169" ];
 
   fileSystems."/" = {
     fsType = "tmpfs";
@@ -47,6 +49,11 @@ in
     ];
   };
 
+  boot.initrd.extraUtilsCommands = ''
+    copy_bin_and_libs ${pkgs.nfs-utils}/bin/mount.nfs
+    copy_bin_and_libs ${pkgs.nfs-utils}/bin/mount.nfs4
+    copy_bin_and_libs ${pkgs.nfs-utils}/bin/nfsstat
+  '';
   boot.initrd.network = {
     enable = true;
     flushBeforeStage2 = false;
@@ -76,6 +83,15 @@ in
     openssh.authorizedKeys.keys = [ gpgSshKey ];
   };
 
+  services.getty.helpLine = lib.mkForce ''
+    Welcome to installer
+
+    Booted from ${nfsRemote}
+    System is ${system}
+  '';
+
+  systemd.shutdownRamfs.enable = false;
+
   nix.settings = {
     experimental-features = "nix-command flakes";
     warn-dirty = false;
@@ -96,9 +112,36 @@ in
   nixpkgs.hostPlatform = system;
 
   environment.systemPackages = with pkgs; [
+    # editing
     helix
     git
+
+    # disk usage tools
+    ncdu
+    duf
+    dust
+
+    # piping, searching, file utilities
+    jq
+    ripgrep
+    file
+    fd
+    yazi
+
+    # system monitoring
     htop
+    glances
+
+    # network debugging
+    iftop
+    iperf3
+    gping
+    curlie
+    doggo
+
+    # nix utilities
+    nvd
+    nix-tree
   ];
 
   networking.hostName = "installer";
