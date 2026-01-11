@@ -85,6 +85,12 @@ in
       icon = "services.miniflux";
       info = config.services.miniflux.config.BASE_URL;
     };
+
+    pocket-id = mkIf config.services.pocket-id.enable {
+      name = "Pocket ID";
+      icon = "services.pocket-id";
+      info = config.services.pocket-id.settings.APP_URL;
+    };
   };
 
   # give nodes a camera icon that are referenced in frigate
