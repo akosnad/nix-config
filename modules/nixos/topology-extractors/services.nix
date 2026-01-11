@@ -1,6 +1,6 @@
 { config, lib, ... }:
 let
-  inherit (lib) mkIf attrNames concatStringsSep filterAttrs hasAttr mapAttrs;
+  inherit (lib) mkIf attrNames concatStringsSep filterAttrs hasAttr mapAttrs mkForce;
 
   frigateCameras = config.services.frigate.settings.cameras;
 in
@@ -42,7 +42,8 @@ in
 
     harmonia = mkIf config.services.harmonia.enable {
       name = "Harmonia";
-      icon = "services.harmonia";
+      # upstream provides a "N/A" icon...
+      icon = mkForce "services.harmonia";
       details =
         let
           cfg = config.services.harmonia;
@@ -54,14 +55,14 @@ in
     };
 
     step-ca = mkIf config.services.step-ca.enable {
-      name = "Step CA";
-      icon = "services.smallstep";
+      # i like this icon better than upstream's
+      icon = mkForce "services.smallstep";
+      # add info about provisionsers
       details =
         let
           cfg = config.services.step-ca;
         in
         {
-          listen.text = "${cfg.address}:${toString cfg.port}";
           provisioners.text = concatStringsSep " " (map (p: p.name) cfg.settings.authority.provisioners);
         };
     };
