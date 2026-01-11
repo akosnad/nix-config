@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 let
   extensions = with pkgs.azure-cli-extensions; [
     webapp
@@ -9,5 +9,5 @@ in
     (pkgs.azure-cli.withExtensions extensions)
   ];
 
-  home.persistence."/persist/${config.home.homeDirectory}".directories = [ ".azure" ];
+  home.persistence."/persist".directories = [ ".azure" ];
 }

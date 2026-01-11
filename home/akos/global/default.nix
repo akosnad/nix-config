@@ -1,7 +1,6 @@
 { inputs, outputs, pkgs, lib, config, ... }:
 {
   imports = [
-    inputs.impermanence.nixosModules.home-manager.impermanence
     inputs.spicetify.homeManagerModules.spicetify
     ../features/shell
     ../features/helix
@@ -61,8 +60,7 @@
     stateVersion = lib.mkDefault "23.11";
 
     persistence = {
-      "/persist/${config.home.homeDirectory}" = {
-        defaultDirectoryMethod = "symlink";
+      "/persist" = {
         directories = [
           "Documents"
           "Downloads"
@@ -72,7 +70,6 @@
           ".local/bin"
           ".local/share/nix" # trusted settings and repl history
         ];
-        allowOther = true;
       };
     };
   };

@@ -1,4 +1,4 @@
-{ config, outputs, lib, ... }:
+{ outputs, lib, ... }:
 let
   nixosConfigs = builtins.attrNames outputs.nixosConfigurations;
   homeConfigs = map (n: lib.last (lib.splitString "@" n)) (builtins.attrNames outputs.homeConfigurations);
@@ -40,5 +40,5 @@ in
     };
   };
 
-  home.persistence."/persist/${config.home.homeDirectory}".files = [ ".ssh/known_hosts" ];
+  home.persistence."/persist".files = [ ".ssh/known_hosts" ];
 }

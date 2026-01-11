@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ lib, ... }:
 {
   programs.microsoft-edge = {
     enable = true;
@@ -20,7 +20,7 @@
     "application/x-extension-pdf" = "microsoft-edge.desktop";
   };
 
-  home.persistence."/persist/${config.home.homeDirectory}".directories = [
+  home.persistence."/persist".directories = [
     ".config/microsoft-edge"
     ".cache/Microsoft/Edge"
     ".cache/microsoft-edge"

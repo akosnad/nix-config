@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 {
   imports = [
     ./global
@@ -69,7 +69,7 @@
     inkscape
   ];
 
-  home.persistence."/persist/${config.home.homeDirectory}".directories = [
+  home.persistence."/persist".directories = [
     ".local/share/Steam"
     ".local/share/lutris"
     "Games"

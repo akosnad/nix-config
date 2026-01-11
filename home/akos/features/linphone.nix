@@ -1,10 +1,10 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 {
   home.packages = with pkgs; [
     linphone
   ];
 
-  home.persistence."/persist/${config.home.homeDirectory}".directories = [
+  home.persistence."/persist".directories = [
     ".config/linphone"
     ".local/share/linphone"
   ];
