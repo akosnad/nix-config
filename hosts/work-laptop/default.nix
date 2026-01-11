@@ -17,5 +17,16 @@
   networking.hostName = "work-laptop";
   networking.firewall.enable = false;
   nixpkgs.hostPlatform = "x86_64-linux";
+
+  topology.self = {
+    icon = "devices.wsl";
+    hardware.info = "ThinkPad P14s Gen 5";
+    interfaces.wifi.physicalConnections = [
+      { node = "internet"; interface = "*"; renderer.reverse = true; }
+    ];
+  };
+
   system.stateVersion = "25.05";
+
+
 }
