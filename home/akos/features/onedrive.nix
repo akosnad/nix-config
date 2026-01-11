@@ -1,6 +1,6 @@
 { pkgs, lib, config, ... }:
 let
-  impermanenceEnabled = builtins.hasAttr "/persist/${config.home.homeDirectory}" config.home.persistence;
+  impermanenceEnabled = builtins.hasAttr "/persist" config.home.persistence;
 
   remote = "onedrive-personal";
   mountpoint = "${config.home.homeDirectory}/OneDrive";
@@ -47,7 +47,7 @@ in
     Install.WantedBy = [ "graphical-session.target" ];
   };
 
-  home.persistence."/persist/${config.home.homeDirectory}" = {
+  home.persistence."/persist" = {
     files = [ ".config/rclone/rclone.conf" ];
   };
 }

@@ -1,10 +1,9 @@
-{ config, ... }:
 {
   programs.spicetify = {
     enable = true;
   };
 
-  home.persistence."/persist/${config.home.homeDirectory}".directories = [
+  home.persistence."/persist".directories = [
     ".config/spotify"
     ".cache/spotify"
   ];

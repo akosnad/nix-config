@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 let
   legcordSettings = pkgs.writeText "settings.json" (builtins.toJSON {
     windowStyle = "native";
@@ -43,7 +43,7 @@ in
     categories = [ "Network" "InstantMessaging" ];
   };
 
-  home.persistence."/persist/${config.home.homeDirectory}" = {
+  home.persistence."/persist" = {
     directories = map withLegcordConfigDir [ "plugins" "themes" "Local Storage" "Session Storage" ];
     files = map withLegcordConfigDir [ "Cookies" "Preferences" ];
   };

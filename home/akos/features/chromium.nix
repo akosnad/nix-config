@@ -1,9 +1,9 @@
-{ config, lib, ... }:
+{ lib, ... }:
 {
   programs.chromium = {
     enable = true;
     nativeMessagingHosts = lib.mkForce [ ];
   };
 
-  home.persistence."/persist/${config.home.homeDirectory}".directories = [ ".config/chromium" ];
+  home.persistence."/persist".directories = [ ".config/chromium" ];
 }

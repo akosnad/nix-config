@@ -1,15 +1,12 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 {
   programs.vscode = {
     enable = true;
     package = pkgs.vscode.fhs;
   };
 
-  home.persistence."/persist/${config.home.homeDirectory}".directories = [
-    {
-      directory = ".vscode";
-      method = "bindfs";
-    }
+  home.persistence."/persist".directories = [
+    ".vscode"
     ".config/Code"
   ];
 
