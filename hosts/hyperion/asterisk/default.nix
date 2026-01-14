@@ -28,23 +28,56 @@ in
 
   services.asterisk = {
     enable = true;
-    package = pkgs.asterisk_20;
-    extraArguments = [ ];
+    # TODO: do this in a global overlay
+    package = pkgs.asterisk_22.overrideAttrs (old: {
+      # Ensure docs get installed into the output
+      postInstall = (old.postInstall or "") + ''
+        mkdir -p $out/var/lib/asterisk/documentation
+        cp -r doc/* $out/var/lib/asterisk/documentation/
+      '';
+    });
+    # extraArguments = [ "-vvvddd" ];
     extraConfig = ''
       [options]
       verbose=5
       debug=3
     '';
+    useTheseDefaultConfFiles = [
+      # default values
+      "ari.conf"
+      "acl.conf"
+      "agents.conf"
+      "amd.conf"
+      "calendar.conf"
+      "cdr.conf"
+      "cdr_syslog.conf"
+      "cdr_custom.conf"
+      "cel.conf"
+      "cel_custom.conf"
+      "cli_aliases.conf"
+      "confbridge.conf"
+      "dundi.conf"
+      "features.conf"
+      "hep.conf"
+      "iax.conf"
+      "pjsip.conf"
+      "pjsip_wizard.conf"
+      "phone.conf"
+      "phoneprov.conf"
+      "queues.conf"
+      "res_config_sqlite3.conf"
+      "res_parking.conf"
+      "statsd.conf"
+      "udptl.conf"
+      "unistim.conf"
+
+      # added
+      "stasis.conf"
+    ];
     confFiles = {
       "modules.conf" = ''
         [modules]
         autoload=yes
-
-        ; fix symbol not found errors by forcing module load order:
-        load => res_websocket_client.so
-        load => res_ari.so
-        load => res_ari_applications.so
-        load => app_stasis.so
       '';
       "logger.conf" = /* asterisk */ ''
         [general]
@@ -163,15 +196,17 @@ in
         read_only=no
         password=asterisk
       '';
-      "res_websocket_client.conf" = ''
-        [general]
-        enabled = no
-      '';
     };
   };
 
   systemd.services.asterisk = {
     reloadIfChanged = true;
+    serviceConfig = {
+      RestartSec = 3;
+      Restart = "on-failure";
+      # TODO: override ExecStartPre to ensure contents of ${pkgs.asterisk_22}/var/lib/documentation
+      # is present under /var/lib/asterisk/documentation. without this the service refuses to start.
+    };
   };
 
   services.fail2ban.jails.asterisk.settings = {
