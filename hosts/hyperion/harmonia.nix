@@ -22,4 +22,14 @@
   sops.secrets.harmonia-key = {
     sopsFile = ./secrets.yaml;
   };
+
+  # LAN proxy of publc cache
+  services.nginx.virtualHosts."nix.fzt.one" = {
+    forceSSL = true;
+    enableACME = true;
+    locations."/" = {
+      proxyPass = "http://127.0.0.1:5959";
+      recommendedProxySettings = true;
+    };
+  };
 }

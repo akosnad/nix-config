@@ -21,6 +21,7 @@
     ../common/optional/aarch64.nix
     ../common/optional/use-builders.nix
     ../common/optional/fail2ban.nix
+    ../common/optional/nix-cache-proxy.nix
 
     ../common/users/akos
 

@@ -15,7 +15,7 @@
     info = "Core i7 4790S, 32GB RAM";
     mac = "74:D0:2B:90:C3:BC";
     ip = "10.0.0.3";
-    extraHostnames = [ "frigate" ];
+    extraHostnames = [ "frigate" "nix.fzt.one" ];
     forwardedPorts = [
       # qbittorrent
       15577

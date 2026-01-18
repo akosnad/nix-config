@@ -25,6 +25,7 @@
     ../common/optional/printing.nix
     ../common/optional/nautilus.nix
     ../common/optional/waydroid.nix
+    ../common/optional/nix-cache-proxy.nix
 
     ../common/users/akos
 

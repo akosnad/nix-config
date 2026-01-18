@@ -27,6 +27,7 @@
     ../common/optional/bluetooth.nix
     ../common/optional/printing.nix
     ../common/optional/nautilus.nix
+    ../common/optional/nix-cache-proxy.nix
 
     ../common/users/akos
   ];
