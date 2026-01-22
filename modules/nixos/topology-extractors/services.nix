@@ -67,7 +67,7 @@ in
         };
     };
 
-    matrix-synapse = mkIf config.services.matrix-synapse.enable {
+    matrix-synapse = mkIf config.services.matrix-synapse.enable (mkForce {
       name = "Matrix Synapse";
       icon = "services.matrix";
       info = config.services.matrix-synapse.settings.server_name;
@@ -78,7 +78,7 @@ in
         {
           url.text = cfg.settings.public_baseurl;
         };
-    };
+    });
 
     miniflux = mkIf config.services.miniflux.enable {
       name = "Miniflux";
