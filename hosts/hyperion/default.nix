@@ -36,6 +36,14 @@
   ];
 
   networking.hostName = "hyperion";
+  networking.hosts = {
+    # this hack fixes Radarr and Sonarr not being able to request downloads
+    # issue:
+    # - hyperion.home.arpa resolves to 127.0.0.2 in containers
+    # - port 443 has nothing in container -> http req fails
+    # TODO: find why they look for this hostname and patch it out to their internal ports
+    "127.0.0.2" = lib.mkForce [ ];
+  };
 
   hardware.nvidia.prime.offload.enable = false;
 
