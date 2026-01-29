@@ -4,6 +4,7 @@
     inputs.home-manager.nixosModules.home-manager
     inputs.nixos-wsl.nixosModules.default
     inputs.nix-topology.nixosModules.default
+    inputs.copyparty.nixosModules.default
     ./locale.nix
     ./zsh.nix
     ./nix.nix

@@ -110,6 +110,8 @@
     };
 
     nixos-wsl.url = "github:nix-community/NixOS-WSL/release-25.11";
+
+    copyparty.url = "github:9001/copyparty";
   };
 
   outputs =

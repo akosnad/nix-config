@@ -33,6 +33,7 @@
     ./frigate.nix
     ./asterisk
     ./harmonia.nix
+    ./copyparty.nix
   ];
 
   networking.hostName = "hyperion";
