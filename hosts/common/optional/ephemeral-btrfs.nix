@@ -1,5 +1,10 @@
 { lib, config, inputs, ... }:
 let
+  systemdRootDevice = (lib.pipe config.fileSystems."/".device [
+    (lib.removePrefix "/")
+    (lib.replaceStrings [ "/" "-" ] [ "-" "\\x2d" ])
+  ]) + ".device";
+
   wipeScript = /* bash */ ''
     mkdir -p /tmp
     MNTPOINT=$(mktemp -d)
@@ -43,14 +48,12 @@ in
 
   boot.initrd = {
     supportedFilesystems = [ "btrfs" ];
-    postDeviceCommands = lib.mkIf (!phase1Systemd) (lib.mkBefore wipeScript);
+    postDeviceCommands = lib.mkIf (!phase1Systemd) (lib.mkAfter wipeScript);
     systemd.services.restore-root = lib.mkIf phase1Systemd {
       description = "Rollback btrfs rootfs";
       wantedBy = [ "initrd.target" ];
-      requires = [ "dev-disk-by\\x2dlabel-nixos.device" ];
-      after = [
-        "dev-disk-by\\x2dlabel-nixos.device"
-      ];
+      requires = [ systemdRootDevice ];
+      after = [ systemdRootDevice ];
       before = [ "sysroot.mount" ];
       unitConfig.DefaultDependencies = "no";
       serviceConfig.Type = "oneshot";
