@@ -1,4 +1,4 @@
-{ config, ... }:
+{ lib, config, ... }:
 {
   imports = [
     ./lan.nix
@@ -36,6 +36,9 @@
     hosts = {
       "::1" = [ "localhost" ];
       "127.0.0.1" = [ "localhost" ];
+      # because we use hosts defined here to advertise records on the LAN,
+      # forcibly do not advertise a loopback IP associated with any hostname on the LAN.
+      "127.0.0.2" = lib.mkForce [ ];
     };
   };
   boot.kernel.sysctl = {
