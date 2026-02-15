@@ -9,6 +9,7 @@ keys:
     - &hyperion age1qq68007k0v2tl4qwfvwhaxpp4lskaccallrmzsv7w3lhwpae635qckaykc
     - &ceyx age1kd9kp2twvyskq0rte588s7tfvzcw62dh0xwftcaqdj2vdpxqyddq869u6s
     - &work-laptop age1jjz6h84sz34mt9mymh9cj46rz80t6tkkl55qkeaxmvd3hqnqts2se8e66n
+    - &kratos-vm-test age1jx4yeq8r2t82pj42eft43dhd7px5w3ttgprf6mdaead2grcgjglsp59sph
 creation_rules:
   - path_regex: hosts/common/secrets.ya?ml$
     key_groups:
@@ -20,6 +21,7 @@ creation_rules:
           - *hyperion
           - *ceyx
           - *work-laptop
+          - *kratos-vm-test
         pgp:
           - *akos
   - path_regex: home/akos/secrets.ya?ml$
