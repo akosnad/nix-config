@@ -8,6 +8,7 @@
 
     ./hardware-configuration.nix
     ./disk-config.nix
+    ./storage-pool.nix
 
     ../common/global
     ../common/optional/ephemeral-btrfs.nix
@@ -51,6 +52,15 @@
     device = "/dev/disk/by-label/zeusraid";
     fsType = "btrfs";
   };
+
+  # allow ZFS import to find pool on boot by its name
+  boot.zfs.devNodes = "/dev/disk/by-label";
+  networking.hostId = "3526dac2";
+
+  # initial bringup
+  fileSystems."/thesauros".enable = false;
+  fileSystems."/thesauros/zeusraid".enable = false;
+  boot.supportedFilesystems = [ "zfs" ];
 
   swapDevices = [{
     device = "/swap/swapfile";
