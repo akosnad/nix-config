@@ -57,11 +57,6 @@
   boot.zfs.devNodes = "/dev/disk/by-label";
   networking.hostId = "3526dac2";
 
-  # initial bringup
-  fileSystems."/thesauros".enable = false;
-  fileSystems."/thesauros/zeusraid".enable = false;
-  boot.supportedFilesystems = [ "zfs" ];
-
   swapDevices = [{
     device = "/swap/swapfile";
     size = 32 * 1024;
