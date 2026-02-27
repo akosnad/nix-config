@@ -12,41 +12,43 @@ let
 in
 {
   disko.devices = {
-    disk = (lib.mapAttrs
-      (_name: id: {
-        type = "disk";
-        device = "/dev/disk/by-id/${id}";
-        content = {
-          type = "gpt";
-          partitions = {
-            zfs = {
-              size = "100%";
-              content = {
-                type = "zfs";
-                pool = poolname;
+    disk =
+      (lib.mapAttrs
+        (_name: id: {
+          type = "disk";
+          device = "/dev/disk/by-id/${id}";
+          content = {
+            type = "gpt";
+            partitions = {
+              zfs = {
+                size = "100%";
+                content = {
+                  type = "zfs";
+                  pool = poolname;
+                };
               };
             };
           };
-        };
-      })
-      drives) // {
-      cache1 = {
-        type = "disk";
-        device = "/dev/disk/by-id/wwn-0x500151795958fc81";
-        content = {
-          type = "gpt";
-          partitions = {
-            zfs = {
-              size = "50G"; # overprovision the SSD
-              content = {
-                type = "zfs";
-                pool = poolname;
+        })
+        drives)
+      // {
+        cache1 = {
+          type = "disk";
+          device = "/dev/disk/by-id/wwn-0x500151795958fc81";
+          content = {
+            type = "gpt";
+            partitions = {
+              zfs = {
+                size = "50G"; # overprovision the SSD
+                content = {
+                  type = "zfs";
+                  pool = poolname;
+                };
               };
             };
           };
         };
       };
-    };
 
     zpool.${poolname} = {
       type = "zpool";
@@ -73,12 +75,13 @@ in
         compression = "zstd";
         "com.sun:auto-snapshot" = "false";
       };
-      mountpoint = "/${poolname}";
+      options.mountpoint = "none";
 
       datasets = {
         zeusraid = {
           type = "zfs_fs";
           mountpoint = "/raid";
+          options.mountpoint = "legacy";
         };
       };
     };
