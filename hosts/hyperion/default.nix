@@ -48,11 +48,6 @@
 
   hardware.nvidia.prime.offload.enable = false;
 
-  fileSystems."/raid" = {
-    device = "/dev/disk/by-label/zeusraid";
-    fsType = "btrfs";
-  };
-
   # allow ZFS import to find pool on boot by its name
   boot.zfs.devNodes = "/dev/disk/by-label";
   networking.hostId = "3526dac2";

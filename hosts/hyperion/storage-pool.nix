@@ -78,7 +78,7 @@ in
       datasets = {
         zeusraid = {
           type = "zfs_fs";
-          mountpoint = "/${poolname}/zeusraid";
+          mountpoint = "/raid";
         };
       };
     };
