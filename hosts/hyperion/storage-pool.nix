@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ inputs, lib, ... }:
 let
   poolname = "thesauros";
   drives = {
@@ -11,79 +11,90 @@ let
   };
 in
 {
-  disko.devices = {
-    disk =
-      (lib.mapAttrs
-        (_name: id: {
-          type = "disk";
-          device = "/dev/disk/by-id/${id}";
-          content = {
-            type = "gpt";
-            partitions = {
-              zfs = {
-                size = "100%";
-                content = {
-                  type = "zfs";
-                  pool = poolname;
+  imports = [ inputs.disko-zfs.nixosModules.default ];
+
+  disko = {
+    devices = {
+      disk =
+        (lib.mapAttrs
+          (_name: id: {
+            type = "disk";
+            device = "/dev/disk/by-id/${id}";
+            content = {
+              type = "gpt";
+              partitions = {
+                zfs = {
+                  size = "100%";
+                  content = {
+                    type = "zfs";
+                    pool = poolname;
+                  };
+                };
+              };
+            };
+          })
+          drives)
+        // {
+          cache1 = {
+            type = "disk";
+            device = "/dev/disk/by-id/wwn-0x500151795958fc81";
+            content = {
+              type = "gpt";
+              partitions = {
+                zfs = {
+                  size = "50G"; # overprovision the SSD
+                  content = {
+                    type = "zfs";
+                    pool = poolname;
+                  };
                 };
               };
             };
           };
-        })
-        drives)
-      // {
-        cache1 = {
-          type = "disk";
-          device = "/dev/disk/by-id/wwn-0x500151795958fc81";
-          content = {
-            type = "gpt";
-            partitions = {
-              zfs = {
-                size = "50G"; # overprovision the SSD
-                content = {
-                  type = "zfs";
-                  pool = poolname;
-                };
-              };
-            };
+        };
+
+      zpool.${poolname} = {
+        type = "zpool";
+        mode = {
+          topology = {
+            type = "topology";
+            vdev = [
+              {
+                mode = "raidz2";
+                members = [
+                  "data1"
+                  "data2"
+                  "data3"
+                  "data4"
+                  "data5"
+                  "data6"
+                ];
+              }
+            ];
+            cache = [ "cache1" ];
+          };
+        };
+        rootFsOptions = {
+          acltype = "posix";
+          atime = "off";
+          xattr = "on";
+          compression = "zstd";
+          mountpoint = "none";
+          "com.sun:auto-snapshot" = "false";
+        };
+
+        datasets = {
+          zeusraid = {
+            type = "zfs_fs";
+            mountpoint = "/raid";
+            options.mountpoint = "legacy";
           };
         };
       };
-
-    zpool.${poolname} = {
-      type = "zpool";
-      mode = {
-        topology = {
-          type = "topology";
-          vdev = [
-            {
-              mode = "raidz2";
-              members = [
-                "data1"
-                "data2"
-                "data3"
-                "data4"
-                "data5"
-                "data6"
-              ];
-            }
-          ];
-          cache = [ "cache1" ];
-        };
-      };
-      rootFsOptions = {
-        compression = "zstd";
-        "com.sun:auto-snapshot" = "false";
-      };
-      options.mountpoint = "none";
-
-      datasets = {
-        zeusraid = {
-          type = "zfs_fs";
-          mountpoint = "/raid";
-          options.mountpoint = "legacy";
-        };
-      };
+    };
+    zfs = {
+      enable = true;
+      settings.ignoredProperties = [ "nixos:shutdown-time" ];
     };
   };
 }
