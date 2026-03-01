@@ -166,16 +166,9 @@ in
   };
 
   systemd.services.frigate = {
-    requires = [ "var-lib-frigate.mount" ];
+    requires = [ "zfs.target" ];
+    after = [ "zfs.target" ];
     path = lib.mkBefore [ ffmpegCuda ];
-  };
-  fileSystems."/var/lib/frigate" = {
-    device = "/raid/frigate";
-    options = [
-      "x-systemd.requires-mounts-for=/raid"
-      "bind"
-      "X-fstrim.notrim"
-    ];
   };
 
   networking.firewall = {
