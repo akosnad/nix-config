@@ -83,11 +83,57 @@ in
           "com.sun:auto-snapshot" = "false";
         };
 
-        datasets = {
+        datasets = rec {
           zeusraid = {
             type = "zfs_fs";
             mountpoint = "/raid";
             options.mountpoint = "legacy";
+          };
+
+          media = {
+            type = "zfs_fs";
+            options = {
+              mountpoint = "/media";
+              recordsize = "4M";
+            };
+          };
+          "media/Radarr".type = "zfs_fs";
+          "media/Sonarr".type = "zfs_fs";
+          "media/Lidarr".type = "zfs_fs";
+          "media/Music".type = "zfs_fs";
+          "media/mediaklikk".type = "zfs_fs";
+          "media/mediaklikk/scripts" = {
+            type = "zfs_fs";
+            options.recordsize = "4K";
+          };
+
+          torrents = {
+            type = "zfs_fs";
+            options = {
+              mountpoint = "/torrents";
+              recordsize = "256K";
+            };
+          };
+          "torrents/Radarr" = {
+            type = "zfs_fs";
+            options.recordsize = media.options.recordsize;
+          };
+          "torrents/Sonarr" = {
+            type = "zfs_fs";
+            options.recordsize = media.options.recordsize;
+          };
+          "torrents/nCoreFilmek" = {
+            type = "zfs_fs";
+            options.recordsize = media.options.recordsize;
+          };
+          "torrents/nCoreSorozatok" = {
+            type = "zfs_fs";
+            options.recordsize = media.options.recordsize;
+          };
+
+          testvol = {
+            type = "zfs_volume";
+            size = "20G";
           };
         };
       };
