@@ -131,6 +131,26 @@ in
             options.recordsize = media.options.recordsize;
           };
 
+          frigate = {
+            type = "zfs_fs";
+            options = {
+              mountpoint = "/var/lib/frigate";
+              recordsize = "4K";
+            };
+          };
+          "frigate/clips" = {
+            type = "zfs_fs";
+            options.recordsize = "1M";
+          };
+          "frigate/exports" = {
+            type = "zfs_fs";
+            options.recordsize = "4M";
+          };
+          "frigate/recordings" = {
+            type = "zfs_fs";
+            options.recordsize = "8M";
+          };
+
           testvol = {
             type = "zfs_volume";
             size = "20G";
