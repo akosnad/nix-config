@@ -32,8 +32,8 @@ in
         container_name = "radarr";
         volumes = [
           "/var/lib/radarr:/config"
-          "/raid/Radarr/:/raid/Radarr"
-          "/raid/Torrents/Radarr/:/raid/Torrents/Radarr"
+          "/media/Radarr/:/raid/Radarr"
+          "/torrents/Radarr/:/raid/Torrents/Radarr"
         ];
         blkio_config.weight = 800;
         ports = [ "7878:7878" ];
@@ -44,8 +44,8 @@ in
         container_name = "sonarr";
         volumes = [
           "/var/lib/sonarr:/config"
-          "/raid/Sonarr/:/raid/Sonarr"
-          "/raid/Torrents/Sonarr/:/raid/Torrents/Sonarr"
+          "/media/Sonarr/:/raid/Sonarr"
+          "/torrents/Sonarr/:/raid/Torrents/Sonarr"
         ];
         blkio_config.weight = 800;
         ports = [ "8989:8989" ];
@@ -62,15 +62,15 @@ in
         env_file = [ config.sops.secrets.plex-env.path ];
         volumes = [
           "/var/lib/plex:/config"
-          "/raid/Eloadasok/:/raid/Eloadasok"
-          "/raid/Lidarr/:/raid/Lidarr"
-          "/raid/Music/:/raid/Music"
-          "/raid/Radarr/:/raid/Radarr"
-          "/raid/Sonarr/:/raid/Sonarr"
-          "/raid/mediaklikk/:/raid/mediaklikk"
-          "/raid/Torrents/nCoreFilmek/:/raid/Torrents/nCoreFilmek"
-          "/raid/Torrents/nCoreSorozatok/:/raid/Torrents/nCoreSorozatok"
-          "/raid/dvdrips/:/raid/dvdrips"
+          "/media/Eloadasok/:/raid/Eloadasok"
+          "/media/Lidarr/:/raid/Lidarr"
+          "/media/Music/:/raid/Music"
+          "/media/Radarr/:/raid/Radarr"
+          "/media/Sonarr/:/raid/Sonarr"
+          "/media/mediaklikk/:/raid/mediaklikk"
+          "/torrents/nCoreFilmek/:/raid/Torrents/nCoreFilmek"
+          "/torrents/nCoreSorozatok/:/raid/Torrents/nCoreSorozatok"
+          "/media/dvdrips/:/raid/dvdrips"
         ];
         blkio_config.weight = 30;
       };

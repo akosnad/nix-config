@@ -1,6 +1,5 @@
 { lib, pkgs, config, ... }:
 let
-  torrentsPath = "/raid/Torrents";
   qbittorrentConfigPath = "/var/lib/qbittorrent";
   jackettConfigPath = "/var/lib/jackett";
   commonServiceOptions = {
@@ -42,7 +41,11 @@ in
         };
         volumes = [
           "${qbittorrentConfigPath}/:/config"
-          "torrents:${torrentsPath}"
+          "/torrents:/raid/Torrents"
+          "/torrents/Radarr:/raid/Torrents/Radarr"
+          "/torrents/Sonarr:/raid/Torrents/Sonarr"
+          "/torrents/nCoreFilmek:/raid/Torrents/nCoreFilmek"
+          "/torrents/nCoreSorozatok:/raid/Torrents/nCoreSorozatok"
         ];
         ports = [
           "15577:15577"
@@ -66,16 +69,6 @@ in
 
     networks.internal.driver = "bridge";
     docker-compose.volumes.torrents.external = true;
-  };
-
-  systemd.services.arion-torrent = {
-    serviceConfig.ExecStartPre = lib.getExe (pkgs.writeShellApplication {
-      name = "arion-torrents-prestart";
-      runtimeInputs = with pkgs; [ docker-client ];
-      text = ''
-        docker volume create --driver=local --opt=type=none --opt=o=bind --opt=device=${torrentsPath} torrents
-      '';
-    });
   };
 
   services.nginx.virtualHosts."${config.networking.hostName}".locations = {
