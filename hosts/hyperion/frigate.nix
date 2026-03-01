@@ -57,13 +57,13 @@ in
       record = {
         enabled = true;
         expire_interval = 120;
-        retain.days = 3;
+        retain.days = 30;
         alerts.retain = {
-          days = 14;
+          days = 180;
           mode = "all";
         };
         detections.retain = {
-          days = 14;
+          days = 180;
           mode = "all";
         };
       };
@@ -71,7 +71,7 @@ in
         enabled = true;
         timestamp = true;
         bounding_box = true;
-        retain.default = 31;
+        retain.default = 365;
         quality = 60;
       };
       audio = {
