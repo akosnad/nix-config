@@ -151,6 +151,9 @@ in
             options.recordsize = "8M";
           };
 
+          webarchive.type = "zfs_fs";
+          backup.type = "zfs_fs";
+
           testvol = {
             type = "zfs_volume";
             size = "20G";
