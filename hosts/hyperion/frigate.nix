@@ -24,7 +24,7 @@ in
       cameras.arges = {
         ffmpeg = {
           input_args = "preset-rtsp-restream";
-          output_args.record = "preset-record-generic-audio-copy";
+          output_args.record = "preset-record-generic-audio-aac";
           inputs = [{
             path = "rtsp://127.0.0.1:8554/arges";
             roles = [ "audio" "detect" "record" ];
