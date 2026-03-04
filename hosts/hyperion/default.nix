@@ -34,6 +34,7 @@
     ./frigate.nix
     ./asterisk
     ./harmonia.nix
+    ./jellyfin.nix
   ];
 
   networking.hostName = "hyperion";
