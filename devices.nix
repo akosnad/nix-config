@@ -18,6 +18,7 @@
     extraHostnames = [
       "frigate"
       "media"
+      "jellyseerr"
       "nix.fzt.one"
     ];
     forwardedPorts = [

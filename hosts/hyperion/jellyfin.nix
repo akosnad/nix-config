@@ -1,10 +1,6 @@
-{ config, ... }:
-{
-  services.jellyfin = {
-    enable = true;
-  };
-
-  services.nginx.virtualHosts."media" = {
+{ lib, config, ... }:
+let
+  mkNginxReverseProxy = name: port: {
     # TV doesn't allow installing CA certs,
     # so we resort back to HTTP...
     forceSSL = false;
@@ -32,12 +28,28 @@
         ssl = true;
       }
     ];
-    serverAliases = [ "media.${config.networking.domain}" ];
+    serverAliases = [ "${name}.${config.networking.domain}" ];
     locations."/" = {
-      proxyPass = "http://127.0.0.1:8096";
+      proxyPass = "http://127.0.0.1:${toString port}";
       proxyWebsockets = true;
       recommendedProxySettings = true;
     };
+  };
+in
+{
+  services.jellyfin = {
+    enable = true;
+  };
+
+  services.jellyseerr = {
+    enable = true;
+    port = 5056;
+    configDir = "/var/lib/private/jellyseerr";
+  };
+
+  services.nginx.virtualHosts = lib.mapAttrs mkNginxReverseProxy {
+    media = 8096;
+    jellyseerr = config.services.jellyseerr.port;
   };
 
   environment.persistence."/persist".directories = [
@@ -47,9 +59,11 @@
       inherit (config.services.jellyfin) group;
       mode = "u=rwx,g=rx,o=";
     }
+    config.services.jellyseerr.configDir
   ];
 
   services.restic.backups.persist-onedrive.exclude = [
     "/persist/${config.services.jellyfin.logDir}"
+    "/persist/${config.services.jellyseerr.configDir}"
   ];
 }
