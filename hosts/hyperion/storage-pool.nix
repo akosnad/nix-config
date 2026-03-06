@@ -84,12 +84,6 @@ in
         };
 
         datasets = rec {
-          zeusraid = {
-            type = "zfs_fs";
-            mountpoint = "/raid";
-            options.mountpoint = "legacy";
-          };
-
           media = {
             type = "zfs_fs";
             options = {
@@ -151,8 +145,14 @@ in
             options.recordsize = "8M";
           };
 
-          webarchive.type = "zfs_fs";
-          backup.type = "zfs_fs";
+          webarchive = {
+            type = "zfs_fs";
+            options.mountpoint = "/webarchive";
+          };
+          backup = {
+            type = "zfs_fs";
+            options.mountpoint = "/backup";
+          };
 
           testvol = {
             type = "zfs_volume";

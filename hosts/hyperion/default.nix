@@ -49,8 +49,12 @@
 
   hardware.nvidia.prime.offload.enable = false;
 
-  boot.zfs.devNodes = "/dev/disk/by-partlabel";
-  boot.zfs.forceImportRoot = false;
+  boot.supportedFilesystems = [ "zfs" ];
+  boot.zfs = {
+    devNodes = "/dev/disk/by-partlabel";
+    extraPools = [ "thesauros" ];
+    forceImportRoot = false;
+  };
   networking.hostId = "3526dac2";
 
   swapDevices = [{
