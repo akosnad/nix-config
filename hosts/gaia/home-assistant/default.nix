@@ -69,6 +69,7 @@ in
       "html5"
       "my"
       "lg_thinq"
+      "jellyfin"
 
       # calendar related
       "local_calendar"
