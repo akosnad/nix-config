@@ -28,11 +28,13 @@ in
         "radarr/logs"
         "sonarr/logs"
         "lidarr/logs"
+        "private/prowlarr/logs"
         "overseerr/logs"
         "private/jellyseerr/logs"
         "radarr/Backups"
         "sonarr/Backups"
         "lidarr/Backups"
+        "private/prowlarr/Backups"
 
         "jackett/Jackett/log*"
         "jackett/Jackett/updater.txt.*"
