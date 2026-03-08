@@ -36,6 +36,9 @@ in
         "lidarr/Backups"
         "private/prowlarr/Backups"
 
+        "navidrome/cache"
+        "navidrome/music"
+
         "jackett/Jackett/log*"
         "jackett/Jackett/updater.txt.*"
         "bitmagnet"

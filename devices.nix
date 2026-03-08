@@ -18,6 +18,7 @@
     extraHostnames = [
       "frigate"
       "media"
+      "music"
       "jellyseerr"
       "nix.fzt.one"
     ];
