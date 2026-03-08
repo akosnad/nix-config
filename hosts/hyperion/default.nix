@@ -29,12 +29,12 @@
     ./buildbot
     ./esphome.nix
     ./containers
+    ./media-server
     ./webserver.nix
     ./backup.nix
     ./frigate.nix
     ./asterisk
     ./harmonia.nix
-    ./jellyfin.nix
   ];
 
   networking.hostName = "hyperion";

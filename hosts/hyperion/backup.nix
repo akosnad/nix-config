@@ -24,11 +24,15 @@ in
       ] ++ (withPrefix "/persist/var/lib" [
         "radarr/MediaCover"
         "sonarr/MediaCover"
+        "lidarr/MediaCover"
         "radarr/logs"
         "sonarr/logs"
+        "lidarr/logs"
         "overseerr/logs"
+        "private/jellyseerr/logs"
         "radarr/Backups"
         "sonarr/Backups"
+        "lidarr/Backups"
 
         "jackett/Jackett/log*"
         "jackett/Jackett/updater.txt.*"

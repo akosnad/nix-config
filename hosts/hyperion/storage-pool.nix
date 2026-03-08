@@ -100,6 +100,10 @@ in
             type = "zfs_fs";
             options.recordsize = "4K";
           };
+          "media/Books" = {
+            type = "zfs_fs";
+            options.recordsize = "128K";
+          };
 
           torrents = {
             type = "zfs_fs";
