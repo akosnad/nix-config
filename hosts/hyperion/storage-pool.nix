@@ -120,6 +120,10 @@ in
             type = "zfs_fs";
             options.recordsize = media.options.recordsize;
           };
+          "torrents/Lidarr" = {
+            type = "zfs_fs";
+            options.recordsize = media.options.recordsize;
+          };
           "torrents/nCoreFilmek" = {
             type = "zfs_fs";
             options.recordsize = media.options.recordsize;

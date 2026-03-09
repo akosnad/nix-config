@@ -41,11 +41,10 @@ in
         };
         volumes = [
           "${qbittorrentConfigPath}/:/config"
-          "/torrents:/raid/Torrents"
-          "/torrents/Radarr:/raid/Torrents/Radarr"
-          "/torrents/Sonarr:/raid/Torrents/Sonarr"
-          "/torrents/nCoreFilmek:/raid/Torrents/nCoreFilmek"
-          "/torrents/nCoreSorozatok:/raid/Torrents/nCoreSorozatok"
+          # 'shared' allows the container to see
+          # sub-datasets in ZFS pool under the folder
+          # reference: https://docs.docker.com/engine/storage/bind-mounts/#options-for---volume
+          "/torrents:/raid/Torrents:shared"
         ];
         ports = [
           "15577:15577"
@@ -68,7 +67,6 @@ in
     };
 
     networks.internal.driver = "bridge";
-    docker-compose.volumes.torrents.external = true;
   };
 
   services.nginx.virtualHosts."${config.networking.hostName}".locations = {
