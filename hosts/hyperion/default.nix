@@ -35,6 +35,7 @@
     ./frigate.nix
     ./asterisk
     ./harmonia.nix
+    ./iscsi-target.nix
   ];
 
   networking.hostName = "hyperion";

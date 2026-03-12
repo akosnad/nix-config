@@ -162,9 +162,9 @@ in
             options.mountpoint = "/backup";
           };
 
-          testvol = {
+          win-iscsi = {
             type = "zfs_volume";
-            size = "20G";
+            size = "120G";
           };
         };
       };
