@@ -106,7 +106,7 @@
     };
 
     nix-topology = {
-      url = "github:/oddlama/nix-topology";
+      url = "github:/oddlama/nix-topology/b493b9b970388d79129ce1a92a6b060c9305386f";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
