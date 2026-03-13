@@ -1,4 +1,3 @@
-{ pkgs, ... }:
 {
   imports = [
     ./global
@@ -13,8 +12,6 @@
     ./features/darktable.nix
     ./features/claude.nix
   ];
-
-  specialisation.light.configuration.stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/selenized-light.yaml";
 
   services.blueman-applet.enable = true;
 

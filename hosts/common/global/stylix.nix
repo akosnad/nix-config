@@ -6,9 +6,8 @@
 
   stylix = {
     enable = lib.mkDefault true;
-    # FIXME: this is not used in current setup (swww) but is referenced somewhere
-    image = ../../../home/akos/features/desktop/wallpapers/moon.jpg;
-    base16Scheme = lib.mkDefault "${pkgs.base16-schemes}/share/themes/classic-dark.yaml";
+    polarity = lib.mkOverride 1200 "dark";
+    base16Scheme = lib.mkOverride 1200 "${pkgs.base16-schemes}/share/themes/classic-dark.yaml";
     fonts = {
       serif = {
         package = pkgs.recursive;
@@ -33,5 +32,27 @@
       terminal = 0.9;
       popups = 0.9;
     };
+  };
+
+  specialisation = lib.mkIf config.stylix.enable {
+    light.configuration.stylix = lib.mkOverride 1100 {
+      polarity = "light";
+      base16Scheme = "${pkgs.base16-schemes}/share/themes/classic-light.yaml";
+    };
+  };
+
+  # adapted from:
+  # https://github.com/TheColorman/nixcfg/blob/e31e3ec6db8f3f0b64ab9a917b623b676bd2b97f/modules/profiles/stylix/default.nix
+
+  systemd.services.theme-polarity = lib.mkIf config.stylix.enable {
+    description = "Theme polarity switcher";
+
+    restartTriggers = [ config.stylix.polarity ];
+    wantedBy = [ "graphical.target" ];
+    serviceConfig.Restart = "on-success";
+
+    script = ''
+      sunrise
+    '';
   };
 }

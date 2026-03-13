@@ -12,11 +12,6 @@
     };
   };
 
-  specialisation = {
-    dark.configuration.gtk.cursorTheme.name = "Quintom_Ink";
-    light.configuration.gtk.cursorTheme.name = "Quintom_Snow";
-  };
-
   services.xsettingsd = {
     enable = true;
     settings = {

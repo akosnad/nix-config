@@ -21,17 +21,6 @@
   xdg.dataFile."icons/Quintom Ink".source = "${pkgs.quintom-ink-hyprcursor}/usr/share/icons/Quintom Ink";
   xdg.dataFile."icons/Quintom Snow".source = "${pkgs.quintom-snow-hyprcursor}/usr/share/icons/Quintom Snow";
 
-  specialisation = {
-    dark.configuration.wayland.windowManager.hyprland.settings = {
-      env = [ "HYPRCURSOR_THEME,Quintom Ink" ];
-      exec = [ "hyprctl setcursor \"Quintom Ink\" 24" ];
-    };
-    light.configuration.wayland.windowManager.hyprland.settings = {
-      env = [ "HYPRCURSOR_THEME,Quintom Snow" ];
-      exec = [ "hyprctl setcursor \"Quintom Snow\" 24" ];
-    };
-  };
-
   wayland.windowManager.hyprland = {
     enable = true;
     plugins = with pkgs.hyprlandPlugins; [
