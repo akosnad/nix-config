@@ -21,6 +21,8 @@
     ../common/users/akos
   ];
 
+  systemd.machineId = "56f84fe4f56849a19b57bb1336ebc4f3";
+
   hardware.raspberry-pi."4" = {
     gpio.enable = true;
     i2c1 = {

@@ -21,6 +21,7 @@
   ];
 
   networking.hostName = "uranus";
+  systemd.machineId = "6699fe5fe98b45a0a5d801ec522bf83e";
 
   swapDevices = [{
     device = "/swap/swapfile";

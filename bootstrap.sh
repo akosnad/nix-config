@@ -1,5 +1,5 @@
 #! /usr/bin/env nix-shell
-#! nix-shell -i bash -p nix sops ssh-to-age openssh yq-go fd
+#! nix-shell -i bash -p nix sops ssh-to-age openssh yq-go fd openssl
 set -o pipefail
 set -o errexit
 
@@ -88,6 +88,7 @@ populate_config_efi() {
   ];
 
   networking.hostName = "${hostname}";
+  systemd.machineId = "$(openssl rand -hex 16)";
 
   system.stateVersion = "24.11";
 }
@@ -164,6 +165,7 @@ populate_config_bios() {
   ];
 
   networking.hostName = "${hostname}";
+  systemd.machineId = "$(openssl rand -hex 16)";
 
   boot.loader = {
     systemd-boot.enable = lib.mkForce false;

@@ -33,6 +33,7 @@
   ];
 
   networking.hostName = "athena";
+  systemd.machineId = "c6b3a9565956fc03b91bb71e36655eb3";
   networking.networkmanager.enable = true;
 
   services.logind.settings.Login = {

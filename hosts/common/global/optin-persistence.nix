@@ -12,7 +12,7 @@
       ];
 
       files = [
-        "/etc/machine-id"
+        (lib.mkIf (config.systemd.machineId == null) "/etc/machine-id")
 
         # for system auto upgrading to remember trusted settings in flake
         "/root/.local/share/nix/trusted-settings.json"

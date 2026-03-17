@@ -5,4 +5,5 @@ args:
   esphome-updater = import ./esphome-updater;
   headscale-policy = import ./headscale-policy.nix;
   wsl-gpg = import ./wsl-gpg.nix;
+  machine-id = import ./machine-id.nix;
 } // (import ./topology-extractors args)

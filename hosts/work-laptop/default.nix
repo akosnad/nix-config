@@ -6,6 +6,7 @@
     ./docker-desktop.nix
   ];
 
+  systemd.machineId = "cefd72516b8649419ff6ebe55535d17f";
   environment.persistence."/persist".enable = lib.mkForce false;
   boot.loader.systemd-boot.enable = lib.mkForce false;
 

@@ -19,6 +19,7 @@
     hostName = "ceyx";
     domain = "fzt.one";
   };
+  systemd.machineId = "08c9987365e3436cb8da48f7053045f5";
 
   swapDevices = [{
     device = "/swap/swapfile";

@@ -38,6 +38,7 @@
   ];
 
   networking.hostName = "hyperion";
+  systemd.machineId = "ed9bb28513ec4f34add5bc3dfdba8e88";
   networking.hosts = {
     # this hack fixes Radarr and Sonarr not being able to request downloads
     # issue:

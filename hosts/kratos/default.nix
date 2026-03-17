@@ -34,6 +34,7 @@
   ];
 
   networking.hostName = "kratos";
+  systemd.machineId = "8b307f92eee5d0ac8c672792c8239662";
   networking.networkmanager.enable = true;
 
   hardware.bluetooth.enable = true;
