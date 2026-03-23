@@ -26,6 +26,7 @@
     ../common/optional/nautilus.nix
     ../common/optional/waydroid.nix
     ../common/optional/nix-cache-proxy.nix
+    ../common/optional/niri.nix
 
     ../common/users/akos
 

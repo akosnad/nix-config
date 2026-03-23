@@ -5,6 +5,7 @@
     ./features/helix/full.nix
     ./features/shell/full.nix
     ./features/desktop/hyprland
+    ./features/desktop/niri
     ./features/vscode.nix
     ./features/vscode-server.nix
     ./features/chromium.nix

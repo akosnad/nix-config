@@ -116,6 +116,8 @@
     };
 
     nixos-wsl.url = "github:nix-community/NixOS-WSL/release-25.11";
+
+    niri-flake.url = "github:sodiboo/niri-flake";
   };
 
   outputs =

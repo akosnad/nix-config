@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, ... }:
 {
   # TODO: turn off displays after 30sec
   # this seems not yet possible with cage (?)
@@ -26,8 +26,14 @@
     };
   };
 
-  # TODO: 
-  environment.etc."greetd/environments".text = ''
-    Hyprland
-  '';
+  environment.etc."greetd/environments".text =
+    let
+      hasAkos = lib.hasAttr "akos" config.home-manager.users;
+      hasHyprland = config.home-manager.users.akos.wayland.windowManager.hyprland.enable;
+      hasNiri = config.programs.niri.enable;
+    in
+    lib.mkIf hasAkos (lib.concatStringsSep "\n" [
+      (lib.optionalString hasHyprland "Hyprland")
+      (lib.optionalString hasNiri "niri-session")
+    ]);
 }
