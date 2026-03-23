@@ -1,6 +1,7 @@
 <div align="center">
   <h1>akosnad/nix-config</h1>
   <h3>Nix config for everything possible™</h3>
+  <span><a href="https://hitsofcode.com/github/akosnad/nix-config/view"><img alt="Hits-Of-Code" src="https://hitsofcode.com/github/akosnad/nix-config"></a></span>
 </div>
 
 <div align="center">
