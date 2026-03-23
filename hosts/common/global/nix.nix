@@ -16,7 +16,7 @@
       config.nix.registry;
 
   nix.settings = {
-    experimental-features = "nix-command flakes";
+    experimental-features = "nix-command flakes ca-derivations dynamic-derivations recursive-nix";
     auto-optimise-store = true;
     warn-dirty = false;
     trusted-users = [ "root" "@wheel" ];

@@ -15,7 +15,7 @@
   nix = {
     package = lib.mkDefault pkgs.nix;
     settings = {
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [ "nix-command" "flakes" "ca-derivations" "dynamic-derivations" "recursive-nix" ];
       warn-dirty = false;
       substituters = [
         "https://cache.nixos.org/"
