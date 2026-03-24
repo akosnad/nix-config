@@ -61,6 +61,7 @@ in
       eth6 = mkConnection "nagyszoba-switch" "eth1";
       eth7 = mkConnection "hyperion" "lan1";
       eth8 = mkConnection "ap-eloszoba" "lan1";
+      eth10 = mkConnection "brontes" "lan1";
     };
   };
   nodes.akos-szoba-switch = mkSwitch "Ákos szoba switch" {

@@ -21,37 +21,57 @@ in
         stats_interval = 30;
       };
       ffmpeg.hwaccel_args = "preset-nvidia";
-      cameras.arges = {
-        ffmpeg = {
-          input_args = "preset-rtsp-restream";
-          output_args.record = "preset-record-generic-audio-aac";
-          inputs = [{
-            path = "rtsp://127.0.0.1:8554/arges";
-            roles = [ "audio" "detect" "record" ];
-          }];
-        };
-        live.streams.main_stream = "arges";
-        zones = {
-          inside = {
-            coordinates = "0.188,0.44,0.953,0.61,1,0.818,1,1,0,1,0,0.638";
-            inertia = 3;
-            loitering_time = 0;
+      cameras = {
+        arges = {
+          ffmpeg = {
+            input_args = "preset-rtsp-restream";
+            output_args.record = "preset-record-generic-audio-aac";
+            inputs = [{
+              path = "rtsp://127.0.0.1:8554/arges";
+              roles = [ "audio" "detect" "record" ];
+            }];
+          };
+          live.streams.main_stream = "arges";
+          zones = {
+            inside-gate = {
+              coordinates = "0.188,0.44,0.953,0.61,1,0.818,1,1,0,1,0,0.638";
+              inertia = 3;
+              loitering_time = 0;
+            };
+          };
+          review.alerts = {
+            required_zones = [ "inside-gate" ];
+          };
+          motion = {
+            threshold = 40;
+            contour_area = 30;
+            mask = [
+              # right side tree
+              "0.573,0,0.593,0.216,0.795,0.27,0.919,0.4,1,0.446,1,0"
+              # left side bush
+              "0.291,0,0.227,0.072,0.258,0.178,0.153,0.338,0,0.504,0,0"
+              # neighbours' area
+              "0.158,0.158,0.818,0.26,0.701,0,0.224,0"
+            ];
           };
         };
-        review.alerts = {
-          required_zones = [ "inside" ];
-        };
-        motion = {
-          threshold = 40;
-          contour_area = 30;
-          mask = [
-            # right side tree
-            "0.573,0,0.593,0.216,0.795,0.27,0.919,0.4,1,0.446,1,0"
-            # left side bush
-            "0.291,0,0.227,0.072,0.258,0.178,0.153,0.338,0,0.504,0,0"
-            # neighbours' area
-            "0.158,0.158,0.818,0.26,0.701,0,0.224,0"
-          ];
+        brontes = {
+          ffmpeg = {
+            input_args = "preset-rtsp-restream";
+            output_args.record = "preset-record-generic-audio-aac";
+            inputs = [{
+              path = "rtsp://127.0.0.1:8554/brontes";
+              roles = [ "audio" "detect" "record" ];
+            }];
+          };
+          live.streams.main_stream = "brontes";
+          zones = { };
+          review.alerts = { };
+          motion = {
+            threshold = 40;
+            contour_area = 30;
+            mask = [ ];
+          };
         };
       };
       record = {
@@ -103,9 +123,8 @@ in
         "100.115.112.96:8555"
       ];
       streams = {
-        arges = [
-          "ffmpeg:rtsp://frigate:\${ARGES_RTSP_PASSWORD}@arges.${domain}/media/video1#video=copy#audio=opus#audio=aac#hardware"
-        ];
+        arges = [ "ffmpeg:rtsp://frigate:\${ARGES_RTSP_PASSWORD}@arges.${domain}/media/video1#video=copy#audio=opus#audio=aac#hardware" ];
+        brontes = [ "ffmpeg:rtsp://frigate:\${BRONTES_RTSP_PASSWORD}@brontes.${domain}/media/video1#video=copy#audio=opus#audio=aac#hardware" ];
       };
     };
   };
