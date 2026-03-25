@@ -65,12 +65,37 @@ in
             }];
           };
           live.streams.main_stream = "brontes";
-          zones = { };
-          review.alerts = { };
+          zones = {
+            back-garden = {
+              coordinates = "0,1,0,0.753,0.339,0.165,0.697,0.194,1,0.535,1,1";
+              inertia = 3;
+              loitering_time = 0;
+            };
+            pavilon = {
+              coordinates = "0.442,0.196,0.574,0.2,0.576,0.118,0.444,0.114";
+              inertia = 3;
+              loitering_time = 0;
+            };
+            bird-feeder = {
+              coordinates = "0.042,0.509,0.092,0.513,0.122,0.468,0.12,0.387,0.038,0.385,0.013,0.46";
+              inertia = 3;
+              loitering_time = 0;
+            };
+          };
+          review.alerts = {
+            required_zones = [ "back-garden" ];
+          };
           motion = {
             threshold = 40;
             contour_area = 30;
-            mask = [ ];
+            mask = [
+              # left side bushes
+              "0,0.368,0.301,0.124,0.301,0,0,0"
+              # back bush
+              "0.294,0.074,0.73,0.084,0.787,0,0.286,0"
+              # right side bush
+              "0.729,0.084,1,0.289,1,0,0.757,0"
+            ];
           };
         };
       };
