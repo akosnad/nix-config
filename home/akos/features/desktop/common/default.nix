@@ -12,6 +12,7 @@
     ./kde-connect.nix
     ./swaync.nix
     ./keepassxc.nix
+    ./util.nix
   ];
 
   dconf.settings."org/gnome/desktop/interface".color-scheme =
