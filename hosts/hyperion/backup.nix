@@ -22,9 +22,6 @@ in
         "${config.services.postgresqlBackup.location}"
 
       ] ++ (withPrefix "/persist/var/lib" [
-        "jackett/Jackett/log*"
-        "jackett/Jackett/updater.txt.*"
-
         "docker"
 
         # backed up separately

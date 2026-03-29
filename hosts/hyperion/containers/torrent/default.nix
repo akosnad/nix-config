@@ -1,7 +1,6 @@
 { lib, pkgs, config, ... }:
 let
   qbittorrentConfigPath = "/var/lib/qbittorrent";
-  jackettConfigPath = "/var/lib/jackett";
   commonServiceOptions = {
     restart = "unless-stopped";
     networks = [ "internal" ];
@@ -53,17 +52,6 @@ in
         ];
         blkio_config.weight = 1000;
       };
-
-      jackett.service = lib.recursiveUpdate commonServiceOptions {
-        image = "lscr.io/linuxserver/jackett:latest";
-        container_name = "jackett";
-        environment = {
-          PUID = "1000";
-          PGID = "1000";
-        };
-        volumes = [ "${jackettConfigPath}/:/config" ];
-        ports = [ "9117:9117" ];
-      };
     };
 
     networks.internal.driver = "bridge";
@@ -73,11 +61,6 @@ in
     "/torrents/".extraConfig = /* nginx */ ''
       rewrite /torrents/(.*) /$1  break;
       proxy_pass http://127.0.0.1:8818;
-    '';
-    "/jackett".proxyPass = "http://127.0.0.1:9117$request_uri";
-    "/bitmagnet".extraConfig = /* nginx */ ''
-      rewrite /bitmagnet/(.*) http://${config.networking.hostName}:3333/$1 redirect;
-      rewrite /bitmagnet http://${config.networking.hostName}:3333/ redirect;
     '';
   };
 
@@ -108,7 +91,6 @@ in
   environment.persistence = {
     "/persist".directories = [
       qbittorrentConfigPath
-      jackettConfigPath
     ];
   };
 
@@ -122,17 +104,10 @@ in
       # qbittorrent
       8818
       15577
-      # jackett
-      9117
-      # bitmagnet
-      3333
-      3334
     ];
     allowedUDPPorts = [
       # qbittorrent
       15577
-      # bitmagnet
-      3334
     ];
   };
 }
