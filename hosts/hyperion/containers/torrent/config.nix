@@ -12,20 +12,15 @@ let
 
   nCore = name: {
     inherit name;
-    seeding_time_limit = 3240;
+    seeding_time_limit = 55 * 60;
     ratio_limit = 1.01;
   };
 in
 {
   category_limits = (map nCore [ "nCore" "nCore Filmek" "nCore Sorozatok" ])
     ++ (map leechOnly [ "Bitmagnet" ])
-    ++ (map infiniteSeeding [ "ProAudioTorrents" ])
+    ++ (map infiniteSeeding [ "ProAudioTorrents" "Redacted" ])
     ++ [
-    {
-      name = "Redacted";
-      seeding_time_limit = -1;
-      ratio_limit = 0.6;
-    }
     {
       name = "TorrentLeech";
       seeding_time_limit = 14450;
