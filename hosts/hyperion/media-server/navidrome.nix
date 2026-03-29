@@ -29,4 +29,9 @@
       recommendedProxySettings = true;
     };
   };
+
+  services.restic.backups.persist-onedrive.exclude = map (x: "/persist/var/lib/navidrome/${x}") [
+    "cache"
+    "music"
+  ];
 }

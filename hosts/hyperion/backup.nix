@@ -22,26 +22,8 @@ in
         "${config.services.postgresqlBackup.location}"
 
       ] ++ (withPrefix "/persist/var/lib" [
-        "radarr/MediaCover"
-        "sonarr/MediaCover"
-        "lidarr/MediaCover"
-        "radarr/logs"
-        "sonarr/logs"
-        "lidarr/logs"
-        "private/prowlarr/logs"
-        "overseerr/logs"
-        "private/jellyseerr/logs"
-        "radarr/Backups"
-        "sonarr/Backups"
-        "lidarr/Backups"
-        "private/prowlarr/Backups"
-
-        "navidrome/cache"
-        "navidrome/music"
-
         "jackett/Jackett/log*"
         "jackett/Jackett/updater.txt.*"
-        "bitmagnet"
 
         "docker"
 

@@ -19,4 +19,10 @@
       mode = "u=rwx,g=rx,o=";
     }];
   };
+
+  services.restic.backups.persist-onedrive.exclude = map (x: "/persist${config.services.sonarr.dataDir}/${x}") [
+    "MediaCover"
+    "logs"
+    "Backups"
+  ];
 }

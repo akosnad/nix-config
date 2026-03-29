@@ -18,4 +18,9 @@
       mode = "u=rwx,g=rx,o=";
     }];
   };
+
+  services.restic.backups.persist-onedrive.exclude = map (x: "/persist/var/lib/private/prowlarr/${x}") [
+    "logs"
+    "Backups"
+  ];
 }
