@@ -71,7 +71,6 @@ in
       };
       user_rules = [
         # unblock some used sites
-        "@@||plex.tv^"
         "@@||youtube.com^"
         "@@||www.dreamaquarium.com^$important"
 

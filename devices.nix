@@ -29,10 +29,6 @@
       # SIP
       { proto = "udp"; dest = 5060; }
       { proto = "udp"; dest = 5065; source = 5065; }
-
-
-      # plex
-      { proto = "tcp"; dest = 32400; source = 20020; }
     ];
   };
 

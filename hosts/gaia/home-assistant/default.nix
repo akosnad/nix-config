@@ -39,7 +39,6 @@ in
       "androidtv"
       "nfandroidtv"
       "androidtv_remote"
-      "plex"
       "openai_conversation"
       "spotify"
       "google"
