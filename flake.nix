@@ -208,6 +208,7 @@
         flakeModules = exportedFlakeModules;
         nixosModules = import ./modules/nixos { inherit lib; };
         homeManagerModules = import ./modules/home-manager;
+        stylixModules = import ./modules/stylix;
 
         overlays = import ./overlays { inherit inputs outputs; };
 

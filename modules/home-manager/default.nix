@@ -4,4 +4,4 @@
   microsoft-edge = import ./microsoft-edge.nix;
   sops-cmd-wrapper = import ./sops-cmd-wrapper.nix;
   niri = import ./niri.nix;
-} // (import ../stylix)
+}
