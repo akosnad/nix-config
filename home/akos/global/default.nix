@@ -4,7 +4,9 @@
     inputs.spicetify.homeManagerModules.spicetify
     ../features/shell
     ../features/helix
-  ] ++ (builtins.attrValues outputs.homeManagerModules);
+  ]
+  ++ (builtins.attrValues outputs.homeManagerModules)
+  ++ (builtins.attrValues outputs.stylixModules);
 
   nixpkgs = {
     overlays = builtins.attrValues outputs.overlays;
@@ -41,8 +43,18 @@
 
   sops.sopsFile = ../secrets.yaml;
 
-  stylix.targets.gnome.enable = lib.mkForce false;
-  stylix.targets.kde.enable = lib.mkForce false;
+  stylix.targets = {
+    # disable targets that are taking up space unnecessarily
+    blender.enable = lib.mkForce false;
+    vencord.enable = lib.mkForce false;
+
+    # disable graphical targets by default.
+    # these are enabled in desktop machines
+    gtk.enable = lib.mkDefault false;
+    qt.enable = lib.mkDefault false;
+    gnome.enable = lib.mkDefault false;
+    kde.enable = lib.mkDefault false;
+  };
 
   home = {
     file = {

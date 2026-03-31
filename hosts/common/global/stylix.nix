@@ -40,19 +40,4 @@
       base16Scheme = "${pkgs.base16-schemes}/share/themes/classic-light.yaml";
     };
   };
-
-  # adapted from:
-  # https://github.com/TheColorman/nixcfg/blob/e31e3ec6db8f3f0b64ab9a917b623b676bd2b97f/modules/profiles/stylix/default.nix
-
-  systemd.services.theme-polarity = lib.mkIf config.stylix.enable {
-    description = "Theme polarity switcher";
-
-    restartTriggers = [ config.stylix.polarity ];
-    wantedBy = [ "graphical.target" ];
-    serviceConfig.Restart = "on-success";
-
-    script = ''
-      sunrise
-    '';
-  };
 }

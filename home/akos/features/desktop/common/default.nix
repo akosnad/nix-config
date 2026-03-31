@@ -21,6 +21,13 @@
     else "default";
 
 
+  stylix.targets = {
+    gtk.enable = true;
+    qt.enable = true;
+    gnome.enable = true;
+    kde.enable = true;
+  };
+
   xdg.portal.enable = true;
   xdg.autostart.enable = true;
 
