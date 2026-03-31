@@ -80,12 +80,23 @@ in
       default = null;
       example = "192.168.100.100";
       description = "Static IP address on the local network";
+      apply = ip: if ip == null then null else
+      let
+        isValid = (builtins.match ''^(10\.([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\.([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\.([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5]))$'' ip) != null;
+      in
+      if !isValid then throw "`${ip}` is not a local and/or not a valid IP address." else ip;
     };
     mac = lib.mkOption {
       type = types.nullOr types.str;
       default = null;
       example = "00:11:22:33:44:55";
       description = "MAC address of the given device on the local network";
+      apply = mac: if mac == null then null else
+      let
+        isValid = x: (builtins.match "^([0-9A-F]{2}:){5}[0-9A-F]{2}$" x) != null;
+        normalized = lib.toUpper mac;
+      in
+      if isValid normalized then normalized else throw "`${mac}` is not a valid MAC address.";
     };
     local = lib.mkOption {
       type = types.bool;
