@@ -40,4 +40,17 @@
       base16Scheme = "${pkgs.base16-schemes}/share/themes/classic-light.yaml";
     };
   };
+
+  system.activationScripts.link-themes = {
+    deps = [ "specialfs" ];
+    text = /* bash */ ''
+      if [ -e $systemConfig/specialisation/light ]; then
+        echo linking system themes...
+        rm -rf /run/theme
+        mkdir -p /run/theme
+        ln -sfv $systemConfig/specialisation/light /run/theme/light
+        ln -sfv $systemConfig /run/theme/dark
+      fi
+    '';
+  };
 }
