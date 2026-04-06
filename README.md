@@ -10,12 +10,12 @@
 
 
 This repo contains declarative configuration for:
-- my [NixOS](https://nixos.org/) computers, under `hosts/`
-- [Home Manager](https://github.com/nix-community/home-manager) based rice for desktop machines, under `home/`
-- devices on my home network - DHCP, DNS, etc., in `devices.nix`
-- IoT smart home devices firmware using [ESPHome](https://esphome.io), under `esphome-hosts/`
+- my [NixOS](https://nixos.org/) computers, under `modules/hosts/`
+- [Home Manager](https://github.com/nix-community/home-manager) based rice for desktop machines, under `modules/desktop/`
+- devices on my home network - DHCP, DNS, etc., in `modules/devices`
+- IoT smart home devices, which of most are running managed firmware built with [ESPHome](https://esphome.io), under `modules/iot/hosts/`
 - some things I packaged with nix that the above uses, under `pkgs/`
-- custom NixOS/flake-parts modules that enable the whole thing to exist, under `modules/`
+- custom NixOS/flake-parts modules that enable the whole thing to exist, using the [Dendritic Nix pattern](https://github.com/mightyiam/dendritic)
 
 > [!NOTE]
 > This hunk of code by any means is not made for consumption by others as it is too specific and tailored exatly to my own taste and use-cases.

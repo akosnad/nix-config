@@ -1,7 +1,7 @@
 keys:
-  users:
+  users: &users
     - &akos 73CF708E26789E613672C40D236F3ED93EDDCDEF
-  hosts:
+  hosts: &hosts
     - &athena age1nmfkvqnclhdr4j4ev7yug8ehrsl8hh09tuffmks0dfl8w4dkqv5sqhf3u4
     - &kratos age1vlxveywlyww4zymyxmd8y4mjg2dxeev6a3vdw4v7qvekcpgnc3asu2xvcu
     - &gaia age1gqdrkenwc3dwk384285gtz0zzgfl2c55xklx2hvhr8c6h4duggyqwmy2w7
@@ -10,47 +10,57 @@ keys:
     - &ceyx age1kd9kp2twvyskq0rte588s7tfvzcw62dh0xwftcaqdj2vdpxqyddq869u6s
     - &work-laptop age1jjz6h84sz34mt9mymh9cj46rz80t6tkkl55qkeaxmvd3hqnqts2se8e66n
 creation_rules:
-  - path_regex: hosts/common/secrets.ya?ml$
+  - path_regex: modules/iot/esphome/secrets.ya?ml$
     key_groups:
       - age:
-          - *athena
-          - *kratos
-          - *gaia
-          - *uranus
           - *hyperion
-          - *ceyx
-          - *work-laptop
         pgp:
           - *akos
-  - path_regex: home/akos/secrets.ya?ml$
+  - path_regex: modules/hosts/secrets.ya?ml$
+    key_groups:
+      - age: *hosts
+        pgp: *users
+  - path_regex: modules/akos/secrets.ya?ml$
     key_groups:
       - pgp:
           - *akos
-  - path_regex: hosts/gaia/secrets.ya?ml$
+  - path_regex: modules/hosts/gaia/secrets.ya?ml$
     key_groups:
       - age:
           - *gaia
         pgp:
           - *akos
-  - path_regex: hosts/gaia/home-assistant/secrets.ya?ml$
+  - path_regex: modules/home-assistant/secrets.ya?ml$
     key_groups:
       - age:
           - *gaia
         pgp:
           - *akos
-  - path_regex: hosts/uranus/secrets.ya?ml$
+  - path_regex: modules/hosts/uranus/secrets.ya?ml$
     key_groups:
       - age:
           - *uranus
         pgp:
           - *akos
-  - path_regex: hosts/hyperion/secrets.ya?ml$
+  - path_regex: modules/hosts/hyperion/secrets.ya?ml$
     key_groups:
       - age:
           - *hyperion
         pgp:
           - *akos
-  - path_regex: hosts/ceyx/secrets.ya?ml$
+  - path_regex: modules/buildbot/master/secrets.ya?ml$
+    key_groups:
+      - age:
+          - *hyperion
+        pgp:
+          - *akos
+  - path_regex: modules/buildbot/worker/secrets.ya?ml$
+    key_groups:
+      - age:
+          - *hyperion
+        pgp:
+          - *akos
+  - path_regex: modules/hosts/ceyx/secrets.ya?ml$
     key_groups:
       - age:
           - *ceyx

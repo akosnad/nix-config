@@ -1,0 +1,15 @@
+{ buildHomeAssistantComponent, fetchFromGitHub }:
+buildHomeAssistantComponent rec {
+  owner = "zachowj";
+  domain = "nodered";
+  version = "4.0.1";
+
+  src = fetchFromGitHub {
+    inherit owner;
+    repo = "hass-node-red";
+    rev = "v${version}";
+    hash = "sha256-ePphcSWSWhI51iNJsKryuo52ck7S5LuNREfvndIuVfs=";
+  };
+
+  propagatedBuildInputs = [ ];
+}
