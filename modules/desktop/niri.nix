@@ -63,6 +63,14 @@ in
     };
 
     environment.etc."greetd/environments".text = "niri-session";
+
+    specialisation.light.configuration = {
+      home-manager.sharedModules = [{
+        programs.niri.settings = {
+          cursor.theme = lib.mkForce "Quintom_Snow";
+        };
+      }];
+    };
   };
 
   config.flake.modules.homeManager.desktop = { pkgs, lib, config, ... }: {

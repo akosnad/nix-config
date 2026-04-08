@@ -8,9 +8,10 @@
         package = pkgs.papirus-icon-theme;
       };
       cursorTheme = {
-        name = lib.mkDefault "Quintom_Ink";
+        name = lib.mkOverride 50 "Quintom_Ink";
         package = pkgs.quintom-cursor-theme;
       };
+      theme.name = lib.mkOverride 50 "adw-gtk3-dark";
     };
 
     services.xsettingsd = {
@@ -24,5 +25,16 @@
     xdg.configFile."gtk-3.0/settings.ini".onChange = "${lib.getExe' pkgs.systemd "systemctl"} --user kill --signal HUP xsettingsd.service";
 
     xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  };
+
+  config.flake.modules.nixos.desktop = {
+    specialisation.light.configuration = {
+      home-manager.sharedModules = [{
+        gtk = {
+          theme.name = lib.mkOverride 40 "adw-gtk3";
+          cursorTheme.name = lib.mkOverride 40 "Quintom_Snow";
+        };
+      }];
+    };
   };
 }
