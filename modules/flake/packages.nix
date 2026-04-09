@@ -1,35 +1,33 @@
 { inputs
-, withSystem
 , config
 , ...
 }:
 let
   flakeConfig = config;
+  localPackages =
+    pkgs:
+    pkgs.lib.filesystem.packagesFromDirectoryRecursive {
+      inherit (pkgs) callPackage;
+      directory = ../../pkgs/by-name;
+    };
+
 in
 {
   perSystem =
     { lib
     , pkgs
     , system
-    , config
     , ...
     }:
     {
-      options.localPackages = lib.mkOption {
-        type = lib.types.attrs;
-      };
-
       config = {
         _module.args.pkgs = import inputs.nixpkgs {
           inherit system;
-          overlays = [
-            (_final: prev: lib.recursiveUpdate prev config.localPackages)
-          ] ++ (lib.attrValues flakeConfig.flake.overlays);
+          overlays = lib.attrValues flakeConfig.flake.overlays;
         };
-
-        localPackages = lib.filesystem.packagesFromDirectoryRecursive {
-          inherit (pkgs) callPackage;
-          directory = ../../pkgs/by-name;
+        _module.args.pkgsUnstable = import inputs.nixpkgs-unstable {
+          inherit system;
+          overlays = lib.attrValues flakeConfig.flake.overlays;
         };
 
         packages =
@@ -56,19 +54,9 @@ in
                 )
                 attrs;
           in
-          flattenPackages "" config.localPackages;
+          flattenPackages "" (localPackages pkgs);
       };
     };
 
-  flake.overlays.default =
-    _final: prev:
-    withSystem prev.stdenv.hostPlatform.system (
-      { config, ... }: prev.lib.recursiveUpdate prev config.localPackages
-    );
-
-  flake.modules.nixos.base = {
-    nixpkgs.overlays = [ config.flake.overlays.default ];
-  };
-
-  # TODO: provide local packages in the flake output, not just an overlay
+  flake.overlays.default = _final: localPackages;
 }
