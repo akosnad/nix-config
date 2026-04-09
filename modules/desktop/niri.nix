@@ -61,6 +61,10 @@ in
     niri-flake = {
       cache.enable = false;
     };
+    # for some odd reason, niri-flake enables gnome-keyring.
+    # it is not used in this desktop environment, so we override it
+    # to be disabled by default.
+    services.gnome.gnome-keyring.enable = lib.mkForce false;
 
     environment.etc."greetd/environments".text = "niri-session";
 
