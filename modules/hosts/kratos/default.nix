@@ -57,6 +57,8 @@
 
     services.envfs.enable = true;
 
+    sops.secrets.restic-persist-password.sopsFile = ./secrets.yaml;
+
     stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/equilibrium-gray-dark.yaml";
     specialisation.light.configuration.stylix.base16Scheme = lib.mkForce "${pkgs.base16-schemes}/share/themes/equilibrium-gray-light.yaml";
 

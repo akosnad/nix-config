@@ -24,7 +24,7 @@
         ];
       };
 
-      services.restic.backups.persist-onedrive.exclude =
+      services.restic.backups.persist.exclude =
         map (x: "/persist/var/lib/private/prowlarr/${x}")
           [
             "logs"

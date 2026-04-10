@@ -50,5 +50,11 @@
           };
         };
       };
+
+      services.restic.backups.persist.exclude = [
+        "/persist/home/akos/Games"
+        "/persist/home/akos/.local/share/Steam"
+        "/persist/home/akos/.local/share/lutris"
+      ];
     };
 }

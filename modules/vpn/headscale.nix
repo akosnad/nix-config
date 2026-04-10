@@ -55,6 +55,7 @@ in
           tagOwners = {
             "tag:installer" = [ "group:admin" ];
             "tag:trusted" = [ "group:admin" ];
+            "tag:backup-target" = [ "group:admin" ];
           };
           acls = [
             {
@@ -66,6 +67,11 @@ in
               action = "accept";
               src = [ "tag:trusted" ];
               dst = [ "*:*" ];
+            }
+            {
+              action = "accept";
+              src = [ "*" "autogroup:member" "autogroup:tagged" ];
+              dst = [ "tag:backup-target:22" ];
             }
           ];
         };

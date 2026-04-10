@@ -16,7 +16,7 @@ creation_rules:
           - *hyperion
         pgp:
           - *akos
-  - path_regex: modules/hosts/secrets.ya?ml$
+  - path_regex: modules/base/secrets.ya?ml$
     key_groups:
       - age: *hosts
         pgp: *users
@@ -64,5 +64,23 @@ creation_rules:
     key_groups:
       - age:
           - *ceyx
+        pgp:
+          - *akos
+  - path_regex: modules/hosts/athena/secrets.ya?ml$
+    key_groups:
+      - age:
+          - *athena
+        pgp:
+          - *akos
+  - path_regex: modules/hosts/kratos/secrets.ya?ml$
+    key_groups:
+      - age:
+          - *kratos
+        pgp:
+          - *akos
+  - path_regex: modules/hosts/work-laptop/secrets.ya?ml$
+    key_groups:
+      - age:
+          - *work-laptop
         pgp:
           - *akos

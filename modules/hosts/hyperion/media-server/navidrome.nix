@@ -32,7 +32,7 @@
         };
       };
 
-      services.restic.backups.persist-onedrive.exclude = map (x: "/persist/var/lib/navidrome/${x}") [
+      services.restic.backups.persist.exclude = map (x: "/persist/var/lib/navidrome/${x}") [
         "cache"
         "music"
       ];

@@ -37,7 +37,6 @@
       };
 
       services.postgresql = {
-        enable = true;
         ensureUsers = [
           {
             name = "matrix-synapse";
@@ -93,12 +92,6 @@
 
       environment.persistence."/persist".directories = [
         config.services.matrix-synapse.dataDir
-        {
-          directory = config.services.postgresql.dataDir;
-          mode = "750";
-          user = config.systemd.services.postgresql.serviceConfig.User;
-          group = config.systemd.services.postgresql.serviceConfig.Group;
-        }
       ];
     };
 }

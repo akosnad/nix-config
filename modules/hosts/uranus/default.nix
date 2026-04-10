@@ -11,6 +11,7 @@
       ephemeral-btrfs
 
       # services
+      postgres
       arion
       docker-watchtower
     ] ++ [{

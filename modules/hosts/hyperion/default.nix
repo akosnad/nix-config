@@ -15,6 +15,7 @@
       nvidia
 
       # services
+      postgres
       arion
       docker-watchtower
       nix-cache-proxy

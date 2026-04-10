@@ -20,7 +20,7 @@
         home-assistant-data = {
           paths = [ "${config.services.home-assistant.configDir}/backups" ];
           initialize = true;
-          repository = "rclone:onedrive-personal:/Backups/gaia-home-assistant";
+          repository = "rclone:backup:/${config.networking.hostName}/home-assistant";
           passwordFile = config.sops.secrets.restic-hass-password.path;
           rcloneConfigFile = "/etc/rclone.conf";
           backupPrepareCommand = "${lib.getExe backupPrepareScript}";
@@ -33,6 +33,9 @@
           };
         };
         gaia-persist = {
+          # TODO: migrate gaia to have optin-persistence
+          # then, this restic repository can be migrated
+          # to the common 'persist' repository.
           paths = [
             "/var/lib/tailscale"
             "/var/lib/systemd"
@@ -51,8 +54,8 @@
             "/var/lib/systemd/coredump"
           ];
           initialize = true;
-          repository = "rclone:onedrive-personal:/Backups/gaia-persist";
-          passwordFile = config.sops.secrets.restic-gaia-persist-password.path;
+          repository = "rclone:backup:/${config.networking.hostName}/persist";
+          passwordFile = config.sops.secrets.restic-persist-password.path;
           rcloneConfigFile = "/etc/rclone.conf";
           pruneOpts = [
             "--keep-daily 14"
@@ -73,7 +76,8 @@
         in
         mkSecrets [
           "restic-hass-password"
-          "restic-gaia-persist-password"
+          "restic-persist-password"
+          "restic-postgres-password"
           "hass-token"
         ];
     };

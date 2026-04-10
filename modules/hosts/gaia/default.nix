@@ -10,6 +10,7 @@
         server
 
         # services
+        postgres
         use-builders
         home-assistant
       ]
@@ -30,14 +31,6 @@
     systemd.machineId = "56f84fe4f56849a19b57bb1336ebc4f3";
 
     environment.persistence."/persist".enable = lib.mkForce false;
-
-    services.postgresql = {
-      enable = true;
-      settings = {
-        max_connections = "300";
-        shared_buffers = "80MB";
-      };
-    };
 
     # required by home assistant bluetooth integration
     # reference: https://www.home-assistant.io/integrations/bluetooth/#requirements-for-linux-systems

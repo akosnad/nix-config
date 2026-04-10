@@ -65,7 +65,7 @@
         config.services.jellyseerr.configDir
       ];
 
-      services.restic.backups.persist-onedrive.exclude = [
+      services.restic.backups.persist.exclude = [
         "/persist${config.services.jellyfin.logDir}"
       ]
       ++ (map (x: "/persist${config.services.jellyseerr.configDir}/${x}") [

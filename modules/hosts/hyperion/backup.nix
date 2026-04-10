@@ -1,59 +1,21 @@
 {
-  config.flake.modules.nixos."hosts/hyperion" = { config, ... }:
+  config.flake.modules.nixos."hosts/hyperion" =
+    _:
     let
       withPrefix = prefix: paths: map (path: "${prefix}/${path}") paths;
     in
     {
       services.restic.backups = {
-        persist-onedrive = {
-          initialize = true;
-          repository = "rclone:onedrive-personal:/Backups/hyperion-persist";
-          passwordFile = config.sops.secrets.restic-persist-password.path;
-          rcloneConfigFile = "/persist/etc/rclone.conf";
-          pruneOpts = [ "--keep-daily 14" "--keep-weekly 9" ];
-          timerConfig = {
-            OnCalendar = "*-*-* 23:30:00";
-          };
+        persist.exclude = withPrefix "/persist/var/lib" [
+          "private/esphome"
 
-          paths = [ "/persist" ];
-          exclude = [
-            "/persist/var/log"
+          "qbittorrent/qBittorrent/logs"
 
-            # backed up separately
-            "${config.services.postgresqlBackup.location}"
-
-          ] ++ (withPrefix "/persist/var/lib" [
-            "docker"
-
-            # backed up separately
-            "postgresql"
-
-            "systemd/coredump"
-
-            "tailscale/tailscaled.log*.txt"
-
-            "private/esphome"
-
-            "qbittorrent/qBittorrent/logs"
-
-            "frigate/.cache"
-            "frigate/exports"
-            "frigate/recordings"
-            "frigate/clips"
-          ]);
-        };
-
-        postgres = {
-          initialize = true;
-          repository = "rclone:onedrive-personal:/Backups/hyperion-postgres";
-          passwordFile = config.sops.secrets.restic-postgres-password.path;
-          rcloneConfigFile = "/persist/etc/rclone.conf";
-          pruneOpts = [ "--keep-daily 14" "--keep-weekly 9" ];
-          timerConfig = {
-            OnCalendar = "*-*-* 06:10:00";
-          };
-          paths = [ "${config.services.postgresqlBackup.location}" ];
-        };
+          "frigate/.cache"
+          "frigate/exports"
+          "frigate/recordings"
+          "frigate/clips"
+        ];
       };
 
       sops.secrets.restic-persist-password = {
@@ -61,14 +23,6 @@
       };
       sops.secrets.restic-postgres-password = {
         sopsFile = ./secrets.yaml;
-      };
-
-      services.postgresqlBackup = {
-        enable = true;
-        startAt = "*-*-* 01:15:00";
-        databases = [ "buildbot" ];
-        compression = "none"; # TODO: gzip --rsyncable possible?
-        location = "/persist/var/backup/postgresql";
       };
     };
 }

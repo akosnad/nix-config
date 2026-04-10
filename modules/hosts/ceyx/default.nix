@@ -47,6 +47,8 @@
       email = "contact@fzt.one";
     };
 
+    sops.secrets.restic-persist-password.sopsFile = ./secrets.yaml;
+
     topology.self = {
       icon = "devices.cloud-server";
       hardware.info = "MikroVPS HU/KVM-1G";

@@ -47,6 +47,8 @@
 
     programs.nh.clean.enable = false;
 
+    sops.secrets.restic-persist-password.sopsFile = ./secrets.yaml;
+
     stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/selenized-dark.yaml";
     specialisation.light.configuration.stylix.base16Scheme = lib.mkForce "${pkgs.base16-schemes}/share/themes/selenized-light.yaml";
 

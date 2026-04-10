@@ -73,12 +73,6 @@
           mode = "750";
           inherit (config.services.buildbot-master) user group;
         }
-        {
-          directory = config.services.postgresql.dataDir;
-          mode = "750";
-          user = config.systemd.services.postgresql.serviceConfig.User;
-          group = config.systemd.services.postgresql.serviceConfig.Group;
-        }
       ];
     };
 }

@@ -25,7 +25,7 @@
         ];
       };
 
-      services.restic.backups.persist-onedrive.exclude =
+      services.restic.backups.persist.exclude =
         map (x: "/persist${config.services.sonarr.dataDir}/${x}")
           [
             "MediaCover"

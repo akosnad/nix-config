@@ -27,5 +27,9 @@
           group = config.systemd.services.buildbot-worker.serviceConfig.Group;
         }
       ];
+
+      services.restic.backups.persist.exclude = [
+        "/persist/var/lib/buildbot-worker"
+      ];
     };
 }
