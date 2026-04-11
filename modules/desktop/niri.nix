@@ -140,6 +140,7 @@ in
           "Mod+N".action.spawn = [ "swaync-client" "-t" ];
           "Mod+G".action.spawn = "toggle-gammastep";
           "Mod+D".action.spawn = [ "hyprlock" "--immediate" ];
+          "Mod+Alt+D".action.spawn = [ "systemctl" "suspend" ];
           "Mod+W".action.spawn = "cycle-wallpaper";
 
           # overview, layout manipulation
