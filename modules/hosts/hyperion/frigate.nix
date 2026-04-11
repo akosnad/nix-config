@@ -136,6 +136,12 @@ in
               "yell"
             ];
           };
+
+          # just to make frigate happy; make it enable webrtc restreaming.
+          #
+          # we use an external go2rtc service, but frigate assumes
+          # it controls go2rtc to be able to do webrtc.
+          go2rtc = config.services.go2rtc.settings;
         };
       };
 
@@ -149,8 +155,9 @@ in
             "127.0.0.1:8555"
             # lan
             "${flakeConfig.flake.devices."${config.networking.hostName}".ip}:8555"
-            #tailscale
-            "100.115.112.96:8555"
+            # tailscale
+            "100.64.0.3:8555"
+            "[fd7a:115c:a1e0::3]:8555"
           ];
           streams = {
             arges = [ "ffmpeg:rtsp://frigate:\${ARGES_RTSP_PASSWORD}@arges.${domain}/media/video1#video=copy#audio=opus#audio=aac#hardware" ];
