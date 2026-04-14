@@ -27,44 +27,62 @@ if [ -n "$boot_mode" ]; then
 fi
 
 populate_config_common() {
-  mkdir -p "./home/akos"
-
-  if [ -f "./home/akos/${hostname}.nix" ]; then
-    echo "./home/akos/${hostname}.nix already exists, refusing to overwrite."
-    exit 1
-  fi
-
-  cat >"./home/akos/${hostname}.nix" <<EOF
-{
-  imports = [
-    ./global
-  ];
-}
-EOF
-
-  machine="$(_target uname -m)"
   platform="$(_target uname -s)"
   if [[ $platform != "Linux" ]]; then
     echo Host platform "$platform" is not suported, refusing to continue.
     exit 1
   fi
-  hostPlatform="${machine}-linux"
-  cat >"./hosts/${hostname}/hardware-configuration.nix" <<EOF
-# This is a placeholder until nixos-anywhere generates this for us.
+
+  mkdir -p "./modules/hosts/$hostname"
+
+  cat >"./modules/hosts/$hostname/default.nix" <<EOF
+{ lib, config, ... }:
 {
-  nixpkgs.hostPlatform = "${hostPlatform}";
+  flake.modules.nixos."hosts/$hostname" = {
+    imports = with config.flake.modules.nixos; [
+      # profiles
+      base
+      akos
+
+      # boot
+      ephemeral-btrfs
+    ] ++ [{
+      home-manager.users.akos = {
+        imports = with config.flake.modules.homeManager; [
+          # profiles
+          base
+          akos
+        ];
+      };
+    }];
+
+    networking.hostName = "${hostname}";
+    systemd.machineId = "$(openssl rand -hex 16)";
+
+    system.stateVersion = "24.11";
+  };
+}
+EOF
+
+  cat >"./modules/hosts/$hostname/hardware.nix" <<EOF
+{ lib, ... }:
+{
+  flake.modules.nixos."hosts/$hostname" = {
+    hardware.facter.reportPath = lib.mkIf (builtins.pathExists ./facter.json) ./facter.json;
+    nixpkgs.hostPlatform = "x86_64-linux";
+  };
 }
 EOF
 
   ssh_key="ssh_host_ed25519_key"
-  ssh-keygen -t ed25519 -N '' -C "${hostname}" -f "./hosts/${hostname}/$ssh_key"
+  ssh-keygen -t ed25519 -N '' -C "${hostname}" -f "./modules/hosts/${hostname}/$ssh_key"
 
   if yq -e ".keys.hosts | filter(. | anchor == \"${hostname}\") | .[]" .sops.yaml &>/dev/null; then
     echo "host age key for ${hostname} already present in .sops.yaml, refusing to overwrite."
     exit 1
   fi
 
-  age_key="$(ssh-to-age -i "./hosts/${hostname}/${ssh_key}.pub")"
+  age_key="$(ssh-to-age -i "./modules/hosts/${hostname}/${ssh_key}.pub")"
   printf "Generated system age key:\n\n%s\n\n" "$age_key"
   yq -e ".keys.hosts += (\"${age_key}\" | . anchor = \"${hostname}\")" -i .sops.yaml
   yq -e "with(.creation_rules[]; . | select(.path_regex == \"hosts/common/secrets.ya?ml\$\") | .key_groups.[0].age += (\"dummy\" | . alias = \"${hostname}\"))" -i .sops.yaml
@@ -72,67 +90,44 @@ EOF
 }
 
 populate_config_efi() {
-
-  mkdir -p "./hosts/$hostname"
-
-  cat >"./hosts/$hostname/default.nix" <<EOF
+  cat >"./modules/hosts/$hostname/disks.nix" <<EOF
 {
-  imports = [
-    ./hardware-configuration.nix
-    ./disk-config.nix
+  flake.modules.nixos."hosts/$hostname" = {
+    disko.devices = {
+      disk = {
+        main = {
+          type = "disk";
+          device = "${target_disk}";
+          content = {
+            type = "gpt";
+            partitions = {
 
-    ../common/global
-    ../common/optional/ephemeral-btrfs.nix
-
-    ../common/users/akos
-  ];
-
-  networking.hostName = "${hostname}";
-  systemd.machineId = "$(openssl rand -hex 16)";
-
-  system.stateVersion = "24.11";
-}
-EOF
-
-  cat >"./hosts/$hostname/disk-config.nix" <<EOF
-{ inputs, ... }:
-{
-  imports = [ inputs.disko.nixosModules.disko ];
-
-  disko.devices = {
-    disk = {
-      main = {
-        type = "disk";
-        device = "${target_disk}";
-        content = {
-          type = "gpt";
-          partitions = {
-
-            ESP = {
-              priority = 1;
-              name = "ESP";
-              start = "1M";
-              end = "513M";
-              type = "EF00";
-              content = {
-                type = "filesystem";
-                format = "vfat";
-                mountpoint = "/boot";
-                mountOptions = [ "umask=0077" ];
+              ESP = {
+                priority = 1;
+                name = "ESP";
+                start = "1M";
+                end = "513M";
+                type = "EF00";
+                content = {
+                  type = "filesystem";
+                  format = "vfat";
+                  mountpoint = "/boot";
+                  mountOptions = [ "umask=0077" ];
+                };
               };
-            };
 
-            root = {
-              size = "100%";
-              content = {
-                type = "btrfs";
-                mountOptions = [ "noatime" "compress=zstd" "space_cache=v2" "discard" ];
-                subvolumes = {
-                  "@root" = { mountpoint = "/"; };
-                  "@old_roots" = { };
-                  "@nix" = { mountpoint = "/nix"; };
-                  "@persist" = { mountpoint = "/persist"; };
-                  "@swap" = { mountpoint = "/swap"; };
+              root = {
+                size = "100%";
+                content = {
+                  type = "btrfs";
+                  mountOptions = [ "noatime" "compress=zstd" "space_cache=v2" "discard" ];
+                  subvolumes = {
+                    "@root" = { mountpoint = "/"; };
+                    "@old_roots" = { };
+                    "@nix" = { mountpoint = "/nix"; };
+                    "@persist" = { mountpoint = "/persist"; };
+                    "@swap" = { mountpoint = "/swap"; };
+                  };
                 };
               };
             };
@@ -140,83 +135,66 @@ EOF
         };
       };
     };
-  };
 
-  fileSystems."/persist".neededForBoot = true;
+    fileSystems."/persist".neededForBoot = true;
+  };
 }
 EOF
 }
 
 populate_config_bios() {
-
-  mkdir -p "./hosts/$hostname"
-
-  cat >"./hosts/$hostname/default.nix" <<EOF
-{ lib, ... }:
+  cat >"./modules/hosts/$hostname/boot.nix" <<EOF
+{ lib, config, ... }:
 {
-  imports = [
-    ./hardware-configuration.nix
-    ./disk-config.nix
-
-    ../common/global
-    ../common/optional/ephemeral-btrfs.nix
-
-    ../common/users/akos
-  ];
-
-  networking.hostName = "${hostname}";
-  systemd.machineId = "$(openssl rand -hex 16)";
-
-  boot.loader = {
-    systemd-boot.enable = lib.mkForce false;
-    grub.enable = lib.mkForce true;
+  flake.modules.nixos."hosts/$hostname" = {
+    boot.loader = {
+      systemd-boot.enable = lib.mkForce false;
+      grub.enable = lib.mkForce true;
+    };
   };
-
-  system.stateVersion = "24.11";
 }
 EOF
 
-  cat >"./hosts/$hostname/disk-config.nix" <<EOF
-{ inputs, ... }:
+  cat >"./modules/hosts/$hostname/disks.nix" <<EOF
 {
-  imports = [ inputs.disko.nixosModules.disko ];
-
-  disko.devices = {
-    disk = {
-      main = {
-        type = "disk";
-        device = "${target_disk}";
-        content = {
-          type = "gpt";
-          partitions = {
-            boot = {
-              size = "1M";
-              type = "EF02"; # for GRUB MBR
-            };
-
-            ESP = {
-              name = "ESP";
-              size = "512M";
-              type = "EF00";
-              content = {
-                type = "filesystem";
-                format = "vfat";
-                mountpoint = "/boot";
-                mountOptions = [ "umask=0077" ];
+  flake.modules.nixos."hosts/$hostname" = {
+    disko.devices = {
+      disk = {
+        main = {
+          type = "disk";
+          device = "${target_disk}";
+          content = {
+            type = "gpt";
+            partitions = {
+              boot = {
+                size = "1M";
+                type = "EF02"; # for GRUB MBR
               };
-            };
 
-            root = {
-              size = "100%";
-              content = {
-                type = "btrfs";
-                mountOptions = [ "noatime" "compress=zstd" "space_cache=v2" "discard" ];
-                subvolumes = {
-                  "@root" = { mountpoint = "/"; };
-                  "@old_roots" = { };
-                  "@nix" = { mountpoint = "/nix"; };
-                  "@persist" = { mountpoint = "/persist"; };
-                  "@swap" = { mountpoint = "/swap"; };
+              ESP = {
+                name = "ESP";
+                size = "512M";
+                type = "EF00";
+                content = {
+                  type = "filesystem";
+                  format = "vfat";
+                  mountpoint = "/boot";
+                  mountOptions = [ "umask=0077" ];
+                };
+              };
+
+              root = {
+                size = "100%";
+                content = {
+                  type = "btrfs";
+                  mountOptions = [ "noatime" "compress=zstd" "space_cache=v2" "discard" ];
+                  subvolumes = {
+                    "@root" = { mountpoint = "/"; };
+                    "@old_roots" = { };
+                    "@nix" = { mountpoint = "/nix"; };
+                    "@persist" = { mountpoint = "/persist"; };
+                    "@swap" = { mountpoint = "/swap"; };
+                  };
                 };
               };
             };
@@ -224,9 +202,9 @@ EOF
         };
       };
     };
-  };
 
-  fileSystems."/persist".neededForBoot = true;
+    fileSystems."/persist".neededForBoot = true;
+  };
 }
 EOF
 }
@@ -235,11 +213,11 @@ install_system() {
 
   temp="$(mktemp -d)"
   install -d -m755 "$temp/persist/etc/ssh"
-  cp "./hosts/${hostname}/ssh_host_ed25519_key" "./hosts/${hostname}/ssh_host_ed25519_key.pub" "$temp/persist/etc/ssh"
+  cp "./modules/hosts/${hostname}/ssh_host_ed25519_key" "./modules/hosts/${hostname}/ssh_host_ed25519_key.pub" "$temp/persist/etc/ssh"
 
-  nix run github:nix-community/nixos-anywhere -- --extra-files "$temp" --generate-hardware-config nixos-generate-config "./hosts/${hostname}/hardware-configuration.nix" --flake ".#${hostname}" --target-host "root@${target_host}"
+  nix run github:nix-community/nixos-anywhere -- --extra-files "$temp" --generate-hardware-config nixos-facter "./modules/hosts/${hostname}/facter.json" --flake ".#${hostname}" --target-host "root@${target_host}"
 
-  shred -u "./hosts/${hostname}/ssh_host_ed25519_key"
+  shred -u "./modules/hosts/${hostname}/ssh_host_ed25519_key"
 
 }
 
@@ -263,12 +241,12 @@ if [[ $_config_hostname == "$hostname" ]]; then
   echo "Configuration for $hostname seems to already exist, starting installation..."
   install_system
 else
+  populate_config_common
   if [[ $boot_mode == "bios" ]]; then
     populate_config_bios
   else
     populate_config_efi
   fi
-  populate_config_common
   echo "Configuration for ${hostname} has been generated."
   echo
   echo "Now is a good time to make adjustments to it."

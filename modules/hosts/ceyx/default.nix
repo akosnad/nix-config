@@ -1,9 +1,6 @@
 { config, lib, ... }:
 {
   flake.modules.nixos."hosts/ceyx" = {
-    # imports = [
-    #   ./pocket-id.nix
-    # ];
     imports = with config.flake.modules.nixos; [
       # profiles
       base

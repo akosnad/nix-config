@@ -1,12 +1,6 @@
-{ inputs, ... }:
 {
   flake.modules.nixos."hosts/kratos" = { pkgs, ... }: {
-    imports = with inputs.hardware.nixosModules; [
-      common-cpu-amd
-      common-cpu-amd-pstate
-      common-gpu-amd
-      common-pc-ssd
-    ];
+    hardware.facter.reportPath = ./facter.json;
 
     hardware.bluetooth.enable = true;
     services.blueman.enable = true;

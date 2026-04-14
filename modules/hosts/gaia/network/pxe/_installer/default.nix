@@ -142,6 +142,7 @@ in
     # nix utilities
     nvd
     nix-tree
+    nixos-facter
   ];
 
   networking.hostName = "installer";
