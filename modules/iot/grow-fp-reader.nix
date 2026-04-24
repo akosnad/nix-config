@@ -99,21 +99,34 @@ in
           }];
         };
 
-        button = [{
-          platform = "template";
-          name = "Enroll finger";
-          on_press."then" = [
-            { "fingerprint_grow.enroll" = { finger_id = 0; }; }
-            {
-              "fingerprint_grow.aura_led_control" = {
-                state = "ALWAYS_ON";
-                speed = 0;
-                color = "PURPLE";
-                count = 0;
+        api.actions = [
+          {
+            action = "enroll";
+            variables = {
+              finger_id = "int";
+              num_scans = "int";
+            };
+            "then" = [{
+              "fingerprint_grow.enroll" = {
+                finger_id = "!lambda \"return finger_id;\"";
+                num_scans = "!lambda \"return num_scans;\"";
               };
-            }
-          ];
-        }];
+            }];
+          }
+          {
+            action = "cancel_enroll";
+            "then" = [{ "fingerprint_grow.cancel_enroll" = { }; }];
+          }
+          {
+            action = "delete";
+            variables.finger_id = "int";
+            "then" = [{ "fingerprint_grow.delete".finger_id = "!lambda \"return finger_id;\""; }];
+          }
+          {
+            action = "delete_all";
+            "then" = [{ "fingerprint_grow.delete_all" = { }; }];
+          }
+        ];
       };
     };
 }
