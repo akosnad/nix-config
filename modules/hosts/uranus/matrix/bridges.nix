@@ -65,11 +65,6 @@
       };
     in
     {
-
-      nixpkgs.config.permittedInsecurePackages = [
-        "olm-3.2.16"
-      ];
-
       services.mautrix-meta = {
         instances = {
           messenger = {

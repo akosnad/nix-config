@@ -25,6 +25,7 @@ in
           overlays = [
             (_final: prev: lib.recursiveUpdate prev config.localPackages)
           ] ++ (lib.attrValues flakeConfig.flake.overlays);
+          config = import ../base/nixpkgs/_nixpkgs-config.nix;
         };
 
         localPackages = lib.filesystem.packagesFromDirectoryRecursive {
