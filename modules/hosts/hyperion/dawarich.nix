@@ -14,6 +14,9 @@
     services.nginx.virtualHosts.${config.services.dawarich.localDomain} = {
       forceSSL = true;
       enableACME = true;
+      extraConfig = ''
+        client_max_body_size 2G;
+      '';
     };
 
     sops.secrets.dawarich-secret-key-base = {
