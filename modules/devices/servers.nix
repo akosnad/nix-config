@@ -20,6 +20,7 @@
         "media"
         "music"
         "jellyseerr"
+        "timeline"
         "nix.fzt.one"
       ];
       forwardedPorts = [
