@@ -35,5 +35,6 @@
         "/var/lib/nominatim/index"
       ];
     };
+    services.postgresqlBackup.databases = [ "nominatim" ];
   };
 }
