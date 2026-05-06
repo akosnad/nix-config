@@ -21,6 +21,7 @@
         "music"
         "jellyseerr"
         "timeline"
+        "nominatim"
         "nix.fzt.one"
       ];
       forwardedPorts = [

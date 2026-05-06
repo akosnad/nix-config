@@ -164,6 +164,40 @@
                 options.mountpoint = "/backup";
               };
 
+              nominatim = {
+                type = "zfs_fs";
+                options = {
+                  compression = "lz4";
+                  redundant_metadata = "most";
+                  xattr = "sa";
+
+                  # import is write-heavy
+                  logbias = "throughput";
+
+                  # avoid double-caching:
+                  # - postgresql shared buffers
+                  # - zfs arc
+                  # - zfs l2arc
+                  # also caching flatnode is mostly pointless
+                  primarycache = "metadata";
+                  secondarycache = "metadata";
+
+                  mountpoint = "/var/lib/nominatim";
+                };
+              };
+              "nominatim/data" = {
+                type = "zfs_fs";
+                options.recordsize = "16K";
+              };
+              "nominatim/index" = {
+                type = "zfs_fs";
+                options.recordsize = "8K";
+              };
+              "nominatim/flatnode" = {
+                type = "zfs_fs";
+                options.recordsize = "1M";
+              };
+
               win-iscsi = {
                 type = "zfs_volume";
                 size = "120G";

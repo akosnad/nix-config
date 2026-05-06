@@ -7,7 +7,7 @@
         enable = true;
         settings = {
           max_connections = "300";
-          shared_buffers = "80MB";
+          shared_buffers = lib.mkDefault "80MB";
         };
       };
       environment.persistence."/persist".directories = [
