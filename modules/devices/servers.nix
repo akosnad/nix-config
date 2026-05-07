@@ -22,6 +22,7 @@
         "jellyseerr"
         "timeline"
         "nominatim"
+        "workflows"
         "nix.fzt.one"
       ];
       forwardedPorts = [

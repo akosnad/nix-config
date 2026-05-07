@@ -66,10 +66,4 @@ in
     withSystem prev.stdenv.hostPlatform.system (
       { config, ... }: prev.lib.recursiveUpdate prev config.localPackages
     );
-
-  flake.modules.nixos.base = {
-    nixpkgs.overlays = [ config.flake.overlays.default ];
-  };
-
-  # TODO: provide local packages in the flake output, not just an overlay
 }

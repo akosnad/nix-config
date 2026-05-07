@@ -11,6 +11,7 @@
         "https://cache.nixos.org/"
         "https://nix.fzt.one/"
         "https://nix-community.cachix.org/"
+        "https://cache.garnix.io"
       ];
 
       upgradeTriggerScript = pkgs.writeShellApplication {

@@ -23,6 +23,7 @@
       esphome-updater
       buildbot-master
       buildbot-worker
+      obelisk
     ] ++ [{
       home-manager.users.akos = {
         imports = with config.flake.modules.homeManager; [

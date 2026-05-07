@@ -103,6 +103,8 @@
     nixos-wsl.url = "github:nix-community/NixOS-WSL/release-25.11";
 
     niri-flake.url = "github:sodiboo/niri-flake";
+
+    obelisk.url = "github:obeli-sk/obelisk/latest";
   };
 
   outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
