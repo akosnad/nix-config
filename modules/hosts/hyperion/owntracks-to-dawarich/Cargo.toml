@@ -1,0 +1,16 @@
+[package]
+name = "owntracks-to-dawarich"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.102"
+dotenv = "0.15.0"
+env_logger = "0.11.10"
+log = "0.4.29"
+reqwest = "0.13.3"
+reqwest-middleware = "0.5.1"
+reqwest-retry = "0.9.1"
+rumqttc = "0.25.1"
+serde_json = "1.0.149"
+tokio = { version = "1.52.2", features = ["full"] }

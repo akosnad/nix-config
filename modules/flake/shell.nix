@@ -13,6 +13,10 @@
           ssh-to-age
           gnupg
           age
+
+          cargo
+          rustc
+          cargo-generate
         ];
       };
     };
