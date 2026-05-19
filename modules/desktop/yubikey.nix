@@ -1,5 +1,5 @@
-{
-  flake.modules.nixos.desktop =
+let
+  flake.modules.nixos.yubikey =
     { pkgs, ... }:
     {
       services.pcscd.enable = true;
@@ -10,4 +10,10 @@
 
       environment.etc."gnupg/scdaemon.conf".text = "disable-ccid";
     };
+  flake.modules.nixos.desktop = {
+    imports = [ flake.modules.nixos.yubikey ];
+  };
+in
+{
+  inherit flake;
 }

@@ -10,6 +10,9 @@ in
         # profiles
         base
         akos
+
+        # services
+        yubikey
       ] ++ [{
         home-manager.users.akos = {
           imports = with flakeConfig.flake.modules.homeManager; [
