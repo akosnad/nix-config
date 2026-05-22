@@ -14,7 +14,7 @@ let
         default = null;
       };
       icon = mkOption {
-        type = types.nullOr (types.strMatching "^mdi:[a-z]+$");
+        type = types.nullOr (types.strMatching "^mdi:[a-z\-]+$");
         default = null;
       };
       device_class = mkOption {
@@ -35,11 +35,37 @@ let
     };
   };
 
+  light = {
+    freeformType = types.attrs;
+    options = {
+      id = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+      };
+      name = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+      };
+      icon = mkOption {
+        type = types.nullOr (types.strMatching "^mdi:[a-z\-]+$");
+        default = null;
+      };
+      platform = mkOption {
+        type = types.str;
+      };
+    };
+  };
+
   settings = {
     freeformType = types.attrs;
     options = {
       sensor = mkOption {
         type = types.nullOr (types.listOf (types.submodule sensor));
+        default = null;
+        apply = cfg: if cfg == null then null else lib.map (item: (lib.filterAttrsRecursive (_: val: val != null) item)) cfg;
+      };
+      light = mkOption {
+        type = types.nullOr (types.listOf (types.submodule light));
         default = null;
         apply = cfg: if cfg == null then null else lib.map (item: (lib.filterAttrsRecursive (_: val: val != null) item)) cfg;
       };
