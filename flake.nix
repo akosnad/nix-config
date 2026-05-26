@@ -105,6 +105,12 @@
     niri-flake.url = "github:sodiboo/niri-flake";
 
     obelisk.url = "github:obeli-sk/obelisk/latest";
+
+    glide = {
+      url = "github:glide-browser/glide.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
   };
 
   outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);

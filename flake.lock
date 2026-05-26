@@ -363,6 +363,29 @@
         "type": "github"
       }
     },
+    "glide": {
+      "inputs": {
+        "home-manager": [
+          "home-manager"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1779668702,
+        "narHash": "sha256-voOAZYH429fsPg2PBRXtHP0yWXhtGOmTfl0I03uNwfA=",
+        "owner": "glide-browser",
+        "repo": "glide.nix",
+        "rev": "287f90235434f7e574dccebed3a4caa1ca443d1d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "glide-browser",
+        "repo": "glide.nix",
+        "type": "github"
+      }
+    },
     "gnome-shell": {
       "flake": false,
       "locked": {
@@ -919,6 +942,7 @@
         "disko": "disko",
         "disko-zfs": "disko-zfs",
         "flake-parts": "flake-parts",
+        "glide": "glide",
         "hardware": "hardware",
         "hercules-ci-effects": "hercules-ci-effects_2",
         "home-manager": "home-manager",
