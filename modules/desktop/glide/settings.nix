@@ -4,6 +4,9 @@
     programs.glide-browser = {
       policies = {
         NoDefaultBookmarks = true;
+        Certificates = {
+          Install = [ ../../base/gaia-roots.pem ];
+        };
       };
       profiles.personal.settings = {
 
@@ -52,7 +55,6 @@
               "addon_darkreader_org-browser-action"
             ];
             nav-bar = [
-              "sidebar-button"
               "back-button"
               "forward-button"
               "stop-reload-button"
@@ -64,6 +66,7 @@
               "customizableui-special-spring2"
               "glide-toolbar-keyseq-button"
               "ublock0_raymondhill_net-browser-action"
+              "keepassxc-browser_keepassxc_org-browser-action"
               "unified-extensions-button"
               "alltabs-button"
               "downloads-button"
@@ -81,6 +84,7 @@
             "firefoxcolor_mozilla_com-browser-action"
             "addon_darkreader_org-browser-action"
             "ublock0_raymondhill_net-browser-action"
+            "keepassxc-browser_keepassxc_org-browser-action"
             "developer-button"
             "screenshot-button"
           ];
