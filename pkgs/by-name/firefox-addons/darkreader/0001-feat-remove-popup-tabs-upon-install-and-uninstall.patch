@@ -1,0 +1,38 @@
+From 1e5d14a6240b2146e119997d042bfbb0a60cf4ea Mon Sep 17 00:00:00 2001
+From: akosnad <akos@nadudvari.org>
+Date: Thu, 28 May 2026 10:47:41 +0200
+Subject: [PATCH] feat: remove popup tabs upon install and uninstall
+
+---
+ src/background/index.ts | 9 ---------
+ 1 file changed, 9 deletions(-)
+
+diff --git a/src/background/index.ts b/src/background/index.ts
+index e151e966..b6084139 100644
+--- a/src/background/index.ts
++++ b/src/background/index.ts
+@@ -1,6 +1,5 @@
+ import {canInjectScript, keepListeningToEvents} from '../background/utils/extension-api';
+ import type {ColorScheme, DebugMessageBGtoCS, DebugMessageBGtoUI, DebugMessageCStoBG, ExtensionData, News, UserSettings} from '../definitions';
+-import {getHelpURL, UNINSTALL_URL} from '../utils/links';
+ import {emulateColorScheme, isSystemDarkModeEnabled} from '../utils/media-query';
+ import {DebugMessageTypeBGtoCS, DebugMessageTypeBGtoUI, DebugMessageTypeCStoBG} from '../utils/message';
+ import {isFirefox} from '../utils/platform';
+@@ -126,14 +125,6 @@ if (__WATCH__) {
+     };
+ 
+     listen();
+-} else if (!__DEBUG__ && !__TEST__) {
+-    chrome.runtime.onInstalled.addListener(({reason}) => {
+-        if (reason === 'install') {
+-            chrome.tabs.create({url: getHelpURL()});
+-        }
+-    });
+-
+-    chrome.runtime.setUninstallURL(UNINSTALL_URL);
+ }
+ 
+ if (__TEST__) {
+-- 
+2.51.2
+
