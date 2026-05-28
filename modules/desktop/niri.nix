@@ -131,7 +131,7 @@ in
 
           # spawn hotkeys
           "Mod+Return".action.spawn = "kitty";
-          "Mod+Q".action.spawn = "microsoft-edge";
+          "Mod+Q".action.spawn = "glide";
           "Mod+E".action.spawn = "nautilus";
           "Mod+F".action.toggle-window-floating = { };
           "Menu".action.spawn = "wofi-launch";
