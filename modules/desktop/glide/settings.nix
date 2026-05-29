@@ -37,6 +37,12 @@
         "sidebar.verticalTabs.dragToPinPromo.dismissed" = true;
         "sidebar.toolbarbuttons.introduced.sidebar-button" = true;
         "browser.startup.couldRestoreSession.count" = 2; # restore previous tabs promo
+        "media.videocontrols.picture-in-picture.video-toggle.enabled" = false;
+
+        # disable autofill services
+        "signon.rememberSignons" = false;
+        "extensions.formautofill.creditCards.enabled" = false;
+        "dom.forms.autocomplete.formautofill" = false;
 
         # topbar and sidebar
         "browser.toolbars.bookmarks.visibility" = "never";
