@@ -13,6 +13,14 @@
         # allow running unsigned extensions.
         "xpinstall.signatures.required" = false;
 
+        # disable sync storage for addons;
+        # forcing them to use local storage where
+        # we can use declarative settings.
+        # (if fallback is supported by the addon)
+        "webextensions.storage.sync.enabled" = false;
+        "webextensions.storage.sync.kinto" = false;
+        "webextensions.storage.sync.serverURL" = "";
+
         # disable first run behaviour.
         # this tries to block some extensions from
         # opening welcome pages
@@ -53,6 +61,7 @@
             unified-extensions-area = [
               "firefoxcolor_mozilla_com-browser-action"
               "addon_darkreader_org-browser-action"
+              "sponsorblocker_ajay_app-browser-action"
             ];
             nav-bar = [
               "back-button"
