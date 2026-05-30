@@ -149,6 +149,7 @@
               "10.99.92.166"
               "falstad.com"
               "demo.frigate.video"
+              "media.home.arpa"
             ];
           };
       };
