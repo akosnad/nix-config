@@ -95,11 +95,14 @@
 
             "www.donpepe.hu##.swal2-backdrop-show.swal2-center.swal2-container"
 
-            "www.patreon.com###transcend-consent-manager"
-
             "bugzilla.mozilla.org##.is-visible.moz-consent-banner"
 
             "stackoverflow.com###onetrust-consent-sdk"
+
+            # cookie consent popups
+            "/.*/###onetrust-consent-sdk"
+            "/.*/###transcend-consent-manager"
+            "www.reddit.com##rpl-modal-card"
           ];
         };
       };
