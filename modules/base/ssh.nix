@@ -70,23 +70,10 @@ in
       programs.ssh = {
         enable = true;
         enableDefaultConfig = false;
-        matchBlocks = {
-          "*" = {
-            forwardAgent = false;
-            addKeysToAgent = "no";
-            compression = false;
-            serverAliveInterval = 0;
-            serverAliveCountMax = 3;
-            hashKnownHosts = false;
-            userKnownHostsFile = "~/.ssh/known_hosts";
-            controlMaster = "no";
-            controlPath = "~/.ssh/master-%r@%n:%p";
-            controlPersist = "no";
-          };
-          net = {
-            host = builtins.concatStringsSep " " hostNames;
-            forwardAgent = true;
-            remoteForwards = [
+        settings = {
+          "Host ${builtins.concatStringsSep " " hostNames}" = {
+            ForwardAgent = true;
+            RemoteForward = [
               {
                 bind.address = ''/%d/.gnupg-sockets/S.gpg-agent'';
                 host.address = ''/%d/.gnupg-sockets/S.gpg-agent.extra'';
@@ -96,8 +83,20 @@ in
                 host.address = ''/%d/.waypipe/client.sock'';
               }
             ];
-            setEnv.WAYLAND_DISPLAY = "wayland-waypipe";
-            extraOptions.StreamLocalBindUnlink = "yes";
+            SetEnv.WAYLAND_DISPLAY = "wayland-waypipe";
+            StreamLocalBindUnlink = "yes";
+          };
+          "Host *" = {
+            ForwardAgent = false;
+            AddKeysToAgent = "no";
+            Compression = false;
+            ServerAliveInterval = 0;
+            ServerAliveCountMax = 3;
+            HashKnownHosts = false;
+            UserKnownHostsFile = "~/.ssh/known_hosts";
+            ControlMaster = "no";
+            ControlPath = "~/.ssh/master-%r@%n:%p";
+            ControlPersist = "no";
           };
         };
       };

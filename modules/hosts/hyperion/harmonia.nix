@@ -2,7 +2,7 @@
   config.flake.modules.nixos."hosts/hyperion" =
     { config, ... }:
     {
-      services.harmonia = {
+      services.harmonia.cache = {
         enable = true;
         signKeyPaths = [ config.sops.secrets.harmonia-key.path ];
         settings = {

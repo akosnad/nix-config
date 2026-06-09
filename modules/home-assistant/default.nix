@@ -49,7 +49,6 @@ in
           "tplink"
           "bluetooth"
           "bluetooth_adapters"
-          "bluetooth_tracker"
           "bluetooth_le_tracker"
           "bthome"
           "ibeacon"

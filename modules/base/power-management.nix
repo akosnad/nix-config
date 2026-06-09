@@ -1,7 +1,6 @@
 {
   config.flake.modules.nixos.desktop = {
     services.upower.enable = true;
-    programs.light.enable = true;
 
     services.udev.extraRules = /* udev */ ''
       ## Prohibit turning off usb devices

@@ -14,7 +14,6 @@
 
       # system monitoring
       htop
-      glances
 
       # network debugging
       iftop

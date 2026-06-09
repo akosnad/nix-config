@@ -2,7 +2,7 @@
   description = "akosnad's nix infrastructure";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
 
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
@@ -15,7 +15,7 @@
 
     import-tree.url = "github:vic/import-tree";
 
-    home-manager.url = "github:nix-community/home-manager/release-25.11";
+    home-manager.url = "github:nix-community/home-manager/release-26.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     nur = {
@@ -32,7 +32,7 @@
     };
 
     stylix = {
-      url = "github:/nix-community/stylix/release-25.11";
+      url = "github:/nix-community/stylix/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -78,9 +78,8 @@
     };
 
     buildbot-nix = {
-      url = "github:nix-community/buildbot-nix/4f590eb97462eef698f2c96c67a080876c1f8051";
+      url = "github:nix-community/buildbot-nix";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-parts.follows = "flake-parts";
       inputs.treefmt-nix.follows = "treefmt-nix";
     };
 
@@ -91,16 +90,11 @@
     };
 
     nix-topology = {
-      url = "github:/oddlama/nix-topology/b493b9b970388d79129ce1a92a6b060c9305386f";
+      url = "github:/oddlama/nix-topology/83d8b9da90323d4c9fc5b11919ea21c495b8e3d6";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hyprscroller-src = {
-      url = "github:akosnad/hyprscroller";
-      flake = false;
-    };
-
-    nixos-wsl.url = "github:nix-community/NixOS-WSL/release-25.11";
+    nixos-wsl.url = "github:nix-community/NixOS-WSL/release-26.05";
 
     niri-flake.url = "github:sodiboo/niri-flake";
 

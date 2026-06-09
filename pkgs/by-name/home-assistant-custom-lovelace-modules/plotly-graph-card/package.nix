@@ -15,9 +15,9 @@ buildNpmPackage rec {
   };
 
   npmInstallFlags = [ "--omit=dev" ];
-  npmDepsHash = "sha256-dXazjhMzBjPzO10aESlS5EuN6UdCY97KO/8+zwzYc1s=";
+  npmDepsHash = "sha256-CriXlW08/Z+Lmjzel521nriplZsiwlopzSuNYkC4IZo=";
 
-  patches = [ ./fix-deps.patch ];
+  patches = [ ./0001-fix-deps-use-patched-regression-logarithmic-package.patch ];
   makeCacheWritable = true;
 
   nativeBuildInputs = [ esbuild ];

@@ -11,7 +11,7 @@ in
       };
       trustCertChain = [ ipxeRootCA ../../../../base/gaia-roots.pem ];
 
-      pkgs-x86_64 = import inputs.nixpkgs { config = { }; overlays = [ ]; system = "x86_64-linux"; };
+      pkgs-x86_64 = import inputs.nixpkgs { config = config.nixpkgs.config; overlays = config.nixpkgs.overlays; system = "x86_64-linux"; };
 
       mkIpxe = pkgs: targets: (pkgs.ipxe.override {
         additionalOptions = [
@@ -69,8 +69,14 @@ in
         };
       };
 
+      # TODO: separate into own module like `flake.modules.nixos.installer`
       mkInstaller = system: lib.nixosSystem {
-        modules = [ ((lib.modules.importApply ./_installer) { nfsRemote = flakeConfig.flake.devices."${config.networking.hostName}".ip; inherit system; }) ];
+        modules = [
+          ((lib.modules.importApply ./_installer) { nfsRemote = flakeConfig.flake.devices."${config.networking.hostName}".ip; inherit system; })
+          { nix.settings = config.nix.settings; }
+          { nixpkgs.config = config.nixpkgs.config; }
+          { nixpkgs.overlays = config.nixpkgs.overlays; }
+        ];
         specialArgs = { inherit inputs; };
       };
       installers = {

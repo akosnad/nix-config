@@ -16,7 +16,9 @@ in
       networking.nameservers = [ "100.100.100.100" flakeConfig.flake.devices.gaia.ip ];
       services.resolved = {
         enable = true;
-        domains = [ "tailnet.fzt.one" config.networking.domain ];
+        settings = {
+          Resolve.Domains = [ "tailnet.fzt.one" config.networking.domain ];
+        };
       };
     };
 }

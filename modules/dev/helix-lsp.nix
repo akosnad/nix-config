@@ -5,10 +5,10 @@ let
       programs.helix = {
         extraPackages = with pkgs; [
           marksman
-          nodePackages.bash-language-server
+          bash-language-server
           dockerfile-language-server
           python3Packages.python-lsp-server
-          nodePackages.typescript-language-server
+          typescript-language-server
           lua-language-server
           rust-analyzer
           nixd
