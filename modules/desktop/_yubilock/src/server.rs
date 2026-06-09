@@ -250,7 +250,7 @@ async fn read_client(
 async fn handle_locked_disconnect() {
     tokio::spawn(async {
         match std::process::Command::new("hyprlock")
-            .args(["--immediate"])
+            .args(["--grace", "0"])
             .spawn()
         {
             Ok(mut child) => {

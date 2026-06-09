@@ -139,7 +139,7 @@ in
           "Mod+Backspace".action.spawn = "toggle-theme";
           "Mod+N".action.spawn = [ "swaync-client" "-t" ];
           "Mod+G".action.spawn = "toggle-gammastep";
-          "Mod+D".action.spawn = [ "hyprlock" "--immediate" ];
+          "Mod+D".action.spawn = [ "hyprlock" "--grace" "0" ];
           "Mod+Alt+D" = {
             action.spawn = [ "systemctl" "suspend" ];
             allow-when-locked = true;
