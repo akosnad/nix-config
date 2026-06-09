@@ -2,7 +2,7 @@
   config.flake.modules.nixos.docker-watchtower = {
     virtualisation.oci-containers.containers.watchtower = {
       autoStart = true;
-      image = "containrrr/watchtower";
+      image = "ghcr.io/nicholas-fedor/watchtower";
       extraOptions = [
         "--label=com.centurylinklabs.watchtower.enable=true"
       ];
