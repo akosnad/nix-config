@@ -213,8 +213,8 @@ in
           "XF86AudioLowerVolume".action.spawn = [ (lib.getExe pkgs.pamixer) "-d" "5" ];
 
           # screen brightness
-          "XF86MonBrightnessUp".action.spawn = [ (lib.getExe pkgs.light) "-A" "5" ];
-          "XF86MonBrightnessDown".action.spawn = [ (lib.getExe pkgs.light) "-U" "5" ];
+          "XF86MonBrightnessUp".action.spawn = [ (lib.getExe pkgs.brightnessctl) "-c" "backlight" "set" "+5%" ];
+          "XF86MonBrightnessDown".action.spawn = [ (lib.getExe pkgs.brightnessctl) "-c" "backlight" "set" "-5%" ];
         };
       };
     };

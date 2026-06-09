@@ -44,7 +44,7 @@
         enable = true;
       };
 
-      services.jellyseerr = {
+      services.seerr = {
         enable = true;
         port = 5056;
         configDir = "/var/lib/private/jellyseerr";
@@ -52,7 +52,7 @@
 
       services.nginx.virtualHosts = lib.mapAttrs mkNginxReverseProxy {
         media = 8096;
-        jellyseerr = config.services.jellyseerr.port;
+        jellyseerr = config.services.seerr.port;
       };
 
       environment.persistence."/persist".directories = [
@@ -62,13 +62,13 @@
           inherit (config.services.jellyfin) group;
           mode = "u=rwx,g=rx,o=";
         }
-        config.services.jellyseerr.configDir
+        config.services.seerr.configDir
       ];
 
       services.restic.backups.persist.exclude = [
         "/persist${config.services.jellyfin.logDir}"
       ]
-      ++ (map (x: "/persist${config.services.jellyseerr.configDir}/${x}") [
+      ++ (map (x: "/persist${config.services.seerr.configDir}/${x}") [
         "logs"
         "cache"
       ]);

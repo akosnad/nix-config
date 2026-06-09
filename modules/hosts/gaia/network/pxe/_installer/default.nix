@@ -49,11 +49,7 @@ in
     ];
   };
 
-  boot.initrd.extraUtilsCommands = ''
-    copy_bin_and_libs ${pkgs.nfs-utils}/bin/mount.nfs
-    copy_bin_and_libs ${pkgs.nfs-utils}/bin/mount.nfs4
-    copy_bin_and_libs ${pkgs.nfs-utils}/bin/nfsstat
-  '';
+  boot.initrd.systemd.storePaths = [ pkgs.nfs-utils ];
   boot.initrd.network = {
     enable = true;
     flushBeforeStage2 = false;
@@ -92,25 +88,6 @@ in
 
   systemd.shutdownRamfs.enable = false;
 
-  nix.settings = {
-    experimental-features = "nix-command flakes ca-derivations dynamic-derivations recursive-nix";
-    warn-dirty = false;
-    substituters = [
-      "https://cache.nixos.org/"
-      "https://nix.fzt.one/"
-      "https://nix-community.cachix.org"
-      "https://hyprland.cachix.org"
-      "https://cache.garnix.io"
-    ];
-    trusted-public-keys = [
-      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-      "nix.fzt.one-1:W6+n+PqYiAINgEUYnAxoDrV0xrjPR0C0fJeIDp3nvAw="
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
-    ];
-  };
-  nixpkgs.config.allowUnfree = true;
   nixpkgs.hostPlatform = system;
 
   environment.systemPackages = with pkgs; [

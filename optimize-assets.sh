@@ -1,5 +1,5 @@
 #! /usr/bin/env nix-shell
-#! nix-shell -i bash -p nodePackages.svgo scour
+#! nix-shell -i bash -p svgo scour
 set -o pipefail
 set -o errexit
 

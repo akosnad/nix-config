@@ -1,6 +1,6 @@
 {
   config.flake.modules.nixos."hosts/gaia" =
-    { lib, modulesPath, pkgs, ... }:
+    { lib, modulesPath, ... }:
     {
       imports =
         [
@@ -13,7 +13,6 @@
         supportedFilesystems = [ "btrfs" ];
       };
       boot.kernelModules = [ ];
-      boot.kernelPackages = pkgs.linuxPackages_rpi4;
       boot.kernelParams = [
         # serial is used for peripherals, not a terminal
         # "console=ttyS0,115200n8"
