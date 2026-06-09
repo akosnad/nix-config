@@ -57,6 +57,17 @@
             definedAliases = [ "hm" ];
           };
 
+          noogle = {
+            name = "Nixpkgs functions (noogle.dev)";
+            urls = [{
+              template = "https://noogle.dev/q";
+              params = [{ name = "q"; value = "{searchTerms}"; }];
+            }];
+
+            icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+            definedAliases = [ "nf" ];
+          };
+
           rust-docs = {
             name = "Rust docs (docs.rs)";
             urls = [{ template = "https://docs.rs/{searchTerms}"; }];
