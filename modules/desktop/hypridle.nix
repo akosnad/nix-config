@@ -3,7 +3,7 @@
   config.flake.modules.homeManager.desktop =
     { config, pkgs, ... }:
     let
-      hyprlock = "${config.programs.hyprlock.package}/bin/hyprlock";
+      hyprlock = "${config.programs.hyprlock.package}/bin/hyprlock --grace ${toString gracePeriod}";
       pgrep = "${pkgs.procps}/bin/pgrep";
       hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
       wpctl = "${pkgs.wireplumber}/bin/wpctl";
