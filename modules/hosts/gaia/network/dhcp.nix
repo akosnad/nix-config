@@ -37,7 +37,7 @@ in
           # serve in an unassigned address space for non-declared devices
           dhcp-range = [ "set:lan,10.99.0.1,10.99.254.254,10m" ];
           # Static leases
-          dhcp-host = builtins.map (device: "${device.mac},set:lan,${device.ip},${device.hostname},infinite") staticLeases;
+          dhcp-host = map (device: "${device.mac},set:lan,${device.ip},${device.hostname},1h") staticLeases;
           # common options
           dhcp-option = [
             "tag:lan,option:netmask,255.0.0.0"
