@@ -16,32 +16,33 @@
           federate_rooms = true;
         };
 
+        encryption = {
+          allow = true;
+          default = true;
+          require = true;
+
+          verification_levels = {
+            receive = "cross-signed-untrusted";
+            send = "cross-signed-untrusted";
+            share = "cross-signed-untrusted";
+          };
+
+          # all are disabled due to buggy clients
+          # reference: https://docs.mau.fi/bridges/general/end-to-bridge-encryption.html#additional-security
+          delete_keys = {
+            delete_outbound_on_ack = false;
+            dont_store_outbound = false;
+            ratchet_on_decrypt = false;
+            delete_fully_used_on_decrypt = false;
+            delete_prev_on_new_session = false;
+            delete_on_device_delete = false;
+            periodically_delete_expired = false;
+            delete_outdated_inbound = false;
+          };
+        };
+
         bridge = {
           # Require encryption by default to make the bridge more secure
-          encryption = {
-            allow = true;
-            default = true;
-            require = true;
-
-            # Recommended options from mautrix documentation
-            # for optimal security.
-            delete_keys = {
-              dont_store_outbound = true;
-              ratchet_on_decrypt = true;
-              delete_fully_used_on_decrypt = true;
-              delete_prev_on_new_session = true;
-              delete_on_device_delete = true;
-              periodically_delete_expired = true;
-              delete_outdated_inbound = true;
-            };
-
-            verification_levels = {
-              receive = "cross-signed-tofu";
-              send = "cross-signed-tofu";
-              share = "cross-signed-tofu";
-            };
-
-          };
           permissions = {
             "*" = "relay";
             "m.fzt.one" = "user";
@@ -72,7 +73,10 @@
             registerToSynapse = true;
             environmentFile = config.sops.secrets.mautrix-env.path;
             settings = lib.recursiveUpdate commonSettings {
-              network.mode = "messenger";
+              network = {
+                mode = "messenger";
+                displayname_template = "{{ or .DisplayName .Username .ID }}";
+              };
               appservice = {
                 id = "messengerbot";
                 bot = {
