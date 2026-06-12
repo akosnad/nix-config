@@ -22,7 +22,7 @@ in
       lanIp = flakeConfig.flake.devices.gaia.ip;
       mkLocalhostRewrite = mkHostRewrite lanIp;
 
-      localhostHostsRewrites = builtins.map mkLocalhostRewrite localhostNetworkHosts;
+      localhostHostsRewrites = map mkLocalhostRewrite localhostNetworkHosts;
 
       devices = builtins.attrValues flakeConfig.flake.devices;
       mapExtraHostname = d: h: [
@@ -32,6 +32,7 @@ in
       devicesExtraHostnames = map (d: map (mapExtraHostname d) d.extraHostnames) devices;
 
       hostRewrites = localhostHostsRewrites ++ (lib.flatten devicesExtraHostnames);
+      rewriteRules = hostRewrites ++ (map (rewrite: { inherit (rewrite) domain; answer = "AAAA"; }) hostRewrites);
     in
     {
       services.adguardhome = {
@@ -105,7 +106,7 @@ in
             "||nuedge.net^"
             "||soniccharge.com^"
           ];
-          filtering.rewrites = hostRewrites;
+          filtering.rewrites = rewriteRules;
           filters = [
             {
               enabled = true;
