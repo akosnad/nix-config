@@ -13,6 +13,10 @@
           function set_poshcontext() {
             export BGJOBS="$(jobs | wc -l | xargs)"
           }
+
+          TRAPUSR1() {
+            eval "$(${lib.getExe pkgs.oh-my-posh} init zsh --config ${config.xdg.configHome}/oh-my-posh/config.json)"
+          }
         '';
 
         programs.bash.bashrcExtra = lib.mkIf config.programs.bash.enable /* bash */ ''
@@ -58,6 +62,10 @@
             };
           };
         };
+
+        xdg.configFile."oh-my-posh/config.json".onChange = lib.mkIf config.programs.zsh.enable ''
+          ${pkgs.procps}/bin/pkill -SIGUSR1 -x zsh
+        '';
       };
     };
 
