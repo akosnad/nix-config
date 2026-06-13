@@ -19,30 +19,6 @@
         color: @base00;
       '';
 
-      scrollerModeSignal = 8;
-      scrollerModeFile = "$XDG_RUNTIME_DIR/scroller-mode";
-      scroller-mode-listener = pkgs.writeShellApplication {
-        name = "scroller-mode-listener";
-        runtimeInputs = with pkgs; [ socat jq procps ];
-        text = ''
-          handle() {
-            if [[ ''${1:0:8} != "scroller" ]]; then
-              return
-            fi
-
-            if [[ ''${1:10:9} == "mode, row" ]]; then
-              echo '${builtins.toJSON { text=" "; percentage=0; class="mode-row"; }}' > "${scrollerModeFile}"
-            elif [[ ''${1:10:12} == "mode, column" ]]; then
-              echo '${builtins.toJSON { text=""; percentage=100; class="mode-col"; }}' > "${scrollerModeFile}"
-            fi
-
-            pkill -SIGRTMIN+${toString scrollerModeSignal} waybar # update widget on waybar
-          }
-          echo '${builtins.toJSON { text=" "; percentage=0; class="mode-row"; }}' > "${scrollerModeFile}"
-          socat -u "UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock" - | while read -r line; do handle "$line"; done
-        '';
-      };
-
       yubilock-toggle = pkgs.writeShellApplication {
         name = "yubilock-toggle";
         runtimeInputs = with pkgs; [ socat ];
@@ -66,16 +42,14 @@
           position = "top";
           height = 30;
           modules-left = [
-            "custom/scroller-mode"
-            "hyprland/submap"
-            "hyprland/workspaces"
-            "hyprland/window"
+            "niri/workspaces"
+            "niri/window"
           ];
           modules-right = [
             "tray"
             "mpris"
             "pulseaudio"
-            "hyprland/language"
+            "niri/language"
             "network"
             "upower"
             "battery"
@@ -83,17 +57,10 @@
             "custom/yubilock"
           ];
 
-          "custom/scroller-mode" = {
-            # adapted from: https://github.com/dawsers/hyprscroller/issues/57#issuecomment-2418305146
-            exec = lib.getExe (pkgs.writeShellScriptBin "scroller-mode-reader" "cat \"${scrollerModeFile}\"\n");
-            return-type = "json";
-            interval = "once";
-            signal = 8;
-            on-click = "hyprctl dispatch submap reset && pkill -SIGRTMIN+8 waybar";
+          "niri/workspaces" = {
+            hide-empty = true;
           };
-          "hyprland/submap" = { };
-          "hyprland/workspaces" = { };
-          "hyprland/window" = {
+          "niri/window" = {
             separate-outputs = true;
             icon = true;
             icon-size = 16;
@@ -141,7 +108,7 @@
             on-scroll-down = "${lib.getExe pkgs.pamixer} -d 5";
           };
 
-          "hyprland/language" = {
+          "niri/language" = {
             format-en = "󰌌  en";
             format-hu = "󰌌  hu";
           };
@@ -356,20 +323,6 @@
           ExecStart = lib.getExe config.programs.waybar.package;
           ExecReload = "${pkgs.procps}/bin/kill -SIGUSR2 $MAINPID";
           Restart = "on-failure";
-        };
-      };
-
-      systemd.user.services.scroller-mode-listener = {
-        Unit = {
-          Before = "waybar.service";
-          PartOf = [ "graphical-session.target" ];
-          After = "graphical-session-pre.target";
-        };
-        Install.WantedBy = [ "graphical-session.target" ];
-        Service = {
-          ExecStart = lib.getExe scroller-mode-listener;
-          Restart = "on-failure";
-          RestartSec = "1s";
         };
       };
     };
