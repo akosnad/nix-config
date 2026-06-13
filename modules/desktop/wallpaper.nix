@@ -45,6 +45,7 @@
               Description = "Wallpaper changer";
               Wants = [ "awww.service" ];
               After = [ "awww.service" ];
+              X-SwitchMethod = "keep-old";
             };
 
             Service = {
@@ -57,6 +58,7 @@
               Description = "awww - An Answer to your Wayland Wallpaper Woes";
               After = [ "graphical-session-pre.target" ];
               PartOf = [ "graphical-session.target" ];
+              X-SwitchMethod = "keep-old";
             };
 
             Service = {
@@ -72,6 +74,7 @@
             Description = "Wallpaper changer interval";
             After = [ "graphical-session-pre.target" ];
             PartOf = [ "graphical-session.target" ];
+            X-SwitchMethod = "keep-old";
           };
 
           Timer = {

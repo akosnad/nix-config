@@ -349,6 +349,7 @@
         Unit = {
           PartOf = [ "graphical-session.target" ];
           After = "graphical-session-pre.target";
+          X-SwitchMethod = "reload";
         };
         Install.WantedBy = [ "graphical-session.target" ];
         Service = {

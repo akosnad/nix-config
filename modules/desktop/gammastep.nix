@@ -14,5 +14,9 @@
         general.adjustment-method = "wayland";
       };
     };
+
+    systemd.user.services.gammastep.Unit = {
+      X-SwitchMethod = "keep-old";
+    };
   };
 }

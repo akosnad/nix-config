@@ -218,5 +218,17 @@ in
         };
       };
     };
+
+    home.activation.niriTransition = {
+      before = [ "writeBoundary" ];
+      after = [ ];
+      data = ''
+        for sock in /run/user/"$(id -u)"/niri.wayland-*.sock; do
+          export NIRI_SOCKET="$sock"
+          run ${lib.getExe config.programs.niri.package} msg action do-screen-transition -d 2000 || true
+        done
+        unset NIRI_SOCKET
+      '';
+    };
   };
 }
