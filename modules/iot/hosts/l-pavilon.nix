@@ -1,3 +1,4 @@
+{ config, ... }:
 {
   config.flake.devices.l-pavilon = {
     info = "Tuya-based RGB LED strip (custom firmware)";
@@ -8,6 +9,10 @@
   };
 
   config.flake.modules.esphome."hosts/l-pavilon" = {
+    imports = with config.flake.modules.esphome; [
+      wifi
+    ];
+
     settings = {
       esphome.friendly_name = "Pavilon LED";
       bk72xx.board = "generic-bk7231t-qfn32-tuya";

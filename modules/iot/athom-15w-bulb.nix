@@ -6,7 +6,7 @@ in
 {
   config.flake.modules.esphome.athom-15w-bulb = { config, ... }: {
     imports = with flakeConfig.flake.modules.esphome; [
-      wifi-signal
+      wifi
     ];
 
     options = {

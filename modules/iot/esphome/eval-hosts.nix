@@ -10,6 +10,7 @@ in
         let
           hostName = lib.removePrefix prefix name;
           specialArgs = {
+            name = hostName;
             inherit inputs;
             hostConfig = {
               name = hostName;
@@ -23,6 +24,7 @@ in
             modules = [
               ./_module-options.nix
               module
+              config.flake.modules.esphome.base
             ];
             class = "esphome";
           };

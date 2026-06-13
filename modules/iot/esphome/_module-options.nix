@@ -1,6 +1,30 @@
-{ lib, ... }:
+{ lib, config, name, inputs, ... }:
 let
   inherit (lib) mkOption types;
+
+  esphome = {
+    freeformType = types.attrs;
+    options = {
+      name = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+      };
+      friendly_name = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+      };
+      project = {
+        name = mkOption {
+          type = types.nullOr types.str;
+          default = null;
+        };
+        version = mkOption {
+          type = types.nullOr types.str;
+          default = null;
+        };
+      };
+    };
+  };
 
   sensor = {
     freeformType = types.attrs;
@@ -56,9 +80,49 @@ let
     };
   };
 
+  wifi = {
+    freeformType = types.attrs;
+    options = {
+      ssid = mkOption {
+        type = types.nullOr types.str;
+      };
+      password = mkOption {
+        type = types.nullOr types.str;
+      };
+      domain = mkOption {
+        type = types.nullOr types.str;
+      };
+      networks = mkOption {
+        type = types.nullOr (types.listOf types.attrs);
+      };
+      manual_ip = mkOption {
+        type = types.nullOr types.attrs;
+      };
+    };
+  };
+
+  ethernet = {
+    freeformType = types.attrs;
+    options = {
+      manual_ip = mkOption {
+        type = types.nullOr types.attrs;
+      };
+      domain = mkOption {
+        type = types.nullOr types.str;
+      };
+      mac_address = mkOption {
+        type = types.nullOr types.str;
+      };
+    };
+  };
+
   settings = {
     freeformType = types.attrs;
     options = {
+      esphome = mkOption {
+        type = types.submodule esphome;
+        apply = cfg: if cfg == null then null else (lib.filterAttrsRecursive (_: val: val != null) cfg);
+      };
       sensor = mkOption {
         type = types.nullOr (types.listOf (types.submodule sensor));
         default = null;
@@ -69,11 +133,41 @@ let
         default = null;
         apply = cfg: if cfg == null then null else lib.map (item: (lib.filterAttrsRecursive (_: val: val != null) item)) cfg;
       };
+      wifi = mkOption {
+        type = types.nullOr (types.submodule wifi);
+        apply = cfg: if cfg == null then null else (lib.filterAttrsRecursive (_: val: val != null) cfg);
+        default = null;
+      };
+      ethernet = mkOption {
+        type = types.nullOr (types.submodule ethernet);
+        apply = cfg: if cfg == null then null else (lib.filterAttrsRecursive (_: val: val != null) cfg);
+        default = null;
+      };
     };
   };
 in
 {
   options = {
+    buildPlatform = mkOption {
+      description = ''
+        The build host platform. More specifically, the system that will run ESPHome code generation and compilation.
+
+        This is in the same spirit as with NixOS configurations; just like the option `nixpkgs.buildPlatform`.
+        Note that usually `buildPlatform == hostPlatform` holds for NixOS configurations, and if they differ,
+        that implies the system is cross-compiled. In the case of ESPHome hosts, cross compilation is always the case,
+        because `hostPlatform` isn't defined (nor makes much sense), only `buildPlatform` is relevant.
+
+        Changing to another platform will cause the configuration to rebuild (and pushing an OTA if you have `autoUpdate.enable`d).
+      '';
+      type = types.str;
+      default = "x86_64-linux";
+    };
+    yaml = mkOption {
+      description = ''
+        The generated YAML configuration to be passed to `esphome run <device>.yaml`.
+      '';
+      type = types.package;
+    };
     frameworkVersion = mkOption {
       description = ''
         ESPHome version to use for compiling and updating this device.
@@ -130,4 +224,40 @@ in
       apply = cfg: lib.filterAttrsRecursive (_: val: val != null) cfg;
     };
   };
+
+  config.yaml =
+    let
+      pkgs = import inputs.nixpkgs { system = config.buildPlatform; };
+      deviceSettingsFormat = pkgs.formats.yaml { };
+
+      # borrowed from nixpkgs: https://github.com/NixOS/nixpkgs/blob/nixos-24.11/nixos/modules/services/home-automation/home-assistant.nix
+      #
+      # Post-process YAML output to add support for YAML functions, like
+      # secrets or includes, by naively unquoting strings with leading bangs
+      # and at least one space-separated parameter.
+      # https://www.home-assistant.io/docs/configuration/secrets/
+      renderDeviceSettingsFile =
+        fn: yaml:
+        pkgs.runCommandLocal fn { } ''
+          temp="${fn}"
+          cp ${deviceSettingsFormat.generate fn yaml} $temp
+          storeHash=$(sed -E 's/^\/nix\/store\/([0-9a-z]{32}).*$/\1/' <<<"$out")
+          ${lib.getExe pkgs.yq-go} -i ".esphome.project.version = \"$storeHash\"" $temp
+          sed -i -e "s/'\!\([a-z_]\+\) \(.*\)'/\!\1 \2/;s/^\!\!/\!/;" $temp
+
+          # generate fake secrets for validation
+          while IFS= read -r line; do
+            if [[ "$line" =~ !secret[[:space:]]+([^[:space:]]+) ]];then
+              value="''${BASH_REMATCH[1]}"
+              echo "''${value}: 12345678ABC" >> secrets.yaml
+            fi
+          done < "$temp"
+
+          # validate config
+          ${lib.getExe pkgs.esphome} config $temp || exit 1
+
+          cp $temp $out
+        '';
+    in
+    renderDeviceSettingsFile "${name}.yaml" config.settings;
 }

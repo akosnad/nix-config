@@ -9,7 +9,7 @@
 
   config.flake.modules.esphome."hosts/l-bokor-led" = {
     imports = with config.flake.modules.esphome; [
-      wifi-signal
+      wifi
     ];
 
     settings = {

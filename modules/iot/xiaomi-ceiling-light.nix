@@ -2,8 +2,8 @@
 {
   config.flake.modules.esphome.xiaomi-ceiling-light = {
     imports = with config.flake.modules.esphome; [
+      wifi
       xiaomi-remote
-      wifi-signal
     ];
 
     settings = {

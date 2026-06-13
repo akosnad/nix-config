@@ -9,7 +9,7 @@
 
   config.flake.modules.esphome."hosts/pavilon-sensor" = {
     imports = with config.flake.modules.esphome; [
-      wifi-signal
+      wifi
       bme280
     ];
 

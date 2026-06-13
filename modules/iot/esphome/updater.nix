@@ -1,6 +1,5 @@
 { lib, config, ... }:
 let
-  inherit (config.flake) devices;
   esphomeHosts = lib.mapAttrs (_: h: h.config) config.flake.esphomeHosts;
 in
 {
@@ -8,69 +7,6 @@ in
     { pkgs, lib, config, ... }:
     let
       dockerImage = "ghcr.io/esphome/esphome";
-      cfg = config.services.esphome-updater;
-      deviceSettingsFormat = pkgs.formats.yaml { };
-
-      # TODO: reuse YAML generation logic from ./generate-yaml-config.nix
-      # eg. have the package be available in `esphomeHosts.<name>.yaml` option,
-      # then reference that package here instead of regenerating it
-
-      defaultSettings =
-        name:
-        lib.recursiveUpdate
-          {
-            esphome = {
-              inherit name;
-              project.name = "akosnad.nix-config";
-            };
-            wifi = {
-              ssid = "!secret wifi_ssid";
-              password = "!secret wifi_pass";
-              domain = ".${config.networking.domain}";
-            };
-            ota = {
-              platform = "esphome";
-              password = "!secret ota_pass";
-            };
-            logger = { };
-            api = { };
-          }
-          (
-            if lib.hasAttr name devices then
-              {
-                wifi.manual_ip = {
-                  static_ip = devices."${name}".ip;
-                  subnet = "255.0.0.0";
-                  gateway = devices.gaia.ip;
-                  dns1 = devices.gaia.ip;
-                };
-              }
-            else
-              { }
-          );
-
-      # borrowed from nixpkgs: https://github.com/NixOS/nixpkgs/blob/nixos-24.11/nixos/modules/services/home-automation/home-assistant.nix
-      #
-      # Post-process YAML output to add support for YAML functions, like
-      # secrets or includes, by naively unquoting strings with leading bangs
-      # and at least one space-separated parameter.
-      # https://www.home-assistant.io/docs/configuration/secrets/
-      renderDeviceSettingsFile =
-        fn: yaml:
-        pkgs.runCommandLocal fn { } ''
-          temp=$(mktemp)
-          cp ${deviceSettingsFormat.generate fn yaml} $temp
-          storeHash=$(sed -E 's/^\/nix\/store\/([0-9a-z]{32}).*$/\1/' <<<"$out")
-          ${lib.getExe pkgs.yq-go} -i ".esphome.project.version = \"$storeHash\"" $temp
-          sed -i -e "s/'\!\([a-z_]\+\) \(.*\)'/\!\1 \2/;s/^\!\!/\!/;" $temp
-          cp $temp $out
-        '';
-
-      settingFiles = lib.pipe cfg.configurations [
-        (lib.mapAttrs (name: cfg: lib.recursiveUpdate (defaultSettings name) cfg.settings))
-        (lib.mapAttrs (name: cfg: renderDeviceSettingsFile "${name}.yaml" cfg))
-        (lib.mapAttrs' (name: cfg: lib.nameValuePair "${name}.yaml" cfg))
-      ];
 
       firmwareUpdateScript = pkgs.writeShellApplication {
         name = "esphome-update-device";
@@ -89,6 +25,8 @@ in
           ${lib.getExe config.virtualisation.docker.package} \
             run --rm --network=host \
             -v "$PWD":/config \
+            -v "$PWD"/.platformio:/root/.platformio \
+            -v "$PWD"/.cache:/root/.cache \
             ${dockerImage}:"$2" \
             run --no-logs "$1"
         '';
@@ -132,7 +70,8 @@ in
       mkUpdateService =
         name: cfg:
         let
-          mkIfNotScheduled = lib.mkIf (builtins.isNull cfg.autoUpdate.schedule);
+          mkIfNotScheduled = lib.mkIf (isNull cfg.autoUpdate.schedule);
+          frameworkVersion = if isNull cfg.frameworkVersion then pkgs.esphome.version else cfg.frameworkVersion;
         in
         lib.mkIf cfg.autoUpdate.enable {
           description = "ESPHome firmware updater for ${name}";
@@ -154,9 +93,9 @@ in
           serviceConfig = {
             Type = "oneshot";
             RemainAfterExit = true;
-            ExecCondition = "${lib.getExe updateConditionScript} ${name} ${cfg.frameworkVersion}";
-            ExecStartPre = "${lib.getExe preUpdateScript} ${cfg.frameworkVersion}";
-            ExecStart = "${lib.getExe firmwareUpdateScript} ${name}.yaml ${cfg.frameworkVersion}";
+            ExecCondition = "${lib.getExe updateConditionScript} ${name} ${frameworkVersion}";
+            ExecStartPre = "${lib.getExe preUpdateScript} ${frameworkVersion}";
+            ExecStart = "${lib.getExe firmwareUpdateScript} ${name}.yaml ${frameworkVersion}";
             WorkingDirectory = "/var/lib/esphome";
             StateDirectory = "esphome";
             StateDirectoryMode = "0750";
@@ -168,7 +107,7 @@ in
 
       mkUpdateTimer =
         name: cfg:
-        lib.mkIf (!(builtins.isNull cfg.autoUpdate.schedule)) {
+        lib.mkIf (!(isNull cfg.autoUpdate.schedule)) {
           description = "Scheduled ESPHome firmware update for ${name}";
           wantedBy = [ "multi-user.target" ];
           timerConfig = {
@@ -183,31 +122,22 @@ in
           (
             name: cfg: lib.nameValuePair "esphome-update-${name}" (mapFn name cfg)
           )
-          cfg.configurations;
+          esphomeHosts;
     in
     {
       config = lib.mkIf config.services.esphome-updater.enable {
         virtualisation.docker.enable = true;
-        services.esphome-updater.configurations = lib.flip lib.mapAttrs esphomeHosts (
-          _: cfg:
-            lib.recursiveUpdate cfg (
-              if builtins.isNull cfg.frameworkVersion then
-                { frameworkVersion = config.services.esphome.package.version; }
-              else
-                { }
-            )
-        );
 
         environment.etc = lib.mapAttrs'
           (
-            target: source:
-              lib.nameValuePair "esphome/${target}" {
-                inherit source;
+            name: c:
+              lib.nameValuePair "esphome/${name}.yaml" {
+                source = c.yaml;
                 user = "esphome";
                 group = "esphome";
               }
           )
-          settingFiles;
+          esphomeHosts;
 
         systemd.services = mkSystemdUnits mkUpdateService;
         systemd.timers = mkSystemdUnits mkUpdateTimer;
@@ -223,5 +153,7 @@ in
       format = "binary";
       sopsFile = ./secrets.yaml;
     };
+
+    environment.persistence."/persist".directories = [ "/var/lib/esphome" ];
   };
 }

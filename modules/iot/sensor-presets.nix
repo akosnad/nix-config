@@ -1,12 +1,5 @@
 {
   config.flake.modules.esphome = {
-    wifi-signal = {
-      settings.sensor = [{
-        platform = "wifi_signal";
-        name = "Signal";
-        update_interval = "10s";
-      }];
-    };
     bh1750 = {
       settings.sensor = [{
         platform = "bh1750";

@@ -10,7 +10,7 @@
 
   config.flake.modules.esphome."hosts/l-desk" = {
     imports = with config.flake.modules.esphome; [
-      wifi-signal
+      wifi
     ];
 
     settings = {
