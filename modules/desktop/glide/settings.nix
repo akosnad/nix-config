@@ -12,6 +12,8 @@
 
         # allow running unsigned extensions.
         "xpinstall.signatures.required" = false;
+        # don't overwrite extensions installed by nix
+        "extensions.update.enabled" = false;
 
         # disable sync storage for addons;
         # forcing them to use local storage where
