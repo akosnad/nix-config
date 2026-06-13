@@ -177,6 +177,23 @@
         "type": "github"
       }
     },
+    "esphome-yeelight-ceiling-light": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1737197564,
+        "narHash": "sha256-ANnu8Bj08INSp/YDFrACmpL3j7pAjbHe4MbxNjy47fg=",
+        "owner": "syssi",
+        "repo": "esphome-yeelight-ceiling-light",
+        "rev": "3331ac9700819ec29a9fb8d42240153f894c31f8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "syssi",
+        "repo": "esphome-yeelight-ceiling-light",
+        "rev": "3331ac9700819ec29a9fb8d42240153f894c31f8",
+        "type": "github"
+      }
+    },
     "firefox-gnome-theme": {
       "flake": false,
       "locked": {
@@ -909,6 +926,7 @@
         "buildbot-nix": "buildbot-nix",
         "disko": "disko",
         "disko-zfs": "disko-zfs",
+        "esphome-yeelight-ceiling-light": "esphome-yeelight-ceiling-light",
         "flake-parts": "flake-parts",
         "glide": "glide",
         "hardware": "hardware",

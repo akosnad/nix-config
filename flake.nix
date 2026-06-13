@@ -105,6 +105,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
+
+    esphome-yeelight-ceiling-light = {
+      url = "github:syssi/esphome-yeelight-ceiling-light/3331ac9700819ec29a9fb8d42240153f894c31f8";
+      flake = false;
+    };
   };
 
   outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);

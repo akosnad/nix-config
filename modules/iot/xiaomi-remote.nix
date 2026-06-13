@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, inputs, ... }:
 let
   inherit (lib) mkOption types;
 
@@ -53,11 +53,9 @@ in
       external_components = [
         {
           source = {
-            type = "git";
-            url = "https://github.com/syssi/esphome-yeelight-ceiling-light";
-            ref = "3331ac9700819ec29a9fb8d42240153f894c31f8";
+            type = "local";
+            path = "${inputs.esphome-yeelight-ceiling-light.outPath}/components";
           };
-          refresh = "never";
         }
       ];
       esp32_ble_tracker.scan_parameters = {
