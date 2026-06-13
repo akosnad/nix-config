@@ -53,17 +53,27 @@
       };
     };
 
-    system.activationScripts.link-themes = {
-      deps = [ "specialfs" ];
-      text = /* bash */ ''
-        if [ -e $systemConfig/specialisation/light ]; then
-          echo linking system themes...
-          rm -rf /run/theme
-          mkdir -p /run/theme
-          ln -sfv $systemConfig/specialisation/light /run/theme/light
-          ln -sfv $systemConfig /run/theme/dark
-        fi
-      '';
+    system.activationScripts = lib.mkIf config.stylix.enable {
+      link-themes = {
+        deps = [ "specialfs" ];
+        text = /* bash */ ''
+          if [ -e $systemConfig/specialisation/light ]; then
+            echo linking system themes...
+            rm -rf /run/theme
+            mkdir -p /run/theme
+            ln -sfv $systemConfig/specialisation/light /run/theme/light
+            ln -sfv $systemConfig /run/theme/dark
+          fi
+        '';
+      };
     };
+
+    environment.etc."stylix/polarity".text = config.stylix.polarity;
+
+    security.sudo.extraConfig = lib.mkIf config.stylix.enable ''
+      # allow users to change system theme
+      %users ALL=(root) NOPASSWD: /run/theme/dark/bin/switch-to-configuration test
+      %users ALL=(root) NOPASSWD: /run/theme/light/bin/switch-to-configuration test
+    '';
   };
 }

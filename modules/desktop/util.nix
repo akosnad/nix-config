@@ -22,6 +22,18 @@
           systemctl --user --wait start wallpaper.service
         '')
 
+        (writeShellScriptBin "toggle-theme" ''
+          mapfile -t polarity </etc/stylix/polarity
+          if [[ "$polarity" == "dark" ]]; then
+            target="light"
+          elif [[ "$polarity" == "light" ]]; then
+            target="dark"
+          else
+            exit 0
+          fi
+          sudo /run/theme/"$target"/bin/switch-to-configuration test
+        '')
+
         (writeShellScriptBin "toggle-gammastep" ''
           state="$(systemctl is-active --user gammastep)"
 
