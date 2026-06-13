@@ -214,7 +214,7 @@ in
 
           # screen brightness
           "XF86MonBrightnessUp".action.spawn = [ (lib.getExe pkgs.brightnessctl) "-c" "backlight" "set" "+5%" ];
-          "XF86MonBrightnessDown".action.spawn = [ (lib.getExe pkgs.brightnessctl) "-c" "backlight" "set" "-5%" ];
+          "XF86MonBrightnessDown".action.spawn = [ (lib.getExe pkgs.brightnessctl) "-c" "backlight" "set" "5%-" ];
         };
       };
     };
