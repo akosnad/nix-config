@@ -15,6 +15,7 @@
       xiaomi-ceiling-light
     ];
 
+    hostPlatform = "esp32";
     settings = {
       esphome.friendly_name = "Arwen";
       esp32 = {

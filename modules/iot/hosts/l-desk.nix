@@ -13,6 +13,7 @@
       wifi
     ];
 
+    hostPlatform = "esp8266";
     settings = {
       esphome.friendly_name = "Ákos asztali lámpa";
       esp8266.board = "esp8285";

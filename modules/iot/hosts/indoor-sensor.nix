@@ -14,6 +14,7 @@
       ens160
     ];
 
+    hostPlatform = "esp8266";
     settings = {
       esphome.friendly_name = "Előszoba szenzor";
       esp8266.board = "d1_mini";

@@ -12,6 +12,7 @@
       wifi
     ];
 
+    hostPlatform = "esp32";
     settings = {
       esphome.friendly_name = "Előszoba bokor";
       esp32 = {

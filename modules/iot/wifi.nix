@@ -3,13 +3,14 @@ let
   devices = config.flake.devices;
 in
 {
-  flake.modules.esphome.wifi = { name, ... }:
+  flake.modules.esphome.wifi = { name, config, ... }:
     let
       isLocalDevice = lib.hasAttr name devices;
     in
     {
       settings = {
         wifi = {
+          min_auth_mode = lib.mkIf ({ esp32 = true; esp8266 = true; }.${config.hostPlatform} or false) "WPA2";
           ssid = "!secret wifi_ssid";
           password = "!secret wifi_pass";
           domain = ".home.arpa";

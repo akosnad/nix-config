@@ -13,6 +13,7 @@
       grow-fp-reader
     ];
 
+    hostPlatform = "esp32";
     fp-reader = {
       sensing_pin = 27;
       tx_pin = 32;

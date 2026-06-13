@@ -13,6 +13,7 @@
       wifi
     ];
 
+    hostPlatform = "bk72xx";
     settings = {
       esphome.friendly_name = "Pavilon LED";
       bk72xx.board = "generic-bk7231t-qfn32-tuya";

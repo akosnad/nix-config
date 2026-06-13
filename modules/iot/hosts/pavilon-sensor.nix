@@ -13,6 +13,7 @@
       bme280
     ];
 
+    hostPlatform = "esp32";
     settings = {
       esphome.friendly_name = "Pavilon szenzor";
       esp32 = {

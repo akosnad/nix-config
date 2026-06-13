@@ -13,6 +13,7 @@
       xiaomi-ceiling-light
     ];
 
+    hostPlatform = "esp32";
     settings = {
       esphome.friendly_name = "Előszoba lámpa";
       esp32 = {

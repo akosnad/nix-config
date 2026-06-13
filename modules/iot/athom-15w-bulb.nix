@@ -16,6 +16,7 @@ in
     };
 
     config = {
+      hostPlatform = "esp8266";
       settings = {
         esp8266 = {
           board = "esp8285";

@@ -20,6 +20,7 @@ let
       w5500
     ];
 
+    hostPlatform = "esp32";
     settings = {
       esphome.friendly_name = "Riasztó";
       esp32 = {

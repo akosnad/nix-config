@@ -12,6 +12,7 @@
       wifi
     ];
 
+    hostPlatform = "esp32";
     settings = {
       esphome.friendly_name = "Hades controller";
       esp32 = {

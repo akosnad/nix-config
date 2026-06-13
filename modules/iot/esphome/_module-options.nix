@@ -1,4 +1,4 @@
-{ lib, config, name, inputs, ... }:
+{ lib, config, options, name, inputs, ... }:
 let
   inherit (lib) mkOption types;
 
@@ -98,6 +98,9 @@ let
       manual_ip = mkOption {
         type = types.nullOr types.attrs;
       };
+      min_auth_mode = mkOption {
+        type = types.nullOr types.str;
+      };
     };
   };
 
@@ -148,16 +151,30 @@ let
 in
 {
   options = {
+    hostPlatform = mkOption {
+      description = ''
+        The platform of the device running ESPHome firmware.
+
+        Naming is analogous to the NixOS option `nixpkgs.hostPlatform`, but the format is obviously different.
+        Nixpkgs can't recognize microcontroller platforms - maybe one day. ;)
+
+        Refer to https://esphome.io/components/#supported-microcontrollers for a list of supported values.
+
+        See also {opt}`${options.buildPlatform}`.
+      '';
+      type = types.enum [ "host" "esp32" "esp8266" "rp2040" "bk72xx" "rtl87xx" "ln882x" "nrf52" ];
+    };
     buildPlatform = mkOption {
       description = ''
-        The build host platform. More specifically, the system that will run ESPHome code generation and compilation.
+        The build platform. More specifically, the system that runs ESPHome code generation and compilation.
 
-        This is in the same spirit as with NixOS configurations; just like the option `nixpkgs.buildPlatform`.
+        This is in the same spirit as with NixOS configurations: the option `nixpkgs.buildPlatform`.
         Note that usually `buildPlatform == hostPlatform` holds for NixOS configurations, and if they differ,
-        that implies the system is cross-compiled. In the case of ESPHome hosts, cross compilation is always the case,
-        because `hostPlatform` isn't defined (nor makes much sense), only `buildPlatform` is relevant.
+        that implies the system is cross-compiled. In the case of ESPHome hosts, cross compilation is always the case.
 
-        Changing to another platform will cause the configuration to rebuild (and pushing an OTA if you have `autoUpdate.enable`d).
+        Changing to another platform will cause the configuration to rebuild (and pushing an OTA if you have {opt}`${options.autoUpdate.enable}`d).
+
+        See also {opt}`${options.hostPlatform}`.
       '';
       type = types.str;
       default = "x86_64-linux";
