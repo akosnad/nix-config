@@ -34,6 +34,13 @@ let
         };
       };
 
+      # higher flash wear, but better resistance
+      # to tampering attempts trying to disable the alarm
+      # (state is persisted immediately on change)
+      preferences.flash_write_interval = "10ms";
+
+      api.reboot_timeout = "1min";
+
       ethernet = {
         clk_pin = 18;
         mosi_pin = 19;

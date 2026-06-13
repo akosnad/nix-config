@@ -26,6 +26,34 @@ let
     };
   };
 
+  ota = {
+    freeformType = types.attrs;
+    options = {
+      platform = mkOption {
+        type = types.enum [ "esphome" "web_server" "http_request" "zephyr_mcumgr" ];
+      };
+      password = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+      };
+    };
+  };
+
+  logger = {
+    freeformType = types.attrs;
+    options = { };
+  };
+
+  api = {
+    freeformType = types.attrs;
+    options = {
+      reboot_timeout = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+      };
+    };
+  };
+
   sensor = {
     freeformType = types.attrs;
     options = {
@@ -124,6 +152,18 @@ let
     options = {
       esphome = mkOption {
         type = types.submodule esphome;
+        apply = cfg: if cfg == null then null else (lib.filterAttrsRecursive (_: val: val != null) cfg);
+      };
+      ota = mkOption {
+        type = types.nullOr (types.submodule ota);
+        apply = cfg: if cfg == null then null else (lib.filterAttrsRecursive (_: val: val != null) cfg);
+      };
+      logger = mkOption {
+        type = types.nullOr (types.submodule logger);
+        apply = cfg: if cfg == null then null else (lib.filterAttrsRecursive (_: val: val != null) cfg);
+      };
+      api = mkOption {
+        type = types.nullOr (types.submodule api);
         apply = cfg: if cfg == null then null else (lib.filterAttrsRecursive (_: val: val != null) cfg);
       };
       sensor = mkOption {
