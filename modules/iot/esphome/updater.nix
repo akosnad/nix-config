@@ -24,6 +24,7 @@ in
           cp /etc/esphome/"$1" ./"$1"
           ${lib.getExe config.virtualisation.docker.package} \
             run --rm --network=host \
+            --mount "type=bind,source=/nix/store,target=/nix/store,readonly" \
             -v "$PWD":/config \
             -v "$PWD"/.platformio:/root/.platformio \
             -v "$PWD"/.cache:/root/.cache \
