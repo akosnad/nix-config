@@ -12,7 +12,7 @@
     };
 
     stylix.targets.glide-browser = {
-      colorTheme.enable = true;
+      glideNativeColors.enable = true;
       profileNames = [ "personal" ];
     };
 
