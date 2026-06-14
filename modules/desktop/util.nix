@@ -8,8 +8,8 @@
       home.packages = [
         (writeShellScriptBin "wofi-launch" ''
           # if wofi is running, close it
-          if [ $(pgrep wofi) ]; then
-              kill $(pidof wofi)
+          if [ $(pgrep -x .wofi-wrapped) ]; then
+              pkill -x .wofi-wrapped
           # if not running, launch it
           else
               export QT_QPA_PLATFORM="wayland"
