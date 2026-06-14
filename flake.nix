@@ -31,9 +31,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    tinted-schemes = {
+      url = "github:tinted-theming/schemes";
+      flake = false;
+    };
+
     stylix = {
       url = "github:/nix-community/stylix/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.tinted-schemes.follows = "tinted-schemes";
     };
 
     spicetify = {

@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ inputs, config, lib, ... }:
 {
   flake.devices.kratos = {
     info = "Ryzen 3600X, 32GB RAM, Radeon 7800XT";
@@ -6,7 +6,7 @@
     ip = "10.2.0.1";
   };
 
-  flake.modules.nixos."hosts/kratos" = { pkgs, ... }: {
+  flake.modules.nixos."hosts/kratos" = {
     imports =
       with config.flake.modules.nixos;
       [
@@ -59,8 +59,8 @@
 
     sops.secrets.restic-persist-password.sopsFile = ./secrets.yaml;
 
-    stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/equilibrium-gray-dark.yaml";
-    specialisation.light.configuration.stylix.base16Scheme = lib.mkForce "${pkgs.base16-schemes}/share/themes/equilibrium-gray-light.yaml";
+    stylix.base16Scheme = "${inputs.tinted-schemes}/base16/chinoiserie-midnight.yaml";
+    specialisation.light.configuration.stylix.base16Scheme = lib.mkForce "${inputs.tinted-schemes}/base16/chinoiserie.yaml";
 
     # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
     system.stateVersion = "23.11";

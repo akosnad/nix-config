@@ -945,6 +945,7 @@
         "sops-nix": "sops-nix",
         "spicetify": "spicetify",
         "stylix": "stylix",
+        "tinted-schemes": "tinted-schemes",
         "treefmt-nix": "treefmt-nix",
         "vscode-extensions": "vscode-extensions",
         "vscode-server": "vscode-server"
@@ -1048,7 +1049,9 @@
         "nur": "nur_2",
         "systems": "systems_3",
         "tinted-kitty": "tinted-kitty",
-        "tinted-schemes": "tinted-schemes",
+        "tinted-schemes": [
+          "tinted-schemes"
+        ],
         "tinted-tmux": "tinted-tmux",
         "tinted-zed": "tinted-zed"
       },
