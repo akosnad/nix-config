@@ -7,7 +7,7 @@ in
     let
       inherit (config.networking) domain;
 
-      ffmpegCuda = pkgs.ffmpeg-headless.override {
+      ffmpegCuda = pkgs.ffmpeg_6-headless.override {
         withCudaLLVM = true;
         withNvdec = true;
         withNvenc = true;
@@ -17,24 +17,35 @@ in
       services.frigate = {
         enable = true;
         hostname = "frigate";
-        settings = {
+        vaapiDriver = "nvidia";
+        settings = rec {
           auth.enabled = false;
+          proxy.default_role = "admin";
           mqtt = {
             enabled = true;
             host = "gaia.${domain}";
             port = 1883;
             stats_interval = 30;
           };
-          ffmpeg.hwaccel_args = "preset-nvidia";
+          ffmpeg = {
+            path = ffmpegCuda;
+            hwaccel_args = "preset-nvidia";
+          };
           cameras = {
             arges = {
               ffmpeg = {
                 input_args = "preset-rtsp-restream";
                 output_args.record = "preset-record-generic-audio-aac";
-                inputs = [{
-                  path = "rtsp://127.0.0.1:8554/arges";
-                  roles = [ "audio" "detect" "record" ];
-                }];
+                inputs = [
+                  {
+                    path = "rtsp://127.0.0.1:8554/arges";
+                    roles = [ "record" "audio" ];
+                  }
+                  {
+                    path = "rtsp://127.0.0.1:8554/arges_sub";
+                    roles = [ "detect" ];
+                  }
+                ];
               };
               live.streams.main_stream = "arges";
               zones = {
@@ -46,6 +57,7 @@ in
               };
               review.alerts = {
                 required_zones = [ "inside-gate" ];
+                labels = [ "person" "car" ];
               };
               motion = {
                 threshold = 40;
@@ -64,10 +76,16 @@ in
               ffmpeg = {
                 input_args = "preset-rtsp-restream";
                 output_args.record = "preset-record-generic-audio-aac";
-                inputs = [{
-                  path = "rtsp://127.0.0.1:8554/brontes";
-                  roles = [ "audio" "detect" "record" ];
-                }];
+                inputs = [
+                  {
+                    path = "rtsp://127.0.0.1:8554/brontes";
+                    roles = [ "record" "audio" ];
+                  }
+                  {
+                    path = "rtsp://127.0.0.1:8554/brontes_sub";
+                    roles = [ "detect" ];
+                  }
+                ];
               };
               live.streams.main_stream = "brontes";
               zones = {
@@ -89,6 +107,7 @@ in
               };
               review.alerts = {
                 required_zones = [ "back-garden" ];
+                labels = [ "person" ];
               };
               motion = {
                 threshold = 40;
@@ -104,6 +123,44 @@ in
               };
             };
           };
+          detect = {
+            enabled = true;
+            fps = 5;
+          };
+          objects.track = [
+            "person"
+            "car"
+            "dog"
+            "cat"
+            "bird"
+          ];
+          detectors =
+            let
+              onnx = {
+                type = "onnx";
+                inherit model;
+              };
+            in
+            {
+              onnx_0 = onnx;
+              onnx_1 = onnx;
+            };
+          model = {
+            model_type = "yolo-generic";
+            width = 320;
+            height = 320;
+            input_tensor = "nchw";
+            input_dtype = "float";
+            input_pixel_format = "rgb";
+            path = "${pkgs.fetchFromGitHub {
+               owner = "negoti8za";
+               repo = "frigate-yolo";
+               rev = "b42a1a23d735547d0fb12e2bd95dc0444e24cbe2";
+               hash = "sha256-lHu0sTSpsEjFcaeERKAO1tmDfh28aZUAv5XyueAZaro=";
+            }}/yolov9_s_320_frigate_intel.onnx";
+            labelmap_path = ./coco-80.txt;
+          };
+          logger.default = "debug";
           record = {
             enabled = true;
             expire_interval = 120;
@@ -132,7 +189,6 @@ in
               "bark"
               "fire_alarm"
               "scream"
-              "speech"
               "yell"
             ];
           };
@@ -161,7 +217,9 @@ in
           ];
           streams = {
             arges = [ "ffmpeg:rtsp://frigate:\${ARGES_RTSP_PASSWORD}@arges.${domain}/media/video1#video=copy#audio=opus#audio=aac#hardware" ];
+            arges_sub = [ "ffmpeg:rtsp://frigate:\${ARGES_RTSP_PASSWORD}@arges.${domain}/media/video_sub#video=copy#audio=opus#audio=aac#hardware" ];
             brontes = [ "ffmpeg:rtsp://frigate:\${BRONTES_RTSP_PASSWORD}@brontes.${domain}/media/video1#video=copy#audio=opus#audio=aac#hardware" ];
+            brontes_sub = [ "ffmpeg:rtsp://frigate:\${BRONTES_RTSP_PASSWORD}@brontes.${domain}/media/video_sub#video=copy#audio=opus#audio=aac#hardware" ];
           };
         };
       };
@@ -215,16 +273,16 @@ in
           EnvironmentFile = config.sops.secrets.go2rtc-secrets.path;
           Restart = "always";
           RestartSec = "5s";
+          TimeoutStopSec = "5s";
         };
       };
       sops.secrets.go2rtc-secrets = {
-        sopsFile = ./secrets.yaml;
+        sopsFile = ../secrets.yaml;
       };
 
       systemd.services.frigate = {
         requires = [ "zfs.target" ];
         after = [ "zfs.target" ];
-        path = lib.mkBefore [ ffmpegCuda ];
       };
 
       networking.firewall = {
