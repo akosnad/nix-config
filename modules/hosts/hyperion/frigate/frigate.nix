@@ -134,17 +134,11 @@ in
             "cat"
             "bird"
           ];
-          detectors =
-            let
-              onnx = {
-                type = "onnx";
-                inherit model;
-              };
-            in
-            {
-              onnx_0 = onnx;
-              onnx_1 = onnx;
-            };
+          detectors.openvino = {
+            type = "openvino";
+            device = "GPU";
+            inherit model;
+          };
           model = {
             model_type = "yolo-generic";
             width = 320;
@@ -160,7 +154,6 @@ in
             }}/yolov9_s_320_frigate_intel.onnx";
             labelmap_path = ./coco-80.txt;
           };
-          logger.default = "debug";
           record = {
             enabled = true;
             expire_interval = 120;
