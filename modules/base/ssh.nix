@@ -51,10 +51,8 @@ in
       };
 
       # Passwordless sudo when SSH'ing with keys
-      security.pam.sshAgentAuth = {
-        enable = true;
-        authorizedKeysFiles = [ "/etc/ssh/authorized_keys.d/%u" ];
-      };
+      security.pam.sshAgentAuth.enable = true;
+      security.pam.services.sudo.sshAgentAuth = true;
 
       # Keep SSH_AUTH_SOCK when using sudo
       security.sudo.extraConfig = ''
@@ -77,6 +75,10 @@ in
               {
                 bind.address = ''/%d/.gnupg-sockets/S.gpg-agent'';
                 host.address = ''/%d/.gnupg-sockets/S.gpg-agent.extra'';
+              }
+              {
+                bind.address = ''/%d/.gnupg-sockets/S.gpg-agent.ssh'';
+                host.address = ''/%d/.gnupg-sockets/S.gpg-agent.ssh'';
               }
               {
                 bind.address = ''/%d/.waypipe/server.sock'';
