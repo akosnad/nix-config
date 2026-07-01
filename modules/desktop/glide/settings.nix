@@ -41,6 +41,12 @@
         "browser.startup.couldRestoreSession.count" = 2; # restore previous tabs promo
         "media.videocontrols.picture-in-picture.video-toggle.enabled" = false;
 
+        # new tab page unclutter
+        "browser.newtabpage.activity-stream.widgets.enabled" = false;
+        # even though we disabled widgets,
+        # weather is being requested in the background without this turned off
+        "browser.newtabpage.activity-stream.widgets.weather.enabled" = false;
+
         # disable autofill services
         "signon.rememberSignons" = false;
         "extensions.formautofill.creditCards.enabled" = false;
