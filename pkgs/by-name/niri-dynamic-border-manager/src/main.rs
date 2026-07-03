@@ -94,23 +94,31 @@ async fn main() -> anyhow::Result<()> {
     let mut workspace_windows: HashMap<u64, HashSet<u64>> = HashMap::new();
     let mut maximized_windows: HashSet<u64> = HashSet::new();
 
+    macro_rules! update_window {
+        ($window:ident) => {
+            if !$window.is_floating
+                && let Some(workspace_id) = $window.workspace_id
+            {
+                if let Some(windows) = workspace_windows.get_mut(&workspace_id) {
+                    windows.insert($window.id);
+                } else {
+                    let windows = {
+                        let mut set = HashSet::new();
+                        set.insert($window.id);
+                        set
+                    };
+                    workspace_windows.insert(workspace_id, windows);
+                }
+            }
+        };
+    }
+
     while let Some(frame) = event_connection.read_frame().await? {
         match frame {
             Frame::Event(Event::WindowsChanged { windows }) => {
                 workspace_windows.clear();
                 for window in windows.iter() {
-                    if let Some(workspace_id) = window.workspace_id {
-                        if let Some(windows) = workspace_windows.get_mut(&workspace_id) {
-                            windows.insert(window.id);
-                        } else {
-                            let windows = {
-                                let mut set = HashSet::new();
-                                set.insert(window.id);
-                                set
-                            };
-                            workspace_windows.insert(workspace_id, windows);
-                        }
-                    }
+                    update_window!(window);
                 }
                 eprintln!(
                     "windows_changed, workspace_windows: {workspace_windows:?}, maximized_windows: {maximized_windows:?}"
@@ -120,19 +128,7 @@ async fn main() -> anyhow::Result<()> {
                 for (_, windows) in workspace_windows.iter_mut() {
                     windows.remove(&window.id);
                 }
-
-                if let Some(workspace_id) = window.workspace_id {
-                    if let Some(windows) = workspace_windows.get_mut(&workspace_id) {
-                        windows.insert(window.id);
-                    } else {
-                        let windows = {
-                            let mut set = HashSet::new();
-                            set.insert(window.id);
-                            set
-                        };
-                        workspace_windows.insert(workspace_id, windows);
-                    }
-                }
+                update_window!(window);
                 let id = window.id;
                 eprintln!(
                     "window_opened_or_changed: {id}, workspace_windows: {workspace_windows:?}, maximized_windows: {maximized_windows:?}"
