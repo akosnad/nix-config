@@ -62,17 +62,39 @@ in
     };
   };
 
-  config.programs.glide-browser.profiles = mkIf cfg.glideNativeColors.enable (
-    genAttrs cfg.profileNames (_: {
-      glideTs = /* ts */ ''
-        const theme_path = '${pkgs.writers.writeJSON "theme.json" nativeTheme}'
-        glide.autocmds.create("ConfigLoaded", async () => {
-          const raw = await glide.fs.read(theme_path, 'utf8')
-          const theme = JSON.parse(raw)
-          console.log("updating browser theme to:", theme)
-          browser.theme.update(theme)
-        })
-      '';
-    })
-  );
+  config = {
+    home.file = mkIf cfg.glideNativeColors.enable (
+      genAttrs (map (x: ".config/glide/glide/${x}/glide/theme.json") cfg.profileNames) (_: {
+        source = pkgs.writers.writeJSON "theme.json" nativeTheme;
+      })
+    );
+
+    programs.glide-browser.profiles = mkIf cfg.glideNativeColors.enable (
+      genAttrs cfg.profileNames (profileName: {
+        glideTs = /* ts */ ''
+          const theme_path = 'theme.json'
+
+          async function load_theme() {
+            const raw = await glide.fs.read(theme_path, 'utf8')
+            const theme = JSON.parse(raw)
+            console.log("updating browser theme to:", theme)
+            browser.theme.update(theme)
+          }
+          glide.autocmds.create("ConfigLoaded", load_theme)
+
+          async function theme_change_watcher() {
+            try {
+              while(true) {
+                  await glide.process.execute("${lib.getExe' pkgs.inotify-tools "inotifywait"}", ['-P', '-e', 'attrib', '${config.xdg.configHome}/glide/glide/${profileName}/glide/theme.json'])
+                  await load_theme()
+              }
+            } catch (e) {
+              console.error(e)
+            }
+          }
+          glide.autocmds.create("WindowLoaded", theme_change_watcher)
+        '';
+      })
+    );
+  };
 }
