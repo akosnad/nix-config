@@ -35,7 +35,13 @@
           {
             port = 8883;
             omitPasswordAuth = true;
-            acl = [ "pattern readwrite #" ];
+            acl = [
+              # disallow creating zones in home assistant
+              "pattern deny owntracks/+/+/waypoints"
+              "pattern deny owntracks/+/+/waypoint"
+
+              "pattern readwrite #"
+            ];
             settings = tls;
           }
           {
