@@ -1,0 +1,110 @@
+{ lib, ... }:
+{
+  flake.modules.homeManager.desktop = { pkgs, ... }: {
+    vdirsyncer.enable = true;
+    programs.vdirsyncer.enable = true;
+
+    accounts = {
+      calendar = {
+        basePath = ".dav/calendars";
+        accounts = rec {
+          personal = {
+            primary = true;
+            remote = {
+              type = "caldav";
+              userName = "akosnad";
+              url = "https://dav.fzt.one/caldav/principal/akosnad/15995b03-0618-4950-8b82-cf155b5c4a47";
+              passwordCommand = [ (lib.getExe pkgs.sops) "decrypt" "--extract" "[\\\"dav-token\\\"]" "${./secrets.yaml}" ];
+            };
+            vdirsyncer = {
+              enable = true;
+              itemTypes = [ "VEVENT" ];
+            };
+            khal = {
+              enable = true;
+              color = "#3584e4";
+            };
+          };
+          personal_journal = {
+            inherit (personal) remote;
+            local.path = "/home/akos/.dav/journals/personal";
+            vdirsyncer = {
+              enable = true;
+              itemTypes = [ "VJOURNAL" "VTODO" ];
+            };
+          };
+
+          vill = {
+            inherit (personal) vdirsyncer;
+            remote = {
+              inherit (personal.remote) type userName passwordCommand;
+              url = "https://dav.fzt.one/caldav/principal/akosnad/bb594de4-cd57-4f63-a994-74afd2483a30";
+            };
+            khal = {
+              enable = true;
+              color = "#ff7800";
+            };
+          };
+          vill_journal = {
+            inherit (vill) remote;
+            local.path = "/home/akos/.dav/journals/vill";
+            vdirsyncer = {
+              enable = true;
+              itemTypes = [ "VJOURNAL" "VTODO" ];
+            };
+          };
+
+          work = {
+            inherit (personal) vdirsyncer;
+            remote = {
+              inherit (personal.remote) type userName passwordCommand;
+              url = "https://dav.fzt.one/caldav/principal/akosnad/7c21347d-38ca-49dd-95ba-64191736145e";
+            };
+            khal = {
+              enable = true;
+              color = "#deddda";
+            };
+          };
+          work_journal = {
+            inherit (vill) remote;
+            local.path = "/home/akos/.dav/journals/work";
+            vdirsyncer = {
+              enable = true;
+              itemTypes = [ "VJOURNAL" "VTODO" ];
+            };
+          };
+        };
+      };
+    };
+
+    xdg.configFile."fzf-vjour/config".text = ''
+      ROOT=~/.dav/journals
+      COLLECTION_LABELS="personal=personal;vill=vill;work=work"
+      SYNC_CMD="vdirsyncer sync"
+    '';
+    home.packages = [ pkgs.fzf-vjour ];
+
+    programs.zsh.shellAliases = {
+      n = "fzf-vjour";
+      c = "khal";
+      ic = "ikhal";
+    };
+
+    home.persistence."/persist".directories = [
+      {
+        directory = ".dav";
+        mode = "u=rwx,g=,o=";
+      }
+      {
+        directory = ".local/share/vdirsyncer";
+        mode = "u=rwx,g=,o=";
+      }
+    ];
+  };
+
+  flake.modules.nixos.desktop = {
+    services.restic.backups.persist.exclude = [
+      "/persist/home/akos/.dav"
+    ];
+  };
+}
