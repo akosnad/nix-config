@@ -14,6 +14,7 @@
       postgres
       arion
       docker-watchtower
+      dav
     ] ++ [{
       home-manager.users.akos = {
         imports = with config.flake.modules.homeManager; [
