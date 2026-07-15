@@ -73,6 +73,19 @@
               itemTypes = [ "VJOURNAL" "VTODO" ];
             };
           };
+
+          holidays = {
+            remote = {
+              type = "http";
+              url = "https://calendar.google.com/calendar/ical/en.hungarian%23holiday%40group.v.calendar.google.com/public/basic.ics";
+            };
+            vdirsyncer.enable = true;
+            khal = {
+              enable = true;
+              readOnly = true;
+              color = "#e01b24";
+            };
+          };
         };
       };
     };
