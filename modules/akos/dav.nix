@@ -23,6 +23,7 @@
             khal = {
               enable = true;
               color = "#3584e4";
+              priority = 100;
             };
           };
           personal_journal = {
@@ -43,6 +44,7 @@
             khal = {
               enable = true;
               color = "#ff7800";
+              priority = 80;
             };
           };
           vill_journal = {
@@ -63,6 +65,7 @@
             khal = {
               enable = true;
               color = "#deddda";
+              priority = 50;
             };
           };
           work_journal = {
@@ -79,11 +82,62 @@
               type = "http";
               url = "https://calendar.google.com/calendar/ical/en.hungarian%23holiday%40group.v.calendar.google.com/public/basic.ics";
             };
-            vdirsyncer.enable = true;
+            vdirsyncer = {
+              enable = true;
+              conflictResolution = "remote wins";
+            };
             khal = {
               enable = true;
               readOnly = true;
               color = "#e01b24";
+              priority = 40;
+            };
+          };
+
+          bdays = {
+            remote = {
+              inherit (personal.remote) type userName passwordCommand;
+              url = "https://dav.fzt.one/caldav/principal/akosnad/_birthdays_e3dfe17a-66dd-459d-9aa6-a3f63c25addd";
+            };
+            vdirsyncer = {
+              enable = true;
+              conflictResolution = "remote wins";
+            };
+            khal = {
+              enable = true;
+              readOnly = true;
+              color = "#33d17a";
+              priority = 30;
+            };
+          };
+        };
+      };
+
+      contact = {
+        basePath = ".dav/contacts";
+        accounts = rec {
+          personal = {
+            remote = {
+              type = "carddav";
+              userName = "akosnad";
+              url = "https://dav.fzt.one/carddav/principal/akosnad/e3dfe17a-66dd-459d-9aa6-a3f63c25addd";
+              passwordCommand = [ (lib.getExe pkgs.sops) "decrypt" "--extract" "[\\\"dav-token\\\"]" "${./secrets.yaml}" ];
+            };
+            vdirsyncer.enable = true;
+            khard.enable = true;
+          };
+          vill = {
+            inherit (personal) vdirsyncer khard;
+            remote = {
+              inherit (personal.remote) type userName passwordCommand;
+              url = "https://dav.fzt.one/carddav/principal/akosnad/763cb978-a37a-474f-b8c3-4fd319dcecdd";
+            };
+          };
+          work = {
+            inherit (personal) vdirsyncer khard;
+            remote = {
+              inherit (personal.remote) type userName passwordCommand;
+              url = "https://dav.fzt.one/carddav/principal/akosnad/15f97346-e1b2-43a1-acc4-15962404c6a8";
             };
           };
         };
@@ -98,9 +152,10 @@
     home.packages = [ pkgs.fzf-vjour ];
 
     programs.zsh.shellAliases = {
-      n = "fzf-vjour";
+      note = "fzf-vjour";
       c = "khal";
       ic = "ikhal";
+      co = "khard";
     };
 
     home.persistence."/persist".directories = [
