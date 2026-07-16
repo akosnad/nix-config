@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos."hosts/hyperion" = _: {
+  flake.modules.nixos."hosts/hyperion" = {
     users.users.backup = {
       isSystemUser = true;
       useDefaultShell = true; # allow login
@@ -20,5 +20,17 @@
         X11Forwarding no
         PermitTTY no
     '';
+
+    services.webdav = {
+      enable = true;
+      settings = {
+        address = "0.0.0.0";
+        port = 8868;
+        directory = "/backup";
+        permissions = "RCU";
+      };
+    };
+    networking.firewall.allowedTCPPorts = [ 8868 ];
+    users.users.webdav.extraGroups = [ "backup" ];
   };
 }
