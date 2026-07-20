@@ -24,7 +24,10 @@
           "plugdev"
         ];
 
-        openssh.authorizedKeys.keyFiles = [ "${gpgKey}/ssh.pub" ];
+        openssh.authorizedKeys = {
+          keyFiles = [ "${gpgKey}/ssh.pub" ];
+          keys = [ "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIBju9jQYjNejjoFGYklvTCkw21KaJBSZVQ7zzZ1MT+PGAAAABHNzaDo= akos@yubikey" ];
+        };
         hashedPasswordFile = config.sops.secrets.akos-password.path;
       };
 
