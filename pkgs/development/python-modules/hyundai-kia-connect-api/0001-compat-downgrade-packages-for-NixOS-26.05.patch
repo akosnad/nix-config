@@ -1,0 +1,25 @@
+From 93f4a01e8ba089317e3ba8dc236a21c5a50da7f8 Mon Sep 17 00:00:00 2001
+From: akosnad <akos@nadudvari.org>
+Date: Sun, 26 Jul 2026 11:37:15 +0200
+Subject: [PATCH] compat: downgrade packages for NixOS 26.05
+
+---
+ requirements.txt | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/requirements.txt b/requirements.txt
+index 3144f28..e4ccad5 100644
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -1,5 +1,5 @@
+-beautifulsoup4>=4.15.0
++beautifulsoup4>=4.14.3
+ requests
+-certifi>=2026.6.17
+-tzdata>=2026.3
++certifi>=2026.1.4
++tzdata>=2026.2
+ pycryptodome>=3.23.0
+-- 
+2.54.0
+

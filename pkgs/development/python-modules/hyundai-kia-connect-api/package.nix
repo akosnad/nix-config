@@ -5,6 +5,7 @@
 , certifi
 , requests
 , tzdata
+, pycryptodome
 , fetchFromGitHub
 , nix-update-script
 ,
@@ -12,7 +13,7 @@
 
 buildPythonPackage (finalAttrs: {
   pname = "hyundai-kia-connect-api";
-  version = "4.9.0";
+  version = "4.25.2";
   pyproject = true;
   __structuredAttrs = true;
 
@@ -20,8 +21,12 @@ buildPythonPackage (finalAttrs: {
     owner = "Hyundai-Kia-Connect";
     repo = "hyundai_kia_connect_api";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-scjJf7dpX6e75XCKO+jEl1ddl5c9fmG/FtHtkMF9CLQ=";
+    hash = "sha256-vnozDW1hSJ4491l0Yg0UAGmNokB40tl28DlG7a+sdQg=";
   };
+
+  patches = [
+    ./0001-compat-downgrade-packages-for-NixOS-26.05.patch
+  ];
 
   build-system = [
     setuptools
@@ -32,6 +37,7 @@ buildPythonPackage (finalAttrs: {
     certifi
     requests
     tzdata
+    pycryptodome
   ];
 
   pythonImportsCheck = [

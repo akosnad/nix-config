@@ -8,13 +8,13 @@
 buildHomeAssistantComponent (finalAttrs: {
   owner = "Hyundai-Kia-Connect";
   domain = "kia_uvo";
-  version = "2.54.0";
+  version = "3.8.0";
 
   src = fetchFromGitHub {
     inherit (finalAttrs) owner;
     repo = finalAttrs.domain;
     tag = "v${finalAttrs.version}";
-    hash = "sha256-Qyeo6SoMATmnMSr4OmZVqf+iHbMPAcKUOC78dvuzFro=";
+    hash = "sha256-/nBthSkhtRah/R0/ANLqrGebzQhgsRy/CDgJ5FyLCok=";
   };
 
   dependencies = [ hyundai-kia-connect-api ];
