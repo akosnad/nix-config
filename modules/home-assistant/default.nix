@@ -81,6 +81,7 @@ in
           frigate
           webrtc-camera
           adaptive_lighting
+          kia-uvo
         ];
         customThemes = with pkgs.home-assistant-custom-themes; [
           google
