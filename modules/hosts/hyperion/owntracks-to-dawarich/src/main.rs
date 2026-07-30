@@ -2,7 +2,7 @@ use rumqttc::v5::{
     AsyncClient, Event, MqttOptions,
     mqttbytes::{QoS, v5::Packet},
 };
-use serde_json::Value;
+use serde_json::{Number, Value};
 use std::{collections::HashMap, env, path::PathBuf, time::Duration};
 use tokio::{
     io::{AsyncBufReadExt, BufReader},
@@ -95,7 +95,7 @@ async fn main() -> anyhow::Result<()> {
                         "Received message from device {device} belonging to user {user} with payload: {payload}"
                     );
                     match serde_json::from_str::<Value>(&payload) {
-                        Ok(val) if val.is_object() => {
+                        Ok(mut val) if val.is_object() => {
                             let url_with_token = {
                                 let token = match user_api_keys.get_api_key(user.to_string()) {
                                     Ok(key) => key,
@@ -106,7 +106,14 @@ async fn main() -> anyhow::Result<()> {
                                 };
                                 format!("{url}?api_key={token}")
                             };
+
+                            if let Some(speed) = val.get_mut("vel") {
+                                if let Some(s) = speed.as_f64() {
+                                    *speed = Value::Number(Number::from_f64(s / 3.6).unwrap())
+                                };
+                            }
                             log::debug!("parsed payload: {val:?}");
+
                             loop {
                                 let res = client
                                     .post(url_with_token.clone())
