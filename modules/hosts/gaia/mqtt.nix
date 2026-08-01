@@ -45,6 +45,16 @@
             settings = tls;
           }
           {
+            port = 8884;
+            omitPasswordAuth = true;
+            acl = [ "pattern readwrite tracker/#" ];
+            settings = tls // {
+              cafile = config.sops.secrets.mosquitto-cafile-alt.path;
+              certfile = config.sops.secrets.mosquitto-certfile-alt.path;
+              keyfile = config.sops.secrets.mosquitto-keyfile-alt.path;
+            };
+          }
+          {
             port = 8084;
             omitPasswordAuth = true;
             acl = [ "pattern readwrite #" ];
@@ -56,12 +66,15 @@
         ];
       };
 
-      networking.firewall.allowedTCPPorts = [ 8883 ];
+      networking.firewall.allowedTCPPorts = [ 8883 8884 ];
 
       sops.secrets = mkMosquittoSecrets [
         "cafile"
         "certfile"
         "keyfile"
+        "cafile-alt"
+        "certfile-alt"
+        "keyfile-alt"
       ];
     };
 }
