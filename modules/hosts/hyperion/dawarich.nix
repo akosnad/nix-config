@@ -47,7 +47,7 @@
     };
 
     services.restic.backups.persist.exclude = [
-      "/var/cache/dawarich"
+      "/persist/var/cache/dawarich"
     ];
     services.postgresqlBackup.databases = [ config.services.dawarich.database.name ];
   };

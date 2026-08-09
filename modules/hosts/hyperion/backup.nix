@@ -8,6 +8,7 @@
       services.restic.backups = {
         persist.exclude = withPrefix "/persist/var/lib" [
           "private/esphome"
+          "esphome"
 
           "qbittorrent/qBittorrent/logs"
 

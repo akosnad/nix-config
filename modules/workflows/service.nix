@@ -36,6 +36,6 @@
       ];
     };
 
-    services.restic.backups.persist.exclude = [ config.services.obelisk.cacheDir ];
+    services.restic.backups.persist.exclude = map (x: "/persist${x}") [ config.services.obelisk.cacheDir ];
   };
 }
