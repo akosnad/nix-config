@@ -64,6 +64,8 @@
         groups.renovate = { };
       };
 
+      nix.settings.allowed-users = [ "renovate" ];
+
       services.restic.backups.persist.exclude = map (x: "/persist${x}") [ cfg.settings.baseDir cfg.settings.cacheDir ];
     };
 }
