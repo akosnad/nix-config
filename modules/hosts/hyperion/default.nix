@@ -23,6 +23,7 @@
       esphome-updater
       buildbot-master
       buildbot-worker
+      renovate
       obelisk
     ] ++ [{
       home-manager.users.akos = {
