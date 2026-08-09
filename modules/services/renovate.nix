@@ -15,6 +15,8 @@
           autodiscoverFilter = [ "/akosnad/.*/" ];
           autodiscoverTopics = [ "renovate-akosnad" ];
           nix.enabled = true;
+          binarySource = "global";
+          allowedCommands = [ "^nix flake update\\s?.*$" "^cargo update\\s?.*$" ];
         };
       };
 
@@ -63,6 +65,8 @@
         };
         groups.renovate = { };
       };
+
+      nix.settings.allowed-users = [ "renovate" ];
 
       services.restic.backups.persist.exclude = map (x: "/persist${x}") [ cfg.settings.baseDir cfg.settings.cacheDir ];
     };

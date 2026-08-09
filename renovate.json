@@ -1,24 +1,30 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "timezone": "Europe/Budapest",
-  "prConcurrentLimit": 1,
+  "schedule": [ "after 03:00am and before 05:00am" ],
+  "automerge": true,
+  "automergeSchedule": [ "after 03:00am and before 05:30am" ],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": [ "after 03:00am and before 05:00am" ],
+    "automerge": true,
+    "automergeSchedule": [ "after 03:00am and before 05:30am" ]
+  },
   "packageRules": [
     {
-      "matchManagers": ["nix", "cargo"],
-      "lockFileMaintenance": {
-        "enabled": true,
-        "automerge": true,
-        "schedule": [ "after 3:00am and before 6:00am" ]
-      }
+      "matchManagers": [ "nix" ],
+      "matchUpdateTypes": [ "lockFileMaintenance" ],
+      "enabled": true,
+      "postUpgradeTasks": {
+        "commands": [ "nix flake update" ],
+        "fileFilters": [ "flake.lock" ]
+      },
+      "recreateWhen": "always"
     },
     {
-      "matchManagers": ["nix"],
-      "matchUpdateTypes": ["digest"],
-      "enabled": false
-    },
-    {
-      "matchUpdateTypes": ["minor", "patch", "bump"],
-      "automerge": true
+      "matchManagers": [ "cargo" ],
+      "enabled": false,
+      "lockFileMaintenance": { "enabled": false }
     }
   ]
 }
