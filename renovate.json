@@ -7,8 +7,7 @@
       "matchManagers": ["nix", "cargo"],
       "lockFileMaintenance": {
         "enabled": true,
-        "automerge": true,
-        "schedule": [ "after 3:00am and before 6:00am" ]
+        "automerge": true
       }
     },
     {
