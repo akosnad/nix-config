@@ -1,20 +1,13 @@
 { inputs, ... }:
 {
-  config.flake.modules.nixos."hosts/gaia" = {
+  config.flake.modules.nixos."hosts/gaia" = { pkgs, ... }: {
     imports = with inputs.hardware.nixosModules; [
       raspberry-pi-4
     ];
 
-    hardware.raspberry-pi."4" = {
-      gpio.enable = true;
-      i2c1 = {
-        enable = true;
-        frequency = 100000;
-      };
-    };
-
-    hardware.raspberry-pi."4".bluetooth.enable = true;
-    hardware.bluetooth.enable = true;
+    # use upstream kernel instead of the vendor kernel
+    # (we are not using any rPi specific hardware with quirks here)
+    boot.kernelPackages = pkgs.linuxPackages;
 
     boot.kernelParams = [
       # tell the serial driver to use only one port,
