@@ -1,7 +1,7 @@
 { lib, inputs, config, ... }:
 let
   overlays = [
-    inputs.nur.overlays.default
+    inputs.firefox-addons.overlays.default
     inputs.glide.overlays.default
   ]
   ++ (lib.attrValues config.flake.overlays);

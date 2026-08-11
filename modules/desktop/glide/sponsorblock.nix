@@ -2,7 +2,7 @@
 {
   flake.modules.homeManager.desktop = { pkgs, ... }:
     let
-      inherit (pkgs.nur.repos.rycee.firefox-addons) sponsorblock;
+      inherit (pkgs.firefox-addons) sponsorblock;
       inherit (sponsorblock.passthru) addonId;
     in
     {

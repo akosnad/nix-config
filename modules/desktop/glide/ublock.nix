@@ -1,7 +1,7 @@
 {
   flake.modules.homeManager.desktop = { pkgs, ... }:
     let
-      inherit (pkgs.nur.repos.rycee.firefox-addons) ublock-origin;
+      inherit (pkgs.firefox-addons) ublock-origin;
       inherit (ublock-origin.passthru) addonId;
     in
     {

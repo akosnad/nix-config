@@ -194,6 +194,28 @@
         "type": "github"
       }
     },
+    "firefox-addons": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "dir": "pkgs/firefox-addons",
+        "lastModified": 1786420971,
+        "narHash": "sha256-irKN0AY5fDS96h7z3Cjp3EB7OwTJU1SeWFb1GxnFu3E=",
+        "owner": "rycee",
+        "repo": "nur-expressions",
+        "rev": "a56dfe072a448e664d208e9ed5f7f9dc9a720686",
+        "type": "gitlab"
+      },
+      "original": {
+        "dir": "pkgs/firefox-addons",
+        "owner": "rycee",
+        "repo": "nur-expressions",
+        "type": "gitlab"
+      }
+    },
     "firefox-gnome-theme": {
       "flake": false,
       "locked": {
@@ -835,29 +857,6 @@
     "nur": {
       "inputs": {
         "flake-parts": [
-          "flake-parts"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1786413828,
-        "narHash": "sha256-/aLuBk7iiE1gbhtb91irCq+6v57abeSZZR1ZYYcEnfg=",
-        "owner": "nix-community",
-        "repo": "NUR",
-        "rev": "37b02dc532b3540e32f0ec41ab2fa0c1b9d6b90d",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "NUR",
-        "type": "github"
-      }
-    },
-    "nur_2": {
-      "inputs": {
-        "flake-parts": [
           "stylix",
           "flake-parts"
         ],
@@ -931,6 +930,7 @@
         "disko": "disko",
         "disko-zfs": "disko-zfs",
         "esphome-yeelight-ceiling-light": "esphome-yeelight-ceiling-light",
+        "firefox-addons": "firefox-addons",
         "flake-parts": "flake-parts",
         "glide": "glide",
         "hardware": "hardware",
@@ -944,7 +944,6 @@
         "nix-topology": "nix-topology",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs_5",
-        "nur": "nur",
         "obelisk": "obelisk",
         "sops-nix": "sops-nix",
         "spicetify": "spicetify",
@@ -1050,7 +1049,7 @@
         "nixpkgs": [
           "nixpkgs"
         ],
-        "nur": "nur_2",
+        "nur": "nur",
         "systems": "systems_3",
         "tinted-kitty": "tinted-kitty",
         "tinted-schemes": [

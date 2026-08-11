@@ -1,7 +1,7 @@
 {
   flake.modules.homeManager.desktop = { pkgs, ... }:
     let
-      inherit (pkgs.nur.repos.rycee.firefox-addons) keepassxc-browser;
+      inherit (pkgs.firefox-addons) keepassxc-browser;
       inherit (keepassxc-browser.passthru) addonId;
     in
     {
