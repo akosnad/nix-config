@@ -33,7 +33,6 @@ in
           "nfandroidtv"
           "androidtv_remote"
           "openai_conversation"
-          "spotify"
           "google"
           "cast"
           "dlna_dmr"

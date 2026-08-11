@@ -21,7 +21,6 @@
 
   config.flake.modules.homeManager.base = {
     imports = [
-      inputs.spicetify.homeManagerModules.spicetify
       inputs.vscode-server.homeModules.default
       inputs.glide.homeModules.default
     ];
