@@ -1,14 +1,14 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "timezone": "Europe/Budapest",
-  "schedule": [ "after 03:00am and before 05:00am" ],
+  "schedule": [ "after 03:00am and before 03:30am" ],
   "automerge": true,
-  "automergeSchedule": [ "after 03:00am and before 05:30am" ],
+  "automergeSchedule": [ "after 03:30am and before 05:30am" ],
   "lockFileMaintenance": {
     "enabled": true,
-    "schedule": [ "after 03:00am and before 05:00am" ],
+    "schedule": [ "after 03:00am and before 03:30am" ],
     "automerge": true,
-    "automergeSchedule": [ "after 03:00am and before 05:30am" ]
+    "automergeSchedule": [ "after 03:30am and before 05:30am" ]
   },
   "packageRules": [
     {
