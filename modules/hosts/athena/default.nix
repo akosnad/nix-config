@@ -31,6 +31,7 @@
           # programs
           darktable
           iamb
+          dj
         ];
       };
     }];

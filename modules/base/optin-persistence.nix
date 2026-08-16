@@ -49,6 +49,7 @@
           "Downloads"
           "Pictures"
           "Videos"
+          "Music"
           "src"
           ".local/bin"
           ".local/share/nix" # trusted settings and repl history

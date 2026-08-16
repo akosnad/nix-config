@@ -43,6 +43,7 @@
               iamb
               linphone
               waydroid
+              dj
             ];
           };
         }
