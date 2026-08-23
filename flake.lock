@@ -202,11 +202,11 @@
       },
       "locked": {
         "dir": "pkgs/firefox-addons",
-        "lastModified": 1787284994,
-        "narHash": "sha256-ekBKvaEJY74xfbvB/QWLaB42XspwLlO5ySfmgvgKeeM=",
+        "lastModified": 1787371635,
+        "narHash": "sha256-XYr6JheHNq1RzstTbzB2AOlxLZXTzkMmcg9wWw8fWW0=",
         "owner": "rycee",
         "repo": "nur-expressions",
-        "rev": "6e90cf8523a05e55621ede7cf1e101e1a70c5446",
+        "rev": "ef61395bd142cf7f3d7fda48a75b5662006c18da",
         "type": "gitlab"
       },
       "original": {
@@ -503,11 +503,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1787146702,
-        "narHash": "sha256-YbRcLdU/yK4gWsQg7V8WTKZHfXL33g8+wSFUX3wyevs=",
+        "lastModified": 1787377438,
+        "narHash": "sha256-Sxu1NLTD/Ern6hFGLlZmtKCSct3YQXZI/lls8RE1XeM=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "173b7e8d40fdc8c296a9c99854314f17a3a1704c",
+        "rev": "65258d5c65a250189fde2e35f490d15e064c4c62",
         "type": "github"
       },
       "original": {
@@ -886,11 +886,11 @@
         "rust-overlay": "rust-overlay_2"
       },
       "locked": {
-        "lastModified": 1787312112,
-        "narHash": "sha256-FdYfroyAFnTvxc1qj+yUUJofOu7qRJpQM15PvcOTikM=",
+        "lastModified": 1787389167,
+        "narHash": "sha256-Zc6zkASCD1BjOBxWRGiNjsj8iheMlr1IksTGHQVGFSU=",
         "owner": "obeli-sk",
         "repo": "obelisk",
-        "rev": "93c94f550745ffabe5a166f1185573995ccbec28",
+        "rev": "8994293a9ef0bb3db664ea5c360152dccaa9d4d2",
         "type": "github"
       },
       "original": {
@@ -1172,11 +1172,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1787276820,
-        "narHash": "sha256-H2WpKgKFlbCnadGLJWJYmJXSfnJHtw57GiyCJsRmkd8=",
+        "lastModified": 1787362606,
+        "narHash": "sha256-KRs7IfccMjEd8RKRG0fbiZhLTvloXCCWDUC9m4MkV8M=",
         "owner": "nix-community",
         "repo": "nix-vscode-extensions",
-        "rev": "df89bf3ab92545d6932675cf9d742cb0e687f428",
+        "rev": "f77d5bd7712b61e4831a5104221d4e0b98d74f86",
         "type": "github"
       },
       "original": {
