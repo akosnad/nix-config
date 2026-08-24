@@ -31,10 +31,10 @@ in
             path = ffmpegCuda;
             hwaccel_args = "preset-nvidia";
           };
-          cameras = {
+          cameras = rec {
             arges = {
               ffmpeg = {
-                input_args = "preset-rtsp-restream";
+                input_args = "preset-rtsp-generic";
                 output_args.record = "preset-record-generic-audio-aac";
                 inputs = [
                   {
@@ -74,8 +74,7 @@ in
             };
             brontes = {
               ffmpeg = {
-                input_args = "preset-rtsp-restream";
-                output_args.record = "preset-record-generic-audio-aac";
+                inherit (arges.ffmpeg) input_args output_args;
                 inputs = [
                   {
                     path = "rtsp://127.0.0.1:8554/brontes";
