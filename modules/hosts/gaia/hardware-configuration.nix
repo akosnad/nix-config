@@ -15,7 +15,7 @@
       boot.kernelModules = [ ];
       boot.kernelParams = [
         # serial is used for peripherals, not a terminal
-        # "console=ttyS0,115200n8"
+        "console=ttyS0,115200n8"
         "console=ttyAMA0,115200n8"
         "console=tty0"
         "nohibernate"
