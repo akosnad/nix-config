@@ -7,6 +7,7 @@ let
       "ca-derivations"
       "dynamic-derivations"
       "recursive-nix"
+      "pipe-operators"
     ];
     warn-dirty = false;
     auto-optimise-store = true;
