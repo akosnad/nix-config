@@ -2,7 +2,7 @@
   description = "akosnad's nix infrastructure";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
+    nixpkgs.url = "https://channels.nixos.org/nixos-26.05/nixexprs.tar.zst";
 
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
