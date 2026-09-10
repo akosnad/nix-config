@@ -1,8 +1,8 @@
 { config, ... }:
 {
   config.flake.devices.l-desk-led = {
-    info = "Tuya-based RGB LED strip (modded controller)";
-    mac = "28:6D:CD:07:2A:6B";
+    info = "LSC Smart Connect Ledstrip RGBIC + CCTIC (custom firmware)";
+    mac = "38:2C:E5:D2:AF:B2";
     ip = "10.4.1.5";
     blockInternetAccess = true;
     connectionMedium = "wifi";
@@ -13,51 +13,63 @@
       wifi
     ];
 
-    hostPlatform = "esp8266";
+    hostPlatform = "bk72xx";
     settings = {
       esphome.friendly_name = "Ákos asztali LED";
-      esp32 = {
-        board = "esp32-s3-devkitc-1";
-        flash_size = "4MB";
-        framework.type = "esp-idf";
-      };
+      bk72xx.board = "generic-bk7231n-qfn32-tuya";
 
-      output = [
-        {
-          platform = "ledc";
-          id = "output_red";
-          pin = "1";
-        }
-        {
-          platform = "ledc";
-          id = "output_green";
-          pin = "2";
-        }
-        {
-          platform = "ledc";
-          id = "output_blue";
-          pin = "3";
-        }
-      ];
-
-      light = [{
-        platform = "rgb";
-        id = "light_rgb";
-        name = "Fény";
-        icon = "mdi:led-strip-variant";
-        red = "output_red";
-        green = "output_green";
-        blue = "output_blue";
-        restore_mode = "RESTORE_DEFAULT_OFF";
-        gamma_correct = 1.4;
+      power_supply = [{
+        id = "led_power";
+        pin = "P8";
       }];
 
-      remote_receiver.pin = {
-        number = "6";
-        inverted = true;
-        mode = "INPUT_PULLUP";
-        # dump = "all";
-      };
+      e131 = { };
+
+      light =
+        let
+          num_leds = 50;
+          id = "ledstrip_internal";
+        in
+        [
+          {
+            platform = "beken_spi_led_strip";
+            rgb_order = "BRG";
+            pin = "P16";
+            chipset = "SM16703";
+            power_supply = "led_power";
+            inherit num_leds id;
+            name = "None";
+            internal = true;
+            restore_mode = "RESTORE_DEFAULT_OFF";
+            gamma_correct = 1.0;
+          }
+          {
+            platform = "partition";
+            id = "light_rgb";
+            name = "RGB";
+            segments = map (x: { inherit id; from = x; to = x; }) (builtins.genList (x: x * 2) (num_leds / 2));
+            restore_mode = "RESTORE_DEFAULT_OFF";
+            gamma_correct = 1.0;
+            effects = [
+              { addressable_rainbow = { }; }
+              { addressable_color_wipe = { }; }
+              { addressable_scan = { }; }
+              { addressable_twinkle = { }; }
+              { addressable_random_twinkle = { }; }
+              { addressable_fireworks = { }; }
+              { addressable_flicker = { }; }
+              { e131.universe = 1; }
+            ];
+          }
+          {
+            platform = "partition";
+            id = "light_cct";
+            name = "CCT";
+            segments = map (x: { inherit id; from = x; to = x; }) (builtins.genList (x: x * 2 + 1) (num_leds / 2));
+            restore_mode = "RESTORE_DEFAULT_ON";
+            gamma_correct = 1.0;
+          }
+        ];
     };
   };
 }
