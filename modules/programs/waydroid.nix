@@ -1,6 +1,10 @@
 {
-  config.flake.modules.nixos.waydroid = {
-    virtualisation.waydroid.enable = true;
+  config.flake.modules.nixos.waydroid = { pkgs, ... }: {
+    virtualisation.waydroid = {
+      enable = true;
+      package = pkgs.waydroid-nftables;
+    };
+    networking.nftables.enable = true;
 
     environment.persistence."/persist".directories = [{
       directory = "/var/lib/waydroid";
