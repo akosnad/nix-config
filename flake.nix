@@ -107,7 +107,7 @@
     };
 
     esphome-yeelight-ceiling-light = {
-      url = "github:syssi/esphome-yeelight-ceiling-light/df472145a25fc5fbf3b23ef382b78a3e77e0a26d";
+      url = "github:syssi/esphome-yeelight-ceiling-light/6de117a7871565cc4336446fd2387605c0d88abb";
       flake = false;
     };
   };

@@ -180,17 +180,17 @@
     "esphome-yeelight-ceiling-light": {
       "flake": false,
       "locked": {
-        "lastModified": 1787234816,
-        "narHash": "sha256-xH+BdzbWpGhRpsskIQmoMZVFDVp2V+1quj+rFZIvp2c=",
+        "lastModified": 1790789212,
+        "narHash": "sha256-xbs8tpnzVEPlxjLU5rDQUITVQxN6vmsP+p8MaMJyyb4=",
         "owner": "syssi",
         "repo": "esphome-yeelight-ceiling-light",
-        "rev": "df472145a25fc5fbf3b23ef382b78a3e77e0a26d",
+        "rev": "6de117a7871565cc4336446fd2387605c0d88abb",
         "type": "github"
       },
       "original": {
         "owner": "syssi",
         "repo": "esphome-yeelight-ceiling-light",
-        "rev": "df472145a25fc5fbf3b23ef382b78a3e77e0a26d",
+        "rev": "6de117a7871565cc4336446fd2387605c0d88abb",
         "type": "github"
       }
     },
