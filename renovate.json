@@ -22,6 +22,11 @@
       "recreateWhen": "always"
     },
     {
+      "matchManagers": [ "nix" ],
+      "matchUpdateTypes": [ "pin", "pinDigest", "digest" ],
+      "enabled": false
+    },
+    {
       "matchManagers": [ "cargo" ],
       "enabled": false,
       "lockFileMaintenance": { "enabled": false }
