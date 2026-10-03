@@ -39,7 +39,7 @@ in
         enable = true;
         mutableSettings = false;
         settings = {
-          http.session_ttl = 720;
+          http.session_ttl = "720s";
           dhcp.enabled = false;
           querylog = {
             enabled = true;
