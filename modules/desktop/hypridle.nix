@@ -6,6 +6,7 @@
       hyprlock = "${config.programs.hyprlock.package}/bin/hyprlock --grace ${toString gracePeriod}";
       pgrep = "${pkgs.procps}/bin/pgrep";
       hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
+      niri = "${config.programs.niri.package}/bin/niri";
       wpctl = "${pkgs.wireplumber}/bin/wpctl";
       pkill = "${pkgs.procps}/bin/pkill";
 
@@ -62,6 +63,12 @@
               timeout = 30;
               on-timeout = "${hyprctl} dispatch dpms off";
               on-resume = "${hyprctl} dispatch dpms on";
+            }))
+            # turn off displays (niri)
+            ++ (lib.optionals config.programs.niri.enable (afterLockTimeout {
+              timeout = 30;
+              on-timeout = "${niri} msg action power-off-monitors";
+              on-resume = "${niri} msg action power-on-monitors";
             }));
         };
       };
