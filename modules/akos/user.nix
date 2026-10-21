@@ -13,6 +13,7 @@
           "wheel"
           "video"
           "audio"
+          "cdrom"
           "dialout"
         ]
         ++ ifGroupExists [
