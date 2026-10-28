@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  config.flake.modules.homeManager.desktop = { pkgs, config, ... }:
+  config.flake.modules.homeManager.waybar = { pkgs, config, ... }:
     let
       base = /* css */ ''
         background-color: @base02;
