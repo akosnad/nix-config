@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.home-assitant = {
+  flake.modules.nixos.home-assistant = {
     services.home-assistant = {
       extraComponents = [ "owntracks" ];
       config.owntracks = {
