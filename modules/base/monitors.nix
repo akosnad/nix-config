@@ -48,6 +48,10 @@ in
               type = types.float;
               default = 1.0;
             };
+            rotation = mkOption {
+              type = types.int;
+              default = 0;
+            };
             enabled = mkOption {
               type = types.bool;
               default = true;

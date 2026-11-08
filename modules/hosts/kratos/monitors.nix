@@ -20,8 +20,10 @@
               model = "ASUS VN247";
               width = 1920;
               height = 1080;
-              x = -width;
+              x = -height;
+              y = -width / 8;
               workspace = "2";
+              rotation = -90;
             };
             aux = {
               name = "HDMI-A-2";

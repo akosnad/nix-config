@@ -42,6 +42,7 @@ in
                     inherit x y;
                   };
                   inherit scale;
+                  transform.rotation = if rotation < 0 then rotation + 360 else rotation;
                   variable-refresh-rate = if vrr != null then vrr != 0 else false;
                 };
             in
