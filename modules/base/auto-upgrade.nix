@@ -52,6 +52,8 @@
           # set a low priority
           Nice = "15";
           IOSchedulingPriority = "7";
+          RuntimeDirectory = "nixos-upgrade";
+          EnvironmentFile = "-/run/nixos-upgrade/env";
 
           ExecCondition = lib.getExe (
             pkgs.writeShellApplication {
@@ -80,13 +82,18 @@
                   jq -e '.complete and .results == 0' <<< "$build" > /dev/null
                 }
 
+                # it's important we query upstream once. it keeps this upgrade invocation atomic
+                upstream="$(curl -fsL https://api.github.com/repos/akosnad/nix-config/commits/HEAD)"
+                upstreamModified="$( (jq -r .commit.committer.date | date -f- "+%s") <<<"$upstream")"
+                upstreamRevision="$(jq -r .sha <<<"$upstream")"
+
                 # check if latest upstream config is newer than current
-                upstreamModified="$(lastModified "${config.system.autoUpgrade.flake}")"
                 test "$upstreamModified" -gt "$(lastModified "self")"
 
                 # check if system derivation is built upstream (i.e. by CI/CD or available from substituters)
-                newRevision="$(revision "${config.system.autoUpgrade.flake}")"
-                checkBuilt "${config.system.autoUpgrade.flake}#checks.${config.nixpkgs.hostPlatform.system}.nixos-${config.networking.hostName}" "$newRevision"
+                checkBuilt "${config.system.autoUpgrade.flake}#checks.${config.nixpkgs.hostPlatform.system}.nixos-${config.networking.hostName}" "$upstreamRevision"
+
+                printf 'NIXOS_FLAKE_UPSTREAM_REV=%s\n' "$upstreamRevision" > /run/nixos-upgrade/env
               '';
             });
 
@@ -146,7 +153,7 @@
                   ''}
                 }
 
-                newRevision="$(revision "${config.system.autoUpgrade.flake}")"
+                newRevision="$NIXOS_FLAKE_UPSTREAM_REV"
                 newPath="$(getSystemPath "${systemAttr}" "$newRevision")"
                 apply "$newPath"
               '';
