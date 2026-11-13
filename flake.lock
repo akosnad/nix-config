@@ -202,11 +202,11 @@
       },
       "locked": {
         "dir": "pkgs/firefox-addons",
-        "lastModified": 1794369833,
-        "narHash": "sha256-k32WXXKOMgzEHmOx2IZp8JDj0XBYww/ZRw1gJlB6Ylw=",
+        "lastModified": 1794488997,
+        "narHash": "sha256-dX4pNKg/CE+WYLisCN8IrDOudzQ2aUmkGAQJpUNoNeo=",
         "owner": "rycee",
         "repo": "nur-expressions",
-        "rev": "8ef6b34fb11380476b0b431b2373a9bdf29f462c",
+        "rev": "b54fa31d52fad7f88604acea059f7dd081ed0ffc",
         "type": "gitlab"
       },
       "original": {
@@ -776,11 +776,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1794192123,
-        "narHash": "sha256-YOhabADcIwaWo9992egosQF3iVpvWysmZAyhbGBzinY=",
-        "rev": "177d0540942fb205af6993b1d5fa0b57799e09f8",
+        "lastModified": 1794386569,
+        "narHash": "sha256-W60urNAgQVS8bhNWH0bQsYoiagds8m38oTDUjEOM9FE=",
+        "rev": "d4f25a3e562008648d45bcf2d70bcc7422cad84e",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1114946.177d0540942f/nixexprs.tar.zst"
+        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1117658.d4f25a3e5620/nixexprs.tar.zst"
       },
       "original": {
         "type": "tarball",
@@ -1183,11 +1183,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794375300,
-        "narHash": "sha256-PJF5PGqDNDZ+BjbwVyK6KYB2vegm1WRx0QMzjfhXJSU=",
+        "lastModified": 1794465615,
+        "narHash": "sha256-jGzSqGkZH6hJNAIDlrZ/P44h8RqyLjXqMDC13mCSeEM=",
         "owner": "nix-community",
         "repo": "nix-vscode-extensions",
-        "rev": "5ad4f81467801d2e81502bddea1158540bd72823",
+        "rev": "de72639496ca3ffa504adc1bd854d85b6c959167",
         "type": "github"
       },
       "original": {
