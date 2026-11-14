@@ -63,6 +63,9 @@
             # copilot buttons
             "outlook.live.com##.f1m7nsj4.fksc0bp.f10pi13n.f1a3p1vp.f1ft4266.f14t3ns0.f1hg901r.f1atq3b4.f1fj1oij.f1hr7we4.___11f3rcj"
             "outlook.live.com##button.lxLVy.r1f29ykk.fui-Button:nth-of-type(1)"
+            # microsoft rewards nag and button
+            "outlook.live.com##.ms-Callout"
+            "outlook.live.com##.uL10R"
 
             "gls-group.eu##.slide.carousel.campaign-banner"
 
