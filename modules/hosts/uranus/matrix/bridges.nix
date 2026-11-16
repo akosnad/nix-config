@@ -1,6 +1,17 @@
-{ lib, ... }:
+{ lib, inputs, ... }:
 {
-  config.flake.modules.nixos."hosts/uranus" = { config, ... }:
+  flake.overlays.matrix-bridges-unstable = final: _prev:
+    let
+      pkgsUnstable = import inputs.nixpkgs-unstable {
+        config = import ../../../base/nixpkgs/_nixpkgs-config.nix;
+        system = final.stdenv.hostPlatform.system;
+      };
+    in
+    {
+      inherit (pkgsUnstable) mautrix-meta mautrix-whatsapp;
+    };
+
+  flake.modules.nixos."hosts/uranus" = { config, ... }:
     let
       commonSettings = {
         homeserver = rec {
@@ -76,6 +87,7 @@
               network = {
                 mode = "messenger";
                 displayname_template = "{{ or .DisplayName .Username .ID }}";
+                e2ee_backfill = true;
               };
               appservice = {
                 id = "messengerbot";
