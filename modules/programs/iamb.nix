@@ -1,13 +1,11 @@
+{ inputs, ... }:
 {
-  config.flake.modules.homeManager.iamb =
-    { pkgs, config, ... }:
+  flake.modules.homeManager.iamb =
+    { config, ... }:
     {
-      home.packages = with pkgs; [
-        iamb
-      ];
-
-      xdg.configFile."iamb/config.toml" = {
-        source = (pkgs.formats.toml { }).generate "iamb-config.toml" {
+      programs.iamb = {
+        enable = true;
+        settings = {
           default_profile = "default";
           profiles.default = {
             user_id = "@akosnad:m.fzt.one";
@@ -34,5 +32,21 @@
           dirs.downloads = "${config.home.homeDirectory}/Downloads/iamb";
         };
       };
+
+      home.persistence."/persist".directories = [
+        ".local/share/iamb"
+        ".cache/iamb/profiles"
+      ];
+    };
+
+  flake.overlays.iamb-unstable = final: _prev:
+    let
+      pkgsUnstable = import inputs.nixpkgs-unstable {
+        config = import ../base/nixpkgs/_nixpkgs-config.nix;
+        system = final.stdenv.hostPlatform.system;
+      };
+    in
+    {
+      inherit (pkgsUnstable) iamb;
     };
 }
