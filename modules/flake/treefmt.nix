@@ -8,7 +8,7 @@
         rustfmt.enable = true;
         statix.enable = true;
         deadnix.enable = true;
-        shfmt.enable = true;
+        shfmt = { enable = true; indent_size = 2; };
         black.enable = true;
       };
     };
