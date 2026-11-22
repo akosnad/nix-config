@@ -41,7 +41,6 @@
               # programs
               darktable
               iamb
-              linphone
               waydroid
               dj
             ];
