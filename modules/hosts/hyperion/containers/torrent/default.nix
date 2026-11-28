@@ -33,7 +33,7 @@
       virtualisation.arion.projects.torrent.settings = {
         services = {
           qbittorrent.service = lib.recursiveUpdate commonServiceOptions {
-            image = "lscr.io/linuxserver/qbittorrent:5.3.0";
+            image = "lscr.io/linuxserver/qbittorrent:5.3.1";
             container_name = "qbittorrent";
             environment = {
               PUID = "1000";
